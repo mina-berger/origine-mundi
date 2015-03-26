@@ -40,213 +40,6 @@ public class D_110 extends Roland {
     private D_110(){
         super(DEVICE_ID, MODEL_ID, MIDI_PORT, MIDI_PORT);
     }
-    /*public class TemporaryTone extends SysexBuilderOld {
-        public TemporaryTone(Address address, int[] data){
-            super(ROLAND_ID, getDevice(), getModel(), COMMAND_DT1, address, Arrays.asList(ArrayUtils.toObject(data)));
-        }
-        public void setName(String str){
-            setAsciiString(0, 10, str);
-        }
-        public String getName(){
-            return getAsciiString(0, 10);
-        }
-        private HashMap<Integer, String> PARTIAL_STRUCTURE = toMap(
-            0, "S & S Mix", 
-            1, "S & S Prim and Ring Mix", 
-            2, "P & S Mix",
-            3, "P & S Prim and Ring Mix",
-            4, "S & P Prim and Ring Mix",
-            5, "P & P Mix",
-            6, "P & P Prim and Ring Mix",
-            7, "S & S Stereo",
-            8, "P & P Stereo",
-            9, "S & S Ring",
-            10, "P & S Ring",
-            11, "S & P Ring",
-            12, "P & P Ring");
-        public String getPartialStructure01(){
-            return getText(0x0a, PARTIAL_STRUCTURE);
-        }
-        public String getPartialStructure23(){
-            return getText(0x0b, PARTIAL_STRUCTURE);
-        }
-        public void setPartialStructure01(int value){
-            setDatum(0x0a, value, PARTIAL_STRUCTURE);
-        }
-        public void setPartialStructure23(int value){
-            setDatum(0x0b, value, PARTIAL_STRUCTURE);
-        }
-        public void setPartialMute(boolean p0, boolean p1, boolean p2, boolean p3){
-            int value = (p0?1:0) + (p1?2:0) + (p2?4:0) + (p3?8:0);
-            setDatum(0x0c, value);
-        }
-        public String getPartialMute(){
-            int value = getDatum(0x0c);
-            return "[" + ((value & 1) == 1?"*":"-") + ((value & 2) == 2?"*":"-") + ((value & 4) == 4?"*":"-") + ((value & 8) == 8?"*":"-") + "]";
-        }
-        private String PartialStructureName(int value){
-            switch(value){
-                case  0:return "(0) S & S Mix";
-                case  1:return "(1) S & S Prim and Ring Mix";
-                case  2:return "(2) P & S Mix";
-                case  3:return "(3) P & S Prim and Ring Mix";
-                case  4:return "(4) S & P Prim and Ring Mix";
-                case  5:return "(5) P & P Mix";
-                case  6:return "(6) P & P Prim and Ring Mix";
-                case  7:return "(7) S & S Stereo";
-                case  8:return "(8) P & P Stereo";
-                case  9:return "(9) S & S Ring";
-                case 10:return "(a) P & S Ring";
-                case 11:return "(b) S & P Ring";
-                case 12:return "(c) P & P Ring";
-                default:return "(" + Integer.toHexString(value) + ") N/A";
-            }
-        }
-        private HashMap<Integer, String> ENV_MODE = toMap(0, "Normal", 1, "No sustain");
-        public String getEnvMode(){
-            return getText(0x0d, ENV_MODE);
-            //return mode == 0?"Normal":mode == 1?"No sustain":"N/A";
-        }
-        public void setEnvMode(boolean normal){
-            setDatum(0x0b, normal?0:1);
-        }
-        public String getWGPitchCoarse(int partial){
-            return getNoteText(getPartialAddress(partial).getIndex(), 24);
-            //int value = getDatum(getPartialAddress(partial).getIndex());
-            //return "("+ Integer.toHexString(value) + ") " + new Note(value + 24).toString();
-        }
-        public void setWGPitchCoarse(int partial, int value){
-            setDatum(getPartialAddress(partial).getIndex(), value, 0, 96);
-        }
-        
-        
-        
-        
-        public String getWGPitchFine(int partial){
-            return getSignedText(getPartialAddress(partial).getIndex() + 1, 50);
-        }
-        public void setWGPitchFine(int partial, int value){
-            setDatum(getPartialAddress(partial).getIndex() + 1, value, 0, 100);
-        }
-        private HashMap<Integer, String> WGPITCH_KEYFOLLOW = toMap(
-                0x00, "-1",
-                0x01, "-1/2",
-                0x02, "-1/4",
-                0x03, "0",
-                0x04, "1/8",
-                0x05, "1/4",
-                0x06, "3/8",
-                0x07, "1/2",
-                0x08, "5/8",
-                0x09, "3/4",
-                0x0a, "7/8",
-                0x0b, "1",
-                0x0c, "5/4",
-                0x0d, "3/2",
-                0x0e, "2",
-                0x0f, "s1",
-                0x10, "s2");
-        public String getWGPitchKeyfollow(int partial){
-            return getText(getPartialAddress(partial).getIndex() + 2, WGPITCH_KEYFOLLOW);
-
-   }
-        public void setWGPitchKeyfollow(int partial, int value){
-            setDatum(getPartialAddress(partial).getIndex() + 2, value, 0, 16);
-        }
-        public String getWGPitch(int partial){
-            return getWGPitchCoarse(partial) + " " + getWGPitchFine(partial) + " " + getWGPitchKeyfollow(partial);
-        }
-        public void setWGPitch(int partial, int coarse, int fine, int keyfollow){
-            setWGPitchCoarse   (partial, coarse);
-            setWGPitchFine     (partial, fine);
-            setWGPitchKeyfollow(partial, keyfollow);
-        }
-        public String getWGPitchBenderSW(int partial){
-            int value = getDatum(getPartialAddress(partial).getIndex() + 3);
-            return "("+ Integer.toString(value) + ") " + 
-                    (value == 0?"OFF":
-                     value == 1?"ON ":"N/A");
-        }
-        public void setWGPitchBenderSW(int partial, boolean sw){
-            setDatum(getPartialAddress(partial).getIndex() + 3, sw?1:0);
-        }
-        public String getWaveformBank(int partial){
-            int value = getDatum(getPartialAddress(partial).getIndex() + 4);
-            return "("+ Integer.toString(value) + ") " + 
-                    (value == 0?"SQU/1":value == 1?"SAW/1":value == 2?"SQU/2":value == 0?"SAW/2":"N/A");
-        }
-        public void setWaveformBank(int partial, int value){
-            setDatum(getPartialAddress(partial).getIndex() + 4, value, 0, 3);
-        }
-        public String getPCMWave(int partial){
-            int value = getDatum(getPartialAddress(partial).getIndex() + 5);
-            return "("+ Integer.toString(value) + ")";
-        }
-        public void setPCMWave(int partial, int value){
-            setDatum(getPartialAddress(partial).getIndex() + 5, value, 0, 127);
-        }
-        public String getPulseWidth(int partial){
-            int value = getDatum(getPartialAddress(partial).getIndex() + 6);
-            return "("+ Integer.toString(value) + ")";
-        }
-        public void setPulseWidth(int partial, int value){
-            setDatum(getPartialAddress(partial).getIndex() + 6, value, 0, 100);
-        }
-        public String getPWVeloSens(int partial){
-            int value = getDatum(getPartialAddress(partial).getIndex() + 7);
-            return "("+ Integer.toString(value) + ") " + 
-                    (value == 7?" 0":
-                     value  < 7?"-" + Integer.toString((value - 7) * -1)
-                               :"+" + Integer.toString( value - 7));
-        }
-        public void setPWVeloSens(int partial, int value){
-            setDatum(getPartialAddress(partial).getIndex() + 7, value, 0, 14);
-        }
-        public String getPitchEnvMain(int partial){
-            ArrayList<Integer> data = getData(getPartialAddress(partial).getIndex() + 8, 3);
-            return "Pitch Env : depth("+ data.get(0) + ") velosens(" + data.get(1) + ") keyfollowtime(" + data.get(2) + ")"; 
-        }
-        public void setPitchEnvMain(int partial, int depth, int velosens, int keyfollow_time){
-            setDatum(getPartialAddress(partial).getIndex() +  8, depth, 0, 10);
-            setDatum(getPartialAddress(partial).getIndex() +  9, velosens, 0, 3);
-            setDatum(getPartialAddress(partial).getIndex() + 10, keyfollow_time, 0, 4);
-        }
-        public String getPitchEnvTimeLevel(int partial){
-            ArrayList<Integer> data = getData(getPartialAddress(partial).getIndex() + 11, 9);
-            return "Pitch Env : time["  + data.get(0) + "," + data.get(1) + "," + data.get(2) + "," + data.get(3) + "]" + 
-                               "level[(" + data.get(4) + ")" + (data.get(4) - 50) + ",(" + data.get(5) + ")" + (data.get(5) - 50) + 
-                                    ",(" + data.get(6) + ")" + (data.get(6) - 50) + ",(" + data.get(7) + ")" + (data.get(7) - 50) + 
-                                    ",(" + data.get(8) + ")" + (data.get(8) - 50) + "]"; 
-        }
-        public void setPitchEnvTimeLevel(int partial, int t1, int t2, int t3, int t4, int l0, int l1, int l2, int le){
-            setDatum(getPartialAddress(partial).getIndex() +  0x0b, t1, 0, 100);
-            setDatum(getPartialAddress(partial).getIndex() +  0x0c, t2, 0, 100);
-            setDatum(getPartialAddress(partial).getIndex() +  0x0d, t3, 0, 100);
-            setDatum(getPartialAddress(partial).getIndex() +  0x0e, t4, 0, 100);
-            setDatum(getPartialAddress(partial).getIndex() +  0x0f, l0, 0, 100);
-            setDatum(getPartialAddress(partial).getIndex() +  0x10, l1, 0, 100);
-            setDatum(getPartialAddress(partial).getIndex() +  0x11, l2, 0, 100);
-            setDatum(getPartialAddress(partial).getIndex() +  0x13, le, 0, 100);
-        }
-        public String getPitchLFO(int partial){
-            ArrayList<Integer> data = getData(getPartialAddress(partial).getIndex() + 0x14, 3);
-            return "Pitch LFO : rate("+ data.get(0) + ") depth(" + data.get(1) + ") modsens(" + data.get(2) + ")"; 
-        }
-        public void setPitchLFO(int partial, int rate, int depth, int modsens){
-            setDatum(getPartialAddress(partial).getIndex() + 0x14, rate,    0, 100);
-            setDatum(getPartialAddress(partial).getIndex() + 0x15, depth,   0, 100);
-            setDatum(getPartialAddress(partial).getIndex() + 0x16, modsens, 0, 100);
-        }
-        private Address getPartialAddress(int value){
-            switch(value){
-                case 0:return new Address(0x0, 0x0, 0x0e);
-                case 1:return new Address(0x0, 0x0, 0x48);
-                case 2:return new Address(0x0, 0x1, 0x02);
-                case 3:return new Address(0x0, 0x1, 0x3c);
-            }
-            throw new OmException("illegal partial index");
-        }
-    }*/
 
     /*public TemporaryTone[] TEMPORARY_TONE = new TemporaryTone[]{
         new TemporaryTone(
@@ -340,6 +133,8 @@ public class D_110 extends Roland {
             );
     public static void main(String[] arg) throws Exception {
         int[] data = new int[]{0x04, 0x00, 0x00, 0x45, 0x6c, 0x65, 0x63, 0x50, 0x69, 0x61, 0x6e, 0x6f, 0x31, 0x01, 0x00, 0x07, 0x00, 0x24, 0x37, 0x0f, 0x01, 0x00, 0x00, 0x3c, 0x07, 0x03, 0x00, 0x01, 0x0a, 0x07, 0x16, 0x00, 0x32, 0x42, 0x33, 0x32, 0x32, 0x00, 0x00, 0x00, 0x35, 0x00, 0x07, 0x16, 0x08, 0x29, 0x28, 0x00, 0x02, 0x00, 0x20, 0x3b, 0x64, 0x52, 0x64, 0x47, 0x29, 0x00, 0x5a, 0x55, 0x5b, 0x0c, 0x1b, 0x0c, 0x02, 0x00, 0x00, 0x32, 0x47, 0x64, 0x38, 0x64, 0x52, 0x28, 0x00, 0x4e, 0x47, 0x07, 0x01, 0x00, 0x00, 0x21, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x32, 0x32, 0x32, 0x32, 0x32, 0x00, 0x00, 0x00, 0x1d, 0x01, 0x09, 0x61, 0x0a, 0x64, 0x00, 0x00, 0x03, 0x00, 0x1a, 0x40, 0x4b, 0x1d, 0x64, 0x38, 0x14, 0x00, 0x47, 0x3c, 0x5b, 0x0c, 0x33, 0x08, 0x01, 0x01, 0x00, 0x28, 0x3d, 0x4a, 0x64, 0x64, 0x36, 0x23, 0x06, 0x30, 0x2d, 0x0f, 0x01, 0x01, 0x00, 0x3c, 0x07, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x32, 0x34, 0x30, 0x30, 0x31, 0x3e, 0x08, 0x42, 0x37, 0x00, 0x07, 0x16, 0x09, 0x28, 0x28, 0x00, 0x02, 0x00, 0x18, 0x3b, 0x64, 0x52, 0x64, 0x47, 0x29, 0x00, 0x5a, 0x55, 0x5b, 0x0c, 0x1b, 0x0c, 0x02, 0x00, 0x00, 0x32, 0x47, 0x64, 0x33, 0x64, 0x52, 0x28, 0x00, 0x30, 0x2d, 0x0f, 0x01, 0x01, 0x00, 0x3c, 0x07, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x32, 0x34, 0x30, 0x30, 0x31, 0x3e, 0x08, 0x42, 0x37, 0x00, 0x07, 0x16, 0x09, 0x28, 0x28, 0x00, 0x02, 0x00, 0x18, 0x3b, 0x64, 0x52, 0x64, 0x47, 0x29, 0x00, 0x5a, 0x55, 0x5b, 0x0c, 0x1b, 0x0c, 0x02, 0x00, 0x00, 0x32, 0x47, 0x64, 0x33, 0x64, 0x52, 0x28, 0x00};
+//                     new int[]{0x04, 0x00, 0x00, 0x45, 0x6c, 0x65, 0x63, 0x50, 0x69, 0x61, 0x6e, 0x6f, 0x31, 0x01, 0x00, 0x07, 0x00, 0x24, 0x37, 0x0f, 0x01, 0x00, 0x00, 0x3c, 0x07, 0x03, 0x00, 0x01, 0x0a, 0x07, 0x16, 0x00, 0x32, 0x42, 0x33, 0x32, 0x32, 0x00, 0x00, 0x00, 0x35, 0x00, 0x07, 0x16, 0x08, 0x29, 0x28, 0x00, 0x02, 0x00, 0x20, 0x3b, 0x64, 0x52, 0x64, 0x47, 0x29, 0x00, 0x5a, 0x55, 0x5b, 0x0c, 0x1b, 0x0c, 0x02, 0x00, 0x00, 0x32, 0x47, 0x64, 0x38, 0x64, 0x52, 0x28, 0x00, 0x4e, 0x47, 0x07, 0x01, 0x00, 0x00, 0x21, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x32, 0x32, 0x32, 0x32, 0x32, 0x00, 0x00, 0x00, 0x1d, 0x01, 0x09, 0x61, 0x0a, 0x64, 0x00, 0x00, 0x03, 0x00, 0x1a, 0x40, 0x4b, 0x1d, 0x64, 0x38, 0x14, 0x00, 0x47, 0x3c, 0x5b, 0x0c, 0x33, 0x08, 0x01, 0x01, 0x00, 0x28, 0x3d, 0x4a, 0x64, 0x64, 0x36, 0x23, 0x06, 0x30, 0x2d, 0x0f, 0x01, 0x01, 0x00, 0x3c, 0x07, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x32, 0x34, 0x30, 0x30, 0x31, 0x3e, 0x08, 0x42, 0x37, 0x00, 0x07, 0x16, 0x09, 0x28, 0x28, 0x00, 0x02, 0x00, 0x18, 0x3b, 0x64, 0x52, 0x64, 0x47, 0x29, 0x00, 0x5a, 0x55, 0x5b, 0x0c, 0x1b, 0x0c, 0x02, 0x00, 0x00, 0x32, 0x47, 0x64, 0x33, 0x64, 0x52, 0x28, 0x00, 0x30, 0x2d, 0x0f, 0x01, 0x01, 0x00, 0x3c, 0x07, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x32, 0x34, 0x30, 0x30, 0x31, 0x3e, 0x08, 0x42, 0x37, 0x00, 0x07, 0x16, 0x09, 0x28, 0x28, 0x00, 0x02, 0x00, 0x18, 0x3b, 0x64, 0x52, 0x64, 0x47, 0x29, 0x00, 0x5a, 0x55, 0x5b, 0x0c, 0x1b, 0x0c, 0x02, 0x00, 0x00, 0x32, 0x47, 0x64, 0x33, 0x64, 0x52, 0x28, 0x00};
+
         SysexDataModel model = new SysexDataModel("temporary tone",
             new ByteValues("address", 3),
             new DataBlock("common",
@@ -353,10 +148,11 @@ public class D_110 extends Roland {
             PARTIAL_BLOCK.copy("partial2"),
             PARTIAL_BLOCK.copy("partial3")
         );
-        model.getExplanations(OmUtil.toList(data)).print();
+        //model.getExplanations(OmUtil.toList(data)).print();
         D_110 d_110 = D_110.instance();
+        d_110.get(d_110.getRQT(new Address(0x04, 0x00, 0x00), new Address(0x00, 0x01, 0x76)), model).getExplanations().print();
         SysexBuilder sb = d_110.getDT1(model, data);
-        d_110.send(d_110.getDT1(model, data).getSysex());
+        d_110.send(sb.getSysex());
         d_110.finalize();
         //d110.send(d110.TEMPORARY_TONE[0].getSysex());
         //checkSound(D_110, 0);

@@ -26,7 +26,7 @@ public class Roland extends MidiMachine {
     private final int model;
 
     public Roland(int device, int model, String ex_device_name, String in_device_name) {
-        super(ex_device_name, in_device_name, true, true);
+        super(ex_device_name, in_device_name, 4, true, true);
         this.device = device;
         this.model = model;
     }

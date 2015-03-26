@@ -15,6 +15,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
+import org.apache.commons.lang3.ArrayUtils;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.fill;
@@ -32,14 +33,16 @@ public class MidiMachine {
     MidiDevice ex_device;
     Receiver ex;
     Transmitter in;
+    int header_size;
     boolean checksum_req;
     boolean checksum_dump;
-    public MidiMachine(String ex_device_name, String in_device_name, boolean checksum_req, boolean checksum_dump){
+    public MidiMachine(String ex_device_name, String in_device_name, int header_size, boolean checksum_req, boolean checksum_dump){
         try {
             ex_device = getMidiDevice(ex_device_name, true);
             ex = ex_device.getReceiver();
             in_device = getMidiDevice(in_device_name, false);
             in = in_device.getTransmitter();
+            this.header_size = header_size;
             this.checksum_req = checksum_req;
             this.checksum_dump = checksum_dump;
             //System.out.println(ex);
@@ -67,17 +70,22 @@ public class MidiMachine {
         if(data.get(0) != 0xf0 || data.get(data.size() - 1) != 0xf7){
             throw new OmException("illegal sysex response:" + debugSysex(data));
         }
-        int heder_footer_length =  (checksum_dump?7:6);
+        int heder_footer_length =  (checksum_dump?1:0) + header_size + 2;
+        //System.out.println(data_model.length());
         if(data_model.length() != data.size() - heder_footer_length){
             System.out.println(debugSysex(data));
             System.out.println(data.size());
             throw new OmException("illegal data length (" + (data.size() - heder_footer_length) + " expected " + data_model.length() + ")"); 
         }
-        return toBuilder(data.subList(1, data.size() - 2), data_model);
+        return toBuilder(data.subList(1, data.size() - 1), data_model);
         //return new SysexBuilder(new int[]{data.get(1), data.get(2), data.get(3), data.get(4)}, data_model, data.subList(4, data.size() - 2), checksum_dump);
     }
     protected SysexBuilder toBuilder(List<Integer> data, SysexDataModel data_model){
-        return new SysexBuilder(new int[]{data.get(0), data.get(1), data.get(2), data.get(3)}, data_model, data.subList(3, data.size() - (checksum_dump?1:0)), checksum_dump);
+        List<Integer> sublist = data.subList(header_size, data.size() - (checksum_dump?1:0));
+        System.out.println(debugSysex(sublist));
+        int[] header = ArrayUtils.toPrimitive(data.subList(0, header_size).toArray(new Integer[]{}));
+        
+        return new SysexBuilder(header, data_model, sublist, checksum_dump);
     }
     private SysexReceiver sr = null;
     public ArrayList<Integer> getData() {
@@ -158,7 +166,7 @@ public class MidiMachine {
                 throw new OmException("failed to send sysex", ex);
         }
     }
-    public static String debugSysex(ArrayList<Integer> list){
+    public static String debugSysex(List<Integer> list){
         String str = "";
         for(Integer value:list){
             String hex = fill(Integer.toHexString(value), 2);

@@ -21,7 +21,7 @@ public class Yamaha extends MidiMachine {
     private int model;
 
     public Yamaha(int device_l, int model, String ex_device_name, String in_device_name) {
-        super(ex_device_name, in_device_name, false, true);
+        super(ex_device_name, in_device_name, 3, false, true);
         this.device_l = device_l;
         this.model = model;
     }
