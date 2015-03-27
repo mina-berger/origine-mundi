@@ -63,9 +63,25 @@ public class SysexBuilder {
         DataUnitIndex dui = data_model.getDataUnitIndex(fullname);
         return dui.getDataUnit().getText(contents, dui.getIndex());
     }
-    public void setValueText(String fullname, String text){
+    public void setCharacters(String fullname, String text){
         DataUnitIndex dui = data_model.getDataUnitIndex(fullname);
-        //return dui.getDataUnit().getText(contents, dui.getIndex());
+        int[] values = new int[dui.length()];
+        for(int i = 0;i < values.length;i++){
+            values[i] = text.length() <= i?' ':text.charAt(i);
+        }
+        setValue(dui, values);
+    }
+    public void setValue(String fullname, int... values){
+        setValue(data_model.getDataUnitIndex(fullname), values);
+    }
+    private void setValue(DataUnitIndex dui, int... values){
+        if(values.length != dui.length()){
+            throw new OmException("illegal value length(expected " + dui.length() + " but " + values.length + ")");
+        }
+        for(int i = 0;i < dui.length();i++){
+            contents.set(dui.getIndex() + i, values[i]);
+        }
+        dui.check(contents);
     }
     public List<Integer> getValues(String fullname){
         DataUnitIndex dui = data_model.getDataUnitIndex(fullname);

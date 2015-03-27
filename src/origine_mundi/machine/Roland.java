@@ -9,6 +9,7 @@ package origine_mundi.machine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
+import origine_mundi.OmUtil;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.ByteValues;
 import static origine_mundi.machine.D_110.COMMAND_DT1;
@@ -35,9 +36,8 @@ public class Roland extends MidiMachine {
     /*public SysexBuilderOld getRQTOld(Address address, Address length){
         return new SysexBuilderOld(ROLAND_ID, device, model, COMMAND_RQT, address, length);
     }*/
-    public SysexBuilder getRQT(Address address, Address length){
-        ArrayList<Integer> data = new ArrayList<>(address);
-        data.addAll(length);
+    public SysexBuilder getRQT(int... address_length){
+        ArrayList<Integer> data = new ArrayList<>(OmUtil.toList(address_length));
         return new SysexBuilder(new int[]{ROLAND_ID, device, model, COMMAND_RQT}, 
                 new SysexDataModel("RQT", new ByteValues("address", 3), new ByteValues("length", 3)), data, getChecksumRequest());
     }

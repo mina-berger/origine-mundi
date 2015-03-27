@@ -6,12 +6,12 @@
 
 package origine_mundi;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.lang3.ArrayUtils;
 import origine_mundi.SysexDataModel.DataBlock;
 import origine_mundi.SysexDataModel.DataUnit;
@@ -40,6 +40,16 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             index += data_unit.length();
         }
         length = index;
+    }
+    public synchronized void add(DataUnit data_unit){
+        int index = length;
+        put(index, data_unit);
+        String data_unit_name = data_unit.getName();
+        if(indeces.containsKey(data_unit_name)){
+            throw new OmException("duplicate data unit name:" + data_unit_name);
+        }
+        indeces.put(data_unit_name, index);
+        length = index + data_unit.length();
     }
     public String getName(){
         return name;
@@ -319,29 +329,47 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
         }
     }
     public static class BitArray extends OneByte {
-        boolean reverse;
-        int digit;
-        public BitArray(String name, int digit, boolean reverse){
+        //boolean reverse;
+        //int digit;
+        ArrayList<Integer> digits;
+        String comment;
+        public BitArray(String name, String comment, int digit, boolean reverse){
             super(name, 0, ((int)Math.pow(2, digit + 1)) - 1);
-            this.digit = digit;
-            this.reverse = reverse;
+            if(digit > 8){
+                throw new OmException("illegal digit value for" + name);
+            }
+            digits = new ArrayList<>();
+            if(reverse){
+                for(int i = 0;i < digit;i++){
+                    digits.add(i);
+                }
+            }else{
+                for(int i = digit - 1;i >= 0;i--){
+                    digits.add(i);
+                }
+            }
+            this.comment = comment;
+        }
+        public BitArray(String name, String comment, int... digit_array){
+            super(name, 0, ((int)Math.pow(2, Collections.max(Arrays.asList(ArrayUtils.toObject(digit_array))) + 1)) - 1);
+            digits = new ArrayList<>();
+            for(int digit:digit_array){
+                if(digit > 8){
+                    throw new OmException("illegal digit value for" + name);
+                }
+                digits.add(digit);
+            }
+            this.comment = comment;
         }
         @Override
         public String getText(List<Integer> values, int index) {
             int value = values.get(index);
             String str = "[";
-            if(reverse){
-                for(int i = 0;i < digit;i++){
-                    int mask = (int)Math.pow(2, i);
-                    str += ((value & mask) == mask?"*":"-");
-                }
-            }else{
-                for(int i = digit - 1;i >= 0;i--){
-                    int mask = (int)Math.pow(2, i);
-                    str += ((value & mask) == mask?"*":"-");
-                }
+            for(int digit:digits){
+                int mask = (int)Math.pow(2, digit);
+                str += ((value & mask) == mask?"*":"-");
             }
-            str += "]";
+            str += "]" + (comment == null?"":" " + comment);
             return OmUtil.hex(values.get(index)) + " : " + str;
         }
 
@@ -587,6 +615,9 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
         }
         public int length(){
             return data_unit.length();
+        }
+        public void check(ArrayList<Integer> data){
+            data_unit.check(data, index);
         }
     }
     public static void main(String[] args){

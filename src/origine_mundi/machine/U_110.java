@@ -30,7 +30,7 @@ public class U_110 extends Roland {
     }
     public static void main(String[] args){
         U_110 u_110 = U_110.instance();
-        u_110.get(u_110.getRQT(new Address(0x01, 0x01, 0x00), new Address(0x00, 0x02, 0x00)), PATCH).getExplanations().print();
+        u_110.get(u_110.getRQT(0x01, 0x01, 0x00, 0x00, 0x02, 0x00), PATCH).getExplanations().print();
         u_110.finalize();
         //u_110.listen();
     }
