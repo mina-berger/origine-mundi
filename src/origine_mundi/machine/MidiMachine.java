@@ -66,6 +66,8 @@ public class MidiMachine {
         return checksum_dump;
     }
     public SysexBuilder get(SysexBuilder sysex_builder, SysexDataModel data_model) {
+        
+        
         ArrayList<Integer> data = getData(sysex_builder.getSysex());
         if(data.get(0) != 0xf0 || data.get(data.size() - 1) != 0xf7){
             throw new OmException("illegal sysex response:" + debugSysex(data));
