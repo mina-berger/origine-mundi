@@ -190,6 +190,9 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             return str;
         }
         public void defaultCheck(List<Integer> values, int index) {
+            if(values.size() < index + length()){
+                throw new OmException("values is too short " + getClass().getSimpleName() + " " + name + " : " + (values.size() - index) + " required minimum : " + length());
+            }
             for(int i = 0;i < length();i++){
                 int value = values.get(index + i);
                 if(value < min || value > max){
@@ -506,15 +509,32 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
         }
         @Override
         public void check(List<Integer> values, int index) {
-            if(values.size() < index + length()){
-                throw new OmException("values is too short : required minimum " + (index + length()));
+            defaultCheck(values, index);
+        }
+    }
+    public static class Characters4bits2bytes extends MultiBytes {
+        public Characters4bits2bytes(String name, int char_length){
+            super(name, char_length * 2, 0x0, 0xf);
+        }
+
+        @Override
+        public String getText(List<Integer> values, int index) {
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0;i < length() / 2;i++){
+                int value0 = values.get(index + i);
+                int value1 = values.get(index + i + 1);
+                //System.out.println(Integer.toBinaryString(value0) + ":" + Integer.toBinaryString(value1));
+                sb.append((char)(value0 % 16 + (value1 % 16) * 16));
+                /*int value = 
+                        (value1 & 1) * (128 / 1) + (value1 & 2) * (128 / 2) + (value1 & 4) * (128 / 4) + (value1 & 4) * (128 / 8) + 
+                        (value0 & 1) * 8         + (value0 & 2) * 2         + (value0 & 4) / 2         + (value0 & 8) / 8;
+                sb.append((char)value);*/
             }
-            for(int i = 0;i < length();i++){
-                int value = values.get(index + i);
-                if(value < 0x20 || value > 0x7f){
-                    throw new OmException("illegal data for Characters[" + i + "] " + name);
-                }
-            }
+            return "'" + sb.toString() + "'";
+        }
+        @Override
+        public void check(List<Integer> values, int index) {
+            defaultCheck(values, index);
         }
     }
     public static class DataBlock extends DataUnit {
