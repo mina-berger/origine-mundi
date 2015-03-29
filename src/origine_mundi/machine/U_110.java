@@ -6,6 +6,7 @@
 
 package origine_mundi.machine;
 
+import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.MICRO_LITE_2;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.Blank;
@@ -34,8 +35,8 @@ public class U_110 extends Roland {
         super(DEVICE_ID, MODEL_ID, MIDI_PORT, MIDI_PORT);
     }
     public static void main(String[] args){
-        //PATCH.getExplanations(OmUtil.toList(PATCH_DATA_TEMP1)).print();
-        U_110 u_110 = U_110.instance();
+        PATCH.getExplanations(OmUtil.toList(PATCH_DATA_TEMP0)).print();
+        /*U_110 u_110 = U_110.instance();
         //u_110.get(u_110.getRQT(0x01, 0x01, 0x00, 0x00, 0x02, 0x00), PATCH).getExplanations().print();
         int[] org_data = new int[]{0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x04, 0x0e, 0x02, 0x0f, 0x04, 0x02, 0x07, 0x07, 0x06, 0x01, 0x06, 0x0e, 0x06, 0x00, 0x02, 0x00, 0x02, 0x00, 0x02, 0x05, 0x01, 0x04, 0x00, 0x06, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0e, 0x03, 0x00, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0f, 0x07, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x00, 0x02, 0x03, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x0e, 0x03, 0x01, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0f, 0x07, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x0c, 0x02, 0x03, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x0e, 0x03, 0x02, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0f, 0x07, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x0c};
         //u_110.send(u_110.getDT1(PATCH, org_data).getSysex());
@@ -48,7 +49,7 @@ public class U_110 extends Roland {
         //System.out.println(sb.contents.get(11) + ":" + sb.contents.get(12));
         sb.getExplanations().print();
         //u_110.get(u_110.getRQT(0x01, 0x01, 0x00, 0x00, 0x00, 0x1d), new SysexDataModel("patch_model", new ByteValues("name", 20))).getExplanations().print();
-        u_110.finalize();
+        u_110.finalize();*/
         //u_110.listen();
     }
     
@@ -58,14 +59,16 @@ public class U_110 extends Roland {
             new Blank("blank0", 8),
             new Characters4bits2bytes("name", 10),
             new CodeValue4bits2bytes("output mode", 0, 49, 
-                    new KV(0, "[31]-----"), new KV(1, "[27][4]----"), new KV(2, "[23][8]----"), new KV(3, "[23][4][4]---"), new KV(4, "[19][12]----"), 
-                    new KV(5, "[19][8][4]---"), new KV(6, "[19][4][4]---"), new KV(7, "[15][16]----"), new KV(8, "[15][12][4]---"), new KV(9, "[15]-----"), 
-                    new KV(10, "[15][8][4][4]--"), new KV(11, "[15][4][4][4][4]-"), new KV(12, "[11][12][8]---"), new KV(13, "[11][12][4][4]--"), new KV(14, "[11][8][8][4]--"), 
-                    new KV(15, "[11][8][4][4][4]-"), new KV(16, "[11][4][4][4][4][4]"), new KV(17, "[7][8][8][8]--"), new KV(18, "[7][8][8][4][4]-"), new KV(19, "[7][8][4][4][4][4]")/*, 
-                    new KV(20, "[[31]]----"), new KV(21, "[[16]][15]---"), new KV(22, "[[16]][11][4]---"), new KV(23, "[[16]][7][8]--"), new KV(24, "[[16]][7][4][4]-"), 
-                    new KV(25, "[19][8][4]---"), new KV(6, "[19][4][4]---"), new KV(7, "[15][16]----"), new KV(8, "[15][12][4]---"), new KV(9, "[15]-----"), 
-                    new KV(5, "[19][8][4]---"), new KV(6, "[19][4][4]---"), new KV(7, "[15][16]----"), new KV(8, "[15][12][4]---"), new KV(9, "[15]-----"), 
-                    new KV(5, "[19][8][4]---"), new KV(6, "[19][4][4]---"), new KV(7, "[15][16]----"), new KV(8, "[15][12][4]---"), new KV(9, "[15]-----")*/),
+                    new KV( 0, "[31]-----"),          new KV(1, "[27][4]----"),          new KV(2, "[23][8]----"),       new KV(3, "[23][4][4]---"),      new KV(4, "[19][12]----"), 
+                    new KV( 5, "[19][8][4]---"),      new KV(6, "[19][4][4]---"),        new KV(7, "[15][16]----"),      new KV(8, "[15][12][4]---"),     new KV(9, "[15]-----"), 
+                    new KV(10, "[15][8][4][4]--"),    new KV(11, "[15][4][4][4][4]-"),   new KV(12, "[11][12][8]---"),   new KV(13, "[11][12][4][4]--"),  new KV(14, "[11][8][8][4]--"), 
+                    new KV(15, "[11][8][4][4][4]-"),  new KV(16, "[11][4][4][4][4][4]"), new KV(17, "[7][8][8][8]--"),   new KV(18, "[7][8][8][4][4]-"),  new KV(19, "[7][8][4][4][4][4]"),
+                    new KV(20, "[LR31]----"),         new KV(21, "[M31]----"),           new KV(22, "[LR16][15]---"),    new KV(23, "[M16][15]---"),      new KV(24, "[LR16][11][4]--"), 
+                    new KV(25, "[M16][11][4]--"),     new KV(26, "[LR16][7][8]--"),      new KV(27, "[M16][7][8]--"),    new KV(28, "[LR16][7][4][4]-"),  new KV(29, "[M16][7][4][4]-"), 
+                    new KV(30, "[LR16][3][4][4][4]"), new KV(31, "[M16][3][4][4][4]"),   new KV(32, "[LR8][23]---"),     new KV(33, "[M8][23]---"),       new KV(34, "[LR8][19][4]--"), 
+                    new KV(35, "[M8][19][4]--"),      new KV(36, "[LR8][15][8]--"),      new KV(37, "[M8][15][8]--"),    new KV(38, "[LR8][15][4][4]-"),  new KV(39, "[M8][15][4][4]-"), 
+                    new KV(40, "[LR8][11][12]--"),    new KV(41, "[M8][11][12]--"),      new KV(42, "[LR8][11][8][4]-"), new KV(43, "[M8][11][8][4]-"),   new KV(44, "[LR8][11][4][4][4]"), 
+                    new KV(45, "[M8][11][4][4][4]"),  new KV(46, "[LR8][7][8][8]-"),     new KV(47, "[M8][7][8][8]-"),   new KV(48, "[LR8][7][8][4][4]"), new KV(49, "[M8][7][8][4][4]")),
             new ByteValue("chorus rate", 0, 15),
             new ByteValue("chorus depth", 0, 15),
             new ByteValue("tremolo rate", 0, 15),

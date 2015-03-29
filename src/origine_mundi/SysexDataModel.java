@@ -586,7 +586,7 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             defaultCheck(values, index);
             int value = get4bits2bytesValues(values, index)[0];
             if(value < bytes_min || value > bytes_max){
-               throw new OmException("illegal data for " + getClass().getSimpleName() + " " + name);
+               throw new OmException("illegal data for " + getClass().getSimpleName() + " " + name + "(" + value + ")");
            }
        }
     }
