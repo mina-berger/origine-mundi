@@ -601,6 +601,26 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             return str_expl;
         }
     }
+    public static class NoteValue4bits2bytes extends ByteValue4bits2bytes {
+        int shift;
+        public NoteValue4bits2bytes(String name, int shift){
+            this(name, 0x00, 0x0f, shift);
+        }
+        public NoteValue4bits2bytes(String name, int min, int max, int shift){
+            super(name, min, max);
+            this.shift = shift;
+        }
+        @Override
+        public String getText(List<Integer> values, int index) {
+            int value = get4bits2bytesValues(values, index)[0];
+            return OmUtil.hex(value) + " : " + new OmUtil.Note(value + shift).toString();
+        }
+
+        @Override
+        public void check(List<Integer> values, int index) {
+            defaultCheck(values, index);
+        }
+    }
     public static class DataBlock extends DataUnit {
         private DataUnit[] data_units;
         private int length;

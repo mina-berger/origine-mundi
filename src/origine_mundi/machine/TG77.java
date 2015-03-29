@@ -47,8 +47,8 @@ public class TG77 extends Yamaha {
     public static void main(String[] args){
 
 
-        //LM_8101MU.getExplanations(OmUtil.toList(LM_8101MU_VALUES)).print();
-        LM_8104PC.getExplanations(OmUtil.toList(LM_8104PC_VALUES)).print();
+        LM_8101MU.getExplanations(OmUtil.toList(LM_8101MU_VALUES)).print();
+        //LM_8104PC.getExplanations(OmUtil.toList(LM_8104PC_VALUES)).print();
         
         /*TG77 tg77 = TG77.instance();
         //int[] data_req = new int[]{0x4c, 0x4d, 0x20, 0x20, 0x38, 0x31, 0x30, 0x31, 0x53, 0x59, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
