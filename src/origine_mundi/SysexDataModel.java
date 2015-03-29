@@ -512,30 +512,83 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             defaultCheck(values, index);
         }
     }
-    public static class Characters4bits2bytes extends MultiBytes {
+    public abstract static class Abstract4bits2bytes extends MultiBytes {
+        protected int value_length;
+        public Abstract4bits2bytes(String name, int value_length){
+            super(name, value_length * 2, 0x0, 0xf);
+            this.value_length = value_length;
+        }
+
+        public int[] get4bits2bytesValues(List<Integer> values, int index) {
+            int[] ret = new int[value_length];
+            for(int i = 0;i < value_length;i++){
+                int value0 = values.get(index + i * 2);
+                int value1 = values.get(index + i * 2 + 1);
+                ret[i] = value0 + value1 * 0x10;
+            }
+            return ret;
+        }
+        @Override
+        public void check(List<Integer> values, int index) {
+            defaultCheck(values, index);
+        }
+    }
+    public static class Characters4bits2bytes extends Abstract4bits2bytes {
         public Characters4bits2bytes(String name, int char_length){
-            super(name, char_length * 2, 0x0, 0xf);
+            super(name, char_length);
         }
 
         @Override
         public String getText(List<Integer> values, int index) {
             StringBuilder sb = new StringBuilder();
-            for(int i = 0;i < length() / 2;i++){
-                int value0 = values.get(index + i);
-                int value1 = values.get(index + i + 1);
-                //System.out.println(Integer.toBinaryString(value0) + ":" + Integer.toBinaryString(value1));
-                sb.append((char)(value0 % 16 + (value1 % 16) * 16));
-                /*int value = 
-                        (value1 & 1) * (128 / 1) + (value1 & 2) * (128 / 2) + (value1 & 4) * (128 / 4) + (value1 & 4) * (128 / 8) + 
-                        (value0 & 1) * 8         + (value0 & 2) * 2         + (value0 & 4) / 2         + (value0 & 8) / 8;
-                sb.append((char)value);*/
+            for(int i:get4bits2bytesValues(values, index)){
+                sb.append((char)i);
             }
+            /*for(int i = 0;i < length() / 2;i++){
+                int value0 = values.get(index + i * 2);
+                int value1 = values.get(index + i * 2 + 1);
+                //System.out.println(Integer.toHexString(value0) + ":" + Integer.toHexString(value1));
+                sb.append((char)(value0 + value1 * 0x10));
+            }+*/
             return "'" + sb.toString() + "'";
         }
         @Override
         public void check(List<Integer> values, int index) {
             defaultCheck(values, index);
         }
+    }
+    public static class CodeValue4bits2bytes extends Abstract4bits2bytes {
+        KV[] kvs;
+        int bytes_min;
+        int bytes_max;
+        public CodeValue4bits2bytes(String name, KV... kvs){
+            this(name, 0x00, 0x7f, kvs);
+        }
+        public CodeValue4bits2bytes(String name, int min, int max, KV... kvs){
+            super(name, 1);
+            bytes_min = min;
+            bytes_max = max;
+            this.kvs = kvs;
+        }
+        @Override
+        public String getText(List<Integer> values, int index) {
+            int value = get4bits2bytesValues(values, index)[0];
+            String str_expl = OmUtil.hex(value);
+            for(KV kv:kvs){
+                if(kv.key == value)
+                str_expl += " : " + kv.value;
+            }
+            return getDataExpression(values, index) + " : " + str_expl;
+        }
+
+        @Override
+        public void check(List<Integer> values, int index) {
+            defaultCheck(values, index);
+            int value = get4bits2bytesValues(values, index)[0];
+            if(value < bytes_min || value > bytes_max){
+               throw new OmException("illegal data for " + getClass().getSimpleName() + " " + name);
+           }
+       }
     }
     public static class DataBlock extends DataUnit {
         private DataUnit[] data_units;
