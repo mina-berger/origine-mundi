@@ -6,15 +6,19 @@
 
 package origine_mundi.machine;
 
-import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.MICRO_LITE_2;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.Blank;
-import origine_mundi.SysexDataModel.ByteValue;
+import origine_mundi.SysexDataModel.ByteValue4bits2bytes;
 import origine_mundi.SysexDataModel.ByteValues;
 import origine_mundi.SysexDataModel.Characters4bits2bytes;
+import origine_mundi.SysexDataModel.CodeValue;
 import origine_mundi.SysexDataModel.CodeValue4bits2bytes;
+import origine_mundi.SysexDataModel.DataBlock;
 import origine_mundi.SysexDataModel.KV;
+import origine_mundi.SysexDataModel.MidiChannel;
+import origine_mundi.SysexDataModel.NoteValue;
+import origine_mundi.SysexDataModel.Reserve;
 
 /**
  *
@@ -35,8 +39,8 @@ public class U_110 extends Roland {
         super(DEVICE_ID, MODEL_ID, MIDI_PORT, MIDI_PORT);
     }
     public static void main(String[] args){
-        PATCH.getExplanations(OmUtil.toList(PATCH_DATA_TEMP0)).print();
-        /*U_110 u_110 = U_110.instance();
+        //PATCH.getExplanations(OmUtil.toList(PATCH_DATA_TEMP0)).print();
+        U_110 u_110 = U_110.instance();
         //u_110.get(u_110.getRQT(0x01, 0x01, 0x00, 0x00, 0x02, 0x00), PATCH).getExplanations().print();
         int[] org_data = new int[]{0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x04, 0x0e, 0x02, 0x0f, 0x04, 0x02, 0x07, 0x07, 0x06, 0x01, 0x06, 0x0e, 0x06, 0x00, 0x02, 0x00, 0x02, 0x00, 0x02, 0x05, 0x01, 0x04, 0x00, 0x06, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0e, 0x03, 0x00, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0f, 0x07, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x00, 0x02, 0x03, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x0e, 0x03, 0x01, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0f, 0x07, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x0c, 0x02, 0x03, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x0e, 0x03, 0x02, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0f, 0x07, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x0c};
         //u_110.send(u_110.getDT1(PATCH, org_data).getSysex());
@@ -49,11 +53,20 @@ public class U_110 extends Roland {
         //System.out.println(sb.contents.get(11) + ":" + sb.contents.get(12));
         sb.getExplanations().print();
         //u_110.get(u_110.getRQT(0x01, 0x01, 0x00, 0x00, 0x00, 0x1d), new SysexDataModel("patch_model", new ByteValues("name", 20))).getExplanations().print();
-        u_110.finalize();*/
+        u_110.finalize();
         //u_110.listen();
     }
     
-    
+    private static DataBlock PART = new DataBlock("part",
+            new MidiChannel("recv channel"),
+            new ByteValues("reserve0", 1),
+            new NoteValue("key range lo", 0),
+            new ByteValues("reserve1", 15),
+            new CodeValue("program change", 
+                    new KV(0, "off map0"), new KV(1, "off map1"), new KV( 2, "off map2"), new KV( 3, "off map3"), new KV( 4, "off map4"), new KV( 5, "off map5"),
+                    new KV(8, "on map0"),  new KV(9, "on map1"),  new KV(10, "on map2"),  new KV(11, "on map3"),  new KV(12, "on map4"),  new KV(13, "on map5")),
+            new CodeValue("output assign", 0, 12, new KV(0, "out0"), new KV(2, "out1"), new KV(4, "out2"), new KV(6, "out3"), new KV(8, "out4"), new KV(10, "out5"), new KV(12, "OFF"))
+    );
     private static SysexDataModel PATCH = new SysexDataModel("patch_model",
             new ByteValues("address", 3),
             new Blank("blank0", 8),
@@ -69,11 +82,13 @@ public class U_110 extends Roland {
                     new KV(35, "[M8][19][4]--"),      new KV(36, "[LR8][15][8]--"),      new KV(37, "[M8][15][8]--"),    new KV(38, "[LR8][15][4][4]-"),  new KV(39, "[M8][15][4][4]-"), 
                     new KV(40, "[LR8][11][12]--"),    new KV(41, "[M8][11][12]--"),      new KV(42, "[LR8][11][8][4]-"), new KV(43, "[M8][11][8][4]-"),   new KV(44, "[LR8][11][4][4][4]"), 
                     new KV(45, "[M8][11][4][4][4]"),  new KV(46, "[LR8][7][8][8]-"),     new KV(47, "[M8][7][8][8]-"),   new KV(48, "[LR8][7][8][4][4]"), new KV(49, "[M8][7][8][4][4]")),
-            new ByteValue("chorus rate", 0, 15),
-            new ByteValue("chorus depth", 0, 15),
-            new ByteValue("tremolo rate", 0, 15),
-            new ByteValue("tremolo depth", 0, 15),
-            new ByteValues("rest", 94)
+            new ByteValue4bits2bytes("chorus rate", 0, 15),
+            new ByteValue4bits2bytes("chorus depth", 0, 15),
+            new ByteValue4bits2bytes("tremolo rate", 0, 15),
+            new ByteValue4bits2bytes("tremolo depth", 0, 15),
+            new Reserve("unknown1", 0x00, 0x00, 0x00, 0x00, 0x0e, 0x03),
+            PART.copy("part0"),
+            new ByteValues("rest", 64)
     );
     //TEMPORARY PATCH
     public static int[] PATCH_DATA_TEMP0 = new int[]{0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x04, 0x0f, 0x06, 0x05, 0x07, 0x02, 0x06, 0x0c, 0x06, 0x05, 0x06, 0x0f, 0x04, 0x02, 0x07, 0x07, 0x06, 0x02, 0x03, 0x07, 0x00, 0x07, 0x00, 0x07, 0x00, 0x07, 0x00, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03, 0x00, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0c, 0x03, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x00, 0x0f, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03, 0x00, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0c, 0x03, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x05, 0x04, 0x06, 0x08, 0x08, 0x02, 0x03, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00, 0x02, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0f, 0x07, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x0c};

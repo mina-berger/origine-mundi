@@ -474,10 +474,10 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
     }
     public static class Reserve extends MultiBytes {
         int[] data;
-        public Reserve(int[] data){
-            this("_reserve", data);
-        }
-        public Reserve(String name, int[] data){
+        //public Reserve(int... data){
+        //    this("_reserve", data);
+       // }
+        public Reserve(String name, int... data){
             super(name, data.length);
             this.data = data;
         }
@@ -557,17 +557,37 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             defaultCheck(values, index);
         }
     }
-    public static class CodeValue4bits2bytes extends Abstract4bits2bytes {
-        KV[] kvs;
+    public static class ByteValue4bits2bytes extends Abstract4bits2bytes {
         int bytes_min;
         int bytes_max;
+        public ByteValue4bits2bytes(String name){
+            this(name, 0x00, 0x7f);
+        }
+        public ByteValue4bits2bytes(String name, int min, int max){
+            super(name, 1);
+            bytes_min = min;
+            bytes_max = max;
+        }
+        @Override
+        public String getText(List<Integer> values, int index) {
+            return OmUtil.hex(get4bits2bytesValues(values, index)[0]);
+        }
+        @Override
+        public void check(List<Integer> values, int index) {
+            defaultCheck(values, index);
+            int value = get4bits2bytesValues(values, index)[0];
+            if(value < bytes_min || value > bytes_max){
+               throw new OmException("illegal data for " + getClass().getSimpleName() + " " + name + "(" + value + ")");
+           }
+       }
+    }
+    public static class CodeValue4bits2bytes extends ByteValue4bits2bytes {
+        KV[] kvs;
         public CodeValue4bits2bytes(String name, KV... kvs){
             this(name, 0x00, 0x7f, kvs);
         }
         public CodeValue4bits2bytes(String name, int min, int max, KV... kvs){
-            super(name, 1);
-            bytes_min = min;
-            bytes_max = max;
+            super(name, min, max);
             this.kvs = kvs;
         }
         @Override
@@ -578,17 +598,8 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
                 if(kv.key == value)
                 str_expl += " : " + kv.value;
             }
-            return getDataExpression(values, index) + " : " + str_expl;
+            return str_expl;
         }
-
-        @Override
-        public void check(List<Integer> values, int index) {
-            defaultCheck(values, index);
-            int value = get4bits2bytesValues(values, index)[0];
-            if(value < bytes_min || value > bytes_max){
-               throw new OmException("illegal data for " + getClass().getSimpleName() + " " + name + "(" + value + ")");
-           }
-       }
     }
     public static class DataBlock extends DataUnit {
         private DataUnit[] data_units;
