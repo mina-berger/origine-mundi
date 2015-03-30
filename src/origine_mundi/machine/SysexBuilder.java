@@ -13,6 +13,8 @@ import javax.sound.midi.SysexMessage;
 import org.apache.commons.lang3.ArrayUtils;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
+import static origine_mundi.OmUtil.SYSEX_STATUS_AB;
+import static origine_mundi.OmUtil.SYSEX_STATUS_AD;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.DataUnitIndex;
 import static origine_mundi.SysexDataModel.as7bitValues;
@@ -22,8 +24,6 @@ import static origine_mundi.SysexDataModel.as7bitValues;
  * @author Mina
  */
 public class SysexBuilder {
-    public static int STATUS_AB  = 0xf0;
-    public static int STATUS_AD  = 0xf7;
     ArrayList<Integer> header;
     ArrayList<Integer> contents;
     ArrayList<Integer> footer;
@@ -36,7 +36,7 @@ public class SysexBuilder {
     }*/
     public SysexBuilder(int[] header, SysexDataModel data_model, List<Integer> data, boolean checksum){
         this.header = new ArrayList<>();
-        this.header.add(STATUS_AB);
+        this.header.add(SYSEX_STATUS_AB);
         this.header.addAll(OmUtil.toList(header));
         if(data_model == null){
             throw new OmException("SysexDataModel cannot be null"); 
@@ -53,7 +53,7 @@ public class SysexBuilder {
         contents = new ArrayList<>(data);
         data_model.check(contents);
         footer = new ArrayList<>();
-        footer.add(STATUS_AD);
+        footer.add(SYSEX_STATUS_AD);
         this.checksum = checksum;
     }
     public Explanations getExplanations(){

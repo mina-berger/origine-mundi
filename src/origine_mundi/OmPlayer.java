@@ -7,10 +7,9 @@
 package origine_mundi;
 
 import com.mina.sound.midi.EndOfTrack;
+import static java.lang.Compiler.command;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiDevice;
@@ -22,11 +21,16 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static origine_mundi.OmUtil.OM_MSG_TYPE_BREVIS;
+import static origine_mundi.OmUtil.OM_MSG_TYPE_SYSTEM;
+import static origine_mundi.OmUtil.OM_PRODUCT_ID;
+import static origine_mundi.OmUtil.SYSEX_STATUS_AB;
 import static origine_mundi.OmUtil.noteoff;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
 import origine_mundi.machine.MidiMachine;
@@ -107,7 +111,19 @@ public abstract class OmPlayer {
     public void brev(int track_index, int device_id, int command, int channel, int data1, int data2, double beat){
         try {
             sequence.getTracks()[track_index].add(new MidiEvent(
-                    new SysexMessage(new byte[]{(byte)0xf7, 5, (byte)device_id, (byte)command, (byte)channel, (byte)data1, (byte)data2}, 7), 
+                    new SysexMessage(new byte[]{(byte)SYSEX_STATUS_AB, (byte)OM_PRODUCT_ID, (byte)device_id, (byte)OM_MSG_TYPE_BREVIS, (byte)command, (byte)channel, (byte)data1, (byte)data2}, 8), 
+                    Math.round(beat * RESOLUTION)));
+        } catch (InvalidMidiDataException ex) {
+            throw new OmException("illegal midi event", ex);
+        }
+    }
+    public void sysex(int track_index, int device_id, SysexMessage sysex, double beat){
+        byte[] data = sysex.getMessage();
+        data = ArrayUtils.subarray(data, 1, data.length);
+        data = ArrayUtils.addAll(new byte[]{(byte)SYSEX_STATUS_AB, (byte)OM_PRODUCT_ID, (byte)device_id, (byte)OM_MSG_TYPE_SYSTEM}, data);
+        try {
+            sequence.getTracks()[track_index].add(new MidiEvent(
+                    new SysexMessage(data, data.length), 
                     Math.round(beat * RESOLUTION)));
         } catch (InvalidMidiDataException ex) {
             throw new OmException("illegal midi event", ex);

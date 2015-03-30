@@ -29,6 +29,13 @@ public class Explanations extends ArrayList<Explanation> {
         }
         return length;
     }
+    public int getMaxIndex(){
+        int index = 0;
+        for(Explanation expl:this){
+            index = Math.max(index, expl.getIndex());
+        }
+        return index;
+    }
     public void print(){
         for(String str:getOutStrings()){
             System.out.println(str);
@@ -36,19 +43,25 @@ public class Explanations extends ArrayList<Explanation> {
     }
     public ArrayList<String> getOutStrings(){
         int width = getMaxNameWidth();
+        int max_index = getMaxIndex();
         ArrayList<String> list = new ArrayList<>();
         list.add("[" + name + "]");
         for(Explanation expl:this){
-            list.add(" " + OmUtil.fill(expl.getName(), ' ', false, width) + " : " + expl.getValue());
+            list.add(OmUtil.toIndexString(expl.getIndex(), max_index) + " : " + OmUtil.fill(expl.getName(), ' ', false, width) + " : " + expl.getValue());
         }
         return list;
     }
     public static class Explanation {
+        private int index;
         private String name;
         private String value;
-        public Explanation(String name, String value){
+        public Explanation(int index, String name, String value){
+            this.index = index;
             this.name = name;
             this.value = value;
+        }
+        public int getIndex(){
+            return index;
         }
         public String getName(){
             return name;

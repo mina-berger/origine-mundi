@@ -63,6 +63,9 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             data_unit.check(values, index);
         }
     }
+    public Explanations getExplanations(int... values){
+        return getExplanations(OmUtil.toList(values));
+    }
     public Explanations getExplanations(List<Integer> values){
         Explanations expls = new Explanations(name);
         for(Integer index:keySet()){
@@ -120,7 +123,7 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             if(text == null){
                 return null;
             }
-            return new Explanations(getName(), new Explanation(prefix + name, text));
+            return new Explanations(getName(), new Explanation(index, prefix + name, text));
         }
         public DataUnit copy(String name){
             try {

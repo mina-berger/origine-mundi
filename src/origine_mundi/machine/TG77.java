@@ -60,7 +60,7 @@ public class TG77 extends Yamaha {
     }
     public SysexBuilder getVoice(int memory_type, int memory_number){
         //tg77.get(
-        ArrayList<Integer> data = getData(getRequest("LM  8101VC", memory_type, memory_number).getSysex());
+        ArrayList<Integer> data = getData(getRequest("LM  8101VC", memory_type, memory_number).getSysex(), 1);
         System.out.println(data.size());
         //List<Integer> head_data = data.subList(4, 43);
         SysexBuilder head_builder = toBuilder(data.subList(1, 43), LM_8101VC_CHECK);

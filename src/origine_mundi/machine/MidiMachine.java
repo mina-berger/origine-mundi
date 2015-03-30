@@ -66,9 +66,12 @@ public class MidiMachine {
         return checksum_dump;
     }
     public SysexBuilder get(SysexBuilder sysex_builder, SysexDataModel data_model) {
+        return get(sysex_builder, data_model, 1);
+    }
+    public SysexBuilder get(SysexBuilder sysex_builder, SysexDataModel data_model, int count) {
         
         
-        ArrayList<Integer> data = getData(sysex_builder.getSysex());
+        ArrayList<Integer> data = getData(sysex_builder.getSysex(), count);
         if(data.get(0) != 0xf0 || data.get(data.size() - 1) != 0xf7){
             throw new OmException("illegal sysex response:" + debugSysex(data));
         }
@@ -94,7 +97,7 @@ public class MidiMachine {
         SysexMessage sysex_ret = sr.removeHead();
         return toIntList(sysex_ret.getData());
     }
-    public ArrayList<Integer> getData(SysexMessage sysex) {
+    public ArrayList<Integer> getData(SysexMessage sysex, int count) {
         try {
             sr = new SysexReceiver();
             
@@ -106,13 +109,17 @@ public class MidiMachine {
                 return null;
             }
             ArrayList<Integer> ret = new ArrayList<>();
+            int read_count = 0;
             while(true){
                 ArrayList<Integer> data = getData();
                 ret.addAll(data.subList(ret.isEmpty()?0:1, data.size()));
                 if(data.size() == 0x400 && data.get(data.size() - 1) !=0xf7){
                     continue;
                 }
-                break;
+                read_count++;
+                if(read_count >= count){
+                    break;
+                }
             }
             return ret;
             //SysexMessage sysex_ret = sr.removeHead();

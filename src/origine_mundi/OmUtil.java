@@ -32,7 +32,11 @@ import org.apache.commons.lang3.ArrayUtils;
  * @author Mina
  */
 public class OmUtil {
-
+    public static int SYSEX_STATUS_AB  = 0xf0;
+    public static int SYSEX_STATUS_AD  = 0xf7;
+    public static final int OM_PRODUCT_ID = 0x7f;
+    public static final int OM_MSG_TYPE_BREVIS = 0x00;
+    public static final int OM_MSG_TYPE_SYSTEM = 0x01;
     public static final String[] MU500 = new String[]{"Yamaha MU500-1", "Yamaha MU500-2", "Yamaha MU500-3", "Yamaha MU500-4"};
     public static final String MICRO_LITE_1 = "2- micro lite: Port 1";
     public static final String MICRO_LITE_2 = "2- micro lite: Port 2";
@@ -63,18 +67,18 @@ public class OmUtil {
         return new SysexMessage(bytes, bytes.length);
     }
     public static String sysex(SysexMessage sysex){
-        byte[] bytes = sysex.getData();
+        //byte[] bytes = sysex.getData();
+        byte[] bytes = sysex.getMessage();
         String str = "";
         for(int i = 0;i < bytes.length;i++){
             int value = bytes[i];
             if(value < 0){
                 value += 0x100;
             }
-            String hex = fill(Integer.toHexString(value), 2);
-            str += " " + hex;
+            String hex = hex(value);
+            str += (str.isEmpty()?"":" ") + hex;
         }
-        return "f0" + str;
-        
+        return str;
     }
     public static String hex(int value){
         return fill(Integer.toHexString(value), 2);
@@ -87,6 +91,30 @@ public class OmUtil {
                 str = align_right?fill + str:str + fill;
             }
             return str;
+    }
+    public static String toIndexString(int index, int max_index){
+        //int byte_width = 0;
+        int byte_digit = 0;
+        int buff = max_index;
+        while(buff > 0){
+            buff = buff / 0x80;
+            byte_digit++;
+        }
+        int decimal_width = Integer.toString(max_index, 10).length();
+        
+        String  byte_str = "";
+        buff = index;
+        for(int i = 0;i < byte_digit;i++){
+            if(!byte_str.isEmpty()){
+                byte_str += " ";
+            }
+            int divider = (int)Math.pow(0x80, byte_digit - i - 1);
+            byte_str += hex(buff / divider);
+            buff %= divider;
+        }
+        String decimal_str = fill(Integer.toString(index, 10), decimal_width);
+        return "[" + byte_str + "] " + decimal_str;
+        
     }
     public static class ByteHolder extends ArrayList<Integer> {
         public void addAll(int... data){

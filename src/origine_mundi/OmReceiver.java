@@ -6,10 +6,16 @@
 
 package origine_mundi;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
+import org.apache.commons.lang3.ArrayUtils;
+import static origine_mundi.OmUtil.OM_MSG_TYPE_BREVIS;
+import static origine_mundi.OmUtil.OM_MSG_TYPE_SYSTEM;
+import static origine_mundi.OmUtil.OM_PRODUCT_ID;
+import static origine_mundi.OmUtil.SYSEX_STATUS_AB;
 
 /**
  *
@@ -22,12 +28,17 @@ public class OmReceiver implements Receiver {
         this.receiver = receiver;
         this.om_id = om_id;
     }
+    private static int[] toInt(byte[] bs){
+        int[] ret = new int[bs.length];
+        for(int i = 0; i < bs.length;i++){
+            ret[i] = toInt(bs[i]);
+        }
+        return ret;
+    }
     private static int toInt(byte b){
         int i = (int)b;
-        //System.out.println(i);
         if(i < 0){
             i += 0x100;
-            //System.out.println(i);
         }
         return i;
     }
@@ -37,17 +48,23 @@ public class OmReceiver implements Receiver {
         //if(1 == 1)throw new RuntimeException("");
         if(message instanceof SysexMessage){
             SysexMessage sysex_message  = (SysexMessage)message;
-            if(toInt(sysex_message.getData()[1]) != om_id){
+            byte[] data = sysex_message.getMessage();
+            if(toInt(data[1]) != OM_PRODUCT_ID || toInt(data[2]) != om_id){
                 return;
             }
+            int om_msg_type = toInt(data[3]);
             try {
-                ShortMessage short_message = new ShortMessage(
-                        toInt(sysex_message.getData()[2]), 
-                        toInt(sysex_message.getData()[3]), 
-                        toInt(sysex_message.getData()[4]), 
-                        toInt(sysex_message.getData()[5]));
-                receiver.send(short_message, timeStamp);
-                System.out.println("sent:" + short_message.getCommand() + ":" + short_message.getChannel() + ":" + short_message.getData1() + ":" + short_message.getData2());
+                if(om_msg_type == OM_MSG_TYPE_BREVIS){
+                        ShortMessage short_message = new ShortMessage(
+                                toInt(data[4]), 
+                                toInt(data[5]), 
+                                toInt(data[6]), 
+                                toInt(data[7]));
+                        receiver.send(short_message, timeStamp);
+                        System.out.println("sent:" + short_message.getCommand() + ":" + short_message.getChannel() + ":" + short_message.getData1() + ":" + short_message.getData2());
+                }else if(om_msg_type == OM_MSG_TYPE_SYSTEM){
+                    receiver.send(toRegularSysexMessage(sysex_message), timeStamp);
+                }
             } catch (Exception ex) {
                 System.out.println("error:" + ex);
                 return;
@@ -60,6 +77,25 @@ public class OmReceiver implements Receiver {
     @Override
     public void close() {
         receiver.close();
+    }
+    private SysexMessage toRegularSysexMessage(SysexMessage om_sysex_message) throws InvalidMidiDataException{
+        byte[] data = om_sysex_message.getMessage();
+        data = ArrayUtils.addAll(new byte[]{(byte)SYSEX_STATUS_AB}, ArrayUtils.subarray(data, 4, data.length));
+        SysexMessage sysex = new SysexMessage();
+        sysex.setMessage(data, data.length);
+        return sysex;
+    }
+    public static void main(String[] a) throws InvalidMidiDataException{
+        SysexMessage sysex = new SysexMessage();
+        byte[] data = new byte[0x10];
+        for(int i = 0;i < data.length;i++){
+            data[i] = i == 0?(byte)SYSEX_STATUS_AB:(byte)(i % 0x10);
+        }
+        sysex.setMessage(data, data.length);
+        System.out.println(OmUtil.sysex(sysex));
+        data = ArrayUtils.addAll(new byte[]{(byte)SYSEX_STATUS_AB}, ArrayUtils.subarray(data, 3, data.length));
+        sysex.setMessage(data, data.length);
+        System.out.println(OmUtil.sysex(sysex));
     }
     
 }
