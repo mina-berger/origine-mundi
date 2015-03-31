@@ -6,6 +6,7 @@
 
 package origine_mundi;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -213,7 +214,7 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
         }
         @Override
         public String getText(List<Integer> values, int index) {
-            return OmUtil.hex(values.get(index));
+            return OmUtil.hex(values.get(index)) + " : " + Integer.toString(values.get(index), 10);
         }
 
         @Override
@@ -221,9 +222,58 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             defaultCheck(values, index);
         }
     }
+    public static class SignedValue extends OneByte {
+        int signed_min;
+        int signed_max;
+        public SignedValue(String name){
+            super(name, -128, 127);
+        }
+        public SignedValue(String name, int min, int max){
+            super(name);
+            signed_min = min;
+            signed_max = max;
+        }
+        @Override
+        public String getText(List<Integer> values, int index) {
+            int value = getSignedValue(values, index);
+            return OmUtil.hex(values.get(index)) + " : " + Integer.toString(value, 10);
+        }
+
+        @Override
+        public void check(List<Integer> values, int index) {
+            int value = getSignedValue(values, index);
+            if(value < signed_min || value > signed_max){
+                throw new OmException("illegal data for " + getClass().getSimpleName() + " " + name + "(" + value + ")");
+            }
+        }
+        private int getSignedValue(List<Integer> values, int index){
+            int value = values.get(index);
+            if(value >= 0x80){
+                value -= 0x100;
+            }
+            return value;
+        }
+    }
     public static class FixedValue extends ByteValue {
         public FixedValue(String name, int value){
             super(name, value, value);
+        }
+    }
+    public static class RateValue extends ByteValue {
+        double rate;
+        double offset;
+        DecimalFormat format;
+        
+        public RateValue(String name, int min, int max, double rate, double offset, String format_str){
+            super(name, min, max);
+            this.rate = rate;
+            this.offset = offset;
+            format = new DecimalFormat(format_str);
+        }
+        @Override
+        public String getText(List<Integer> values, int index) {
+            double value = (double)values.get(index) * rate + offset;
+            return OmUtil.hex(values.get(index)) + " : " + format.format(value);
         }
     }
     public static class OnOffValue extends OneByte {
@@ -416,6 +466,110 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
         public void check(List<Integer> values, int index) {
             defaultCheck(values, index);
         }
+    }
+    public static class NoteValues extends ByteValues {
+        int shift;
+        public NoteValues(String name, int length, int shift){
+            this(name, length, 0x00, 0x0f, shift);
+        }
+        public NoteValues(String name, int length, int min, int max, int shift){
+            super(name, length ,min, max);
+            this.shift = shift;
+        }
+        @Override
+        public String getText(List<Integer> values, int index) {
+            String notes = "";
+            for(int i = 0;i < length();i++){
+                int value = values.get(index + i);
+                if(!notes.isEmpty()){
+                    notes += " ";
+                }
+                notes += new OmUtil.Note(value + shift).toString();
+            }
+            return getDataExpression(values, index) + " : " + notes;
+        }
+    }
+    public static class MultiBytesValue extends MultiBytes {
+        boolean big_endian;
+        long multi_min;
+        long multi_max;
+        public MultiBytesValue(String name, int length, boolean big_endian){
+            this(name, length, 0, (long)Math.pow(0x80, length), big_endian);
+        }
+        public MultiBytesValue(String name, int length, long min, long max, boolean big_endian){
+            super(name, length);
+            this.big_endian = big_endian;
+            multi_min = min;
+            multi_max = max;
+        }
+        @Override
+        public String getText(List<Integer> values, int index) {
+            return getDataExpression(values, index) + " : " + getMultiValue(values, index);
+        }
+        @Override
+        public void check(List<Integer> values, int index) {
+            defaultCheck(values, index);
+            long value = getMultiValue(values, index);
+            if(value < multi_min || value > multi_max){
+                throw new OmException("illegal data for " + getClass().getSimpleName() + "(value=" + value + ") " + name);
+            }
+            
+        }
+        protected long getMultiValue(List<Integer> values, int index){
+            long value = 0;
+            for(int i = 0;i < length();i++){
+                value += values.get(index + i) * (long)Math.pow(0x80, big_endian?length() - i - 1:i);
+            }
+            return value;
+        }
+    }
+    public static class MultiBytesOffsetBinary extends MultiBytesValue {
+        long offset;
+        public MultiBytesOffsetBinary(String name, int length, long min, long max, long offset, boolean big_endian){
+            super(name, length, min, max, big_endian);
+            this.offset = offset;
+        }
+        @Override
+        public String getText(List<Integer> values, int index) {
+            long value = getMultiValue(values, index);
+            String str_expl = getDataExpression(values, index) + " : " + 
+                    (value == offset?"0":
+                     value  < offset?"-" + (Long.toString((value - offset) * -1))
+                                    :"+" + (Long.toString( value - offset)));  
+            return str_expl;
+        }
+    }
+    public static class MultiBitArray extends MultiBytes {
+        ArrayList<Integer> digits;
+        String comment;
+        public MultiBitArray(String name, int length, String comment, int... digit_array){
+            super(name, length, 0, ((int)Math.pow(2, Collections.max(Arrays.asList(ArrayUtils.toObject(digit_array))) + 1)) - 1);
+            digits = new ArrayList<>();
+            for(int digit:digit_array){
+                if(digit > 8){
+                    throw new OmException("illegal digit value for" + name);
+                }
+                digits.add(digit);
+            }
+            this.comment = comment;
+        }
+        @Override
+        public String getText(List<Integer> values, int index) {
+            String str = "[";
+            for(int digit:digits){
+                int value = values.get(index + digit / 7);
+                int mask = (int)Math.pow(2, digit % 7);
+                str += ((value & mask) == mask?"*":"-");
+            }
+            str += "]" + (comment == null?"":" " + comment);
+            return getDataExpression(values, index) + " : " + str;
+        }
+
+        @Override
+        public void check(List<Integer> values, int index) {
+            defaultCheck(values, index);
+        }
+        
     }
     public static class OffsetBinaries extends MultiBytes {
         int offset;

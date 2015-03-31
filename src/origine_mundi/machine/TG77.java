@@ -22,8 +22,15 @@ import origine_mundi.SysexDataModel.DataBlock;
 import origine_mundi.SysexDataModel.DataLength;
 import origine_mundi.SysexDataModel.KV;
 import origine_mundi.SysexDataModel.MidiChannel;
+import origine_mundi.SysexDataModel.MultiBitArray;
+import origine_mundi.SysexDataModel.MultiBytesOffsetBinary;
+import origine_mundi.SysexDataModel.MultiBytesValue;
+import origine_mundi.SysexDataModel.NoteValue;
+import origine_mundi.SysexDataModel.NoteValues;
+import origine_mundi.SysexDataModel.OffsetBinaries;
 import origine_mundi.SysexDataModel.OffsetBinary;
 import origine_mundi.SysexDataModel.OnOffValue;
+import origine_mundi.SysexDataModel.SignedValue;
 
 /**
  *
@@ -176,7 +183,7 @@ public class TG77 extends Yamaha {
                 new KV(7, "Internal VC IND"),  new KV(8, "Card VC IND"),  new KV(9, "Preset0 VC IND"), new KV(10, "Preset1 VC IND")),
             new ByteValue("pg#", 0, 63)
     );
-    public static SysexDataModel LM_8104PC = new SysexDataModel("program change table",
+    public final static SysexDataModel LM_8104PC = new SysexDataModel("program change table",
             COMMON_HEAD0_BLOCK
     );
     static{
@@ -192,8 +199,123 @@ public class TG77 extends Yamaha {
                     new KV(0x6, "2AWM_poly"), new KV(0x7, "4AWM_poly"), new KV(0x8, "1AFM_1AWM_poly"), new KV(0x9, "2FM_2PCM_poly"),new KV(0xa, "DRUM_SET")),
             new Characters("voice name", 10));
     public static SysexDataModel LM_8101VC_CHECK = new SysexDataModel("voice_check", LM_8101VC_HEAD_BLOCK);
+    
+    public final static DataBlock CONTROLLER = new DataBlock("controllder model",
+            new ByteValue("midi control#", 0, 121),
+            new ByteValue("range", 0, 127)
+    );
+    public final static DataBlock CONTROLLERS = new DataBlock("controllers", 
+            new ByteValue("wheel pitchbend", 0, 12),
+            new SignedValue("after touch pitchbend", -12, 12),
+            CONTROLLER.copy("pitch moduation"),
+            CONTROLLER.copy("amplitude moduation"),
+            CONTROLLER.copy("filter moduation"),
+            CONTROLLER.copy("pan moduation"),
+            CONTROLLER.copy("filter cutoff bias"),
+            CONTROLLER.copy("pan bias"),
+            CONTROLLER.copy("EG bias"),
+            CONTROLLER.copy("voice volume")
+    );
+    public final static DataBlock ELEMENT_BLOCK = new DataBlock("element_model",
+            new ByteValue("level"),
+            new SignedValue("detune", -7, 7),
+            new OffsetBinary("note shift", 0, 127, 64),
+            new NoteValue("lo note limit", 0),
+            new NoteValue("hi note limit", 0),
+            new ByteValue("lo velo limit", 0, 127),
+            new ByteValue("hi velo limit", 0, 127),
+            new ByteValue("pan number", 0, 95),
+            new BitArray("switch", "00000[2:output sel1][1:output sel0][0:micro tuning]", 0, 1, 2)
+    );
+    public final static DataBlock AFM_ELEMENT_BLOCK = new DataBlock("afm_element_model",
+            new DataBlock("EG",
+                new ByteValues("keyon rate", 4, 0, 63),
+                new ByteValues("keyoff rate", 2, 0, 63),
+                new ByteValues("keyon level", 4, 0, 63),
+                new ByteValues("keyoff level", 2, 0, 63),
+                new ByteValue("sustain loop point", 0, 3),
+                new ByteValue("keyon hold time", 0, 63),
+                new ByteValue("keyon level0", 0, 63),
+                new SignedValue("rate scaling", -7, 7),
+                new ByteValue("amp mod sens", 0, 7),
+                new SignedValue("velo sens", -7, 7),
+                new ByteValue("reserve")
+            ),
+            new DataBlock("oscilator",
+                    new MultiBitArray("input source", 2, "0000000[4:src1] 0[567:src1][0123:src0]", 3, 2, 1, 0, 7, 6, 5, 4),
+                    new BitArray("destination stc", "000[4:out1][23:out0][01:dst]", 1, 0, 3, 2, 4),
+                    new BitArray("input shift", "00[012:in0][345:in1]", 5, 4, 3, 2, 1, 0),
+                    new ByteValue("output level correction", 0, 7),
+                    new ByteValue("wave form", 0, 15),
+                    new BitArray("switch", "000[012:pitch mod sens][3:pitch EG][4:freq mode]",  4, 3, 2, 1, 0),
+                    new OnOffValue("initial phase set enable", 0, 0, 1),
+                    new ByteValue("initial phase"),
+                    new SignedValue("pitch detune", -15, 15)),
+            new DataBlock("out level",
+                    new ByteValue("level"),
+                    new NoteValues("scaling break point", 4, 0),
+                    new MultiBytesOffsetBinary("offset BP0", 2, 0, 256, 128, true),
+                    new MultiBytesOffsetBinary("offset BP1", 2, 0, 256, 128, true),
+                    new MultiBytesOffsetBinary("offset BP2", 2, 0, 256, 128, true),
+                    new MultiBytesOffsetBinary("offset BP3", 2, 0, 256, 128, true),
+                    new OnOffValue("rate velo switch", 0, 0, 1)
+            ),
+            new ByteValue("freq coarse"),
+            new ByteValue("freq fine")
+    );
+    public final static DataBlock AFM_ELEMENT_COMMON_BLOCK = new DataBlock("afm_element_common",
+            new ByteValue("algorithm#", 0, 44),
+            new DataBlock("pitch EG",
+                    new ByteValues("rate(on3 off1)", 4),
+                    new OffsetBinaries("level(on4 off1)", 5, 0, 127, 64),
+                    new CodeValue("range", 0, 3, new KV(0, "8oct"), new KV(1, "2oct"), new KV(2, "1oct"), new KV(3, "1/2oct")),
+                    new ByteValue("rate scaling", 0, 7),
+                    new OnOffValue("velo switch", 0, 0, 1)),
+            new DataBlock("main LFO",
+                    new ByteValue("speed", 0, 99),
+                    new ByteValue("delay time", 0, 99),
+                    new ByteValue("pitch mod depth"),
+                    new ByteValue("amp mod depth"),
+                    new ByteValue("filter mod depth"),
+                    new ByteValue("wave", 0, 5),
+                    new ByteValue("initial phase", 0, 99),
+                    new ByteValue("reserve")),
+            new DataBlock("sub LFO",
+                    new ByteValue("wave", 0, 3),
+                    new ByteValue("speed"),
+                    new CodeValue("delay/decay", 0, 1, new KV(0, "delay mode"), new KV(1, "decay mode")),
+                    new ByteValue("time", 0, 99),
+                    new ByteValue("pitch mod depth")
+            )
+            
+    );
+    public static DataBlock FILTER_BLOCK = new DataBlock("filter",
+            new CodeValue("type", 0, 2, new KV(0, "LPF"), new KV(1, "HPF"), new KV(2, "THRU")),
+            new ByteValue("cutoff freq"),
+            new CodeValue("mode", 0, 2, new KV(0, "EG"), new KV(1, "LFO"), new KV(2, "EG-VA")),
+            new ByteValues("rate(on4 off2)", 6, 0, 63),
+            new OffsetBinaries("cutoff level(on4 off2)", 6, 0, 127, 64),
+            new SignedValue("rate scaling", -7, 7),
+            new NoteValues("cutoff level break point", 4, 0),
+            new MultiBytesValue("cutoff level scaling offset0", 2, true),
+            new MultiBytesValue("cutoff level scaling offset1", 2, true),
+            new MultiBytesValue("cutoff level scaling offset2", 2, true),
+            new MultiBytesValue("cutoff level scaling offset3", 2, true)
+    );
     public static SysexDataModel LM_8101VC_0 = new SysexDataModel("10m", LM_8101VC_HEAD_BLOCK,
-            new ByteValues("rest", 421)
+            EFFECT_BLOCK,
+            CONTROLLERS,
+            new MultiBytesValue("AWM id", 2, true),
+            ELEMENT_BLOCK.copy("element"),
+            AFM_ELEMENT_BLOCK.copy("op0"),
+            AFM_ELEMENT_BLOCK.copy("op1"),
+            AFM_ELEMENT_BLOCK.copy("op2"),
+            AFM_ELEMENT_BLOCK.copy("op3"),
+            AFM_ELEMENT_BLOCK.copy("op4"),
+            AFM_ELEMENT_BLOCK.copy("op5"),
+            AFM_ELEMENT_COMMON_BLOCK,
+            
+            new ByteValues("rest", 421)//421
     );
     public static SysexDataModel LM_8101VC_9 = new SysexDataModel("22p", LM_8101VC_HEAD_BLOCK,
             new ByteValues("rest", 1029)
