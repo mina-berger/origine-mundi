@@ -45,7 +45,7 @@ public class SysexBuilder {
             throw new OmException("data cannot be null"); 
         }
         if(data_model.length() != data.size()){
-            throw new OmException("illegal data length (" + data.size() + " expected " + data_model.length() + ")"); 
+            throw new OmException("illegal data length " + data_model.getName() + "(" + data.size() + " expected " + data_model.length() + ")"); 
         }
         
         
