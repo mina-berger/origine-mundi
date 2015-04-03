@@ -8,7 +8,6 @@ package origine_mundi.machine;
 
 import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
-import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.MICRO_LITE_3;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.BitArray;

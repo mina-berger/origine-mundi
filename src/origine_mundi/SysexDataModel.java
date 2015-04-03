@@ -200,7 +200,7 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             for(int i = 0;i < length();i++){
                 int value = values.get(index + i);
                 if(value < min || value > max){
-                    throw new OmException("illegal data for " + getClass().getSimpleName() + "[" + i + "] " + name);
+                    throw new OmException("illegal value(" + value + ") for " + getClass().getSimpleName() + "[" + i + "] " + name);
                 }
             }
         }
@@ -223,15 +223,13 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
         }
     }
     public static class SignedValue extends OneByte {
-        int signed_min;
-        int signed_max;
+        int magnitude;
         public SignedValue(String name){
-            super(name, -128, 127);
+            this(name, 63);
         }
-        public SignedValue(String name, int min, int max){
+        public SignedValue(String name, int magnitude){
             super(name);
-            signed_min = min;
-            signed_max = max;
+            this.magnitude = magnitude;
         }
         @Override
         public String getText(List<Integer> values, int index) {
@@ -242,14 +240,14 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
         @Override
         public void check(List<Integer> values, int index) {
             int value = getSignedValue(values, index);
-            if(value < signed_min || value > signed_max){
+            if(value < magnitude * -1 || value > magnitude){
                 throw new OmException("illegal data for " + getClass().getSimpleName() + " " + name + "(" + value + ")");
             }
         }
         private int getSignedValue(List<Integer> values, int index){
             int value = values.get(index);
-            if(value >= 0x80){
-                value -= 0x100;
+            if(value > magnitude){
+                value = (value - magnitude - 1) * -1;
             }
             return value;
         }
@@ -366,8 +364,11 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
     }
     public static class NoteValue extends OneByte {
         int shift;
+        public NoteValue(String name){
+            this(name, 0x00, 0x7f, 0);
+        }
         public NoteValue(String name, int shift){
-            this(name, 0x00, 0x0f, shift);
+            this(name, 0x00, 0x7f, shift);
         }
         public NoteValue(String name, int min, int max, int shift){
             super(name, min, max);
@@ -470,7 +471,7 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
     public static class NoteValues extends ByteValues {
         int shift;
         public NoteValues(String name, int length, int shift){
-            this(name, length, 0x00, 0x0f, shift);
+            this(name, length, 0x00, 0x7f, shift);
         }
         public NoteValues(String name, int length, int min, int max, int shift){
             super(name, length ,min, max);
@@ -546,7 +547,7 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
             super(name, length, 0, ((int)Math.pow(2, Collections.max(Arrays.asList(ArrayUtils.toObject(digit_array))) + 1)) - 1);
             digits = new ArrayList<>();
             for(int digit:digit_array){
-                if(digit > 8){
+                if(digit >= 7 * length){
                     throw new OmException("illegal digit value for" + name);
                 }
                 digits.add(digit);
@@ -557,7 +558,7 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
         public String getText(List<Integer> values, int index) {
             String str = "[";
             for(int digit:digits){
-                int value = values.get(index + digit / 7);
+                int value = values.get(index + (length() - digit / 7 - 1));
                 int mask = (int)Math.pow(2, digit % 7);
                 str += ((value & mask) == mask?"*":"-");
             }

@@ -6,10 +6,8 @@
 
 package origine_mundi.machine;
 
-import java.util.ArrayList;
 import origine_mundi.OmUtil;
 import origine_mundi.SysexDataModel;
-import static origine_mundi.machine.Roland.ROLAND_ID;
 
 /**
  *
@@ -26,6 +24,9 @@ public class Yamaha extends MidiMachine {
         this.model = model;
     }
     public SysexBuilder getRequest(int[] data){
+        return getRequest(model, data);
+    }
+    public SysexBuilder getRequest(int model, int[] data){
         return new SysexBuilder(new int[]{YAMAHA_ID, 0x20 + device_l, model}, 
                 new SysexDataModel("request",
                 new SysexDataModel.Characters("dump code", 10),

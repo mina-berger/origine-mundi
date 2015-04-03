@@ -52,12 +52,12 @@ public class U_110 extends Roland {
             };
         }*/
 
-        //PATCH.getExplanations(OmUtil.toList(alt)).print();
-        U_110 u_110 = U_110.instance();
+        PATCH.getExplanations(OmUtil.toList(alt)).print();
+        /*U_110 u_110 = U_110.instance();
         try {
             u_110.checkSound(0);
             
-            /*//u_110.get(u_110.getRQT(0x01, 0x01, 0x00, 0x00, 0x02, 0x00), PATCH).getExplanations().print();
+            //u_110.get(u_110.getRQT(0x01, 0x01, 0x00, 0x00, 0x02, 0x00), PATCH).getExplanations().print();
             int[] org_data = new int[]{0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x04, 0x0e, 0x02, 0x0f, 0x04, 0x02, 0x07, 0x07, 0x06, 0x01, 0x06, 0x0e, 0x06, 0x00, 0x02, 0x00, 0x02, 0x00, 0x02, 0x05, 0x01, 0x04, 0x00, 0x06, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0e, 0x03, 0x00, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0f, 0x07, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x00, 0x02, 0x03, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x0e, 0x03, 0x01, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0f, 0x07, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x0c, 0x02, 0x03, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x0e, 0x03, 0x02, 0x02, 0x00, 0x00, 0x0f, 0x07, 0x0f, 0x07, 0x0f, 0x00, 0x08, 0x08, 0x00, 0x04, 0x00, 0x04, 0x06, 0x08, 0x08, 0x0c};
             //u_110.send(u_110.getDT1(PATCH, org_data).getSysex());
             SysexBuilder sb = u_110.get(u_110.getRQT(0x01, 0x01, 0x00, 0x00, 0x02, 0x00), PATCH);
@@ -70,18 +70,18 @@ public class U_110 extends Roland {
             sb.getExplanations().print();
             //u_110.get(u_110.getRQT(0x01, 0x01, 0x00, 0x00, 0x00, 0x1d), new SysexDataModel("patch_model", new ByteValues("name", 20))).getExplanations().print();
             u_110.finalize();
-            //u_110.listen();*/
+            //u_110.listen();
         } catch (MidiUnavailableException ex) {
             Logger.getLogger(U_110.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvalidMidiDataException ex) {
             Logger.getLogger(U_110.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
             Logger.getLogger(U_110.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         
     }
     
-    private static DataBlock PART = new DataBlock("part",
+    private static final DataBlock PART = new DataBlock("part",
             new MidiChannel("recv channel"),
             new ByteValues("reserve0", 1),
             new NoteValue4bits2bytes("key range lo", 0),
@@ -92,7 +92,7 @@ public class U_110 extends Roland {
                     new KV(8, "on map0"),  new KV(9, "on map1"),  new KV(10, "on map2"),  new KV(11, "on map3"),  new KV(12, "on map4"),  new KV(13, "on map5")),
             new CodeValue("output assign", 0, 12, new KV(0, "out0"), new KV(2, "out1"), new KV(4, "out2"), new KV(6, "out3"), new KV(8, "out4"), new KV(10, "out5"), new KV(12, "OFF"))
     );
-    private static SysexDataModel PATCH = new SysexDataModel("patch_model",
+    private static final SysexDataModel PATCH = new SysexDataModel("patch_model",
             new ByteValues("address", 3),
             new Blank("blank0", 8),
             new Characters4bits2bytes("name", 10),
