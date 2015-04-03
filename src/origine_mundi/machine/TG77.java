@@ -8,6 +8,10 @@ package origine_mundi.machine;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.MICRO_LITE_1;
@@ -37,7 +41,7 @@ import origine_mundi.SysexDataModel.SignedValue;
  * @author Mina
  */
 public class TG77 extends Yamaha {
-    private static final int DEVICE_ID_LOWER = 0x0;
+    private static final int DEVICE_ID_LOWER = 0x20 + 0x0;
     private static final int MODEL_ID = 0x7A;
 
     private static final String MIDI_PORT = MICRO_LITE_1;
@@ -57,15 +61,15 @@ public class TG77 extends Yamaha {
         //LM_8101MU.getExplanations(OmUtil.toList(LM_8101MU_VALUES)).print();
         //LM_8104PC.getExplanations(OmUtil.toList(LM_8104PC_VALUES)).print();
         //LM_8101VC_0_3.getExplanations(OmUtil.toList(VC_0_SAMPLE)).print();
-        LM_8101VC_8.getExplanations(OmUtil.toList(VC_8_SAMPLE)).print();
+        //LM_8101VC_8.getExplanations(OmUtil.toList(VC_8_SAMPLE)).print();
         
-        /*TG77 tg77 = TG77.instance();
+        TG77 tg77 = TG77.instance();
         //int[] data_req = new int[]{0x4c, 0x4d, 0x20, 0x20, 0x38, 0x31, 0x30, 0x31, 0x53, 0x59, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
         //tg77.get(tg77.getRequest("LM  8101SY"), LM_8101SY).getExplanations().print();
-        //tg77.get(tg77.getRequest("LM  8101MU"), LM_8101MU).getExplanations().print();
-        tg77.getVoice(2, 0x01);
-        //tg77.listen();
-        tg77.finalize();*/
+        System.out.println(OmUtil.sysex(tg77.getRequest("LM  8101MU").getSysex()));
+        tg77.get(tg77.getRequest("LM  8101MU"), LM_8101MU).getExplanations().print();
+        tg77.checkSound(0);
+        tg77.finalize();
     }
     public SysexBuilder getVoice(int memory_type, int memory_number){
         //tg77.get(
@@ -110,8 +114,11 @@ public class TG77 extends Yamaha {
         }
         data_req[24] = memory_type;
         data_req[25] = memory_number;
-        return getRequest(data_req);
+        return getRequest(data_req, REQUEST);
     }
+    public static SysexDataModel REQUEST = new SysexDataModel("request",
+                new SysexDataModel.Characters("dump code", 10),
+                new SysexDataModel.Blank(16));
     //public static final CodeValue VOICE_MEMORY = new CodeValue("memory type", new KV(0x00, "internal"), new KV(0x02, "preset"), new KV(0x7f, "edit buffer"));
     public static final DataBlock COMMON_HEAD0_BLOCK = new DataBlock("common_header0",
             new DataLength("data length", 2),

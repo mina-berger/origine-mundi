@@ -15,23 +15,19 @@ import origine_mundi.SysexDataModel;
  */
 public class Yamaha extends MidiMachine {
     protected static int YAMAHA_ID = 0x43;
-    private int device_l;
-    private int model;
+    protected int device_l;
+    protected int model;
 
     public Yamaha(int device_l, int model, String ex_device_name, String in_device_name) {
         super(ex_device_name, in_device_name, 3, false, true);
         this.device_l = device_l;
         this.model = model;
     }
-    public SysexBuilder getRequest(int[] data){
-        return getRequest(model, data);
+    public SysexBuilder getRequest(int[] data, SysexDataModel request_model){
+        return getRequest(model, data, request_model);
     }
-    public SysexBuilder getRequest(int model, int[] data){
-        return new SysexBuilder(new int[]{YAMAHA_ID, 0x20 + device_l, model}, 
-                new SysexDataModel("request",
-                new SysexDataModel.Characters("dump code", 10),
-                new SysexDataModel.Blank(16)
-        ), OmUtil.toList(data), getChecksumRequest());
-    }    
+    public SysexBuilder getRequest(int model, int[] data, SysexDataModel request_model){
+        return new SysexBuilder(new int[]{YAMAHA_ID, device_l, model}, request_model, OmUtil.toList(data), getChecksumRequest());
+    }
     
 }

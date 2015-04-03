@@ -128,11 +128,12 @@ public class SysexBuilder {
     public SysexMessage getSysex(){
         try {
             int[] data = ArrayUtils.toPrimitive(contents.toArray(new Integer[0]));
-            int checksum = checksum(data);
             ArrayList<Integer> list = new ArrayList<>();
             list.addAll(header);
             list.addAll(contents);
-            list.add(checksum);
+            if(checksum){
+                list.add(checksum(data));
+            }
             list.addAll(footer);
             
             return OmUtil.sysex(list);

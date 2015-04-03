@@ -7,7 +7,6 @@ package origine_mundi.machine;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiUnavailableException;
@@ -244,36 +243,40 @@ public class MidiMachine {
             return get(0) * 0x4000 + get(1) * 0x80 + get(2);
         }
     }
-    public void checkSound(int channel) throws MidiUnavailableException, InvalidMidiDataException, InterruptedException {
+    public void checkSound(int channel){
         //printEnv(System.out);
         printMidiDeviceInfo(ex_device.getDeviceInfo(), System.out, 1);
         //System.out.println(receiver1);
+        try {
         noteoff(ex);
-        for(int i = 0;i < 1;i++){
-            int[] notes = new int[1];
-            for(int j = 0;j < notes.length;j++){
-                notes[j] = 60;//(j == 0?48:notes[j - 1]) + (int)Math.floor(Math.random() * 5) + 3;
-                ex.send(new ShortMessage(ShortMessage.NOTE_ON, channel, notes[j], 120), 1);
-                Thread.sleep(50);
+            for(int i = 0;i < 1;i++){
+                int[] notes = new int[1];
+                for(int j = 0;j < notes.length;j++){
+                    notes[j] = 60;//(j == 0?48:notes[j - 1]) + (int)Math.floor(Math.random() * 5) + 3;
+                    ex.send(new ShortMessage(ShortMessage.NOTE_ON, channel, notes[j], 120), 1);
+                    Thread.sleep(50);
+                }
+                Thread.sleep(2000);
+                for(int j = 0;j < notes.length;j++){
+                    ex.send(new ShortMessage(ShortMessage.NOTE_ON, channel, notes[j], 0), 1);
+                }
             }
-            Thread.sleep(2000);
-            for(int j = 0;j < notes.length;j++){
-                ex.send(new ShortMessage(ShortMessage.NOTE_ON, channel, notes[j], 0), 1);
+            Thread.sleep(100);
+            for(int i = 0;i < 1;i++){
+                int[] notes = new int[]{36, 60, 64, 67};
+                for(int j = 0;j < notes.length;j++){
+                    ex.send(new ShortMessage(ShortMessage.NOTE_ON, channel, notes[j], 120), 1);
+                    Thread.sleep(50);
+                }
+                Thread.sleep(2000);
+                for(int j = 0;j < notes.length;j++){
+                    ex.send(new ShortMessage(ShortMessage.NOTE_ON, channel, notes[j], 0), 1);
+                }
             }
+            Thread.sleep(100);
+            noteoff(ex);
+        } catch (Exception ex) {
+            throw new OmException("cannot play midimachine", ex);
         }
-        Thread.sleep(100);
-        for(int i = 0;i < 1;i++){
-            int[] notes = new int[]{36, 60, 64, 67};
-            for(int j = 0;j < notes.length;j++){
-                ex.send(new ShortMessage(ShortMessage.NOTE_ON, channel, notes[j], 120), 1);
-                Thread.sleep(50);
-            }
-            Thread.sleep(2000);
-            for(int j = 0;j < notes.length;j++){
-                ex.send(new ShortMessage(ShortMessage.NOTE_ON, channel, notes[j], 0), 1);
-            }
-        }
-        Thread.sleep(100);
-        noteoff(ex);
     }
 }
