@@ -6,11 +6,10 @@
 
 package origine_mundi.machine;
 
-import java.util.Arrays;
-import org.apache.commons.lang3.ArrayUtils;
 import static origine_mundi.OmUtil.MICRO_LITE_3;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.BitArray;
+import origine_mundi.SysexDataModel.Blank;
 import origine_mundi.SysexDataModel.ByteValue;
 import origine_mundi.SysexDataModel.ByteValues;
 import origine_mundi.SysexDataModel.Characters;
@@ -23,7 +22,6 @@ import origine_mundi.SysexDataModel.NoteValue;
 import origine_mundi.SysexDataModel.OffsetBinaries;
 import origine_mundi.SysexDataModel.OffsetBinary;
 import origine_mundi.SysexDataModel.OnOffValue;
-import static origine_mundi.machine.Roland.ROLAND_ID;
 
 /**
  *
@@ -43,6 +41,29 @@ public class D_110 extends Roland {
     private D_110(){
         super(DEVICE_ID, MODEL_ID, MIDI_PORT, MIDI_PORT);
     }
+    private static final DataBlock TIMBRE_COMMON_BLOCK = new DataBlock("common",
+            new CodeValue("tone group", 0, 3, new KV(0, "a"), new KV(1, "b"), new KV(2, "i/c"), new KV(3, "r")),
+            new ByteValue("tone number", 0, 63),
+            new OffsetBinary("key shift", 0, 48, 24),
+            new OffsetBinary("fine tune", 0, 100, 50),
+            new ByteValue("bender range", 0, 24),
+            new CodeValue("assign mode", 0, 3, new KV(0, "POLY0"), new KV(1, "POLY1"), new KV(2, "POLY2"), new KV(3, "POLY3")),
+            new CodeValue("output assign", 0, 7, new KV(0, "MIX0"), new KV(1, "MIX1"), 
+                    new KV(2, "MULTI0"), new KV(3, "MULTI1"), new KV(4, "MULTI2"), new KV(5, "MULTI3"), new KV(6, "MULTI4"), new KV(7, "MULTI5")),
+            new Blank("dummy", 1)
+    );
+    private static final DataBlock TIMBRE_TEMPORARY_BLOCK = new DataBlock("temporary",
+            new ByteValue("output level", 0, 100),
+            new OffsetBinary("panpod", 0, 14, 7),
+            new NoteValue("key range lower"),
+            new NoteValue("key range upper"),
+            new Blank("dummy", 4)
+    );
+    private static SysexDataModel TIMBER_TEMPORARY = new SysexDataModel("tone",
+            TIMBRE_COMMON_BLOCK,
+            TIMBRE_TEMPORARY_BLOCK
+    );
+    
     private static final CodeValue PARTIAL_STRUCTURE = new CodeValue("partial structure model",
             new KV(0, "S & S Mix"), 
             new KV(1, "S & S Prim and Ring Mix"), 
@@ -136,19 +157,22 @@ public class D_110 extends Roland {
                         new MidiChannel("part0"), new MidiChannel("part1"), new MidiChannel("part2"), new MidiChannel("part3"),
                         new MidiChannel("part4"), new MidiChannel("part5"), new MidiChannel("part6"), new MidiChannel("part7"),
                         new MidiChannel("partR"));
+    
     public static void main(String[] arg) throws Exception {
         //for(int[] tone_temp:TONE_TEMP){
         //    TONE.getExplanations(OmUtil.toList(tone_temp)).print();
         //}
         //MIDI_CHANNELS.getExplanations(OmUtil.toList(MIDI_CHANNELS_DATA)).print();
-        SysexBuilder sb = 
+        /*SysexBuilder sb = 
                 new SysexBuilder(new int[]{ROLAND_ID, DEVICE_ID, MODEL_ID, COMMAND_DT1}, TONE, Arrays.asList(ArrayUtils.toObject(TONE_TEMP[0])), true);
         sb.getExplanations().print();
         sb.setCharacters("common.name", "abcasdfasdfasdf");
         sb.setValue("partial3.TVA time keyfollow", 3);
         sb.setValue("partial3.TVA levels", 1, 2, 3);
         sb.getExplanations().print();
+        */
         
+        System.out.println(TONE.getDataUnitIndex("partial0.TVF cutoff freq").getIndex());
         /*D_110 d_110 = D_110.instance();
         d_110.get(d_110.getRQT(new Address(0x04, 0x00, 0x00), new Address(0x00, 0x01, 0x76)), model).getExplanations().print();
         SysexBuilder sb = d_110.getDT1(TONE, data);
@@ -180,6 +204,11 @@ public class D_110 extends Roland {
         //d110.checkSound(0);
         
         d110.finalize();*/
+    }
+    public void callTone(int tone_memory_number, int part_temporary){
+        getRQT(new AddressDeRoland(0x04, 0x00, 0x00), new AddressDeRoland(0x00, 0x01, 0x76));
+
+        
     }
     
     
