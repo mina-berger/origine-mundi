@@ -17,6 +17,7 @@ import javax.sound.midi.Transmitter;
 import org.apache.commons.lang3.ArrayUtils;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
+import static origine_mundi.OmUtil.MICRO_LITE_5;
 import static origine_mundi.OmUtil.fill;
 import static origine_mundi.OmUtil.getMidiDevice;
 import static origine_mundi.OmUtil.noteoff;
@@ -278,5 +279,9 @@ public class MidiMachine {
         } catch (Exception ex) {
             throw new OmException("cannot play midimachine", ex);
         }
+    }
+    public static void main(String[] args) throws Exception{
+        MidiMachine mm = new MidiMachine(MICRO_LITE_5, MICRO_LITE_5, 0, false, false);
+        mm.listen();
     }
 }
