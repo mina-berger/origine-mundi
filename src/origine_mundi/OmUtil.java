@@ -37,7 +37,7 @@ public class OmUtil {
     public static final int OM_PRODUCT_ID = 0x7f;
     public static final int OM_MSG_TYPE_BREVIS = 0x00;
     public static final int OM_MSG_TYPE_SYSTEM = 0x01;
-    public static final String[] MU500 = new String[]{"Yamaha MU500-1", "Yamaha MU500-2", "Yamaha MU500-3", "Yamaha MU500-4"};
+    public static final String[] MU500 = new String[]{"2- Yamaha MU500-1", "Yamaha MU500-2", "Yamaha MU500-3", "Yamaha MU500-4"};
     public static final String MICRO_LITE_1 = "2- micro lite: Port 1";
     public static final String MICRO_LITE_2 = "2- micro lite: Port 2";
     public static final String MICRO_LITE_3 = "2- micro lite: Port 3";
