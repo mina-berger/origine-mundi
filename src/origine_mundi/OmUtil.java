@@ -45,9 +45,12 @@ public class OmUtil {
     public static final String MICRO_LITE_5 = "2- micro lite: Port 5";
     public static final String US_122 = "TASCAM US-122 MKII MIDI";
     
-    public static List<Integer> toList(int[] data){
+    /*public static List<Integer> toList(int[] data){
         return Arrays.asList(ArrayUtils.toObject(data));
-    }
+    }*/
+    /*public static int[] toArray(List<Integer> data){
+        return ArrayUtils.toPrimitive(data.toArray(new Integer[]{}));
+    }*/
     public static SysexMessage sysex(String str) throws InvalidMidiDataException {
         String[] strs = str.split(" ");
         byte[] bytes = new byte[strs.length];

@@ -6,7 +6,7 @@
 
 package origine_mundi.machine;
 
-import origine_mundi.OmUtil;
+import origine_mundi.Integers;
 import origine_mundi.SysexDataModel;
 
 /**
@@ -27,7 +27,7 @@ public class Yamaha extends MidiMachine {
         return getRequest(model, data, request_model);
     }
     public SysexBuilder getRequest(int model, int[] data, SysexDataModel request_model){
-        return new SysexBuilder(new int[]{YAMAHA_ID, device_l, model}, request_model, OmUtil.toList(data), getChecksumRequest());
+        return new SysexBuilder(new Integers(YAMAHA_ID, device_l, model), request_model, new Integers(data), getChecksumRequest());
     }
     
 }

@@ -7,7 +7,6 @@
 package origine_mundi.opus;
 
 import javax.sound.midi.ShortMessage;
-import origine_mundi.OmBrevCreator;
 import origine_mundi.OmPlayer;
 import origine_mundi.machine.D_110;
 

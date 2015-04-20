@@ -14,7 +14,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
-import org.apache.commons.lang3.ArrayUtils;
+import origine_mundi.Integers;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.MICRO_LITE_5;
@@ -71,7 +71,7 @@ public class MidiMachine {
     public SysexBuilder get(SysexBuilder sysex_builder, SysexDataModel data_model, int count) {
         
         
-        ArrayList<Integer> data = getData(sysex_builder.getSysex(), count);
+        Integers data = getData(sysex_builder.getSysex(), count);
         if(data.get(0) != 0xf0 || data.get(data.size() - 1) != 0xf7){
             throw new OmException("illegal sysex response:" + debugSysex(data));
         }
@@ -86,18 +86,18 @@ public class MidiMachine {
         //return new SysexBuilder(new int[]{data.get(1), data.get(2), data.get(3), data.get(4)}, data_model, data.subList(4, data.size() - 2), checksum_dump);
     }
     protected SysexBuilder toBuilder(List<Integer> data, SysexDataModel data_model){
-        List<Integer> sublist = data.subList(header_size, data.size() - (checksum_dump?1:0));
+        Integers sublist = new Integers(data.subList(header_size, data.size() - (checksum_dump?1:0)));
         System.out.println(debugSysex(sublist));
-        int[] header = ArrayUtils.toPrimitive(data.subList(0, header_size).toArray(new Integer[]{}));
+        Integers header = new Integers(data.subList(0, header_size));
         
         return new SysexBuilder(header, data_model, sublist, checksum_dump);
     }
     private SysexReceiver sr = null;
-    public ArrayList<Integer> getData() {
+    public Integers getData() {
         SysexMessage sysex_ret = sr.removeHead();
-        return toIntList(sysex_ret.getData());
+        return toIntegers(sysex_ret.getData());
     }
-    public ArrayList<Integer> getData(SysexMessage sysex, int count) {
+    public Integers getData(SysexMessage sysex, int count) {
         try {
             sr = new SysexReceiver();
             
@@ -108,10 +108,10 @@ public class MidiMachine {
             if(sr.getList().isEmpty()){
                 return null;
             }
-            ArrayList<Integer> ret = new ArrayList<>();
+            Integers ret = new Integers();
             int read_count = 0;
             while(true){
-                ArrayList<Integer> data = getData();
+                Integers data = getData();
                 ret.addAll(data.subList(ret.isEmpty()?0:1, data.size()));
                 if(data.size() == 0x400 && data.get(data.size() - 1) !=0xf7){
                     continue;
@@ -135,11 +135,10 @@ public class MidiMachine {
                 throw new OmException("failed to get sysex", ex);
         }
     }
-    private ArrayList<Integer> toIntList(byte[] data){
-        ArrayList<Integer> ret = new ArrayList<>();
-        ret.add(0xf0);
+    private Integers toIntegers(byte[] data){
+        Integers ret = new Integers(0xf0);
         for(int i = 0;i < data.length;i++){
-            ret.add(data[i] < 0?data[i] + 0x100:data[i]);
+            ret.append(data[i] < 0?data[i] + 0x100:data[i]);
         }
         return ret;
     }
@@ -155,7 +154,7 @@ public class MidiMachine {
                 }
                 SysexMessage sysex_ret = sr.removeHead();
                 byte[] data = sysex_ret.getData();
-                ArrayList<Integer> ret = new ArrayList<>();
+                Integers ret = new Integers();
                 ret.add(0xf0);
                 for(int i = 0;i < data.length;i++){
                     ret.add(data[i] < 0?data[i] + 0x100:data[i]);
@@ -175,7 +174,7 @@ public class MidiMachine {
                 throw new OmException("failed to send sysex", ex);
         }
     }
-    public static String debugSysex(List<Integer> list){
+    public static String debugSysex(Integers list){
         String str = "";
         for(Integer value:list){
             String hex = fill(Integer.toHexString(value), 2);

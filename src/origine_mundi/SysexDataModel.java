@@ -65,9 +65,9 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
         }
     }
     public Explanations getExplanations(int... values){
-        return getExplanations(OmUtil.toList(values));
+        return getExplanations(new Integers(values));
     }
-    public Explanations getExplanations(List<Integer> values){
+    public Explanations getExplanations(Integers values){
         Explanations expls = new Explanations(name);
         for(Integer index:keySet()){
             DataUnit data_unit = get(index);
@@ -891,7 +891,7 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
                 new Characters("hello", 2)
         );
         
-        model.getExplanations(Arrays.asList(new Integer[]{0x20, 0x32, 0x33, 3, 0x35, 0x36, 0x37, 0x20, 0x20, 0x5, 0x40, 0x53, 0x2, 0x36, 0x37})).print();
+        model.getExplanations(new Integers(0x20, 0x32, 0x33, 3, 0x35, 0x36, 0x37, 0x20, 0x20, 0x5, 0x40, 0x53, 0x2, 0x36, 0x37)).print();
         DataUnitIndex dui = model.getDataUnitIndex("block.block2.number2");
         System.out.println(dui.getDataUnit().getName() + ":" + dui.getIndex() + ":" + dui.getDataUnit().length());
     }

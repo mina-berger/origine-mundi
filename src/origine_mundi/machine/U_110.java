@@ -6,10 +6,6 @@
 
 package origine_mundi.machine;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiUnavailableException;
 import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.MICRO_LITE_2;
 import origine_mundi.SysexDataModel;
@@ -52,7 +48,7 @@ public class U_110 extends Roland {
             };
         }*/
 
-        PATCH.getExplanations(OmUtil.toList(alt)).print();
+        PATCH.getExplanations(alt).print();
         /*U_110 u_110 = U_110.instance();
         try {
             u_110.checkSound(0);

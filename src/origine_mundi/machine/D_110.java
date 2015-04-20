@@ -6,6 +6,7 @@
 
 package origine_mundi.machine;
 
+import origine_mundi.Integers;
 import static origine_mundi.OmUtil.MICRO_LITE_3;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.BitArray;
@@ -172,9 +173,17 @@ public class D_110 extends Roland {
         sb.getExplanations().print();
         */
         
+        AddressDeRoland address = new AddressDeRoland(0x04, 0x00, 0x00).shift(TONE.getDataUnitIndex("partial0.TVF cutoff freq").getIndex() - 3);
+        
+        System.out.println(address);
         System.out.println(TONE.getDataUnitIndex("partial0.TVF cutoff freq").getIndex());
-        /*D_110 d_110 = D_110.instance();
-        d_110.get(d_110.getRQT(new Address(0x04, 0x00, 0x00), new Address(0x00, 0x01, 0x76)), model).getExplanations().print();
+        D_110 d_110 = D_110.instance();
+        d_110.send(d_110.getDT1(new SysexDataModel("cuttoff", 
+            new ByteValues("address", 3),
+            new ByteValue("TVF cutoff freq", 0, 100)), address.append(50)).getSysex());
+        d_110.checkSound(0);
+        
+        /*d_110.get(d_110.getRQT(new Address(0x04, 0x00, 0x00), new Address(0x00, 0x01, 0x76)), model).getExplanations().print();
         SysexBuilder sb = d_110.getDT1(TONE, data);
         d_110.send(sb.getSysex());
         d_110.finalize();
@@ -205,12 +214,21 @@ public class D_110 extends Roland {
         
         d110.finalize();*/
     }
-    public void callTone(int tone_memory_number, int part_temporary){
-        getRQT(new AddressDeRoland(0x04, 0x00, 0x00), new AddressDeRoland(0x00, 0x01, 0x76));
-
-        
+    public static final AddressDeRoland ADDRESS_TONE_TEMPORARY = new AddressDeRoland(0x04, 0x00, 0x00);
+    public static final AddressDeRoland ADDRESS_TONE_MEMORY    = new AddressDeRoland(0x08, 0x00, 0x00);
+    public static final AddressDeRoland LENGTH_TONE_TEMPORARY  = new AddressDeRoland(0x00, 0x01, 0x76);
+    public static final AddressDeRoland LENGTH_TONE_MEMORY     = new AddressDeRoland(0x00, 0x02, 0x00);
+    public void callMemoryTone(int tone_memory_number, int part_temporary){
+        if(tone_memory_number < 0 || tone_memory_number > 63){
+            throw new IllegalArgumentException("tone memory number is out of range(" + tone_memory_number + ")");
+        }
+        if(part_temporary < 0 || part_temporary > 7){
+            throw new IllegalArgumentException("part temporary is out of range(" + part_temporary + ")");
+        }
+        AddressDeRoland address_memory = new AddressDeRoland(ADDRESS_TONE_MEMORY, LENGTH_TONE_MEMORY, tone_memory_number);
+        SysexBuilder tone_memory = get(getRQT(address_memory, LENGTH_TONE_MEMORY), TONE);
+        AddressDeRoland address_temporary = new AddressDeRoland(ADDRESS_TONE_TEMPORARY, LENGTH_TONE_TEMPORARY, part_temporary);
+        tone_memory.setValue("address", address_temporary);
+        send(tone_memory.getSysex());
     }
-    
-    
-    
 }

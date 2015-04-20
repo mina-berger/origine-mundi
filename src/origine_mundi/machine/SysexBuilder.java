@@ -6,11 +6,10 @@
 
 package origine_mundi.machine;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import org.apache.commons.lang3.ArrayUtils;
+import origine_mundi.Integers;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.SYSEX_STATUS_AB;
@@ -24,9 +23,9 @@ import static origine_mundi.SysexDataModel.as7bitValues;
  * @author Mina
  */
 public class SysexBuilder {
-    ArrayList<Integer> header;
-    ArrayList<Integer> contents;
-    ArrayList<Integer> footer;
+    Integers _header;
+    Integers contents;
+    Integers footer;
     SysexDataModel data_model;
     boolean checksum;
     /*protected SysexBuilder(SysexBuilder sb){
@@ -34,10 +33,8 @@ public class SysexBuilder {
         contents = new ArrayList(sb.contents);
         footer = ArrayUtils.clone(sb.footer);
     }*/
-    public SysexBuilder(int[] header, SysexDataModel data_model, List<Integer> data, boolean checksum){
-        this.header = new ArrayList<>();
-        this.header.add(SYSEX_STATUS_AB);
-        this.header.addAll(OmUtil.toList(header));
+    public SysexBuilder(Integers header, SysexDataModel data_model, Integers data, boolean checksum){
+        this._header = new Integers(SYSEX_STATUS_AB).append(header);
         if(data_model == null){
             throw new OmException("SysexDataModel cannot be null"); 
         }
@@ -50,9 +47,9 @@ public class SysexBuilder {
         
         
         this.data_model = data_model;
-        contents = new ArrayList<>(data);
+        contents = new Integers(data);
         data_model.check(contents);
-        footer = new ArrayList<>();
+        footer = new Integers();
         footer.add(SYSEX_STATUS_AD);
         this.checksum = checksum;
     }
@@ -65,21 +62,21 @@ public class SysexBuilder {
     }
     public void setCharacters(String fullname, String text){
         DataUnitIndex dui = data_model.getDataUnitIndex(fullname);
-        int[] values = new int[dui.length()];
-        for(int i = 0;i < values.length;i++){
-            values[i] = text.length() <= i?' ':text.charAt(i);
+        Integers values = new Integers();
+        for(int i = 0;i < dui.length();i++){
+            values.add(text.length() <= i?' ':(int)text.charAt(i));
         }
         setValue(dui, values);
     }
-    public void setValue(String fullname, int... values){
+    public void setValue(String fullname, Integers values){
         setValue(data_model.getDataUnitIndex(fullname), values);
     }
-    private void setValue(DataUnitIndex dui, int... values){
-        if(values.length != dui.length()){
-            throw new OmException("illegal value length(expected " + dui.length() + " but " + values.length + ")");
+    private void setValue(DataUnitIndex dui, Integers values){
+        if(values.size() != dui.length()){
+            throw new OmException("illegal value length(expected " + dui.length() + " but " + values.size() + ")");
         }
         for(int i = 0;i < dui.length();i++){
-            contents.set(dui.getIndex() + i, values[i]);
+            contents.set(dui.getIndex() + i, values.get(i));
         }
         dui.check(contents);
     }
@@ -127,12 +124,9 @@ public class SysexBuilder {
     }*/
     public SysexMessage getSysex(){
         try {
-            int[] data = ArrayUtils.toPrimitive(contents.toArray(new Integer[0]));
-            ArrayList<Integer> list = new ArrayList<>();
-            list.addAll(header);
-            list.addAll(contents);
+            Integers list = new Integers(_header).append(contents);
             if(checksum){
-                list.add(checksum(data));
+                list.add(checksum(contents));
             }
             list.addAll(footer);
             
@@ -141,7 +135,7 @@ public class SysexBuilder {
             throw new OmException("failed to retrieve SysexMessage", ex);
         }
     }
-    private int checksum(int[] data){
+    private int checksum(Integers data){
         int sum = 0;
         for(int datum:data){
             sum += datum;

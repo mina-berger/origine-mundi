@@ -7,11 +7,7 @@
 package origine_mundi.machine;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiUnavailableException;
+import origine_mundi.Integers;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.MICRO_LITE_1;
@@ -73,7 +69,7 @@ public class TG77 extends Yamaha {
     }
     public SysexBuilder getVoice(int memory_type, int memory_number){
         //tg77.get(
-        ArrayList<Integer> data = getData(getRequest("LM  8101VC", memory_type, memory_number).getSysex(), 1);
+        Integers data = getData(getRequest("LM  8101VC", memory_type, memory_number).getSysex(), 1);
         System.out.println(data.size());
         System.out.println(debugSysex(data));
 //List<Integer> head_data = data.subList(4, 43);
