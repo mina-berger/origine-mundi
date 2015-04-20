@@ -173,21 +173,48 @@ public class D_110 extends Roland {
         sb.getExplanations().print();
         */
         
-        AddressDeRoland address = new AddressDeRoland(0x04, 0x00, 0x00).shift(TONE.getDataUnitIndex("partial0.TVF cutoff freq").getIndex() - 3);
-        
-        System.out.println(address);
-        System.out.println(TONE.getDataUnitIndex("partial0.TVF cutoff freq").getIndex());
+        //System.out.println(TONE.getDataUnitIndex("partial0.TVF cutoff freq").getIndex());
         D_110 d_110 = D_110.instance();
-        d_110.send(d_110.getDT1(new SysexDataModel("cuttoff", 
+        /* OK d_110.send(d_110.getDT1(new SysexDataModel("channels", 
             new ByteValues("address", 3),
-            new ByteValue("TVF cutoff freq", 0, 100)), address.append(50)).getSysex());
-        d_110.checkSound(0);
+            new ByteValues("chennels", 9, 0, 15)),
+                new AddressDeRoland(0x10, 0x0, 0xd).append(0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08)).getSysex());*/
+        for(int i = 32;i < 64;i++){
+            d_110.callMemoryTone(i, 0);
+            d_110.checkSound(0);
+        }
+       /* int[] cutoffs = new int[]{50, 50, 100, 100};
+        int[] resonances = new int[]{0, 30, 0, 30};
+        AddressDeRoland address;
+        for(int i = 0;i < cutoffs.length;i++){
+            int cutoff = cutoffs[i];
+            int resonance = resonances[i];
+            address = new AddressDeRoland(0x04, 0x00, 0x00).shift(TONE.getDataUnitIndex("partial0.TVF cutoff freq").getIndex() - 3);
+            d_110.send(d_110.getDT1(new SysexDataModel("cuttoff", 
+                new ByteValues("address", 3),
+                new ByteValue("TVF cutoff freq", 0, 100), new ByteValue("TVF cutoff resonance", 0, 30)), address.append(cutoff, resonance)).getSysex());
+            address = new AddressDeRoland(0x04, 0x00, 0x00).shift(TONE.getDataUnitIndex("partial1.TVF cutoff freq").getIndex() - 3);
+            d_110.send(d_110.getDT1(new SysexDataModel("cuttoff", 
+                new ByteValues("address", 3),
+                new ByteValue("TVF cutoff freq", 0, 100), new ByteValue("TVF cutoff resonance", 0, 30)), address.append(cutoff, resonance)).getSysex());
+            address = new AddressDeRoland(0x04, 0x00, 0x00).shift(TONE.getDataUnitIndex("partial2.TVF cutoff freq").getIndex() - 3);
+            d_110.send(d_110.getDT1(new SysexDataModel("cuttoff", 
+                new ByteValues("address", 3),
+                new ByteValue("TVF cutoff freq", 0, 100), new ByteValue("TVF cutoff resonance", 0, 30)), address.append(cutoff, resonance)).getSysex());
+            address = new AddressDeRoland(0x04, 0x00, 0x00).shift(TONE.getDataUnitIndex("partial3.TVF cutoff freq").getIndex() - 3);
+            d_110.send(d_110.getDT1(new SysexDataModel("cuttoff", 
+                new ByteValues("address", 3),
+                new ByteValue("TVF cutoff freq", 0, 100), new ByteValue("TVF cutoff resonance", 0, 30)), address.append(cutoff, resonance)).getSysex());
+            d_110.checkSound(0);
+        }*/
         
-        /*d_110.get(d_110.getRQT(new Address(0x04, 0x00, 0x00), new Address(0x00, 0x01, 0x76)), model).getExplanations().print();
-        SysexBuilder sb = d_110.getDT1(TONE, data);
+        //OK:
+        d_110.get(d_110.getRQT(ADDRESS_TONE_TEMPORARY, LENGTH_TONE_TEMPORARY ), TONE).getExplanations().print();
+        /*SysexBuilder sb = d_110.getDT1(TONE, data);
         d_110.send(sb.getSysex());
-        d_110.finalize();
         */
+        d_110.finalize();
+        
         
         //d110.send(d110.TEMPORARY_TONE[0].getSysex());
         //checkSound(D_110, 0);
@@ -226,9 +253,182 @@ public class D_110 extends Roland {
             throw new IllegalArgumentException("part temporary is out of range(" + part_temporary + ")");
         }
         AddressDeRoland address_memory = new AddressDeRoland(ADDRESS_TONE_MEMORY, LENGTH_TONE_MEMORY, tone_memory_number);
-        SysexBuilder tone_memory = get(getRQT(address_memory, LENGTH_TONE_MEMORY), TONE);
+        SysexBuilder tone_memory = get(getRQT(address_memory, LENGTH_TONE_TEMPORARY), TONE);
         AddressDeRoland address_temporary = new AddressDeRoland(ADDRESS_TONE_TEMPORARY, LENGTH_TONE_TEMPORARY, part_temporary);
         tone_memory.setValue("address", address_temporary);
         send(tone_memory.getSysex());
     }
+    /*
+[00 00] 000 : address                          : 04, 00, 00
+[00 03] 003 : common.name                      : 'Warm Bell '
+[00 0d] 013 : common.partial structure 0 & 1   : 07 : S & S Stereo
+[00 0e] 014 : common.partial structure 2 & 3   : 08 : P & P Stereo
+[00 0f] 015 : common.partial mute              : 0f : [****] bit:0000[3][2][1][0]
+[00 10] 016 : common.env mode                  : 00 : Normal
+[00 11] 017 : partial0.WG pitch coarse         : 24 : C_4
+[00 12] 018 : partial0.WG pitch fine           : 37 : +5
+[00 13] 019 : partial0.WG pitch keyfollow      : 10 : s2
+[00 14] 020 : partial0.WG pitch benderSW       : 01 : on
+[00 15] 021 : partial0.WG wave form/pcm bank   : 01 : SAW/1
+[00 16] 022 : partial0.WG pcm wave #           : 00 : 0
+[00 17] 023 : partial0.WG pulse width          : 2c : 44
+[00 18] 024 : partial0.WG PW velo sens         : 07 : 0
+[00 19] 025 : partial0.P-ENV depth             : 02 : 2
+[00 1a] 026 : partial0.P-ENV velo sens         : 03 : 3
+[00 1b] 027 : partial0.P-ENV time keyfollow    : 04 : 4
+[00 1c] 028 : partial0.P-ENV times             : 0f, 17, 24, 64
+[00 20] 032 : partial0.P-ENV levels            : 21, 38, 2b : -17, +6, -7
+[00 23] 035 : partial0.P-ENV sustain level     : 35 : +3
+[00 24] 036 : partial0.P-ENV end level         : 32 : 0
+[00 25] 037 : partial0.P-LFO rate              : 35 : 53
+[00 26] 038 : partial0.P-LFO depth             : 07 : 7
+[00 27] 039 : partial0.P-LFO mod sens          : 0e : 14
+[00 28] 040 : partial0.TVF cutoff freq         : 64 : 100
+[00 29] 041 : partial0.TVF resonance           : 1e : 30
+[00 2a] 042 : partial0.TVF keyfollow           : 07 : 1/2
+[00 2b] 043 : partial0.TVF bias point          : 26 : <B_4
+[00 2c] 044 : partial0.TVF bias level          : 0a : +3
+[00 2d] 045 : partial0.TVF ENV depth           : 00 : 0
+[00 2e] 046 : partial0.TVF ENV velo sens       : 1c : 28
+[00 2f] 047 : partial0.TVF ENV depth keyfollow : 00 : 0
+[00 30] 048 : partial0.TVF ENV time keyfollow  : 00 : 0
+[00 31] 049 : partial0.TVF ENV times           : 00, 00, 64, 64, 64
+[00 36] 054 : partial0.TVF ENV levels          : 64, 64, 00
+[00 39] 057 : partial0.TVF ENV sustain level   : 00 : 0
+[00 3a] 058 : partial0.TVA level               : 4b : 75
+[00 3b] 059 : partial0.TVA velo sens           : 40 : 64
+[00 3c] 060 : partial0.TVA bias point1         : 5b : >C_4
+[00 3d] 061 : partial0.TVA bias level1         : 0c : 0
+[00 3e] 062 : partial0.TVA bias point2         : 2e : <G_5
+[00 3f] 063 : partial0.TVA bias level2         : 08 : -4
+[00 40] 064 : partial0.TVA time keyfollow      : 02 : 2
+[00 41] 065 : partial0.TVA time v_follow       : 04 : 4
+[00 42] 066 : partial0.TVA times               : 00, 23, 53, 64, 53
+[00 47] 071 : partial0.TVA levels              : 64, 5a, 00
+[00 4a] 074 : partial0.TVA sustain level       : 00 : 0
+[00 4b] 075 : partial1.WG pitch coarse         : 24 : C_4
+[00 4c] 076 : partial1.WG pitch fine           : 2d : -5
+[00 4d] 077 : partial1.WG pitch keyfollow      : 10 : s2
+[00 4e] 078 : partial1.WG pitch benderSW       : 01 : on
+[00 4f] 079 : partial1.WG wave form/pcm bank   : 01 : SAW/1
+[00 50] 080 : partial1.WG pcm wave #           : 00 : 0
+[00 51] 081 : partial1.WG pulse width          : 27 : 39
+[00 52] 082 : partial1.WG PW velo sens         : 07 : 0
+[00 53] 083 : partial1.P-ENV depth             : 02 : 2
+[00 54] 084 : partial1.P-ENV velo sens         : 03 : 3
+[00 55] 085 : partial1.P-ENV time keyfollow    : 04 : 4
+[00 56] 086 : partial1.P-ENV times             : 0f, 17, 24, 64
+[00 5a] 090 : partial1.P-ENV levels            : 43, 2c, 39 : +17, -6, +7
+[00 5d] 093 : partial1.P-ENV sustain level     : 2f : -3
+[00 5e] 094 : partial1.P-ENV end level         : 32 : 0
+[00 5f] 095 : partial1.P-LFO rate              : 35 : 53
+[00 60] 096 : partial1.P-LFO depth             : 06 : 6
+[00 61] 097 : partial1.P-LFO mod sens          : 0e : 14
+[00 62] 098 : partial1.TVF cutoff freq         : 64 : 100
+[00 63] 099 : partial1.TVF resonance           : 1e : 30
+[00 64] 100 : partial1.TVF keyfollow           : 07 : 1/2
+[00 65] 101 : partial1.TVF bias point          : 27 : <C_5
+[00 66] 102 : partial1.TVF bias level          : 0a : +3
+[00 67] 103 : partial1.TVF ENV depth           : 00 : 0
+[00 68] 104 : partial1.TVF ENV velo sens       : 1c : 28
+[00 69] 105 : partial1.TVF ENV depth keyfollow : 00 : 0
+[00 6a] 106 : partial1.TVF ENV time keyfollow  : 00 : 0
+[00 6b] 107 : partial1.TVF ENV times           : 00, 00, 64, 64, 64
+[00 70] 112 : partial1.TVF ENV levels          : 64, 64, 00
+[00 73] 115 : partial1.TVF ENV sustain level   : 00 : 0
+[00 74] 116 : partial1.TVA level               : 4b : 75
+[00 75] 117 : partial1.TVA velo sens           : 40 : 64
+[00 76] 118 : partial1.TVA bias point1         : 5b : >C_4
+[00 77] 119 : partial1.TVA bias level1         : 0c : 0
+[00 78] 120 : partial1.TVA bias point2         : 2e : <G_5
+[00 79] 121 : partial1.TVA bias level2         : 08 : -4
+[00 7a] 122 : partial1.TVA time keyfollow      : 02 : 2
+[00 7b] 123 : partial1.TVA time v_follow       : 04 : 4
+[00 7c] 124 : partial1.TVA times               : 00, 23, 53, 64, 53
+[01 01] 129 : partial1.TVA levels              : 64, 5c, 00
+[01 04] 132 : partial1.TVA sustain level       : 00 : 0
+[01 05] 133 : partial2.WG pitch coarse         : 21 : A_3
+[01 06] 134 : partial2.WG pitch fine           : 2d : -5
+[01 07] 135 : partial2.WG pitch keyfollow      : 10 : s2
+[01 08] 136 : partial2.WG pitch benderSW       : 01 : on
+[01 09] 137 : partial2.WG wave form/pcm bank   : 00 : SQU/1
+[01 0a] 138 : partial2.WG pcm wave #           : 69 : 105
+[01 0b] 139 : partial2.WG pulse width          : 00 : 0
+[01 0c] 140 : partial2.WG PW velo sens         : 07 : 0
+[01 0d] 141 : partial2.P-ENV depth             : 00 : 0
+[01 0e] 142 : partial2.P-ENV velo sens         : 00 : 0
+[01 0f] 143 : partial2.P-ENV time keyfollow    : 04 : 4
+[01 10] 144 : partial2.P-ENV times             : 00, 00, 00, 00
+[01 14] 148 : partial2.P-ENV levels            : 32, 32, 32 : 0, 0, 0
+[01 17] 151 : partial2.P-ENV sustain level     : 32 : 0
+[01 18] 152 : partial2.P-ENV end level         : 32 : 0
+[01 19] 153 : partial2.P-LFO rate              : 00 : 0
+[01 1a] 154 : partial2.P-LFO depth             : 00 : 0
+[01 1b] 155 : partial2.P-LFO mod sens          : 00 : 0
+[01 1c] 156 : partial2.TVF cutoff freq         : 64 : 100
+[01 1d] 157 : partial2.TVF resonance           : 1e : 30
+[01 1e] 158 : partial2.TVF keyfollow           : 0b : 1
+[01 1f] 159 : partial2.TVF bias point          : 00 : <A_1
+[01 20] 160 : partial2.TVF bias level          : 07 : 0
+[01 21] 161 : partial2.TVF ENV depth           : 00 : 0
+[01 22] 162 : partial2.TVF ENV velo sens       : 00 : 0
+[01 23] 163 : partial2.TVF ENV depth keyfollow : 00 : 0
+[01 24] 164 : partial2.TVF ENV time keyfollow  : 00 : 0
+[01 25] 165 : partial2.TVF ENV times           : 00, 00, 00, 00, 00
+[01 2a] 170 : partial2.TVF ENV levels          : 00, 00, 00
+[01 2d] 173 : partial2.TVF ENV sustain level   : 00 : 0
+[01 2e] 174 : partial2.TVA level               : 42 : 66
+[01 2f] 175 : partial2.TVA velo sens           : 3e : 62
+[01 30] 176 : partial2.TVA bias point1         : 60 : >F_4
+[01 31] 177 : partial2.TVA bias level1         : 04 : -8
+[01 32] 178 : partial2.TVA bias point2         : 1b : <C_4
+[01 33] 179 : partial2.TVA bias level2         : 06 : -6
+[01 34] 180 : partial2.TVA time keyfollow      : 04 : 4
+[01 35] 181 : partial2.TVA time v_follow       : 00 : 0
+[01 36] 182 : partial2.TVA times               : 00, 1f, 58, 64, 58
+[01 3b] 187 : partial2.TVA levels              : 64, 4d, 00
+[01 3e] 190 : partial2.TVA sustain level       : 00 : 0
+[01 3f] 191 : partial3.WG pitch coarse         : 1a : D_3
+[01 40] 192 : partial3.WG pitch fine           : 38 : +6
+[01 41] 193 : partial3.WG pitch keyfollow      : 10 : s2
+[01 42] 194 : partial3.WG pitch benderSW       : 01 : on
+[01 43] 195 : partial3.WG wave form/pcm bank   : 00 : SQU/1
+[01 44] 196 : partial3.WG pcm wave #           : 65 : 101
+[01 45] 197 : partial3.WG pulse width          : 00 : 0
+[01 46] 198 : partial3.WG PW velo sens         : 07 : 0
+[01 47] 199 : partial3.P-ENV depth             : 00 : 0
+[01 48] 200 : partial3.P-ENV velo sens         : 00 : 0
+[01 49] 201 : partial3.P-ENV time keyfollow    : 04 : 4
+[01 4a] 202 : partial3.P-ENV times             : 00, 00, 00, 00
+[01 4e] 206 : partial3.P-ENV levels            : 32, 32, 32 : 0, 0, 0
+[01 51] 209 : partial3.P-ENV sustain level     : 32 : 0
+[01 52] 210 : partial3.P-ENV end level         : 32 : 0
+[01 53] 211 : partial3.P-LFO rate              : 41 : 65
+[01 54] 212 : partial3.P-LFO depth             : 0b : 11
+[01 55] 213 : partial3.P-LFO mod sens          : 1b : 27
+[01 56] 214 : partial3.TVF cutoff freq         : 64 : 100
+[01 57] 215 : partial3.TVF resonance           : 1e : 30
+[01 58] 216 : partial3.TVF keyfollow           : 0b : 1
+[01 59] 217 : partial3.TVF bias point          : 00 : <A_1
+[01 5a] 218 : partial3.TVF bias level          : 07 : 0
+[01 5b] 219 : partial3.TVF ENV depth           : 00 : 0
+[01 5c] 220 : partial3.TVF ENV velo sens       : 00 : 0
+[01 5d] 221 : partial3.TVF ENV depth keyfollow : 00 : 0
+[01 5e] 222 : partial3.TVF ENV time keyfollow  : 00 : 0
+[01 5f] 223 : partial3.TVF ENV times           : 00, 00, 00, 00, 00
+[01 64] 228 : partial3.TVF ENV levels          : 00, 00, 00
+[01 67] 231 : partial3.TVF ENV sustain level   : 00 : 0
+[01 68] 232 : partial3.TVA level               : 31 : 49
+[01 69] 233 : partial3.TVA velo sens           : 3b : 59
+[01 6a] 234 : partial3.TVA bias point1         : 5b : >C_4
+[01 6b] 235 : partial3.TVA bias level1         : 05 : -7
+[01 6c] 236 : partial3.TVA bias point2         : 1b : <C_4
+[01 6d] 237 : partial3.TVA bias level2         : 05 : -7
+[01 6e] 238 : partial3.TVA time keyfollow      : 04 : 4
+[01 6f] 239 : partial3.TVA time v_follow       : 00 : 0
+[01 70] 240 : partial3.TVA times               : 00, 1f, 58, 64, 5a
+[01 75] 245 : partial3.TVA levels              : 64, 4b, 00
+[01 78] 248 : partial3.TVA sustain level       : 00 : 0    
+    
+    */
 }

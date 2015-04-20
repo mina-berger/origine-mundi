@@ -74,7 +74,7 @@ public class MidiInTester {
         MidiDevice ex_dev = null;
         MidiDevice in_dev = null;
         try {
-            ex_dev = getMidiDevice("3- micro lite: Port 2", true);
+            ex_dev = getMidiDevice("2- micro lite: Port 3", true);
             //ex_dev = getMidiDevice(MICRO_LITE_2, true);
             //ex_dev = getMidiDevice("Port 4 on MXPXT", true);
             //in_dev = getMidiDevice(MICRO_LITE_5, false);
