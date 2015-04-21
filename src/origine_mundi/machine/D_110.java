@@ -6,6 +6,7 @@
 
 package origine_mundi.machine;
 
+import javax.sound.midi.SysexMessage;
 import origine_mundi.Integers;
 import static origine_mundi.OmUtil.MICRO_LITE_3;
 import origine_mundi.SysexDataModel;
@@ -17,6 +18,7 @@ import origine_mundi.SysexDataModel.Characters;
 import origine_mundi.SysexDataModel.CodeValue;
 import origine_mundi.SysexDataModel.D110BiasPoint;
 import origine_mundi.SysexDataModel.DataBlock;
+import origine_mundi.SysexDataModel.DataUnitIndex;
 import origine_mundi.SysexDataModel.KV;
 import origine_mundi.SysexDataModel.MidiChannel;
 import origine_mundi.SysexDataModel.NoteValue;
@@ -245,18 +247,31 @@ public class D_110 extends Roland {
     public static final AddressDeRoland ADDRESS_TONE_MEMORY    = new AddressDeRoland(0x08, 0x00, 0x00);
     public static final AddressDeRoland LENGTH_TONE_TEMPORARY  = new AddressDeRoland(0x00, 0x01, 0x76);
     public static final AddressDeRoland LENGTH_TONE_MEMORY     = new AddressDeRoland(0x00, 0x02, 0x00);
+    public SysexMessage sysexToneTemporary(int part, String fullname, int... ints){
+        DataUnitIndex dui = TONE.getDataUnitIndex(fullname);
+        AddressDeRoland address = addressToneTemporary(part).shift(dui.getIndex() - 3);
+        SysexDataModel model = new SysexDataModel("update", new ByteValues("address", 3), dui.getDataUnit());
+        return getDT1(model, address.append(ints)).getSysex();
+    }
     public void callMemoryTone(int tone_memory_number, int part_temporary){
         if(tone_memory_number < 0 || tone_memory_number > 63){
             throw new IllegalArgumentException("tone memory number is out of range(" + tone_memory_number + ")");
         }
-        if(part_temporary < 0 || part_temporary > 7){
-            throw new IllegalArgumentException("part temporary is out of range(" + part_temporary + ")");
-        }
         AddressDeRoland address_memory = new AddressDeRoland(ADDRESS_TONE_MEMORY, LENGTH_TONE_MEMORY, tone_memory_number);
         SysexBuilder tone_memory = get(getRQT(address_memory, LENGTH_TONE_TEMPORARY), TONE);
-        AddressDeRoland address_temporary = new AddressDeRoland(ADDRESS_TONE_TEMPORARY, LENGTH_TONE_TEMPORARY, part_temporary);
+        AddressDeRoland address_temporary = addressToneTemporary(part_temporary);
         tone_memory.setValue("address", address_temporary);
         send(tone_memory.getSysex());
+    }
+    public void setChannels(int ch0, int ch1, int ch2, int ch3, int ch4, int ch5, int ch6, int ch7, int ch8){
+        send(getDT1(MIDI_CHANNELS,
+                new AddressDeRoland(0x10, 0x0, 0xd).append(ch0, ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8)).getSysex());
+    }
+    private AddressDeRoland addressToneTemporary(int part){
+        if(part < 0 || part > 7){
+            throw new IllegalArgumentException("part for tone temporary is out of range(" + part + ")");
+        }
+        return new AddressDeRoland(ADDRESS_TONE_TEMPORARY, LENGTH_TONE_TEMPORARY, part);
     }
     /*
 [00 00] 000 : address                          : 04, 00, 00

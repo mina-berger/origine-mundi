@@ -860,7 +860,7 @@ public class SysexDataModel extends TreeMap<Integer, DataUnit>{
         
     }
     public static class DataUnitIndex {
-        private DataUnit data_unit;
+        private final DataUnit data_unit;
         private int index;
         DataUnitIndex(DataUnit data_unit, int index){
             this.data_unit = data_unit;

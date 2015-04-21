@@ -41,7 +41,7 @@ import origine_mundi.machine.MidiMachine;
  */
 public abstract class OmPlayer {
     private Sequence sequence;
-    private HashMap<Integer, MidiMachine> midi_machines;
+    private final HashMap<Integer, MidiMachine> midi_machines;
     //private Track track;
     private Integer track_index;
     private MidiDevice device;
@@ -104,8 +104,8 @@ public abstract class OmPlayer {
         }
     }
     public void brev(int command, int channel, int data1, int data2, double beat){
-        System.out.println(track_index);
-        System.out.println(device_id);
+        //System.out.println(track_index);
+        //System.out.println(device_id);
         brev(track_index, device_id, command, channel, data1, data2, beat);
     }
     public void brev(int track_index, int device_id, int command, int channel, int data1, int data2, double beat){
@@ -116,6 +116,9 @@ public abstract class OmPlayer {
         } catch (InvalidMidiDataException ex) {
             throw new OmException("illegal midi event", ex);
         }
+    }
+    public void sysex(SysexMessage sysex, double beat){
+        sysex(track_index, device_id, sysex, beat);
     }
     public void sysex(int track_index, int device_id, SysexMessage sysex, double beat){
         byte[] data = sysex.getMessage();
