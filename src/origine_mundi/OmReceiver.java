@@ -61,7 +61,7 @@ public class OmReceiver implements Receiver {
                                 toInt(data[6]), 
                                 toInt(data[7]));
                         receiver.send(short_message, timeStamp);
-                        System.out.println("sent:" + short_message.getCommand() + ":" + short_message.getChannel() + ":" + short_message.getData1() + ":" + short_message.getData2());
+                        //System.out.println("sent:" + short_message.getCommand() + ":" + short_message.getChannel() + ":" + short_message.getData1() + ":" + short_message.getData2());
                 }else if(om_msg_type == OM_MSG_TYPE_SYSTEM){
                     receiver.send(toRegularSysexMessage(sysex_message), timeStamp);
                 }
