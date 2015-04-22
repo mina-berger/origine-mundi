@@ -68,6 +68,9 @@ public class SysexBuilder {
         }
         setValue(dui, values);
     }
+    public void setValue(String fullname, int value){
+        setValue(data_model.getDataUnitIndex(fullname), new Integers(value));
+    }
     public void setValue(String fullname, Integers values){
         setValue(data_model.getDataUnitIndex(fullname), values);
     }

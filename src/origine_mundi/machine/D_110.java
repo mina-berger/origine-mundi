@@ -62,7 +62,8 @@ public class D_110 extends Roland {
             new NoteValue("key range upper"),
             new Blank("dummy", 4)
     );
-    private static SysexDataModel TIMBER_TEMPORARY = new SysexDataModel("tone",
+    private static final SysexDataModel TIMBRE_TEMPORARY = new SysexDataModel("tone",
+            new ByteValues("address", 3),
             TIMBRE_COMMON_BLOCK,
             TIMBRE_TEMPORARY_BLOCK
     );
@@ -131,7 +132,7 @@ public class D_110 extends Roland {
             new ByteValues("TVA levels", 3, 0, 100),
             new ByteValue("TVA sustain level", 0, 100)
         );
-    private static SysexDataModel TONE = new SysexDataModel("tone",
+    private static final SysexDataModel TONE = new SysexDataModel("tone",
             new ByteValues("address", 3),
             new DataBlock("common",
                 new Characters("name", 10),
@@ -181,10 +182,10 @@ public class D_110 extends Roland {
             new ByteValues("address", 3),
             new ByteValues("chennels", 9, 0, 15)),
                 new AddressDeRoland(0x10, 0x0, 0xd).append(0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08)).getSysex());*/
-        for(int i = 32;i < 64;i++){
-            d_110.callMemoryTone(i, 0);
-            d_110.checkSound(0);
-        }
+        //for(int i = 32;i < 64;i++){
+        //    d_110.callMemoryTone(i, 0);
+        //    d_110.checkSound(0);
+        //}
        /* int[] cutoffs = new int[]{50, 50, 100, 100};
         int[] resonances = new int[]{0, 30, 0, 30};
         AddressDeRoland address;
@@ -211,7 +212,8 @@ public class D_110 extends Roland {
         }*/
         
         //OK:
-        d_110.get(d_110.getRQT(ADDRESS_TONE_TEMPORARY, LENGTH_TONE_TEMPORARY ), TONE).getExplanations().print();
+        //d_110.get(d_110.getRQT(ADDRESS_TONE_TEMPORARY, LENGTH_TONE_TEMPORARY ), TONE).getExplanations().print();
+        d_110.get(d_110.getRQT(ADDRESS_TIMBRE_TEMPORARY, LENGTH_TIMBRE_TEMPORARY ), TIMBRE_TEMPORARY).getExplanations().print();
         /*SysexBuilder sb = d_110.getDT1(TONE, data);
         d_110.send(sb.getSysex());
         */
@@ -247,11 +249,17 @@ public class D_110 extends Roland {
     public static final AddressDeRoland ADDRESS_TONE_MEMORY    = new AddressDeRoland(0x08, 0x00, 0x00);
     public static final AddressDeRoland LENGTH_TONE_TEMPORARY  = new AddressDeRoland(0x00, 0x01, 0x76);
     public static final AddressDeRoland LENGTH_TONE_MEMORY     = new AddressDeRoland(0x00, 0x02, 0x00);
+    public static final AddressDeRoland ADDRESS_TIMBRE_TEMPORARY = new AddressDeRoland(0x03, 0x00, 0x00);
+    public static final AddressDeRoland LENGTH_TIMBRE_TEMPORARY  = new AddressDeRoland(0x00, 0x00, 0x10);
     public SysexMessage sysexToneTemporary(int part, String fullname, int... ints){
         DataUnitIndex dui = TONE.getDataUnitIndex(fullname);
         AddressDeRoland address = addressToneTemporary(part).shift(dui.getIndex() - 3);
         SysexDataModel model = new SysexDataModel("update", new ByteValues("address", 3), dui.getDataUnit());
         return getDT1(model, address.append(ints)).getSysex();
+    }
+    public SysexBuilder builderTimbreTemporary(int part){
+        AddressDeRoland address = addressTimbreTemporary(part);
+        return get(getRQT(address, LENGTH_TIMBRE_TEMPORARY ), TIMBRE_TEMPORARY);
     }
     public void callMemoryTone(int tone_memory_number, int part_temporary){
         if(tone_memory_number < 0 || tone_memory_number > 63){
@@ -272,6 +280,12 @@ public class D_110 extends Roland {
             throw new IllegalArgumentException("part for tone temporary is out of range(" + part + ")");
         }
         return new AddressDeRoland(ADDRESS_TONE_TEMPORARY, LENGTH_TONE_TEMPORARY, part);
+    }
+    private AddressDeRoland addressTimbreTemporary(int part){
+        if(part < 0 || part > 7){
+            throw new IllegalArgumentException("part for timbre temporary is out of range(" + part + ")");
+        }
+        return new AddressDeRoland(ADDRESS_TIMBRE_TEMPORARY, LENGTH_TIMBRE_TEMPORARY, part);
     }
     /*
 [00 00] 000 : address                          : 04, 00, 00
