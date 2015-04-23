@@ -186,7 +186,7 @@ public class OmUtil {
         public void close() {}
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         printEnv(System.out);
 
             //MidiDevice out_dev = getMidiDevice(D_110, true);
