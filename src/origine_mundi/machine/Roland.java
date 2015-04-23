@@ -6,6 +6,8 @@
 
 package origine_mundi.machine;
 
+import origine_mundi.SysexBuilder;
+import origine_mundi.MidiMachine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

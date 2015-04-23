@@ -33,7 +33,6 @@ import static origine_mundi.OmUtil.OM_PRODUCT_ID;
 import static origine_mundi.OmUtil.SYSEX_STATUS_AB;
 import static origine_mundi.OmUtil.noteoff;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
-import origine_mundi.machine.MidiMachine;
 
 /**
  *

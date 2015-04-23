@@ -16,8 +16,7 @@ import java.util.TreeMap;
 import org.apache.commons.lang3.ArrayUtils;
 import origine_mundi.SysexDataModel.DataBlock;
 import origine_mundi.SysexDataModel.DataUnit;
-import origine_mundi.machine.Explanations;
-import origine_mundi.machine.Explanations.Explanation;
+import origine_mundi.Explanations.Explanation;
 
 /**
  *

@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
-package origine_mundi.machine;
+package origine_mundi;
 
 import java.util.ArrayList;
 import origine_mundi.OmUtil;
-import origine_mundi.machine.Explanations.Explanation;
+import origine_mundi.Explanations.Explanation;
 
 /**
  *

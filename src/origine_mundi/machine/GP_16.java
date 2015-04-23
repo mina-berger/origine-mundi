@@ -6,6 +6,7 @@
 
 package origine_mundi.machine;
 
+import origine_mundi.SysexBuilder;
 import static origine_mundi.OmUtil.MICRO_LITE_4;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.BitArray;

@@ -6,6 +6,7 @@
 
 package origine_mundi.machine;
 
+import origine_mundi.SysexBuilder;
 import java.text.DecimalFormat;
 import origine_mundi.Integers;
 import origine_mundi.OmException;

@@ -6,8 +6,8 @@
 
 package origine_mundi.machine;
 
+import origine_mundi.SysexBuilder;
 import javax.sound.midi.SysexMessage;
-import origine_mundi.Integers;
 import static origine_mundi.OmUtil.MICRO_LITE_3;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.BitArray;
@@ -25,6 +25,7 @@ import origine_mundi.SysexDataModel.NoteValue;
 import origine_mundi.SysexDataModel.OffsetBinaries;
 import origine_mundi.SysexDataModel.OffsetBinary;
 import origine_mundi.SysexDataModel.OnOffValue;
+import origine_mundi.UpdateMap;
 
 /**
  *
@@ -251,15 +252,25 @@ public class D_110 extends Roland {
     public static final AddressDeRoland LENGTH_TONE_MEMORY     = new AddressDeRoland(0x00, 0x02, 0x00);
     public static final AddressDeRoland ADDRESS_TIMBRE_TEMPORARY = new AddressDeRoland(0x03, 0x00, 0x00);
     public static final AddressDeRoland LENGTH_TIMBRE_TEMPORARY  = new AddressDeRoland(0x00, 0x00, 0x10);
-    public SysexMessage sysexToneTemporary(int part, String fullname, int... ints){
+    /*public SysexMessage sysexToneTemporary(int part, String fullname, int... ints){
         DataUnitIndex dui = TONE.getDataUnitIndex(fullname);
         AddressDeRoland address = addressToneTemporary(part).shift(dui.getIndex() - 3);
         SysexDataModel model = new SysexDataModel("update", new ByteValues("address", 3), dui.getDataUnit());
         return getDT1(model, address.append(ints)).getSysex();
-    }
-    public SysexBuilder builderTimbreTemporary(int part){
+    }*/
+    public void updateTimbreTemporary(int part, UpdateMap update_map){
         AddressDeRoland address = addressTimbreTemporary(part);
-        return get(getRQT(address, LENGTH_TIMBRE_TEMPORARY ), TIMBRE_TEMPORARY);
+        SysexBuilder sb = get(getRQT(address, LENGTH_TIMBRE_TEMPORARY ), TIMBRE_TEMPORARY);
+        sb.update(update_map);
+        sb.getExplanations().print();
+        send(sb.getSysex());
+    }
+    public void updateToneTemporary(int part, UpdateMap update_map){
+        AddressDeRoland address = addressToneTemporary(part);
+        SysexBuilder sb = get(getRQT(address, LENGTH_TONE_TEMPORARY ), TONE);
+        sb.update(update_map);
+        sb.getExplanations().print();
+        send(sb.getSysex());
     }
     public void callMemoryTone(int tone_memory_number, int part_temporary){
         if(tone_memory_number < 0 || tone_memory_number > 63){
@@ -269,6 +280,7 @@ public class D_110 extends Roland {
         SysexBuilder tone_memory = get(getRQT(address_memory, LENGTH_TONE_TEMPORARY), TONE);
         AddressDeRoland address_temporary = addressToneTemporary(part_temporary);
         tone_memory.setValue("address", address_temporary);
+        tone_memory.getExplanations().print();
         send(tone_memory.getSysex());
     }
     public void setChannels(int ch0, int ch1, int ch2, int ch3, int ch4, int ch5, int ch6, int ch7, int ch8){

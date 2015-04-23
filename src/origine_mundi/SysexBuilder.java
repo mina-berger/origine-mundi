@@ -4,17 +4,13 @@
  * and open the template in the editor.
  */
 
-package origine_mundi.machine;
+package origine_mundi;
 
 import java.util.List;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import origine_mundi.Integers;
-import origine_mundi.OmException;
-import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.SYSEX_STATUS_AB;
 import static origine_mundi.OmUtil.SYSEX_STATUS_AD;
-import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.DataUnitIndex;
 import static origine_mundi.SysexDataModel.as7bitValues;
 
@@ -67,6 +63,12 @@ public class SysexBuilder {
             values.add(text.length() <= i?' ':(int)text.charAt(i));
         }
         setValue(dui, values);
+    }
+    public void update(UpdateMap update_map){
+        for(String key:update_map.keySet()){
+            Integers values = update_map.get(key);
+            setValue(key, values);
+        }
     }
     public void setValue(String fullname, int value){
         setValue(data_model.getDataUnitIndex(fullname), new Integers(value));

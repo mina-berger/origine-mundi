@@ -6,6 +6,7 @@
 
 package origine_mundi.machine;
 
+import origine_mundi.SysexBuilder;
 import origine_mundi.OmUtil;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.ByteValue;

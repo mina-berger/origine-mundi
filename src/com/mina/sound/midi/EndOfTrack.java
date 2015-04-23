@@ -3,7 +3,7 @@ package com.mina.sound.midi;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.sound.midi.*;
-import origine_mundi.machine.MidiMachine;
+import origine_mundi.MidiMachine;
 
 public class EndOfTrack extends Thread implements MetaEventListener {
 

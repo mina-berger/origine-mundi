@@ -6,6 +6,8 @@
 
 package origine_mundi.machine;
 
+import origine_mundi.SysexBuilder;
+import origine_mundi.MidiMachine;
 import origine_mundi.Integers;
 import origine_mundi.SysexDataModel;
 
