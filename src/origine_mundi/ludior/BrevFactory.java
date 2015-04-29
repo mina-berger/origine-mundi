@@ -62,6 +62,7 @@ public class BrevFactory {
         if(msb >= 128 || lsb >= 128){
             System.out.println(value + " " + msb + " " + lsb);
         }
+        
         brevs.add(new Brev(track, device, ShortMessage.PITCH_BEND, channel, new MidiByte(lsb), new MidiByte(msb), talea, beat));
     }
     public void program(int bank_m, int bank_l, int program){

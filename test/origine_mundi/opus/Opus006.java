@@ -12,6 +12,7 @@ import origine_mundi.ludior.Ludior;
 import origine_mundi.ludior.Tempus;
 import origine_mundi.ludior.Tempus.Comes;
 import origine_mundi.ludior.Tempus.Rapidus;
+import origine_mundi.machine.MU500;
 
 /**
  *
@@ -20,7 +21,7 @@ import origine_mundi.ludior.Tempus.Rapidus;
 public class Opus006 extends Ludior {
 
     public Opus006() {
-        super(true);
+        super(false);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class Opus006 extends Ludior {
 
     @Override
     protected void callDevices(MidiMachines midi_machines) {
-        //midi_machines.
+        midi_machines.put(0, MU500.instance(0));
     }
 
     @Override
@@ -40,10 +41,10 @@ public class Opus006 extends Ludior {
         double m_ab = 2.0;
         double m_ad = 2.5;
         int mod = 100;
-        int pitch = 8191;
+        int pitch = 127;//8191;
         
         BrevFactory bf = new BrevFactory(0, 0, 0, 0, 0d);
-        bf.program(10);
+        bf.program(1);
         brevs(bf.remove());
         bf.setLoco(1, 0d);
         bf.note(0, 100, 3.5, 1, false);
@@ -57,7 +58,7 @@ public class Opus006 extends Ludior {
         }
         for(int i = 0;i < pitch;i++){
             bf.setBeat(p_ab + (p_ad - p_ab) * (double)i / (double)pitch);
-            bf.pitch(i);
+            bf.pitch(i * 128);
         }
         Shift shift = new Shift();
         int[][] notes = new int[][]{
