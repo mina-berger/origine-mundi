@@ -4,16 +4,20 @@
  * and open the template in the editor.
  */
 
-package origine_mundi;
+package origine_mundi.player;
 
+import origine_mundi.ludior.Brev;
+import origine_mundi.*;
 import com.mina.sound.midi.EndOfTrack;
-import static java.lang.Compiler.command;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiEvent;
+import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
@@ -21,24 +25,18 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static origine_mundi.OmUtil.OM_MSG_TYPE_BREVIS;
-import static origine_mundi.OmUtil.OM_MSG_TYPE_SYSTEM;
-import static origine_mundi.OmUtil.OM_PRODUCT_ID;
-import static origine_mundi.OmUtil.SYSEX_STATUS_AB;
-import static origine_mundi.OmUtil.noteoff;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
 
 /**
  *
  * @author Mina
  */
-public abstract class OmPlayer {
+public abstract class OmPlayerSimple {
     private Sequence sequence;
     private final HashMap<Integer, MidiMachine> midi_machines;
     //private Track track;
@@ -47,7 +45,7 @@ public abstract class OmPlayer {
     private Integer device_id;
     public static final int RESOLUTION = 480;
     
-    public OmPlayer(){
+    public OmPlayerSimple(){
         try {
             sequence = new Sequence(Sequence.PPQ, RESOLUTION, 1);
         } catch (InvalidMidiDataException ex) {
@@ -59,12 +57,7 @@ public abstract class OmPlayer {
         device_id = null;
     }
     public void callDevice(int id){
-        if(midi_machines.containsKey(id)){
-            device = midi_machines.get(id).getExDevice();
-            device_id = id;
-        }else{
-            throw new OmException("call by name at first");
-        }
+        device_id = id;
     }
     public void callDevice(int id, MidiMachine mm){
         if(midi_machines.containsKey(id)){
@@ -97,9 +90,9 @@ public abstract class OmPlayer {
         }
         
     }
-    public void brev(ArrayList<OmBrev> brevs){
-        for(OmBrev brev:brevs){
-            brev(brev.getTrack(), brev.getDevice(), brev.getCommand(), brev.getChannel(), brev.getData1(), brev.getData2(), brev.getBeat());
+    public void brev(ArrayList<Brev> brevs){
+        for(Brev brev:brevs){
+            brev(brev.getTrack(), brev.getDevice(), brev.getCommand(), brev.getChannel(), brev.getData1().intValue(), brev.getData2().intValue(), brev.getBeat());
         }
     }
     public void brev(int command, int channel, int data1, int data2, double beat){
@@ -109,8 +102,7 @@ public abstract class OmPlayer {
     }
     public void brev(int track_index, int device_id, int command, int channel, int data1, int data2, double beat){
         try {
-            sequence.getTracks()[track_index].add(new MidiEvent(
-                    new SysexMessage(new byte[]{(byte)SYSEX_STATUS_AB, (byte)OM_PRODUCT_ID, (byte)device_id, (byte)OM_MSG_TYPE_BREVIS, (byte)command, (byte)channel, (byte)data1, (byte)data2}, 8), 
+            sequence.getTracks()[track_index].add(new MidiEvent(new ShortMessage(command, channel, data1, data2), 
                     Math.round(beat * RESOLUTION)));
         } catch (InvalidMidiDataException ex) {
             throw new OmException("illegal midi event", ex);
@@ -120,16 +112,9 @@ public abstract class OmPlayer {
         sysex(track_index, device_id, sysex, beat);
     }
     public void sysex(int track_index, int device_id, SysexMessage sysex, double beat){
-        byte[] data = sysex.getMessage();
-        data = ArrayUtils.subarray(data, 1, data.length);
-        data = ArrayUtils.addAll(new byte[]{(byte)SYSEX_STATUS_AB, (byte)OM_PRODUCT_ID, (byte)device_id, (byte)OM_MSG_TYPE_SYSTEM}, data);
-        try {
-            sequence.getTracks()[track_index].add(new MidiEvent(
-                    new SysexMessage(data, data.length), 
-                    Math.round(beat * RESOLUTION)));
-        } catch (InvalidMidiDataException ex) {
-            throw new OmException("illegal midi event", ex);
-        }
+        sequence.getTracks()[track_index].add(new MidiEvent(
+                sysex,
+                Math.round(beat * RESOLUTION)));
     }
     public void program(int channel, int bank_m, int bank_l, int program, double beat){
         //long tick = Math.round(beat * RESOLUTION);
@@ -177,36 +162,17 @@ public abstract class OmPlayer {
     public abstract void setSequence();
     public void play(){
         Sequencer sequencer;
+        //Transmitter transmitter;
         try {
-            sequencer = OmUtil.getSequencer();
-        } catch (MidiUnavailableException ex) {
+            sequencer = MidiSystem.getSequencer();
+            sequencer.setSequence(sequence);
+            sequencer.open();
+            //transmitter = sequencer.getTransmitter();
+            //transmitter.setReceiver(MidiSystem.getReceiver());
+        } catch (Exception ex) {
             throw new OmException("cannot get sequencer", ex);
         }
         
-        ArrayList<Receiver> receivers = new ArrayList<>();
-        for(Integer key:midi_machines.keySet()){
-            Transmitter transmitter;
-            try {
-                transmitter = sequencer.getTransmitter();
-            } catch (MidiUnavailableException ex) {
-                throw new OmException("cannot get transmitter", ex);
-            }
-            try {
-                Receiver row_receiver = midi_machines.get(key).getExDevice().getReceiver();
-                noteoff(row_receiver);
-                Receiver receiver = new OmReceiver(row_receiver, key);
-                
-                transmitter.setReceiver(receiver);
-                receivers.add(receiver);
-            } catch (MidiUnavailableException ex) {
-                throw new OmException("cannot get transmitter", ex);
-            }
-        }
-        try {
-            sequencer.setSequence(sequence);
-        } catch (InvalidMidiDataException ex) {
-            throw new OmException("cannot get sequencer", ex);
-        }
         System.out.println("start");
         EndOfTrack eot = new EndOfTrack(sequencer, midi_machines);
         sequencer.addMetaEventListener(eot);
@@ -218,4 +184,5 @@ public abstract class OmPlayer {
             }
         }        
     }
+
 }

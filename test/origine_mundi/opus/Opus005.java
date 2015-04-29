@@ -13,8 +13,7 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
-import origine_mundi.machine.MU500;
-import origine_mundi.simple.OmPlayerSimple;
+import origine_mundi.player.OmPlayerSimple;
 
 /**
  *
@@ -29,17 +28,31 @@ public class Opus005 extends OmPlayerSimple {
         callDevice(0);
         callTrack(1);
         
-        brev(ShortMessage.PROGRAM_CHANGE, 0, 0, 3, 0);
-        brev(ShortMessage.CONTROL_CHANGE, 1, 0, 3, 0);
+        brev(ShortMessage.PROGRAM_CHANGE, 0, 4, 0, 0);
+        brev(ShortMessage.PROGRAM_CHANGE, 1, 4, 0, 0);
         //note(1, 60, 80, 1, 10);
         int[] notes0 = new int[]{60, 61, 62, 59};
         int[] notes1 = new int[]{64, 65, 65, 65};
-        for(int i = 0;i < 2;i++){
-            measure(i, notes0[i % 4], notes1[i % 4]);
+        for(int i = 0;i < 4;i++){
+            measure(i, notes0[i % 4]);
         }
-
     }
-    private void measure(int measure, int note0, int note1){
+    private void measure(int measure, int note0){
+        double temp_ab = 2.0;
+        double temp_ad = 3.5;
+        int mod = 100;
+        
+        double head = 4 * measure + 1;
+        note(0, note0, 100, head, 4);
+        brev(ShortMessage.CONTROL_CHANGE, 0, 0x01,   0, head);
+        brev(ShortMessage.PITCH_BEND, 0, 0x01,   0, head);
+        for(int i = 0;i < mod;i++){
+            double temp = head + temp_ab + (temp_ad - temp_ab) * (double)i / (double)mod;
+            brev(ShortMessage.CONTROL_CHANGE, 0, 0x01,  i, temp);
+            brev(ShortMessage.PITCH_BEND, 0, 0x01,  i, temp);
+        }
+    }
+    private void measure2(int measure, int note0, int note1){
         int length = 4;
         double head = 4 * measure + 1;
         for(int i = 0;i < length;i++){
@@ -48,12 +61,12 @@ public class Opus005 extends OmPlayerSimple {
             int mod = (int)((double)i / (double)length * 118d) + 10;
             int vol = (int)((double)(length - i - 1) / (double)length * 118) + 10;
             System.out.println(vol);
-            /*brev(ShortMessage.CONTROL_CHANGE, 0, 0x01, mod, pos);
+            brev(ShortMessage.CONTROL_CHANGE, 0, 0x01, mod, pos);
             brev(ShortMessage.CONTROL_CHANGE, 0, 0x0a, pan, pos);
             brev(ShortMessage.CONTROL_CHANGE, 0, 0x0a, 127 - pan, pos + 0.5);
             brev(ShortMessage.CONTROL_CHANGE, 1, 0x01, 127 - mod, pos);
             brev(ShortMessage.CONTROL_CHANGE, 1, 0x0a, 127 - pan, pos);
-            brev(ShortMessage.CONTROL_CHANGE, 1, 0x0a, pan, pos + 0.65);*/
+            brev(ShortMessage.CONTROL_CHANGE, 1, 0x0a, pan, pos + 0.65);
             //brev(ShortMessage.CONTROL_CHANGE, 1, 0x07, vol, pos);
             //brev(ShortMessage.CONTROL_CHANGE, 1, 0x07, vol, pos);
             note(0, note0, mod, pos, 1);

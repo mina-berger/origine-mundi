@@ -6,7 +6,7 @@
 
 package origine_mundi.opus;
 
-import origine_mundi.OmPlayer;
+import origine_mundi.player.OmPlayer;
 import origine_mundi.machine.D_110;
 import origine_mundi.machine.TG77;
 import origine_mundi.machine.U_110;

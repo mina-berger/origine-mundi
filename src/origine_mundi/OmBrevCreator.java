@@ -6,6 +6,7 @@
 
 package origine_mundi;
 
+import origine_mundi.ludior.Brev;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import javax.sound.midi.ShortMessage;
@@ -42,26 +43,26 @@ public class OmBrevCreator {
     public void note(int channel, int note, int velocity, double beat, double duration){
         add(new Note(channel, note, velocity, beat, duration));
     }
-    public ArrayList<OmBrev> getBrev(int measure_ab, int measure_ad){
-        ArrayList<OmBrev> ret = new ArrayList<>();
+    public ArrayList<Brev> getBrev(int measure_ab, int measure_ad){
+        ArrayList<Brev> ret = new ArrayList<>();
         for(int i = measure_ab;i < measure_ad;i++){
             setBrev(ret, i);
         }
         return ret;
     }
-    private void setBrev(ArrayList<OmBrev> ret, int measure){
+    private void setBrev(ArrayList<Brev> ret, int measure){
         double offset = measure * beats;
         for(double key:proto.keySet()){
             for(Prototype prototype:proto.get(key)){
                 if(prototype instanceof Note){
                     Note note = (Note)prototype;
-                    ret.add(new OmBrev(track, device, ShortMessage.NOTE_ON, note.getChannel(), note.getNote(), note.getVelocity(), offset + note.getBeat()));
-                    ret.add(new OmBrev(track, device, ShortMessage.NOTE_ON, note.getChannel(), note.getNote(), 0, offset + note.getBeat() + note.getDuration()));
+                    ret.add(new Brev(track, device, ShortMessage.NOTE_ON, note.getChannel(), note.getNote(), note.getVelocity(), offset + note.getBeat()));
+                    ret.add(new Brev(track, device, ShortMessage.NOTE_ON, note.getChannel(), note.getNote(), new MidiByte(0), offset + note.getBeat() + note.getDuration()));
                 }else if(prototype instanceof Program){
                     Program program = (Program)prototype;
-                    ret.add(new OmBrev(track, device, ShortMessage.CONTROL_CHANGE, program.getChannel(), 0x00, program.getBankM  (), offset + program.getBeat()));
-                    ret.add(new OmBrev(track, device, ShortMessage.CONTROL_CHANGE, program.getChannel(), 0x20, program.getBankL  (), offset + program.getBeat()));
-                    ret.add(new OmBrev(track, device, ShortMessage.PROGRAM_CHANGE, program.getChannel(), 0x20, program.getProgram(), offset + program.getBeat()));
+                    ret.add(new Brev(track, device, ShortMessage.CONTROL_CHANGE, program.getChannel(), new MidiByte(0x00), program.getBankM  (), offset + program.getBeat()));
+                    ret.add(new Brev(track, device, ShortMessage.CONTROL_CHANGE, program.getChannel(), new MidiByte(0x20), program.getBankL  (), offset + program.getBeat()));
+                    ret.add(new Brev(track, device, ShortMessage.PROGRAM_CHANGE, program.getChannel(), new MidiByte(0x20), program.getProgram(), offset + program.getBeat()));
                 }else{
                     throw new OmException("unknown prototype:" + prototype.getClass().getName());
                 }
@@ -85,43 +86,43 @@ public class OmBrevCreator {
         }
     }
     private static class Program extends Prototype{
-        int bank_m;
-        int bank_l;
-        int program;
+        MidiByte bank_m;
+        MidiByte bank_l;
+        MidiByte program;
         Program(int channel, int bank_m, int bank_l, int program, double beat){
             super(channel, beat);
-            this.bank_m = bank_m;
-            this.bank_l = bank_l;
-            this.program = program;
+            this.bank_m = new MidiByte(bank_m);
+            this.bank_l = new MidiByte(bank_l);
+            this.program = new MidiByte(program);
         }
-        public int getBankM() {
+        public MidiByte getBankM() {
             return bank_m;
         }
 
-        public int getBankL() {
+        public MidiByte getBankL() {
             return bank_l;
         }
 
-        public int getProgram() {
+        public MidiByte getProgram() {
             return program;
         }
     }
     private static class Note extends Prototype {
-        private int note;
-        private int velocity;
+        private MidiByte note;
+        private MidiByte velocity;
         private double duration;
 
         Note(int channel, int note, int velocity, double beat, double duration){
             super(channel, beat);
-            this.note = note;
-            this.velocity = velocity;
+            this.note = new MidiByte(note);
+            this.velocity = new MidiByte(velocity);
             this.duration = duration;
         }
-        public int getNote() {
+        public MidiByte getNote() {
             return note;
         }
 
-        public int getVelocity() {
+        public MidiByte getVelocity() {
             return velocity;
         }
 
