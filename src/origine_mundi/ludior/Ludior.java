@@ -66,9 +66,10 @@ public abstract class Ludior extends ArrayList<Brevs> {
             throw new OmException("cannot create sequence", ex);
         }
         Tempus tempus = getTempus();
+        HashMap<String, MidiEvent> double_map = new HashMap<>(); 
         for(Brevs brevs:this){
             for(Brev brev:brevs){
-                addBrev(sequence, tempus, brev);
+                addBrev(sequence, double_map, tempus, brev);
             }
         }
         play(sequence);
@@ -76,11 +77,7 @@ public abstract class Ludior extends ArrayList<Brevs> {
     public void play(Sequence sequence){
         Sequencer sequencer;
         try {
-            if(simple){
-                sequencer = MidiSystem.getSequencer();
-            }else{
-                sequencer = OmUtil.getSequencer();
-            }
+            sequencer = simple?MidiSystem.getSequencer():OmUtil.getSequencer();
         } catch (Exception ex) {
             throw new OmException("cannot get sequencer", ex);
         }
@@ -94,7 +91,7 @@ public abstract class Ludior extends ArrayList<Brevs> {
                 throw new OmException("cannot open sequencer", ex);
             }
         }else{
-            ArrayList<Receiver> receivers = new ArrayList<>();
+            //ArrayList<Receiver> receivers = new ArrayList<>();
             for(Integer key:midi_machines.keySet()){
                 Transmitter transmitter;
                 try {
@@ -108,7 +105,7 @@ public abstract class Ludior extends ArrayList<Brevs> {
                     Receiver receiver = new OmReceiver(row_receiver, key);
 
                     transmitter.setReceiver(receiver);
-                    receivers.add(receiver);
+                    //receivers.add(receiver);
                 } catch (MidiUnavailableException ex) {
                     throw new OmException("cannot get transmitter", ex);
                 }
@@ -120,7 +117,6 @@ public abstract class Ludior extends ArrayList<Brevs> {
             }
         }
 
-        
         System.out.println("start");
         EndOfTrack eot = new EndOfTrack(sequencer, midi_machines);
         sequencer.addMetaEventListener(eot);
@@ -128,35 +124,54 @@ public abstract class Ludior extends ArrayList<Brevs> {
         while(!eot.isCompleted()){
             try {
                 Thread.sleep(1000);
-                System.out.print("*");
+                //System.out.print("*");
             } catch (InterruptedException ex) {
             }
         }
         System.out.println("terminated");
     }
-    private void addBrev(Sequence sequence, Tempus tempus, Brev brev){
-        Track track = getTrack(sequence, brev.getTrack());
+    private void addBrev(Sequence sequence, HashMap<String, MidiEvent> double_map, Tempus tempus, Brev brev){
+        int i_track = brev.getTrack();
+        int device = brev.getDevice();
+        int command = brev.getCommand();
+        int channel = brev.getChannel();
+        int data1 = brev.getData1().intValue();
+        Track track = getTrack(sequence, i_track);
         long point = (long)(tempus.capioTempus(brev.getTalea(), brev.getBeat()));
         //System.out.println(point);
         try {
+            MidiEvent midi_event;
             if(simple){
-                track.add(new MidiEvent(new ShortMessage(brev.getCommand(), brev.getChannel(), brev.getData1().intValue(), brev.getData2().intValue()), point));
+                midi_event = new MidiEvent(new ShortMessage(command, channel, data1, brev.getData2().intValue()), point);
             }else{
-                int device = brev.getDevice();
                 if(!midi_machines.containsKey(device)){
                     throw new OmException("cannot find device(" + device + ")");
                 }
-                track.add(new MidiEvent(
+                midi_event = new MidiEvent(
                         new SysexMessage(new byte[]{
                             (byte)SYSEX_STATUS_AB, 
                             (byte)OM_PRODUCT_ID, 
                             (byte)device, 
                             (byte)OM_MSG_TYPE_BREVIS, 
-                            (byte)brev.getCommand(), 
-                            (byte)brev.getChannel(), 
-                            (byte)brev.getData1().intValue(), 
-                            (byte)brev.getData2().intValue()}, 8), point));
+                            (byte)command, 
+                            (byte)channel, 
+                            (byte)data1, 
+                            (byte)brev.getData2().intValue()}, 8), point);
             }
+            String double_key = null;
+            if(command == ShortMessage.PITCH_BEND){
+                double_key = i_track + "_" + device + "_" + command + "_" + point;
+            }else if(command == ShortMessage.CONTROL_CHANGE){
+                double_key = i_track + "_" + device + "_" + command + "_" + data1 + "_" + point;
+            }
+            if(double_key != null){
+                if(double_map.containsKey(double_key)){
+                    track.remove(double_map.get(double_key));
+                    //System.out.println(double_key);
+                }
+                double_map.put(double_key, midi_event);
+            }
+            track.add(midi_event);
         } catch (InvalidMidiDataException ex) {
             throw new OmException("illegal midi event", ex);
         }

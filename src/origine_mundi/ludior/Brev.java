@@ -6,6 +6,7 @@
 
 package origine_mundi.ludior;
 
+import javax.sound.midi.ShortMessage;
 import origine_mundi.MidiByte;
 
 /**
@@ -63,5 +64,11 @@ public class Brev {
     }
     public double getBeat() {
         return beat;
+    }
+    public static void main(String[] a){
+        Brev brev = 
+                new Brev(0, 0, ShortMessage.PROGRAM_CHANGE, 0, 
+                        new MidiByte(1), 
+                        new MidiByte(0), 0, 0);
     }
 }

@@ -8,7 +8,11 @@ package origine_mundi.ludior;
 
 import java.util.HashMap;
 import javax.sound.midi.ShortMessage;
+import origine_mundi.Integers;
 import origine_mundi.MidiByte;
+import origine_mundi.ludior.Expression.Command;
+import origine_mundi.ludior.Expression.Control;
+import origine_mundi.ludior.Expression.SettingHolder;
 
 /**
  *
@@ -52,18 +56,57 @@ public class BrevFactory {
             beat += duration;
         }
     }
-    public void control(int control, int value){
-        brevs.add(new Brev(track, device, ShortMessage.CONTROL_CHANGE, channel, new MidiByte(control), new MidiByte(value), talea, beat));
+    public void note(NoteInfo info){
+        brevs.add(new Brev(track, device, ShortMessage.NOTE_ON, channel, info.getNote(), info.getVelocity(), talea, beat + info.getOffsetOn()));
+        brevs.add(new Brev(track, device, ShortMessage.NOTE_ON, channel, info.getNote(), MidiByte.MIN,       talea, beat + info.getOffsetOff()));
     }
-    public void pitch(int value){
+    public void note(Integers notes, int velocity, double duration, double rate, ChordStroke stroke, Expression exp, boolean shift){
+        double offset_on = 0;
+        for(NoteInfo info:stroke.getNotes(notes, velocity, duration * rate)){
+            note(info);
+            offset_on = Math.min(offset_on, info.getOffsetOn());
+        }
+        expression(exp, offset_on, duration);
+        if(shift){
+            beat += duration;
+        }
+        
+    }
+    public void expression(Expression exp, double pickup_offset_on, double duration){
+        for(SettingHolder setting:exp){
+            if(setting.getTempAd() > duration){
+                continue;
+            }
+            if(setting instanceof Control){
+                Control control = (Control)setting;
+                for(int i = 0;i < control.size();i++){
+                    double offset_on = setting.initial?pickup_offset_on:control.getOffset(i);
+                    control(control.getControl(), control.getValue(i), offset_on);
+                }
+            }else if(setting instanceof Command){
+                Command command = (Command)setting;
+                for(int i = 0;i < command.size();i++){
+                    int value = command.getValue(i);
+                    double offset_on = setting.initial?pickup_offset_on:command.getOffset(i);
+                    command(command.getCommand(), value / 0x80, value % 0x80, offset_on);
+                }
+            }
+        }
+    }
+    public void control(int control, int value, double offset){
+        brevs.add(new Brev(track, device, ShortMessage.CONTROL_CHANGE, channel, new MidiByte(control), new MidiByte(value), talea, beat + offset));
+    }
+    public void pitch(int value, double offset){
         value = Math.min(8191, Math.max(-8192, value)) + 8192;
         int msb = value / 0x80;
         int lsb = value % 0x80;
         if(msb >= 128 || lsb >= 128){
             System.out.println(value + " " + msb + " " + lsb);
         }
-        
-        brevs.add(new Brev(track, device, ShortMessage.PITCH_BEND, channel, new MidiByte(lsb), new MidiByte(msb), talea, beat));
+        command(ShortMessage.PITCH_BEND, msb, lsb, offset);
+    }
+    public void command(int command, int msb, int lsb, double offset){
+        brevs.add(new Brev(track, device, command, channel, new MidiByte(lsb), new MidiByte(msb), talea, beat + offset));
     }
     public void program(int bank_m, int bank_l, int program){
         //long tick = Math.round(beat * RESOLUTION);
@@ -72,6 +115,10 @@ public class BrevFactory {
         brevs.add(new Brev(track, device, ShortMessage.PROGRAM_CHANGE, channel, new MidiByte(program), new MidiByte(0),      talea, beat));
     }
     public void program(int program){
+        Brev brev = 
+                new Brev(track, device, ShortMessage.PROGRAM_CHANGE, channel, 
+                        new MidiByte(program), 
+                        new MidiByte(0), talea, beat);
         brevs.add(new Brev(track, device, ShortMessage.PROGRAM_CHANGE, channel, new MidiByte(program), new MidiByte(0), talea, beat));
     }
     public Brevs shift(Shift shift){
