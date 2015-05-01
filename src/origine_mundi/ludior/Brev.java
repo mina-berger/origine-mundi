@@ -14,42 +14,31 @@ import origine_mundi.MidiByte;
  * @author Mina
  */
 public class Brev {
-    private final int track;
-    private final int device;
+    private final Iunctum iunctum;
+    //private final int track;
+    //private final int device;
     private final int command;
-    private final int channel;
+    //private final int channel;
     private final MidiByte data1;
     private final MidiByte data2;
     private final int talea;
     private final double beat;
-    public Brev(int track, int device, int command, int channel, MidiByte data1, MidiByte data2, double beat){
-        this(track, device, command, channel, data1, data2, 0, beat);
+    public Brev(Iunctum iunctum, int command, MidiByte data1, MidiByte data2, double beat){
+        this(iunctum, command, data1, data2, 0, beat);
     }
-    public Brev(int track, int device, int command, int channel, MidiByte data1, MidiByte data2, int talea, double beat){
-        this.track = track;
-        this.device = device;
+    public Brev(Iunctum iunctum, int command, MidiByte data1, MidiByte data2, int talea, double beat){
+        this.iunctum = iunctum;
         this.command = command;
-        this.channel = channel;
         this.data1 = data1;
         this.data2 = data2;
         this.talea = talea;
         this.beat = beat;
     }
-    //public Brev shift(int talea, double beat){
-    //    return new Brev(track, device, command, channel, data1, data2, this.talea + talea, this.beat + beat);
-    //}
-    public int getTrack() {
-        return track;
-    }
-    public int getDevice() {
-        return device;
+    public Iunctum getIunctum() {
+        return iunctum;
     }
     public int getCommand() {
         return command;
-    }
-
-    public int getChannel() {
-        return channel;
     }
 
     public MidiByte getData1() {
@@ -67,7 +56,7 @@ public class Brev {
     }
     public static void main(String[] a){
         Brev brev = 
-                new Brev(0, 0, ShortMessage.PROGRAM_CHANGE, 0, 
+                new Brev(new Iunctum(0, 0, 0), ShortMessage.PROGRAM_CHANGE, 
                         new MidiByte(1), 
                         new MidiByte(0), 0, 0);
     }

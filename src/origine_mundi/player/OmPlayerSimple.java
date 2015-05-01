@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
+import origine_mundi.ludior.Iunctum;
 
 /**
  *
@@ -92,7 +93,8 @@ public abstract class OmPlayerSimple {
     }
     public void brev(ArrayList<Brev> brevs){
         for(Brev brev:brevs){
-            brev(brev.getTrack(), brev.getDevice(), brev.getCommand(), brev.getChannel(), brev.getData1().intValue(), brev.getData2().intValue(), brev.getBeat());
+            Iunctum iunctum = brev.getIunctum();
+            brev(iunctum.getTrack(), iunctum.getDevice(), brev.getCommand(), iunctum.getChannel(), brev.getData1().intValue(), brev.getData2().intValue(), brev.getBeat());
         }
     }
     public void brev(int command, int channel, int data1, int data2, double beat){

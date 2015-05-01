@@ -7,7 +7,6 @@
 package origine_mundi.player;
 
 import com.mina.sound.midi.EndOfTrack;
-import static java.lang.Compiler.command;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.sound.midi.InvalidMidiDataException;
@@ -38,6 +37,7 @@ import static origine_mundi.OmUtil.OM_PRODUCT_ID;
 import static origine_mundi.OmUtil.SYSEX_STATUS_AB;
 import static origine_mundi.OmUtil.noteoff;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
+import origine_mundi.ludior.Iunctum;
 
 /**
  *
@@ -104,7 +104,8 @@ public abstract class OmPlayer {
     }
     public void brev(ArrayList<Brev> brevs){
         for(Brev brev:brevs){
-            brev(brev.getTrack(), brev.getDevice(), brev.getCommand(), brev.getChannel(), brev.getData1().intValue(), brev.getData2().intValue(), brev.getBeat());
+            Iunctum iunctum = brev.getIunctum();
+            brev(iunctum.getTrack(), iunctum.getDevice(), brev.getCommand(), iunctum.getChannel(), brev.getData1().intValue(), brev.getData2().intValue(), brev.getBeat());
         }
     }
     public void brev(int command, int channel, int data1, int data2, double beat){

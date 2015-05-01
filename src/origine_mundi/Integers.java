@@ -52,6 +52,12 @@ public class Integers extends ArrayList<Integer> {
     public void terminate(){
         termine = true;
     }
-    
+    public static Integers fillValue(int value, int length){
+        Integers ints = new Integers();
+        while(ints.size() < length){
+            ints.append(value);
+        }
+        return ints;
+    }
     
 }

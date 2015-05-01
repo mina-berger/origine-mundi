@@ -131,10 +131,11 @@ public abstract class Ludior extends ArrayList<Brevs> {
         System.out.println("terminated");
     }
     private void addBrev(Sequence sequence, HashMap<String, MidiEvent> double_map, Tempus tempus, Brev brev){
-        int i_track = brev.getTrack();
-        int device = brev.getDevice();
+        Iunctum iunctum = brev.getIunctum();
+        int i_track = iunctum.getTrack();
+        int device = iunctum.getDevice();
         int command = brev.getCommand();
-        int channel = brev.getChannel();
+        int channel = iunctum.getChannel();
         int data1 = brev.getData1().intValue();
         Track track = getTrack(sequence, i_track);
         long point = (long)(tempus.capioTempus(brev.getTalea(), brev.getBeat()));
@@ -143,6 +144,10 @@ public abstract class Ludior extends ArrayList<Brevs> {
             MidiEvent midi_event;
             if(simple){
                 midi_event = new MidiEvent(new ShortMessage(command, channel, data1, brev.getData2().intValue()), point);
+                //if(command == ShortMessage.CONTROL_CHANGE && data1 == 0x0a){
+                //    System.out.println("debug pan:" + channel + ":" + brev.getData2().intValue() + ":" + point);
+                //}
+                
             }else{
                 if(!midi_machines.containsKey(device)){
                     throw new OmException("cannot find device(" + device + ")");
@@ -160,9 +165,9 @@ public abstract class Ludior extends ArrayList<Brevs> {
             }
             String double_key = null;
             if(command == ShortMessage.PITCH_BEND){
-                double_key = i_track + "_" + device + "_" + command + "_" + point;
+                double_key = i_track + "_" + device + "_" + command + "_" + channel + "_" + point;
             }else if(command == ShortMessage.CONTROL_CHANGE){
-                double_key = i_track + "_" + device + "_" + command + "_" + data1 + "_" + point;
+                double_key = i_track + "_" + device + "_" + command + "_" + channel + "_"+ data1 + "_" + point;
             }
             if(double_key != null){
                 if(double_map.containsKey(double_key)){

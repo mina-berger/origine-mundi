@@ -10,6 +10,7 @@ import origine_mundi.ludior.Brev;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import javax.sound.midi.ShortMessage;
+import origine_mundi.ludior.Iunctum;
 
 /**
  *
@@ -54,15 +55,16 @@ public class OmBrevCreator {
         double offset = measure * beats;
         for(double key:proto.keySet()){
             for(Prototype prototype:proto.get(key)){
+                Iunctum iunctum = new Iunctum(track, device, prototype.getChannel());
                 if(prototype instanceof Note){
                     Note note = (Note)prototype;
-                    ret.add(new Brev(track, device, ShortMessage.NOTE_ON, note.getChannel(), note.getNote(), note.getVelocity(), offset + note.getBeat()));
-                    ret.add(new Brev(track, device, ShortMessage.NOTE_ON, note.getChannel(), note.getNote(), new MidiByte(0), offset + note.getBeat() + note.getDuration()));
+                    ret.add(new Brev(iunctum, ShortMessage.NOTE_ON, note.getNote(), note.getVelocity(), offset + note.getBeat()));
+                    ret.add(new Brev(iunctum, ShortMessage.NOTE_ON, note.getNote(), new MidiByte(0), offset + note.getBeat() + note.getDuration()));
                 }else if(prototype instanceof Program){
                     Program program = (Program)prototype;
-                    ret.add(new Brev(track, device, ShortMessage.CONTROL_CHANGE, program.getChannel(), new MidiByte(0x00), program.getBankM  (), offset + program.getBeat()));
-                    ret.add(new Brev(track, device, ShortMessage.CONTROL_CHANGE, program.getChannel(), new MidiByte(0x20), program.getBankL  (), offset + program.getBeat()));
-                    ret.add(new Brev(track, device, ShortMessage.PROGRAM_CHANGE, program.getChannel(), new MidiByte(0x20), program.getProgram(), offset + program.getBeat()));
+                    ret.add(new Brev(iunctum, ShortMessage.CONTROL_CHANGE, new MidiByte(0x00), program.getBankM  (), offset + program.getBeat()));
+                    ret.add(new Brev(iunctum, ShortMessage.CONTROL_CHANGE, new MidiByte(0x20), program.getBankL  (), offset + program.getBeat()));
+                    ret.add(new Brev(iunctum, ShortMessage.PROGRAM_CHANGE, new MidiByte(0x20), program.getProgram(), offset + program.getBeat()));
                 }else{
                     throw new OmException("unknown prototype:" + prototype.getClass().getName());
                 }

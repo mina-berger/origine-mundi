@@ -14,11 +14,11 @@ import origine_mundi.MidiByte;
  * @author user
  */
 public class ChordStroke {
-    private double vel_rate_ab;
-    private double vel_rate_ad;
-    private double beat_diff_ab;
-    private double beat_diff_ad;
-    private boolean pickup;
+    private final double vel_rate_ab;
+    private final double vel_rate_ad;
+    private final double beat_diff_ab;
+    private final double beat_diff_ad;
+    private final boolean pickup;
     public ChordStroke(double vel_rate_ab, double vel_rate_ad, double beat_diff_ab, double beat_diff_ad, boolean pickup){
         this.vel_rate_ab = vel_rate_ab;
         this.vel_rate_ad = vel_rate_ad;
