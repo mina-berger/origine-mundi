@@ -80,7 +80,7 @@ public class BrevFactory {
         }
         
     }
-    private static final int pb_interval = 64;
+    private static final int pb_interval = 128;
     public void expression(int iunctum_index, Expression exp, double pickup_offset_on, double duration){
         for(SettingHolder setting:exp){
             if(setting.getTempAd() > duration){

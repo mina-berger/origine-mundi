@@ -7,7 +7,7 @@
 package origine_mundi.machine;
 
 import origine_mundi.SysexBuilder;
-import static origine_mundi.OmUtil.MICRO_LITE_3;
+import static origine_mundi.OmUtil.MICRO_LITE_4;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.BitArray;
 import origine_mundi.SysexDataModel.Blank;
@@ -33,7 +33,7 @@ import origine_mundi.UpdateMap;
 public class D_110 extends Roland {
     private static final int DEVICE_ID = 0x10; // SET ON D_110
     private static final int MODEL_ID = 0x16; //D_110
-    private static final String MIDI_PORT = MICRO_LITE_3;
+    private static final String MIDI_PORT = MICRO_LITE_4;
     private static D_110 instance = null;
     public static D_110 instance(){
         if(instance == null){
@@ -202,6 +202,7 @@ public class D_110 extends Roland {
         /*SysexBuilder sb = d_110.getDT1(TONE, data);
         d_110.send(sb.getSysex());
         */
+        d_110.checkSound(0);
         d_110.finalize();
         
         

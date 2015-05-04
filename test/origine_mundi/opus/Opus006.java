@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Chord Stroke test
+ * using PB but data is heavy
  */
 
 package origine_mundi.opus;
@@ -19,7 +18,10 @@ import origine_mundi.ludior.Ludior;
 import origine_mundi.ludior.Tempus;
 import origine_mundi.ludior.Tempus.Comes;
 import origine_mundi.ludior.Tempus.Rapidus;
+import origine_mundi.machine.D_110;
 import origine_mundi.machine.MU500;
+import origine_mundi.machine.TG77;
+import origine_mundi.machine.U_110;
 
 /**
  *
@@ -28,7 +30,7 @@ import origine_mundi.machine.MU500;
 public class Opus006 extends Ludior {
 
     public Opus006() {
-        super(true);
+        super(false);
     }
 
     @Override
@@ -38,7 +40,10 @@ public class Opus006 extends Ludior {
 
     @Override
     protected void callDevices(MidiMachines midi_machines) {
-        midi_machines.put(0, MU500.instance(0));
+        midi_machines.put(0, TG77.instance());
+        midi_machines.put(1, MU500.instance(0));
+        midi_machines.put(2, U_110.instance());
+        midi_machines.put(3, D_110.instance());
     }
 
     @Override
@@ -53,7 +58,7 @@ public class Opus006 extends Ludior {
                 new Control(0x0a, 0),
                 new Control(0x0a, 0, 127, 0, 3.5),
                 //new Command(ShortMessage.PITCH_BEND, 8192),
-                new Command(ShortMessage.PITCH_BEND, 0, 8192, 0, 0.2)
+                new Command(ShortMessage.PITCH_BEND, 7000, 8192, 0, 0.2)
         );
         Expression exp2 = new Expression(
                 new Control(0x01, 0),
@@ -61,7 +66,7 @@ public class Opus006 extends Ludior {
                 new Control(0x0a, 127),
                 new Control(0x0a, 127, 0, 0, 3.5),
                 //new Command(ShortMessage.PITCH_BEND, 8192),
-                new Command(ShortMessage.PITCH_BEND, 0, 8192, 0, 0.1)
+                new Command(ShortMessage.PITCH_BEND, 7000, 8192, 0, 0.1)
         );
         Expression exp3 = new Expression(
                 new Control(0x01, 20),
@@ -72,22 +77,22 @@ public class Opus006 extends Ludior {
                 new Control(0x01, 10, 30, 0, 0.1),
                 new Command(ShortMessage.PITCH_BEND, 8300, 8100, 0, 0.15)
         );
-        BrevFactory bf1 = new BrevFactory(new Iunctum(0, 0, 0));
+        BrevFactory bf1 = new BrevFactory(new Iunctum(0, 2, 0));
         bf1.program(0, 10);
         brevs(bf1.remove());
         bf1.setLoco(0, 0d);
         bf1.note(0, new Integers(0, 1, 2), 100, 3.5, 1, stroke1, exp1, false);
         
-        BrevFactory bf2 = new BrevFactory(new Iunctum(1, 0, 1));
-        bf2.program(0, 10);
+        BrevFactory bf2 = new BrevFactory(new Iunctum(1, 3, 1));
+        bf2.program(0, 0);
         brevs(bf2.remove());
         bf2.setLoco(0, 0d);
         bf2.note(0, new Integers(0, 1, 2, 3, 4), 100, 3.5, 1, stroke1, exp2, true);
         
         BrevFactory bf3 = new BrevFactory(
-                new Iunctum(2, 0, 2), new Iunctum(2, 0, 3), new Iunctum(2, 0, 4), 
-                new Iunctum(2, 0, 5), new Iunctum(2, 0, 6), new Iunctum(2, 0, 7));
-        bf3.program(24);
+                new Iunctum(2, 0, 0), new Iunctum(2, 0, 1), new Iunctum(2, 0, 2), 
+                new Iunctum(2, 0, 3), new Iunctum(2, 0, 4), new Iunctum(2, 0, 5));
+        bf3.program(1);
         bf3.control(0, 0x0a, 0, 0);
         bf3.control(1, 0x0a, 10, 0);
         bf3.control(2, 0x0a, 20, 0);
@@ -123,9 +128,11 @@ public class Opus006 extends Ludior {
         bf3.note(st_i_u, st_u,  50, 0.25, 0.4, stroke3, exp3, true);
         
         BrevFactory bf4 = new BrevFactory(
-                new Iunctum(3, 0, 8), new Iunctum(3, 0, 14), new Iunctum(3, 0, 10), 
-                new Iunctum(3, 0, 11), new Iunctum(3, 0, 12), new Iunctum(3, 0, 13));
-        bf4.program(26);
+                new Iunctum(3, 1, 0), new Iunctum(3, 1, 1), new Iunctum(3, 1, 2), 
+                new Iunctum(3, 1, 3), new Iunctum(3, 1, 4), new Iunctum(3, 1, 5));
+//                new Iunctum(3, 0, 8), new Iunctum(3, 0, 14), new Iunctum(3, 0, 10), 
+//                new Iunctum(3, 0, 11), new Iunctum(3, 0, 12), new Iunctum(3, 0, 13));
+        bf4.program(1);
         bf4.control(0, 0x0a, 127, 0);
         bf4.control(1, 0x0a, 117, 0);
         bf4.control(2, 0x0a, 107, 0);
@@ -170,7 +177,7 @@ public class Opus006 extends Ludior {
             new int[]{-1, 48, 55, 59, 64, 67}, 
             new int[]{-1, 50, 57, 60, 65, 69}, 
         };
-        for(int i = 0;i < 16;i++){
+        for(int i = 0;i < 48;i++){
             shift1.loco(i + 1, 0);
             shift1.putNote(0, notes[i % notes.length][0]);
             shift1.putNote(1, notes[i % notes.length][1]);
