@@ -54,13 +54,13 @@ public class Opus007 extends Ludior {
         
         ChordStroke stroke0 = new ChordStroke(0.8, 1.0, 0.01, 0.015, true);
         Expression exp0 = new Expression(
-                new Control(0x01, 10, 30, 0, 0.1),
-                new Command(ShortMessage.PITCH_BEND, 8300, 8100, 0, 0.15)
+                new Control(0x01, 10, 30, 0, 0.1)//,
+                //new Command(ShortMessage.PITCH_BEND, 8300, 8100, 0, 0.15)
         );
         BrevFactory bf0 = new BrevFactory(
                 new Iunctum(2, 0, 0), new Iunctum(2, 0, 1), new Iunctum(2, 0, 2), 
                 new Iunctum(2, 0, 3), new Iunctum(2, 0, 4), new Iunctum(2, 0, 5));
-        bf0.program(0);
+        bf0.program(6);
         bf0.control(0, 0x0a, 0, 0);
         bf0.control(1, 0x0a, 10, 0);
         bf0.control(2, 0x0a, 20, 0);
