@@ -9,6 +9,7 @@ import com.mina.sound.midi.EndOfTrackListner;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -25,6 +26,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
+import origine_mundi.Integers;
 import origine_mundi.MidiMachines;
 import origine_mundi.OmException;
 import origine_mundi.OmReceiver;
@@ -34,8 +36,13 @@ import static origine_mundi.OmUtil.getAudioFormat;
 import static origine_mundi.OmUtil.noteoff;
 import origine_mundi.SequenceHolder;
 import origine_mundi.ludior.Brev;
+import origine_mundi.ludior.BrevFactory;
 import origine_mundi.ludior.Brevs;
+import origine_mundi.ludior.ChordStroke;
+import origine_mundi.ludior.Expression;
+import origine_mundi.ludior.Iunctum;
 import origine_mundi.ludior.Tempus;
+import origine_mundi.machine.D_110;
 
 /**
  *
@@ -48,10 +55,11 @@ public class BrevsSampler {
     private final File out_file;
     private TargetDataLine line;
     private AudioFormat format;
-    public BrevsSampler(MidiMachines midi_machines, Tempus tempus, ArrayList<Brevs> brevs_list, File out_file){
+    public BrevsSampler(MidiMachines midi_machines, Tempus tempus, File out_file, Brevs... brevs_array){
         this.midi_machines = midi_machines;
         this.tempus = tempus;
-        this.brevs_list = brevs_list;
+        this.brevs_list = new ArrayList<>();
+        brevs_list.addAll(Arrays.asList(brevs_array));
         this.out_file = out_file;
         format = getAudioFormat();
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -119,6 +127,7 @@ public class BrevsSampler {
         } catch (IOException ex) {
             throw new OmException("cannot write file", ex);
         }
+        System.out.println("Start playing...");
         
         sequencer.start();
         try {
@@ -128,7 +137,7 @@ public class BrevsSampler {
         while(!eot.isCompleted()){
             try {
                 Thread.sleep(50);
-                //System.out.print("*");
+                System.out.print("*");
             } catch (InterruptedException ex) {
             }
         }
@@ -168,5 +177,25 @@ public class BrevsSampler {
         long getDuration(){
             return tail - head;
         }
+    }
+    public static void main(String[] args){
+        MidiMachines midi_machines = new MidiMachines();
+        midi_machines.put(0, D_110.instance());
+        ChordStroke stroke0 = new ChordStroke(0.8, 1.0, 0.01, 0.015, true);
+        Expression exp0 = new Expression(
+                new Expression.Control(0x01, 10, 30, 0, 0.1)//,
+                //new Command(ShortMessage.PITCH_BEND, 8300, 8100, 0, 0.15)
+        );
+        BrevFactory bf0 = new BrevFactory(
+                new Iunctum(2, 0, 0), new Iunctum(2, 0, 1), new Iunctum(2, 0, 2), 
+                new Iunctum(2, 0, 3), new Iunctum(2, 0, 4), new Iunctum(2, 0, 5));
+        bf0.setLoco(1, 0d);
+        Integers st_d = new Integers(40, 47, 52, 56, 59, 64);
+        Integers st_i_d = new Integers(0, 1, 2, 3, 4, 5);
+        bf0.note(st_i_d, st_d, 120, 1, 1, stroke0, exp0, true);
+        
+        BrevsSampler sampler = new BrevsSampler(midi_machines, new Tempus(new Tempus.Comes[]{}, new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 100, true)}), 
+                new File("C:\\drive\\doc\\origine_mundi\\sample\\sample01.wav"), bf0.remove());
+        sampler.record();
     }
 }
