@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiUnavailableException;
@@ -52,28 +50,13 @@ public class BrevsSampler {
     private final MidiMachines midi_machines;
     private final Tempus tempus;
     private final ArrayList<Brevs> brevs_list;
-    private final File out_file;
-    private TargetDataLine line;
-    private AudioFormat format;
+    private RecordThread record_thread;
     public BrevsSampler(MidiMachines midi_machines, Tempus tempus, File out_file, Brevs... brevs_array){
         this.midi_machines = midi_machines;
         this.tempus = tempus;
         this.brevs_list = new ArrayList<>();
         brevs_list.addAll(Arrays.asList(brevs_array));
-        this.out_file = out_file;
-        format = getAudioFormat();
-        DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
-
-        // checks if system supports the data line
-        if (!AudioSystem.isLineSupported(info)) {
-            throw new OmException("Line not supported");
-        }
-        try {
-            line = (TargetDataLine) AudioSystem.getLine(info);
-            line.open(format);
-        } catch (LineUnavailableException ex) {
-            throw new OmException("Line unavailable:", ex);
-        }
+        record_thread = new RecordThread(out_file);
     }
     public void record(){
         Sequencer sequencer;
@@ -112,21 +95,8 @@ public class BrevsSampler {
         EndOfTrackListner eot = new EndOfTrackListner(sequencer, midi_machines);
         sequencer.addMetaEventListener(eot);
         
-        
-        try {
-            line.open(format);
-        } catch (LineUnavailableException ex) {
-            throw new OmException("cannot open line", ex);
-        }
-        line.start();   // start capturing
-        System.out.println("Start capturing...");
-        AudioInputStream ais = new AudioInputStream(line);
         System.out.println("Start recording...");
-        try {
-            AudioSystem.write(ais, FILETYPE, out_file);
-        } catch (IOException ex) {
-            throw new OmException("cannot write file", ex);
-        }
+        record_thread.start();
         System.out.println("Start playing...");
         
         sequencer.start();
@@ -141,8 +111,7 @@ public class BrevsSampler {
             } catch (InterruptedException ex) {
             }
         }
-        line.stop();
-        line.close();
+        record_thread.terminate();
         System.out.println("terminated");
         
         
