@@ -59,4 +59,9 @@ public class RecordThread extends Thread {
             throw new OmException("cannot write file", ex);
         }
     }
+    public static void main(String[] args){
+        String path = "doc/sample/sample01.wav";
+        System.out.println(new File(path).exists());
+        System.out.println(new File(path).getAbsolutePath());
+    }
 }

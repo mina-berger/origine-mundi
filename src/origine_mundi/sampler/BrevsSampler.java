@@ -79,7 +79,8 @@ public class BrevsSampler {
         }
         Range range = getRange();
         SequenceHolder sequence_holder = new SequenceHolder();
-        
+        System.out.println("range head : " + range.head);
+        System.out.println("duration   : " + range.getDuration());
         HashMap<String, MidiEvent> double_map = new HashMap<>(); 
         for(Brevs brevs:brevs_list){
             for(Brev brev:brevs){
@@ -104,14 +105,25 @@ public class BrevsSampler {
             Thread.sleep(range.getDuration());
         } catch (InterruptedException ex) {
         }
-        while(!eot.isCompleted()){
+        while(!eot.isEndOfTrack()){
             try {
                 Thread.sleep(50);
-                System.out.print("*");
+                System.out.print("-");
             } catch (InterruptedException ex) {
             }
         }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+        }
         record_thread.terminate();
+        while(!eot.isCompleted()){
+            try {
+                Thread.sleep(100);
+                System.out.print("+");
+            } catch (InterruptedException ex) {
+            }
+        }
         System.out.println("terminated");
         
         
@@ -120,6 +132,7 @@ public class BrevsSampler {
         Range range = new Range();
         for(Brevs brevs:brevs_list){
             for(Brev brev:brevs){
+                //System.out.println(brev.getTalea() + ":" + brev.getBeat() + ":" + tempus.capioTempus(brev.getTalea(), brev.getBeat()));
                 range.range((long)(tempus.capioTempus(brev.getTalea(), brev.getBeat())));
             }
         }
@@ -135,13 +148,21 @@ public class BrevsSampler {
     class Range {
         long head;
         long tail;
+        boolean primo;
         Range(){
             head = 0;
             tail = 0;
+            primo = true;
         }
         void range(long point){
-            head = Math.min(head, point);
-            tail = Math.max(tail, point);
+            if(primo){
+                head = point;
+                tail = point;
+                primo = false;
+            }else{
+                head = Math.min(head, point);
+                tail = Math.max(tail, point);
+            }
         }
         long getDuration(){
             return tail - head;

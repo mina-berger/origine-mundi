@@ -9,6 +9,7 @@ public class EndOfTrackListner extends Thread implements MetaEventListener {
     //private final ArrayList<Receiver> receivers;
     private final MidiMachines machines;
     private boolean is_completed;
+    private boolean is_eot;
 
     /**
      * sequencer NOT_NULL
@@ -20,14 +21,16 @@ public class EndOfTrackListner extends Thread implements MetaEventListener {
         this.sequencer = sequencer;
         this.machines = machines;
         is_completed = false;
+        is_eot = false;
         //this.receivers = receivers;
     }
 
     @Override
     public void meta(MetaMessage event) {
         if (event.getType() == 0x2f) {
+            is_eot = true;
             try {
-                sleep(2000);
+                sleep(1000);
             } catch (InterruptedException e) {
                 System.out.println("EndOfTrack could not sleep");
             }
@@ -43,5 +46,8 @@ public class EndOfTrackListner extends Thread implements MetaEventListener {
     }
     public boolean isCompleted(){
         return is_completed;
+    }
+    public boolean isEndOfTrack(){
+        return is_eot;
     }
 }
