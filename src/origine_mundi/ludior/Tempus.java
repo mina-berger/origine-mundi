@@ -8,6 +8,7 @@ package origine_mundi.ludior;
 
 import java.util.SortedMap;
 import java.util.TreeMap;
+import static origine_mundi.OmUtil.RESOLUTION;
 
 /**
  *
@@ -34,10 +35,10 @@ public class Tempus {
             Rapidus rapidus = map_rapidi.get(pulsus);
             //double pre_pulses_temporis = pulsus_temporis;
             if(rapidus_temporis.fixus_est){
-                tempus_temporis = tempus_temporis + (pulsus - pulsus_temporis) * 60000d / rapidus_temporis.rapidus;
+                tempus_temporis = tempus_temporis + (pulsus - pulsus_temporis) * 60d * (double)RESOLUTION / rapidus_temporis.rapidus;
             }else{
                 tempus_temporis = 
-                        tempus_temporis + (pulsus - pulsus_temporis) * 60000d / 
+                        tempus_temporis + (pulsus - pulsus_temporis) * 60d * (double)RESOLUTION / 
                         ((rapidus.rapidus + rapidus_temporis.rapidus) / 2d);
             }
             rapidus.tempus = tempus_temporis;
@@ -54,7 +55,7 @@ public class Tempus {
         double clavis_solum = map_rapidi.floorKey(pulsus);
         Rapidus rapidus_solum = map_rapidi.get(clavis_solum);
         if(rapidus_solum.fixus_est){
-            return rapidus_solum.tempus + (pulsus - clavis_solum) * 60000d / rapidus_solum.rapidus;
+            return rapidus_solum.tempus + (pulsus - clavis_solum) * 60d * (double)RESOLUTION / rapidus_solum.rapidus;
         }
         Double clavis_tectum = map_rapidi.ceilingKey(pulsus);
         Rapidus rapidus_tectum;
@@ -71,7 +72,7 @@ public class Tempus {
             rapidus = rapidus_solum.rapidus + (rapidus_tectum.rapidus - rapidus_solum.rapidus) * 
                 (pulsus - clavis_solum) / (clavis_tectum - clavis_solum);
         }
-        double tempus = rapidus_solum.tempus + (pulsus - clavis_solum) * 60000d / 
+        double tempus = rapidus_solum.tempus + (pulsus - clavis_solum) * 60d * (double)RESOLUTION / 
                 ((rapidus_solum.rapidus + rapidus) / 2d);
         return tempus;
     }

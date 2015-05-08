@@ -28,10 +28,10 @@ import origine_mundi.machine.U_110;
  *
  * @author Mina
  */
-public class Opus006 extends Ludior {
+public class Opus008 extends Ludior {
 
-    public Opus006() {
-        super(false);
+    public Opus008() {
+        super(true);
     }
 
     @Override

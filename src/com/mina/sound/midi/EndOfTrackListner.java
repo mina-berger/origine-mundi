@@ -1,24 +1,22 @@
 package com.mina.sound.midi;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import javax.sound.midi.*;
-import origine_mundi.MidiMachine;
+import origine_mundi.MidiMachines;
 
-public class EndOfTrack extends Thread implements MetaEventListener {
+public class EndOfTrackListner extends Thread implements MetaEventListener {
 
     private final Sequencer sequencer;
     //private final ArrayList<Receiver> receivers;
-    private final HashMap<Integer, MidiMachine> machines;
+    private final MidiMachines machines;
     private boolean is_completed;
 
     /**
      * sequencer NOT_NULL
      *
      * @param sequencer
-     * @param receivers
+     * @param machines
      */
-    public EndOfTrack(Sequencer sequencer, HashMap<Integer, MidiMachine> machines) {
+    public EndOfTrackListner(Sequencer sequencer, MidiMachines machines) {
         this.sequencer = sequencer;
         this.machines = machines;
         is_completed = false;

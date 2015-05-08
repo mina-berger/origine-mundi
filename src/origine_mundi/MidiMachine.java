@@ -14,15 +14,11 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
-import origine_mundi.Integers;
-import origine_mundi.OmException;
-import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.MICRO_LITE_5;
 import static origine_mundi.OmUtil.fill;
 import static origine_mundi.OmUtil.getMidiDevice;
 import static origine_mundi.OmUtil.noteoff;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
-import origine_mundi.SysexDataModel;
 
 /**
  *

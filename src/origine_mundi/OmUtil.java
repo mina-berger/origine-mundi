@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiDevice;
+import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -25,6 +27,8 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -32,6 +36,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * @author Mina
  */
 public class OmUtil {
+    public static final int RESOLUTION = 1000;//per second;
     public static int SYSEX_STATUS_AB  = 0xf0;
     public static int SYSEX_STATUS_AD  = 0xf7;
     public static final int OM_PRODUCT_ID = 0x7f;
@@ -51,6 +56,18 @@ public class OmUtil {
     /*public static int[] toArray(List<Integer> data){
         return ArrayUtils.toPrimitive(data.toArray(new Integer[]{}));
     }*/
+    public static AudioFileFormat.Type FILETYPE = AudioFileFormat.Type.WAVE;
+    public static AudioFormat getAudioFormat() {
+        float sampleRate = 48000;
+        int sampleSizeInBits = 16;
+        int channels = 2;
+        boolean signed = true;
+        boolean bigEndian = true;
+        AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits,
+                                             channels, signed, bigEndian);
+        return format;
+    }
+   
     public static SysexMessage sysex(String str) throws InvalidMidiDataException {
         String[] strs = str.split(" ");
         byte[] bytes = new byte[strs.length];

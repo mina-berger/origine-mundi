@@ -6,7 +6,6 @@
 
 package origine_mundi.machine;
 
-import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.MICRO_LITE_2;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.Blank;

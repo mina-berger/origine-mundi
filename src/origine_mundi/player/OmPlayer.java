@@ -6,7 +6,7 @@
 
 package origine_mundi.player;
 
-import com.mina.sound.midi.EndOfTrack;
+import com.mina.sound.midi.EndOfTrackListner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.sound.midi.InvalidMidiDataException;
@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import origine_mundi.MidiMachine;
+import origine_mundi.MidiMachines;
 import origine_mundi.ludior.Brev;
 import origine_mundi.OmException;
 import origine_mundi.OmReceiver;
@@ -45,7 +46,7 @@ import origine_mundi.ludior.Iunctum;
  */
 public abstract class OmPlayer {
     private Sequence sequence;
-    private final HashMap<Integer, MidiMachine> midi_machines;
+    private final MidiMachines midi_machines;
     //private Track track;
     private Integer track_index;
     private MidiDevice device;
@@ -58,7 +59,7 @@ public abstract class OmPlayer {
         } catch (InvalidMidiDataException ex) {
             throw new OmException("cannot create sequence", ex);
         }
-        midi_machines = new HashMap<>();
+        midi_machines = new MidiMachines();
         track_index = null;
         device = null;
         device_id = null;
@@ -214,7 +215,7 @@ public abstract class OmPlayer {
             throw new OmException("cannot get sequencer", ex);
         }
         System.out.println("start");
-        EndOfTrack eot = new EndOfTrack(sequencer, midi_machines);
+        EndOfTrackListner eot = new EndOfTrackListner(sequencer, midi_machines);
         sequencer.addMetaEventListener(eot);
         sequencer.start();
         while(!eot.isCompleted()){

@@ -5,13 +5,12 @@
 
 package origine_mundi.opus;
 
-import javax.sound.midi.ShortMessage;
 import origine_mundi.Integers;
+import origine_mundi.MidiMachines;
 import origine_mundi.ludior.BrevFactory;
 import origine_mundi.ludior.BrevFactory.Shift;
 import origine_mundi.ludior.ChordStroke;
 import origine_mundi.ludior.Expression;
-import origine_mundi.ludior.Expression.Command;
 import origine_mundi.ludior.Expression.Control;
 import origine_mundi.ludior.Iunctum;
 import origine_mundi.ludior.Ludior;

@@ -7,6 +7,7 @@ package origine_mundi.ludior;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeSet;
 
 /**
  *
@@ -15,5 +16,12 @@ import java.util.Arrays;
 public class Brevs extends ArrayList<Brev> {
     public Brevs(Brev... brevs){
         addAll(Arrays.asList(brevs));
+    }
+    public TreeSet<Integer> getDeviceSet(){
+        TreeSet<Integer> set = new TreeSet<>();
+        for(Brev brev:this){
+            set.add(brev.getIunctum().getDevice());
+        }
+        return set;
     }
 }
