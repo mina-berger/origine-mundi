@@ -304,9 +304,9 @@ public class FunctionesLimae implements Constantia {
         /*Functiones.ludoLimam(new File("doc/sample/sample02.wav"));
         */
         FunctionesLimae.trim(lima, new Aestimatio(0.005));
-        new ScriptorWav(trg).scribo(new LectorLimam(lima));
-        Functiones.ludoLimam(src);
-        Functiones.ludoLimam(trg);
+        new ScriptorWav(trg).scribo(new LectorLimam(lima), false);
+        //Functiones.ludoLimam(src);
+        //Functiones.ludoLimam(trg);
         //WavFileWriter wavfile = new WavFileWriter(new File("C:/drive/phthongos/test.wav"));
         //wavfile.write(new LectorLimam("drum" ,"bd1", 1).getClip(0, 1));
         //AudioUtil.playAudio(wavfile.getFile());

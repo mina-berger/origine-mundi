@@ -48,7 +48,7 @@ public class ScriptorWav implements Constantia {
         return file;
     }
 
-    public void scribo(Legibilis legibilis) {
+    public void scribo(Legibilis legibilis, boolean pono_locus) {
         ObjectOutputStream o_out;
         //FileOutputStream   f_out;
         ObjectInputStream  o_in;
@@ -60,7 +60,7 @@ public class ScriptorWav implements Constantia {
             //tmp_file.deleteOnExit();
             o_out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(tmp_file)));
 
-            long locus = Functiones.adPositio(LOCUS_TERMINATO);
+            long locus = pono_locus?Functiones.adPositio(LOCUS_TERMINATO):0;
             Aestimatio max = new Aestimatio();
             Aestimatio min = new Aestimatio();
             log.info("mixdown start:" + file.getAbsolutePath());
@@ -294,7 +294,7 @@ public class ScriptorWav implements Constantia {
                 new ModCapiens(1), 
                 new ModCapiens(Fons.EX, 0, -0.9999)));*//*
         zt.ponoFons(ll);*/
-        sl.scribo(ll);
+        sl.scribo(ll, true);
     }
     public static class LegibilisInputStream extends InputStream {
         ObjectInputStream o_in;

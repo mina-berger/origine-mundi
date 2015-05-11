@@ -169,6 +169,7 @@ public class BrevsSampler {
         }
     }
     public static void main(String[] args){
+        BrevsSampler sampler;
         MidiMachines midi_machines = new MidiMachines();
         midi_machines.put(0, D_110.instance());
         ChordStroke stroke0 = new ChordStroke(0.8, 1.0, 0.01, 0.015, true);
@@ -180,12 +181,14 @@ public class BrevsSampler {
                 new Iunctum(2, 0, 0), new Iunctum(2, 0, 1), new Iunctum(2, 0, 2), 
                 new Iunctum(2, 0, 3), new Iunctum(2, 0, 4), new Iunctum(2, 0, 5));
         bf0.setLoco(1, 0d);
-        Integers st_d = new Integers(40, 47, 52, 56, 59, 64);
-        Integers st_i_d = new Integers(0, 1, 2, 3, 4, 5);
-        bf0.note(st_i_d, st_d, 120, 1, 1, stroke0, exp0, true);
-        
-        BrevsSampler sampler = new BrevsSampler(midi_machines, new Tempus(new Tempus.Comes[]{}, new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 100, true)}), 
+        bf0.note(new Integers(0, 1, 2, 3, 4, 5), new Integers(40, 47, 52, 56, 59, 64), 120, 1, 1, stroke0, exp0, true);
+        sampler = new BrevsSampler(midi_machines, new Tempus(new Tempus.Comes[]{}, new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 100, true)}), 
                 new File("C:\\drive\\doc\\origine_mundi\\sample\\sample01.wav"), bf0.remove());
         sampler.record();
+        
+        /*bf0.note(new Integers(5, 4, 3, 2, 1, 0), new Integers(64, 59, 56, 52, 47, 40), 120, 1, 1, stroke0, exp0, true);
+        sampler = new BrevsSampler(midi_machines, new Tempus(new Tempus.Comes[]{}, new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 100, true)}), 
+                new File("C:\\drive\\doc\\origine_mundi\\sample\\sample02.wav"), bf0.remove());
+        sampler.record();*/
     }
 }
