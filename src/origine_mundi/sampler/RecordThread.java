@@ -7,6 +7,9 @@
 package origine_mundi.sampler;
 import javax.sound.sampled.*;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import la.clamor.Functiones;
 import origine_mundi.OmException;
 import static origine_mundi.OmUtil.FILETYPE;
 import static origine_mundi.OmUtil.getAudioFormat;
@@ -63,5 +66,18 @@ public class RecordThread extends Thread {
         String path = "doc/sample/sample01.wav";
         System.out.println(new File(path).exists());
         System.out.println(new File(path).getAbsolutePath());
+        try {
+            //Functiones.ludoLimam(new File(path));
+            FileInputStream fis0 = new FileInputStream(new File(path));
+            FileInputStream fis1 = new FileInputStream(new File(path));
+            while(fis0.available() > 0){
+                System.out.println(fis0.read() + ":" + fis1.read());
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(RecordThread.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RecordThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }
