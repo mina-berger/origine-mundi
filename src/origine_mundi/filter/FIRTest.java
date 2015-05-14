@@ -14,13 +14,13 @@ public class FIRTest {
     public static void main(String[] args) {
 
         /* パラメータ　求めたい値に書き換えて！ */
-        double sFreq = 44100; /* サンプリング周波数 */
+        double sFreq = 48000; /* サンプリング周波数 */
 
-        double cFreq = 5000; /* カットオフ周波数 */
+        double cFreq = 100; /* カットオフ周波数 */
 
         int tapn = 21; /* タップ数　奇数   */
 
-        boolean lpfflag = true; /* フィルタ切替LPF=true, HPF=false */
+        boolean lpfflag = false; /* フィルタ切替LPF=true, HPF=false */
 
         int windowF = 0; /* 窓関数の切替 hamming=0, hanning=1 */
 

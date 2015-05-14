@@ -10,14 +10,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -66,6 +62,12 @@ public class OmUtil {
         AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits,
                                              channels, signed, bigEndian);
         return format;
+    }
+    public static File getDirectory(String subdir){
+        boolean is_mac = System.getProperty("os.name").toLowerCase().startsWith("mac");
+        File dir = new File((is_mac?"C:\\drive\\doc\\origine_mundi\\":"/Users/user/") + subdir);
+        dir.mkdirs();
+        return dir;
     }
    
     public static SysexMessage sysex(String str) throws InvalidMidiDataException {

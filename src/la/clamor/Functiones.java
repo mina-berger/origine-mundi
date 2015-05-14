@@ -4,7 +4,6 @@ package la.clamor;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -16,8 +15,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
-import org.apache.commons.math3.complex.ComplexFormat;
-import org.apache.commons.math3.util.FastMath;
 
 public class Functiones implements Constantia {
     private static Integer clavis = null;

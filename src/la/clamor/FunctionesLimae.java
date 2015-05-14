@@ -76,7 +76,7 @@ public class FunctionesLimae implements Constantia {
         
         log.info("count=" + count + ":" + ab_index + " - " + ad_index);
     }
-    public static void facioLimam(File source, File target, Aestimatio volume){
+    public static void facioLimam(File source, File target, Aestimatio volume, boolean teneo_pan){
         FileInputStream in;
         int longitudo;
         int channel = 0;
@@ -155,7 +155,8 @@ public class FunctionesLimae implements Constantia {
         //FileOutputStream f_out;
         ScriptorLimam sl;
         LectorLimam ll;
-        Aestimatio max = new Aestimatio();
+        Maximum max = new Maximum(teneo_pan);
+        //Aestimatio max = new Aestimatio();
         try {
             File tmp_file1 = File.createTempFile("l_lima1", Long.toString(System.currentTimeMillis()));
             //f_out = new FileOutputStream(tmp_file1);
@@ -167,14 +168,16 @@ public class FunctionesLimae implements Constantia {
                     FilumOctorum read = legoFilumOctorum(in, bytes);
                     Aestimatio monoral_data = new Aestimatio(read.getByteValueInteger(0, bytes));
                     punctum = new Punctum(monoral_data);
-                    max = max.max(monoral_data);
+                    //max = max.max(monoral_data);
+                    max.ponoAestimatio(monoral_data);
                 }else{
                     punctum = new Punctum();
                     for(int j = 0;j < channel;j++){
                         FilumOctorum read = legoFilumOctorum(in, bytes);
                         Aestimatio datum = new Aestimatio(read.getByteValueInteger(0, bytes));
                         punctum.ponoAestimatio(j, datum);
-                        max = max.max(datum);
+                        //max = max.max(datum);
+                        max.ponoAestimatio(j, datum);
                     }
                 }
                 sl.scribo(punctum);
@@ -199,7 +202,7 @@ public class FunctionesLimae implements Constantia {
             //}
             int scribo = 0;
             while(ll.paratusSum()){
-                sl.scribo(ll.lego().multiplico(volume).partior(max));
+                sl.scribo(ll.lego().multiplico(volume).partior(max.punctum));
                 scribo++;
             }
             log.info("scribo=" + scribo);
@@ -280,6 +283,26 @@ public class FunctionesLimae implements Constantia {
             throw new IllegalStateException(ex);
         }
     }
+    private static class Maximum {
+        Punctum punctum;
+        boolean teneo_pan;
+        Maximum(boolean teneo_pan){
+            this.teneo_pan = teneo_pan;
+            punctum = new Punctum();
+        }
+        void ponoAestimatio(Aestimatio value){
+            for(int i = 0;i < punctum.longitudo();i++){
+                punctum.ponoAestimatio(i, punctum.capioAestimatio(i).max(value));
+            }
+        }
+        void ponoAestimatio(int index, Aestimatio value){
+            if(teneo_pan){
+                ponoAestimatio(value);
+            }else{
+                punctum.ponoAestimatio(index, punctum.capioAestimatio(index).max(value));
+            }
+        }
+    }
     /*public Clip getClip(double pan, double velocity){
         return new Clip(wave_data, pan, velocity);
     }*/
@@ -295,18 +318,21 @@ public class FunctionesLimae implements Constantia {
         return new FilumOctorum(buffer);
     }
     public static void main(String[] arg){
-        File src  = new File("doc/sample/sample01.wav");
-        File trg  = new File("doc/sample/sample02.wav");
-        File lima = new File("doc/sample/sample02.lima");
+        File src1  = new File("doc/sample/sample01.wav");
+        File trg1  = new File("doc/sample/target01.wav");
+        File lima1 = new File("doc/sample/lima01.lima");
+        File src2  = new File("doc/sample/sample02.wav");
+        File trg2  = new File("doc/sample/target02.wav");
+        File lima2 = new File("doc/sample/lima02.lima");
 
-        facioLimam(src, lima, new Aestimatio(1));
-        //new ScriptorWav(trg).scribo(new LectorLimam(lima));
-        /*Functiones.ludoLimam(new File("doc/sample/sample02.wav"));
-        */
-        FunctionesLimae.trim(lima, new Aestimatio(0.005));
-        new ScriptorWav(trg).scribo(new LectorLimam(lima), false);
-        //Functiones.ludoLimam(src);
-        //Functiones.ludoLimam(trg);
+        //facioLimam(src1, lima1, new Aestimatio(1), false);
+        //facioLimam(src2, lima2, new Aestimatio(1), false);
+        //FunctionesLimae.trim(lima1, new Aestimatio(0.005));
+        //FunctionesLimae.trim(lima2, new Aestimatio(0.005));
+        //new ScriptorWav(trg1).scribo(new LectorLimam(lima1), false);
+        //new ScriptorWav(trg2).scribo(new LectorLimam(lima2), false);
+        Functiones.ludoLimam(trg1);
+        Functiones.ludoLimam(trg2);
         //WavFileWriter wavfile = new WavFileWriter(new File("C:/drive/phthongos/test.wav"));
         //wavfile.write(new LectorLimam("drum" ,"bd1", 1).getClip(0, 1));
         //AudioUtil.playAudio(wavfile.getFile());

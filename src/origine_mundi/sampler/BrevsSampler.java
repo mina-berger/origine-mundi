@@ -7,7 +7,6 @@ package origine_mundi.sampler;
 
 import com.mina.sound.midi.EndOfTrackListner;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,19 +17,11 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Transmitter;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.TargetDataLine;
 import origine_mundi.Integers;
 import origine_mundi.MidiMachines;
 import origine_mundi.OmException;
 import origine_mundi.OmReceiver;
 import origine_mundi.OmUtil;
-import static origine_mundi.OmUtil.FILETYPE;
-import static origine_mundi.OmUtil.getAudioFormat;
 import static origine_mundi.OmUtil.noteoff;
 import origine_mundi.SequenceHolder;
 import origine_mundi.ludior.Brev;
@@ -93,7 +84,8 @@ public class BrevsSampler {
             throw new OmException("cannot get sequencer", ex);
         }
         System.out.println("start");
-        EndOfTrackListner eot = new EndOfTrackListner(sequencer, midi_machines);
+        //dont close midimachines
+        EndOfTrackListner eot = new EndOfTrackListner(sequencer, null);
         sequencer.addMetaEventListener(eot);
         
         System.out.println("Start recording...");

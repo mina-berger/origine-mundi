@@ -35,8 +35,10 @@ public class EndOfTrackListner extends Thread implements MetaEventListener {
                 System.out.println("EndOfTrack could not sleep");
             }
             sequencer.close();
-            for(Integer id:machines.keySet()){
-                machines.get(id).finalize();
+            if(machines != null){
+                for(Integer id:machines.keySet()){
+                    machines.get(id).finalize();
+                }
             }
             is_completed = true;
             /*receivers.stream().forEach((receiver) -> {
