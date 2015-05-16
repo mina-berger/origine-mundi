@@ -65,7 +65,7 @@ public class OmUtil {
     }
     public static File getDirectory(String subdir){
         boolean is_mac = System.getProperty("os.name").toLowerCase().startsWith("mac");
-        File dir = new File((is_mac?"C:\\drive\\doc\\origine_mundi\\":"/Users/user/") + subdir);
+        File dir = new File((is_mac?"/Users/user/origine_mundi/":"C:\\drive\\doc\\origine_mundi\\") + subdir);
         dir.mkdirs();
         return dir;
     }

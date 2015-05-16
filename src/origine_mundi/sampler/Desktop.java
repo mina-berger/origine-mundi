@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import la.clamor.Consilium;
 import la.clamor.EnvelopeFilter;
+import la.clamor.Functiones;
 import la.clamor.FunctionesLimae;
 import la.clamor.LectorLimam;
 import la.clamor.Punctum.Aestimatio;
+import la.clamor.ScriptorWav;
 import org.junit.Test;
 import origine_mundi.MidiMachines;
 import origine_mundi.OmUtil;
@@ -70,8 +72,10 @@ public abstract class Desktop {
                             lusa.getVolume()), 
                         lusa.getFilterInfo()));
         }
-
-        
+        File out_file = new File(OmUtil.getDirectory("opus"), getClass().getSimpleName() + ".wav");
+        ScriptorWav sw = new ScriptorWav(out_file);
+        sw.scribo(cns, false);
+        Functiones.ludoLimam(out_file);
     }
     
 }
