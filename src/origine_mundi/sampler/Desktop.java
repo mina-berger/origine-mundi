@@ -8,6 +8,7 @@ package origine_mundi.sampler;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeSet;
 import la.clamor.Consilium;
 import la.clamor.EnvelopeFilter;
 import la.clamor.Functiones;
@@ -18,7 +19,6 @@ import la.clamor.ScriptorWav;
 import org.junit.Test;
 import origine_mundi.MidiMachines;
 import origine_mundi.OmUtil;
-import origine_mundi.filter.FIRFilter;
 import origine_mundi.filter.FilterInfo;
 import origine_mundi.ludior.Brevs;
 import origine_mundi.ludior.Tempus;
@@ -31,29 +31,41 @@ public abstract class Desktop {
     MidiMachines midi_machines;
     HashMap<String, Brevs> brevs_map;
     ArrayList<LimaLusa> lusa_list;
+    TreeSet<Integer> skip_set;
+    private final int SKIP_MIDI = 0;
+    public Desktop(){
+        skip_set = new TreeSet<>();
+    }
         
     protected abstract void callDevices(MidiMachines midi_machines);
     protected abstract Tempus getTempus();
     protected abstract void getBrevs(HashMap<String, Brevs> brevs_map);
     protected abstract void getLusa(ArrayList<LimaLusa> lusa_list);
+    protected void setSkips(boolean midi_record, boolean k){
+        if(midi_record){
+            skip_set.add(SKIP_MIDI);
+        }
+    }
     @Test
     public void main(){
-        midi_machines = new MidiMachines();
-        callDevices(midi_machines);
         Tempus tempus = getTempus();
-        brevs_map = new HashMap<>();
-        getBrevs(brevs_map);
         File dir = OmUtil.getDirectory("sample");
+        if(!skip_set.contains(SKIP_MIDI)){
+            midi_machines = new MidiMachines();
+            callDevices(midi_machines);
+            brevs_map = new HashMap<>();
+            getBrevs(brevs_map);
         
-        //sampling
-        BrevsSampler sampler;
-        for(String key:brevs_map.keySet()){
-            File wav_file = new File(dir, key + ".wav");
-            File lima     = new File(dir, key + ".lima");
-            sampler = new BrevsSampler(midi_machines, tempus, wav_file, brevs_map.get(key));
-            sampler.record();
-            FunctionesLimae.facioLimam(wav_file, lima, new Aestimatio(1), false);
-            FunctionesLimae.trim(lima, new Aestimatio(0.005));
+            //sampling
+            BrevsSampler sampler;
+            for(String key:brevs_map.keySet()){
+                File wav_file = new File(dir, key + ".wav");
+                File lima     = new File(dir, key + ".lima");
+                sampler = new BrevsSampler(midi_machines, tempus, wav_file, brevs_map.get(key));
+                sampler.record();
+                FunctionesLimae.facioLimam(wav_file, lima, new Aestimatio(1), false);
+                FunctionesLimae.trim(lima, new Aestimatio(0.005));
+            }
         }
         lusa_list = new ArrayList<>();
         getLusa(lusa_list);
