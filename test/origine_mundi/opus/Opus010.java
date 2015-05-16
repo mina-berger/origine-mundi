@@ -33,17 +33,17 @@ public class Opus010 {
         Functiones.ludoLimam(out_file);
     }    
      public static void _main(String[] args){
-        /*File wav_file = new File(OmUtil.getDirectory("sample"), "01d.wav");
+        File wav_file = new File(OmUtil.getDirectory("sample"), "01d.wav");
         File lima_m = new File(OmUtil.getDirectory("sample"), "01dm.lima");
         File lima_w = new File(OmUtil.getDirectory("sample"), "01d.lima");
         File out_file = new File(OmUtil.getDirectory("opus"), "opus009_t.wav");
         
-        //FunctionesLimae.facioLimam(wav_file, lima_m, new Punctum.Aestimatio(1), true);
+        FunctionesLimae.facioLimam(wav_file, lima_m, new Punctum.Aestimatio(1), true);
         ScriptorWav sw = new ScriptorWav(out_file);
-        sw.scribo(new LectorLimam(lima_w), false);
+        sw.scribo(new LectorLimam(lima_m), false);
  
-        Functiones.ludoLimam(out_file);*/
-        File lima_m = new File(OmUtil.getDirectory("sample"), "01dm.lima");
+        Functiones.ludoLimam(out_file);
+        /*File lima_m = new File(OmUtil.getDirectory("sample"), "01dm.lima");
         File lima_w = new File(OmUtil.getDirectory("sample"), "01d.lima");
         LectorLimam llm = new LectorLimam(lima_m);
         LectorLimam llw = new LectorLimam(lima_w);
@@ -79,7 +79,7 @@ public class Opus010 {
                 break;
             }
             
-        }
+        }*/
             
     }    
 }
