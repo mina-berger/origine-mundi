@@ -209,9 +209,9 @@ public class FunctionesLimae implements Constantia {
             while(ll.paratusSum()){
                 Punctum p = ll.lego().multiplico(volume).partior(max.punctum);
                 sl.scribo(p);
-                if(scribo < 100){
-                    System.out.println(scribo + ":" + p);
-                }
+                //if(scribo < 100){
+                //    System.out.println(scribo + ":" + p);
+               // }
                 scribo++;
             }
             log.info("scribo=" + scribo);

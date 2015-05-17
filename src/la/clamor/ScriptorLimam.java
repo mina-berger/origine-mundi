@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import static la.clamor.Constantia.CHANNEL;
 
 /**
@@ -21,6 +19,9 @@ public class ScriptorLimam {
     private ObjectOutputStream o_out;
     private FileOutputStream f_out;
     public ScriptorLimam(File lima){
+        if(lima.exists()){
+            lima.delete();
+        }
         try {
             f_out = new FileOutputStream(lima);
             o_out = new ObjectOutputStream(f_out);
