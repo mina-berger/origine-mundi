@@ -63,10 +63,20 @@ public abstract class Desktop {
                 File lima     = new File(dir, key + ".lima");
                 sampler = new BrevsSampler(midi_machines, tempus, wav_file, brevs_map.get(key));
                 sampler.record();
+                System.out.println("1:" + lima.exists());
                 FunctionesLimae.facioLimam(wav_file, lima, new Aestimatio(1), false);
-                FunctionesLimae.trim(lima, new Aestimatio(0.005));
+                System.out.println("2:" + lima.exists() + ":" + lima.length());
+                FunctionesLimae.trim(lima, new Aestimatio(0.01));
+                System.out.println("3:" + lima.exists() + ":" + lima.length());
+                
+                //DEBUG
+                //File trg =new File(OmUtil.getDirectory("sample"), key + "trim.wav");
+                //ScriptorWav sw = new ScriptorWav(trg);
+                //sw.scribo(new LectorLimam(lima), false);
+                //Functiones.ludoLimam(trg);
             }
         }
+        
         lusa_list = new ArrayList<>();
         getLusa(lusa_list);
         
@@ -85,9 +95,12 @@ public abstract class Desktop {
                         lusa.getFilterInfo()));
         }
         File out_file = new File(OmUtil.getDirectory("opus"), getClass().getSimpleName() + ".wav");
+        
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(cns, false);
-        Functiones.ludoLimam(out_file);
+        
+                Functiones.ludoLimam(out_file);
+                
     }
     
 }

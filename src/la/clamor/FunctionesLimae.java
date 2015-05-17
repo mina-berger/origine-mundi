@@ -15,6 +15,7 @@ import la.clamor.Punctum.Aestimatio;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import origine_mundi.OmUtil;
 
 
 public class FunctionesLimae implements Constantia {
@@ -49,7 +50,7 @@ public class FunctionesLimae implements Constantia {
         ll = new LectorLimam(lima);
         count = 0;
             
-        
+        System.out.println(ab_index + ":" + ad_index + ":" + length);
         try {
             File tmp_file1 = File.createTempFile("l_lima1", Long.toString(System.currentTimeMillis()));
             ScriptorLimam sl = new ScriptorLimam(tmp_file1);
@@ -68,7 +69,9 @@ public class FunctionesLimae implements Constantia {
             }
             ll.close();
             sl.close();
+            System.out.println("d1:" + lima.exists());
             lima.delete();
+            System.out.println("d2:" + lima.exists());
             tmp_file1.renameTo(lima);
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
@@ -333,24 +336,19 @@ public class FunctionesLimae implements Constantia {
         return new FilumOctorum(buffer);
     }
     public static void main(String[] arg){
-        File src1  = new File("doc/sample/sample01.wav");
-        File trg1  = new File("doc/sample/target01.wav");
-        File lima1 = new File("doc/sample/lima01.lima");
-        File src2  = new File("doc/sample/sample02.wav");
-        File trg2  = new File("doc/sample/target02.wav");
-        File lima2 = new File("doc/sample/lima02.lima");
-
-        //facioLimam(src1, lima1, new Aestimatio(1), false);
-        //facioLimam(src2, lima2, new Aestimatio(1), false);
-        //FunctionesLimae.trim(lima1, new Aestimatio(0.005));
-        //FunctionesLimae.trim(lima2, new Aestimatio(0.005));
-        //new ScriptorWav(trg1).scribo(new LectorLimam(lima1), false);
-        //new ScriptorWav(trg2).scribo(new LectorLimam(lima2), false);
-        Functiones.ludoLimam(trg1);
-        Functiones.ludoLimam(trg2);
-        //WavFileWriter wavfile = new WavFileWriter(new File("C:/drive/phthongos/test.wav"));
-        //wavfile.write(new LectorLimam("drum" ,"bd1", 1).getClip(0, 1));
-        //AudioUtil.playAudio(wavfile.getFile());
+        File src =new File(OmUtil.getDirectory("sample"), "01d.wav");
+        File lima = new File(OmUtil.getDirectory("sample"), "01u.lima");
+        File trg =new File(OmUtil.getDirectory("sample"), "01udteim.wav");
+        
+        //System.out.println("s:" + src.length() + ":" + src.lastModified());
+        //FunctionesLimae.facioLimam(src, lima, new Aestimatio(1), false);
+        //System.out.println("l" + lima.length() + ":" + lima.lastModified());
+        //FunctionesLimae.trim(lima, new Aestimatio(0.01));
+        //System.out.println("l" + lima.length() + ":" + lima.lastModified());
+        
+        ScriptorWav sw = new ScriptorWav(trg);
+        sw.scribo(new LectorLimam(lima), false);
+        Functiones.ludoLimam(trg);
 
     }
 

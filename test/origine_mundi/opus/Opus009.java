@@ -39,7 +39,7 @@ public class Opus009 extends Desktop {
     protected Tempus getTempus() {
         return new Tempus(
                 new Tempus.Comes[]{}, 
-                new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 100, true)});
+                new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 120, true)});
     }
 
     @Override
@@ -58,6 +58,24 @@ public class Opus009 extends Desktop {
         
         bf0.note(new Integers(5, 4, 3, 2, 1, 0), new Integers(64, 59, 56, 52, 47, 40), 120, 1, 1, stroke0, exp0, true);
         brevs_map.put("01u", bf0.remove());
+        
+        bf0.note(new Integers(1, 2, 3, 4, 5), new Integers(47, 54, 59, 62, 66), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("02d", bf0.remove());
+        
+        bf0.note(new Integers(5, 4, 3, 2, 1), new Integers(66, 62, 59, 54, 47), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("02u", bf0.remove());
+        
+        bf0.note(new Integers(1, 2, 3, 4, 5), new Integers(47, 54, 59, 62, 66), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("03d", bf0.remove());
+        
+        bf0.note(new Integers(5, 4, 3, 2, 1), new Integers(66, 62, 59, 54, 47), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("03u", bf0.remove());
+        
+        bf0.note(new Integers(1, 2, 3, 4, 5), new Integers(47, 54, 59, 62, 66), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("04d", bf0.remove());
+        
+        bf0.note(new Integers(5, 4, 3, 2, 1), new Integers(66, 62, 59, 54, 47), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("04u", bf0.remove());
     }
 
     @Override
@@ -79,28 +97,29 @@ public class Opus009 extends Desktop {
         boolean lpf = true;
         FilterInfo fi1 = new FIRInfo(20000, lpf, true, new Aestimatio(1));
         FilterInfo fi2 = new FIRInfo( 5000, lpf, true, new Aestimatio(1));
-        int measure = 16;
+        int measure = 32;
         //double temp_beat = 500;
         for(int i = 0;i < measure;i++){
             //double m_temp = i * (temp_beat * 4);
+            String no = i % 2 == 0?"01":"02";
             int count = 0;
-            double back = 32;
-            lusa_list.add(new LimaLusa("01d", i, count++ * 0.125,        0.125, env1, fi1, new Punctum.Aestimatio(1)));
-            lusa_list.add(new LimaLusa("01u", i, count++ * 0.125 + back, 0.125, env1, fi1, new Punctum.Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa("01d", i, count++ * 0.125,        0.125, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa("01u", i, count++ * 0.125 + back, 0.125, env2, fi1, new Punctum.Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa("01d", i, count++ * 0.125,        0.125, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa("01u", i, count++ * 0.125 + back, 0.125, env1, fi1, new Punctum.Aestimatio(1)));
-            lusa_list.add(new LimaLusa("01d", i, count++ * 0.125,        0.125, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa("01u", i, count++ * 0.125 + back, 0.125, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa("01d", i, count++ * 0.125,        0.125, env1, fi1, new Punctum.Aestimatio(1.0)));
-            lusa_list.add(new LimaLusa("01u", i, count++ * 0.125 + back, 0.125, env1, fi1, new Punctum.Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa("01d", i, count++ * 0.125,        0.125, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa("01u", i, count++ * 0.125 + back, 0.125, env2, fi1, new Punctum.Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa("01d", i, count++ * 0.125,        0.125, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa("01u", i, count++ * 0.125 + back, 0.125, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa("01d", i, count++ * 0.125,        0.125, env1, fi1, new Punctum.Aestimatio(1.0)));
-            lusa_list.add(new LimaLusa("01u", i, count++ * 0.125 + back, 0.125, env3, fi2, new Punctum.Aestimatio(0.5)));
+            double back = 0.010;
+            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env1, fi1, new Punctum.Aestimatio(1)));
+            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env1, fi1, new Punctum.Aestimatio(0.8)));
+            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env2, fi1, new Punctum.Aestimatio(0.8)));
+            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env1, fi1, new Punctum.Aestimatio(1)));
+            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env1, fi1, new Punctum.Aestimatio(1.0)));
+            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env1, fi1, new Punctum.Aestimatio(0.8)));
+            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env2, fi1, new Punctum.Aestimatio(0.8)));
+            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env1, fi1, new Punctum.Aestimatio(1.0)));
+            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
         }
             //cns.addo(3000, new FIRFilter(new LectorLimam(lima2), cutoff, false, true, volume));
         

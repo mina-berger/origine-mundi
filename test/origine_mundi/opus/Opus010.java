@@ -19,12 +19,12 @@ import origine_mundi.OmUtil;
  * @author user
  */
 public class Opus010 {
-     public static void _main(String[] args){
+     public static void main(String[] args){
         File out_file = new File(OmUtil.getDirectory("opus"), "opus010.wav");
-        File wav_file = new File(OmUtil.getDirectory("opus"), "sample03.wav");
+        File src_file = new File(OmUtil.getDirectory("opus"), "opus009.wav");
         
-        File lima = new File(OmUtil.getDirectory("sample"), "sample03.lima");
-        FunctionesLimae.facioLimam(wav_file, lima, new Punctum.Aestimatio(1), true);
+        File lima = new File(OmUtil.getDirectory("sample"), "opus010.lima");
+        FunctionesLimae.facioLimam(src_file, lima, new Punctum.Aestimatio(1), true);
             
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Chorus(new LectorLimam(lima), new Punctum(0.3), new Punctum(3.5, -3.5), new Punctum(-1, 1), new Punctum(0.5, -0.5)), false);
@@ -32,12 +32,12 @@ public class Opus010 {
         //sw.scribo(new LectorLimam(lima), false);
         Functiones.ludoLimam(out_file);
     }    
-     public static void main(String[] args){
+     public static void _main(String[] args){
         File wav_file = new File(OmUtil.getDirectory("sample"), "01d.wav");
         //File lima_m = new File(OmUtil.getDirectory("sample"), "01dm.lima");
         File lima = new File(OmUtil.getDirectory("sample"), "01d.lima");
         File out_file = new File(OmUtil.getDirectory("opus"), "opus009_t.wav");
-        
+        System.out.println(lima.getAbsolutePath());
         FunctionesLimae.facioLimam(wav_file, lima, new Punctum.Aestimatio(1), true);
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new LectorLimam(lima), false);

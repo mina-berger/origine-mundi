@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import la.clamor.Punctum.Aestimatio;
+import origine_mundi.OmUtil;
 
 
 
@@ -42,6 +44,28 @@ public class LectorLimam implements Constantia, Legibilis {
             puncta_stream.close();
         } catch (IOException ex) {
             throw new ExceptioClamoris(ex);
+        }
+    }
+    public static void main(String[] args){
+        File f = new File(OmUtil.getDirectory("sample"), "01d.lima");
+        int length = 1000;
+        ArrayList<LectorLimam> lls = new ArrayList<>();
+        for(int i = 0;i < length;i++){
+            lls.add(new LectorLimam(f));
+        }
+        while(lls.get(0).paratusSum()){
+            Punctum o = null;
+            Punctum c = null;
+            for(int i = 0;i < length;i++){
+                c = lls.get(i).lego();
+                if(i == 0){
+                    o = c;
+                    continue;
+                }
+                if(!c.equals(o)){
+                    throw new RuntimeException(c + ":" + o);
+                }
+            }
         }
     }
 
