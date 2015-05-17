@@ -189,7 +189,7 @@ public class FunctionesLimae implements Constantia {
             //o_out.close();
             //f_out.close();
             sl.close();
-            log.info("max=" + max);
+            log.info("max=" + max.punctum);
             log.info(tmp_file1.getAbsolutePath());
             //o_in = new ObjectInputStream(new FileInputStream(tmp_file1));
             ll = new LectorLimam(tmp_file1);
