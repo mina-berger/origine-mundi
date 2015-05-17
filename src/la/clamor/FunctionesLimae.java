@@ -225,6 +225,9 @@ public class FunctionesLimae implements Constantia {
             if(regula_exampli_fontis == REGULA_EXAMPLI){
                 //puncta_stream = new ObjectInputStream(new FileInputStream(tmp_file2));
                 tmp_file1.delete();
+                //if(target.exists()){
+                    target.delete();
+                //}
                 tmp_file2.renameTo(target);
                 return;
             }
@@ -286,6 +289,9 @@ public class FunctionesLimae implements Constantia {
             ll.close();
             sl.close();
             tmp_file2.delete();
+            //if(target.exists()){
+                target.delete();
+            //}
             tmp_file3.renameTo(target);
         } catch (IOException ex) {
             Logger.getLogger(FunctionesLimae.class.getName()).log(Level.SEVERE, null, ex);

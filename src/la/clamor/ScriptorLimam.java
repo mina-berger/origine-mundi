@@ -19,9 +19,9 @@ public class ScriptorLimam {
     private ObjectOutputStream o_out;
     private FileOutputStream f_out;
     public ScriptorLimam(File lima){
-        if(lima.exists()){
-            lima.delete();
-        }
+        //if(lima.exists()){
+        //    lima.delete();
+        //}
         try {
             f_out = new FileOutputStream(lima);
             o_out = new ObjectOutputStream(f_out);
