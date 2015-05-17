@@ -162,7 +162,7 @@ public class FunctionesLimae implements Constantia {
             //f_out = new FileOutputStream(tmp_file1);
             //o_out = new ObjectOutputStream(f_out);
             sl = new ScriptorLimam(tmp_file1);
-            int init = 0;
+            //int init = 0;
             for(int i = 0;i < octets_length;i++){
                 Punctum punctum;
                 if(channel == 1){
@@ -179,10 +179,10 @@ public class FunctionesLimae implements Constantia {
                         punctum.ponoAestimatio(j, datum);
                         //max = max.max(datum);
                         max.ponoAestimatio(j, datum);
-                        if(init < 1000){
-                            System.out.println(i + ":" + datum.doubleValue());
-                            init++;
-                        }
+                        //if(init < 1000){
+                        //    System.out.println(i + ":" + datum.doubleValue());
+                        //    init++;
+                        //}
                     }
                 }
                 sl.scribo(punctum);
@@ -207,7 +207,11 @@ public class FunctionesLimae implements Constantia {
             //}
             int scribo = 0;
             while(ll.paratusSum()){
-                sl.scribo(ll.lego().multiplico(volume).partior(max.punctum));
+                Punctum p = ll.lego().multiplico(volume).partior(max.punctum);
+                sl.scribo(p);
+                if(scribo < 100){
+                    System.out.println(scribo + ":" + p);
+                }
                 scribo++;
             }
             log.info("scribo=" + scribo);
