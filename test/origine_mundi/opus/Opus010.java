@@ -27,7 +27,7 @@ public class Opus010 {
         FunctionesLimae.facioLimam(src_file, lima, new Punctum.Aestimatio(1), true);
             
         ScriptorWav sw = new ScriptorWav(out_file);
-        sw.scribo(new Chorus(new LectorLimam(lima), new Punctum(0.3), new Punctum(3.5, -3.5), new Punctum(-1, 1), new Punctum(0.5, -0.5)), false);
+        sw.scribo(new Chorus(new LectorLimam(lima), new Punctum(0.5), new Punctum(3.5, -3.5), new Punctum(-1, 1), new Punctum(0.5, -0.5)), false);
         
         //sw.scribo(new LectorLimam(lima), false);
         Functiones.ludoLimam(out_file);

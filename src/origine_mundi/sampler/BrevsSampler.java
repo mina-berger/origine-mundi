@@ -47,9 +47,13 @@ public class BrevsSampler {
         this.tempus = tempus;
         this.brevs_list = new ArrayList<>();
         brevs_list.addAll(Arrays.asList(brevs_array));
-        record_thread = new RecordThread(out_file);
+        if(out_file == null){
+            record_thread = null;
+        }else{
+            record_thread = new RecordThread(out_file);
+        }
     }
-    public void record(){
+    public void start(){
         Sequencer sequencer;
         try {
             sequencer = OmUtil.getSequencer();
@@ -88,10 +92,11 @@ public class BrevsSampler {
         EndOfTrackListner eot = new EndOfTrackListner(sequencer, null);
         sequencer.addMetaEventListener(eot);
         
-        System.out.println("Start recording...");
-        record_thread.start();
+        if(record_thread != null){
+            System.out.println("Start recording...");
+            record_thread.start();
+        }
         System.out.println("Start playing...");
-        
         sequencer.start();
         try {
             Thread.sleep(range.getDuration());
@@ -108,7 +113,9 @@ public class BrevsSampler {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
         }
-        record_thread.terminate();
+        if(record_thread != null){
+            record_thread.terminate();
+        }
         while(!eot.isCompleted()){
             try {
                 Thread.sleep(100);
@@ -176,7 +183,7 @@ public class BrevsSampler {
         bf0.note(new Integers(0, 1, 2, 3, 4, 5), new Integers(40, 47, 52, 56, 59, 64), 120, 1, 1, stroke0, exp0, true);
         sampler = new BrevsSampler(midi_machines, new Tempus(new Tempus.Comes[]{}, new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 100, true)}), 
                 new File("C:\\drive\\doc\\origine_mundi\\sample\\sample01.wav"), bf0.remove());
-        sampler.record();
+        sampler.start();
         
         /*bf0.note(new Integers(5, 4, 3, 2, 1, 0), new Integers(64, 59, 56, 52, 47, 40), 120, 1, 1, stroke0, exp0, true);
         sampler = new BrevsSampler(midi_machines, new Tempus(new Tempus.Comes[]{}, new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 100, true)}), 

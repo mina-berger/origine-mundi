@@ -60,4 +60,7 @@ public class Brev {
                         new MidiByte(1), 
                         new MidiByte(0), 0, 0);
     }
+    public boolean isNote(){
+        return command == ShortMessage.NOTE_ON || command == ShortMessage.NOTE_OFF;
+    }
 }

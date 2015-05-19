@@ -70,10 +70,12 @@ public class OscillatioSimplex implements Constantia {
         sw.scribo(new Legibilis(){
             OscillatioSimplex o = new OscillatioSimplex();
             int count= 0;
+            double pitch = 220;
             @Override
             public Punctum lego() {
                 count++;
-                return o.lego(new Punctum(440), new Punctum(1));
+                pitch += 0.02;
+                return o.lego(new Punctum(pitch), new Punctum(1));
             }
 
             @Override

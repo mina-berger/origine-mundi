@@ -29,6 +29,9 @@ import origine_mundi.sampler.LimaLusa;
  * @author user
  */
 public class Opus009 extends Desktop {
+    public Opus009(){
+        super(false, true, true, true);
+    }
 
     @Override
     protected void callDevices(MidiMachines midi_machines) {
@@ -59,13 +62,13 @@ public class Opus009 extends Desktop {
         bf0.note(new Integers(5, 4, 3, 2, 1, 0), new Integers(64, 59, 56, 52, 47, 40), 120, 1, 1, stroke0, exp0, true);
         brevs_map.put("01u", bf0.remove());
         
-        bf0.note(new Integers(1, 2, 3, 4, 5), new Integers(47, 54, 59, 62, 66), 120, 1, 1, stroke0, exp0, true);
+        /*bf0.note(new Integers(1, 2, 3, 4, 5), new Integers(47, 54, 59, 62, 66), 120, 1, 1, stroke0, exp0, true);
         brevs_map.put("02d", bf0.remove());
         
         bf0.note(new Integers(5, 4, 3, 2, 1), new Integers(66, 62, 59, 54, 47), 120, 1, 1, stroke0, exp0, true);
         brevs_map.put("02u", bf0.remove());
-        
-        bf0.note(new Integers(1, 2, 3, 4, 5), new Integers(47, 54, 59, 62, 66), 120, 1, 1, stroke0, exp0, true);
+        */
+        /*bf0.note(new Integers(1, 2, 3, 4, 5), new Integers(47, 54, 59, 62, 66), 120, 1, 1, stroke0, exp0, true);
         brevs_map.put("03d", bf0.remove());
         
         bf0.note(new Integers(5, 4, 3, 2, 1), new Integers(66, 62, 59, 54, 47), 120, 1, 1, stroke0, exp0, true);
@@ -75,7 +78,7 @@ public class Opus009 extends Desktop {
         brevs_map.put("04d", bf0.remove());
         
         bf0.note(new Integers(5, 4, 3, 2, 1), new Integers(66, 62, 59, 54, 47), 120, 1, 1, stroke0, exp0, true);
-        brevs_map.put("04u", bf0.remove());
+        brevs_map.put("04u", bf0.remove());*/
     }
 
     @Override
@@ -97,11 +100,12 @@ public class Opus009 extends Desktop {
         boolean lpf = true;
         FilterInfo fi1 = new FIRInfo(20000, lpf, true, new Aestimatio(1));
         FilterInfo fi2 = new FIRInfo( 5000, lpf, true, new Aestimatio(1));
-        int measure = 32;
+        int measure = 8;
         //double temp_beat = 500;
         for(int i = 0;i < measure;i++){
             //double m_temp = i * (temp_beat * 4);
-            String no = i % 2 == 0?"01":"02";
+            //String no = i % 2 == 0?"01":"02";
+            String no = "01";
             int count = 0;
             double back = 0.010;
             lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env1, fi1, new Punctum.Aestimatio(1)));

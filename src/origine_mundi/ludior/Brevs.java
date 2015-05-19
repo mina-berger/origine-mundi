@@ -24,4 +24,13 @@ public class Brevs extends ArrayList<Brev> {
         }
         return set;
     }
+    public boolean containsNote(){
+        for(Brev brev:this){
+            if(brev.isNote()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }

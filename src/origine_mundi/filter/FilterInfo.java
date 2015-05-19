@@ -13,6 +13,10 @@ import la.clamor.Punctum.Aestimatio;
  * @author user
  */
 public abstract class FilterInfo {
+    public static class ThruInfo extends FilterInfo {
+        
+    }
+
     public static class FIRInfo extends FilterInfo {
         double cutoff_freq;
         boolean lpf;
@@ -26,7 +30,10 @@ public abstract class FilterInfo {
         }
     }
     public static Legibilis getFilter(Legibilis legibilis, FilterInfo info){
-        if(info instanceof FIRInfo){
+        
+        if(info instanceof ThruInfo){
+            return legibilis;
+        }else if(info instanceof FIRInfo){
             FIRInfo fir_info = (FIRInfo)info;
             return new FIRFilter(legibilis, fir_info.cutoff_freq, fir_info.lpf, fir_info.hamming, fir_info.volume);
         }

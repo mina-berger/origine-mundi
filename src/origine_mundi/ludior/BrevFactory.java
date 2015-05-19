@@ -41,6 +41,11 @@ public class BrevFactory {
         this.talea = talea;
         this.beat = beat;
     }
+    public void note(int note, int velocity, double duration, double rate, boolean shift){
+        for(int i = 0;i < iuncta.length;i++){
+            note(i, note, velocity, duration, rate, i == iuncta.length - 1?shift:false);
+        }
+    }
     public void note(int iunctum_index, int note, int velocity, double duration, double rate, boolean shift){
         brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, new MidiByte(note), new MidiByte(velocity), talea, beat));
         brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, new MidiByte(note), MidiByte.MIN,           talea, beat + duration * rate));
@@ -48,6 +53,9 @@ public class BrevFactory {
             beat += duration;
         }
     }
+    //public void note(NoteInfo info){
+    //    note(0, info);
+    //}
     public void note(int iunctum_index, NoteInfo info){
         brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, info.getNote(), info.getVelocity(), talea, beat + info.getOffsetOn()));
         brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, info.getNote(), MidiByte.MIN,       talea, beat + info.getOffsetOff()));
@@ -124,6 +132,11 @@ public class BrevFactory {
     }
     public void command(int iunctum_index, int command, int msb, int lsb, double offset){
         brevs.add(new Brev(iuncta[iunctum_index], command, new MidiByte(lsb), new MidiByte(msb), talea, beat + offset));
+    }
+    public void program(int bank_m, int bank_l, int program){
+        for(int i = 0;i < iuncta.length;i++){
+            program(i, bank_m, bank_l, program);
+        }
     }
     public void program(int iunctum_index, int bank_m, int bank_l, int program){
         //long tick = Math.round(beat * RESOLUTION);

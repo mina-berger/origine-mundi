@@ -13,10 +13,10 @@ import origine_mundi.MidiByte;
  */
 public class NoteInfo {
 
-    private MidiByte note;
-    private MidiByte velocity;
-    private double offset_on;
-    private double offset_off;
+    private final MidiByte note;
+    private final MidiByte velocity;
+    private final double offset_on;
+    private final double offset_off;
 
     public NoteInfo(MidiByte note, MidiByte velocity, double offset_on, double offset_off) {
         this.note = note;
