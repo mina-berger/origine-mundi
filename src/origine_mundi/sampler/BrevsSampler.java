@@ -68,7 +68,7 @@ public class BrevsSampler {
                 noteoff(row_receiver);
                 Receiver receiver = new OmReceiver(row_receiver, key);
                 transmitter.setReceiver(receiver);
-            } catch (MidiUnavailableException ex) {
+            } catch (Exception ex) {
                 throw new OmException("cannot get transmitter", ex);
             }
         }

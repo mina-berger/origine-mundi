@@ -28,7 +28,7 @@ public class Opus011 extends Desktop {
 
     @Override
     protected void callDevices(MidiMachines midi_machines) {
-         midi_machines.put(1, MU500.instance(0));
+         midi_machines.put(0, MU500.instance(0));
     }
 
     @Override

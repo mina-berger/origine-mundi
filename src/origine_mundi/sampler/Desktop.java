@@ -96,7 +96,7 @@ public abstract class Desktop {
                 getBrevs(brevs_map);
             }
             for(String key:brevs_map.keySet()){
-                if(brevs_map.get(key).containsNote()){
+                if(!brevs_map.get(key).containsNote()){
                     continue;
                 }
                 File wav_file = new File(dir, key + ".wav");
