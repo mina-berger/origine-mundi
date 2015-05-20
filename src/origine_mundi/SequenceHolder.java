@@ -73,7 +73,7 @@ public class SequenceHolder {
         int channel = iunctum.getChannel();
         int data1 = brev.getData1().intValue();
         Track track = getTrack(i_track);
-        long point = (long)(tempus.capioTempus(brev.getTalea(), brev.getBeat())) - offset;
+        long point = (long)(tempus.capioTempus(brev.getTalea())) - offset;
         //System.out.println(point);
         try {
             MidiEvent midi_event;

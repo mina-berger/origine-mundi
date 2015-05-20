@@ -50,11 +50,11 @@ public class Envelope extends TreeMap<Long, Punctum> {
         }
 
         Punctum punctum = new Punctum();
-        Punctum.Aestimatio diff = new Punctum.Aestimatio(index_tectum - index_solum);
+        Aestimatio diff = new Aestimatio(index_tectum - index_solum);
         for(int i = 0;i < CHANNEL;i++){
             punctum.ponoAestimatio(i, 
-                    punctum_solum .capioAestimatio(i).multiplico(new Punctum.Aestimatio(index_tectum - index)).addo( 
-                    punctum_tectum.capioAestimatio(i).multiplico(new Punctum.Aestimatio(index - index_solum))).partior(diff));
+                    punctum_solum .capioAestimatio(i).multiplico(new Aestimatio(index_tectum - index)).addo( 
+                    punctum_tectum.capioAestimatio(i).multiplico(new Aestimatio(index - index_solum))).partior(diff));
         }
         return punctum;
     }

@@ -20,7 +20,7 @@ import javax.sound.sampled.AudioSystem;
 import static la.clamor.Constantia.BYTE_PER_EXAMPLUM;
 import static la.clamor.Constantia.CHANNEL;
 import static la.clamor.Constantia.REGULA_EXAMPLI;
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.TreeSet;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
-import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Transmitter;
+import la.clamor.Talea;
 import origine_mundi.Integers;
 import origine_mundi.MidiMachines;
 import origine_mundi.OmException;
@@ -132,7 +132,7 @@ public class BrevsSampler {
         for(Brevs brevs:brevs_list){
             for(Brev brev:brevs){
                 //System.out.println(brev.getTalea() + ":" + brev.getBeat() + ":" + tempus.capioTempus(brev.getTalea(), brev.getBeat()));
-                range.range((long)(tempus.capioTempus(brev.getTalea(), brev.getBeat())));
+                range.range((long)(tempus.capioTempus(brev.getTalea())));
             }
         }
         return range;
@@ -179,9 +179,9 @@ public class BrevsSampler {
         BrevFactory bf0 = new BrevFactory(
                 new Iunctum(2, 0, 0), new Iunctum(2, 0, 1), new Iunctum(2, 0, 2), 
                 new Iunctum(2, 0, 3), new Iunctum(2, 0, 4), new Iunctum(2, 0, 5));
-        bf0.setLoco(1, 0d);
+        bf0.setLoco(new Talea(1, 0d));
         bf0.note(new Integers(0, 1, 2, 3, 4, 5), new Integers(40, 47, 52, 56, 59, 64), 120, 1, 1, stroke0, exp0, true);
-        sampler = new BrevsSampler(midi_machines, new Tempus(new Tempus.Comes[]{}, new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 100, true)}), 
+        sampler = new BrevsSampler(midi_machines, new Tempus(new Tempus.Comes[]{}, new Tempus.Rapidus[]{new Tempus.Rapidus(new Talea(), 100, true)}), 
                 new File("C:\\drive\\doc\\origine_mundi\\sample\\sample01.wav"), bf0.remove());
         sampler.start();
         

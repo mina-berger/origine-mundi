@@ -3,7 +3,7 @@ package la.clamor;
 
 
 import java.io.File;
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
 

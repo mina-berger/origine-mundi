@@ -3,7 +3,7 @@ package la.clamor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
@@ -20,10 +20,10 @@ public class Oscillatio implements Constantia, Legibilis {
     Punctum delta;
     
     /** setting for this oscillatio */
-    AbstractPositiones positiones;
+    AbstractPositionesOscillationis positiones;
     
     Oscillatio[] modulatores;
-    public Oscillatio(AbstractPositiones positiones){
+    public Oscillatio(AbstractPositionesOscillationis positiones){
         this.positiones = positiones;
         //System.out.println(positiones);
         
@@ -35,7 +35,7 @@ public class Oscillatio implements Constantia, Legibilis {
         delta = new Punctum();
         
         modulatores = new Oscillatio[0];
-        for(AbstractPositiones positiones_modulationis:positiones.capioModulatores()){
+        for(AbstractPositionesOscillationis positiones_modulationis:positiones.capioModulatores()){
             addoModulator(new Oscillatio(positiones_modulationis));
         }
     }
@@ -190,7 +190,7 @@ public class Oscillatio implements Constantia, Legibilis {
     }
     public static void _main(String[] args){
         
-        Positiones p2 = new Positiones(
+        PositionesOscillationis p2 = new PositionesOscillationis(
             Unda.QUAD, 1, 0, 
             new Positio[]{new Positio(0, new Punctum(554)), new Positio(2000, new Punctum(200)), new Positio(3500, new Punctum(554))},
             new Positio[]{new Positio(0, new Punctum(0)), new Positio(15, new Punctum(1)), new Positio(3000, new Punctum(1)), new Positio(3500, new Punctum(0))},
@@ -224,28 +224,28 @@ public class Oscillatio implements Constantia, Legibilis {
         
     }
     public static void main(String[] args){
-        Positiones p = new Positiones(
+        PositionesOscillationis p = new PositionesOscillationis(
             Unda.SINE, 1, 0, 
             new Positio[]{new Positio(0, new Punctum(435)), new Positio(1500, new Punctum(430)), new Positio(3000, new Punctum(440))},
             new Positio[]{new Positio(0, new Punctum(1)), new Positio(1500, new Punctum(1)), new Positio(3000, new Punctum(0))},
-            new Positiones(
+            new PositionesOscillationis(
                 Unda.SINE, 1, 0, 
                 new Positio[]{new Positio(0, new Punctum(220)), new Positio(1500, new Punctum(880)), new Positio(3000, new Punctum(1880))},
                 new Positio[]{new Positio(0, new Punctum(0)), new Positio(1500, new Punctum(2)), new Positio(2800, new Punctum(4)), new Positio(3000, new Punctum(0))}),
-            new Positiones(
+            new PositionesOscillationis(
                 Unda.SINE, 1, 0, 
                 new Positio[]{new Positio(0, new Punctum(823.25))},
                 new Positio[]{new Positio(0, new Punctum(1)), new Positio(500, new Punctum(0))},
-                new Positiones(
+                new PositionesOscillationis(
                     Unda.SINE, 1, 0, 
                     new Positio[]{new Positio(0, new Punctum(340.25))},
                     new Positio[]{new Positio(0, new Punctum(3)), new Positio(1000, new Punctum(0))}),
-                new Positiones(
+                new PositionesOscillationis(
                     Unda.SINE, 1, 0, 
                     new Positio[]{new Positio(0, new Punctum(6.55))},
                     new Positio[]{new Positio(0, new Punctum(1)), new Positio(2000, new Punctum(0))}))
         );
-        Positiones p2 = new Positiones(
+        PositionesOscillationis p2 = new PositionesOscillationis(
             Unda.TRIA, 1, 0, 
             new Positio[]{new Positio(0, new Punctum(440))/*, new Positio(3000, new Punctum(440))*/},
             new Positio[]{new Positio(0, new Punctum(1)), new Positio(3000, new Punctum(0))/*, new Positio(2000, new Punctum(0))*/},

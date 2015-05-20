@@ -1,6 +1,6 @@
 package la.clamor;
 
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
 
 public interface Constantia {
     public static final int CHANNEL = 2;

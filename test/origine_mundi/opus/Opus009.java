@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import la.clamor.Envelope;
 import la.clamor.Punctum;
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
+import la.clamor.PunctaTalearum;
+import la.clamor.Talea;
 import origine_mundi.sampler.Desktop;
 import origine_mundi.Integers;
 import origine_mundi.MidiMachines;
@@ -29,8 +31,9 @@ import origine_mundi.sampler.LimaLusa;
  * @author user
  */
 public class Opus009 extends Desktop {
-    public Opus009(){
-        super(false, true, true, true);
+    @Override
+    public void initialize(){
+        setAction(false, true, true, true);
     }
 
     @Override
@@ -42,7 +45,7 @@ public class Opus009 extends Desktop {
     protected Tempus getTempus() {
         return new Tempus(
                 new Tempus.Comes[]{}, 
-                new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 120, true)});
+                new Tempus.Rapidus[]{new Tempus.Rapidus(new Talea(), 120, true)});
     }
 
     @Override
@@ -55,7 +58,7 @@ public class Opus009 extends Desktop {
         BrevFactory bf0 = new BrevFactory(
                 new Iunctum(2, 0, 0), new Iunctum(2, 0, 1), new Iunctum(2, 0, 2), 
                 new Iunctum(2, 0, 3), new Iunctum(2, 0, 4), new Iunctum(2, 0, 5));
-        bf0.setLoco(1, 0d);
+        bf0.setLoco(new Talea());
         bf0.note(new Integers(0, 1, 2, 3, 4, 5), new Integers(40, 47, 52, 56, 59, 64), 120, 1, 1, stroke0, exp0, true);
         brevs_map.put("01d", bf0.remove());
         
@@ -83,24 +86,25 @@ public class Opus009 extends Desktop {
 
     @Override
     protected void getLusa(ArrayList<LimaLusa> lusa_list) {
-        Envelope env1 = new Envelope();
-        env1.ponoPunctum(0, new Punctum(1));
-        env1.ponoPunctum(100, new Punctum(1));
-        env1.ponoPunctum(120, new Punctum(0));
-        Envelope env2 = new Envelope();
-        env2.ponoPunctum(0, new Punctum(1));
-        env2.ponoPunctum(50, new Punctum(1));
-        env2.ponoPunctum(60, new Punctum(0));
-        Envelope env3 = new Envelope();
-        env3.ponoPunctum(0, new Punctum(1));
-        env3.ponoPunctum(20, new Punctum(1));
-        env3.ponoPunctum(30, new Punctum(0));
+        Envelope genv1 = new Envelope();
+        genv1.ponoPunctum(0, new Punctum(1));
+        genv1.ponoPunctum(100, new Punctum(1));
+        genv1.ponoPunctum(120, new Punctum(0));
+        Envelope genv2 = new Envelope();
+        genv2.ponoPunctum(0, new Punctum(1));
+        genv2.ponoPunctum(50, new Punctum(1));
+        genv2.ponoPunctum(60, new Punctum(0));
+        Envelope genv3 = new Envelope();
+        genv3.ponoPunctum(0, new Punctum(1));
+        genv3.ponoPunctum(20, new Punctum(1));
+        genv3.ponoPunctum(30, new Punctum(0));
         //double cutoff1 = 20000;// i % 2 == 0?1000:20000;
         //double cutoff2 = 5000;// i % 2 == 0?1000:20000;
         boolean lpf = true;
-        FilterInfo fi1 = new FIRInfo(20000, lpf, true, new Aestimatio(1));
-        FilterInfo fi2 = new FIRInfo( 5000, lpf, true, new Aestimatio(1));
+        FilterInfo gfi1 = new FIRInfo(20000, lpf, true, new Aestimatio(1));
+        FilterInfo gfi2 = new FIRInfo( 5000, lpf, true, new Aestimatio(1));
         int measure = 8;
+        int track = 0;
         //double temp_beat = 500;
         for(int i = 0;i < measure;i++){
             //double m_temp = i * (temp_beat * 4);
@@ -108,24 +112,30 @@ public class Opus009 extends Desktop {
             String no = "01";
             int count = 0;
             double back = 0.010;
-            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env1, fi1, new Punctum.Aestimatio(1)));
-            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env1, fi1, new Punctum.Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env2, fi1, new Punctum.Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env1, fi1, new Punctum.Aestimatio(1)));
-            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env1, fi1, new Punctum.Aestimatio(1.0)));
-            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env1, fi1, new Punctum.Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env2, fi1, new Punctum.Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(no + "d", i, count++ * 0.25,        0.25, env1, fi1, new Punctum.Aestimatio(1.0)));
-            lusa_list.add(new LimaLusa(no + "u", i, count++ * 0.25 + back, 0.25, env3, fi2, new Punctum.Aestimatio(0.5)));
+            Talea t = new Talea(i, 0);
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv1, gfi1, new Aestimatio(1)));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv1, gfi1, new Aestimatio(0.8)));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv2, gfi1, new Aestimatio(0.8)));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv1, gfi1, new Aestimatio(1)));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv3, gfi2, new Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv1, gfi1, new Aestimatio(1.0)));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv1, gfi1, new Aestimatio(0.8)));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv2, gfi1, new Aestimatio(0.8)));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv3, gfi2, new Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv1, gfi1, new Aestimatio(1.0)));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv3, gfi2, new Aestimatio(0.5)));
         }
             //cns.addo(3000, new FIRFilter(new LectorLimam(lima2), cutoff, false, true, volume));
+        
+    }
+
+    @Override
+    protected void getTrackSettings(HashMap<Integer, PunctaTalearum> track_settings) {
         
     }
     

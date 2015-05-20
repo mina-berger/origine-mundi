@@ -5,6 +5,7 @@
 
 package origine_mundi.opus;
 
+import la.clamor.Talea;
 import origine_mundi.Integers;
 import origine_mundi.MidiMachines;
 import origine_mundi.ludior.BrevFactory;
@@ -31,7 +32,7 @@ public class Opus007 extends Ludior {
 
     @Override
     protected Tempus getTempus() {
-        return new Tempus(new Comes[]{}, new Rapidus[]{new Rapidus(0, 0, 100, true)});
+        return new Tempus(new Comes[]{}, new Rapidus[]{new Rapidus(new Talea(), 100, true)});
     }
 
     @Override
@@ -68,7 +69,7 @@ public class Opus007 extends Ludior {
         bf0.control(5, 0x0a, 50, 0);
         
         brevs(bf0.remove());
-        bf0.setLoco(0, 0d);
+        bf0.setLoco(new Talea());
         Integers st_d = new Integers(0, 1, 2, 3, 4, 5);
         Integers st_u = new Integers(5, 4, 3, 2, 1, 0);
         Integers st_i_d = new Integers(0, 1, 2, 3, 4, 5);
@@ -103,7 +104,7 @@ public class Opus007 extends Ludior {
             new int[]{-1, 50, 57, 60, 65, 69}, 
         };
         for(int i = 0;i < 8;i++){
-            shift0.loco(i + 1, 0);
+            shift0.loco(new Talea(i + 1, 0));
             shift0.putNote(0, chords[i % chords.length][0]);
             shift0.putNote(1, chords[i % chords.length][1]);
             shift0.putNote(2, chords[i % chords.length][2]);

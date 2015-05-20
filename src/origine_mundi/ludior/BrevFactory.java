@@ -9,6 +9,7 @@ package origine_mundi.ludior;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.sound.midi.ShortMessage;
+import la.clamor.Talea;
 import origine_mundi.Integers;
 import origine_mundi.MidiByte;
 import origine_mundi.OmException;
@@ -23,13 +24,11 @@ import origine_mundi.ludior.Expression.SettingHolder;
 public class BrevFactory {
     private Brevs brevs;
     private final Iunctum[] iuncta;
-    private int talea;
-    private double beat;
+    private Talea talea;
     public BrevFactory(Iunctum... iuncta){
         brevs = new Brevs();
         this.iuncta = iuncta;
-        this.talea = 0;
-        this.beat = 0;
+        this.talea = new Talea();
     }
     //public void setIunctum(Iunctum iunctum){
     //    this.iunctum = iunctum;
@@ -37,9 +36,8 @@ public class BrevFactory {
     //public void setBeat(double beat){
     //    this.beat = beat;
    // }
-    public void setLoco(int talea, double beat){
+    public void setLoco(Talea talea){
         this.talea = talea;
-        this.beat = beat;
     }
     public void note(int note, int velocity, double duration, double rate, boolean shift){
         for(int i = 0;i < iuncta.length;i++){
@@ -47,18 +45,15 @@ public class BrevFactory {
         }
     }
     public void note(int iunctum_index, int note, int velocity, double duration, double rate, boolean shift){
-        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, new MidiByte(note), new MidiByte(velocity), talea, beat));
-        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, new MidiByte(note), MidiByte.MIN,           talea, beat + duration * rate));
+        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, new MidiByte(note), new MidiByte(velocity), talea));
+        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, new MidiByte(note), MidiByte.MIN,           talea.shiftBeat(duration * rate)));
         if(shift){
-            beat += duration;
+            talea = talea.shiftBeat(duration);
         }
     }
-    //public void note(NoteInfo info){
-    //    note(0, info);
-    //}
     public void note(int iunctum_index, NoteInfo info){
-        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, info.getNote(), info.getVelocity(), talea, beat + info.getOffsetOn()));
-        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, info.getNote(), MidiByte.MIN,       talea, beat + info.getOffsetOff()));
+        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, info.getNote(), info.getVelocity(), talea.shiftBeat(info.getOffsetOn())));
+        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.NOTE_ON, info.getNote(), MidiByte.MIN,       talea.shiftBeat(info.getOffsetOff())));
     }
     public void note(int iunctum_index, Integers notes, int velocity, double duration, double rate, ChordStroke stroke, Expression exp, boolean shift){
         note(Integers.fillValue(iunctum_index, notes.size()), notes, velocity, duration, rate, stroke, exp, shift);
@@ -84,7 +79,7 @@ public class BrevFactory {
             expression(iunctum_index, exp, offset_on, duration);
         }
         if(shift){
-            beat += duration;
+            talea = talea.shiftBeat(duration);
         }
         
     }
@@ -119,7 +114,7 @@ public class BrevFactory {
         }
     }
     public void control(int iunctum_index, int control, int value, double offset){
-        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.CONTROL_CHANGE, new MidiByte(control), new MidiByte(value), talea, beat + offset));
+        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.CONTROL_CHANGE, new MidiByte(control), new MidiByte(value), talea.shiftBeat(offset)));
     }
     public void pitch(int iunctum_index, int value, double offset){
         value = Math.min(8191, Math.max(-8192, value)) + 8192;
@@ -131,7 +126,7 @@ public class BrevFactory {
         command(iunctum_index, ShortMessage.PITCH_BEND, msb, lsb, offset);
     }
     public void command(int iunctum_index, int command, int msb, int lsb, double offset){
-        brevs.add(new Brev(iuncta[iunctum_index], command, new MidiByte(lsb), new MidiByte(msb), talea, beat + offset));
+        brevs.add(new Brev(iuncta[iunctum_index], command, new MidiByte(lsb), new MidiByte(msb), talea.shiftBeat(offset)));
     }
     public void program(int bank_m, int bank_l, int program){
         for(int i = 0;i < iuncta.length;i++){
@@ -140,9 +135,9 @@ public class BrevFactory {
     }
     public void program(int iunctum_index, int bank_m, int bank_l, int program){
         //long tick = Math.round(beat * RESOLUTION);
-        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.CONTROL_CHANGE, new MidiByte(0x00),    new MidiByte(bank_m), talea, beat));
-        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.CONTROL_CHANGE, new MidiByte(0x20),    new MidiByte(bank_l), talea, beat));
-        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.PROGRAM_CHANGE, new MidiByte(program), new MidiByte(0),      talea, beat));
+        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.CONTROL_CHANGE, new MidiByte(0x00),    new MidiByte(bank_m), talea));
+        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.CONTROL_CHANGE, new MidiByte(0x20),    new MidiByte(bank_l), talea));
+        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.PROGRAM_CHANGE, new MidiByte(program), new MidiByte(0),      talea));
     }
     public void program(int program){
         for(int i = 0;i < iuncta.length;i++){
@@ -150,13 +145,12 @@ public class BrevFactory {
         }
     }
     public void program(int iunctum_index, int program){
-        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.PROGRAM_CHANGE, new MidiByte(program), new MidiByte(0), talea, beat));
+        brevs.add(new Brev(iuncta[iunctum_index], ShortMessage.PROGRAM_CHANGE, new MidiByte(program), new MidiByte(0), talea));
     }
     public Brevs shift(Shift shift){
         Brevs ret = new Brevs();
         for(Brev brev:brevs){
-            int s_talea = brev.getTalea() + shift.talea;
-            double s_beat = brev.getBeat() + shift.beat;
+            Talea s_talea = brev.getTalea().shift(shift.talea);
             int s_command = brev.getCommand();
             //int s_channel = brev.getChannel();
             MidiByte data1 = brev.getData1();
@@ -169,7 +163,7 @@ public class BrevFactory {
                 }
                 //System.out.println("debug:shift:" + brev.getIunctum().getChannel() + ":" + data1.intValue());
             }
-            ret.add(new Brev(brev.getIunctum(), s_command, data1, data2, s_talea, s_beat));
+            ret.add(new Brev(brev.getIunctum(), s_command, data1, data2, s_talea));
         }
         return ret;
     }
@@ -180,19 +174,16 @@ public class BrevFactory {
         return ret;
     }
     public static class Shift {
-        int talea;
-        double beat;
+        Talea talea;
         HashMap<MidiByte, MidiByte> notes;
         ArrayList<MidiByte> mutes;
         public Shift(){
-            talea = 0;
-            beat = 0;
+            talea = new Talea();
             notes = new HashMap<>();
             mutes = new ArrayList<>();
         }
-        public void loco(int talea, double beat){
+        public void loco(Talea talea){
             this.talea = talea;
-            this.beat = beat;
         }
         public void putNote(int key, int value){
             MidiByte m_key = new MidiByte(key);

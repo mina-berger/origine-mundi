@@ -4,7 +4,7 @@ import java.io.PrintStream;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-public class Puncta implements Constantia {
+public class Puncta {
     public Punctum[] aestimationes;
     
     public Puncta() {

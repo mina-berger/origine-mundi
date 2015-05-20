@@ -14,7 +14,8 @@ import la.clamor.EnvelopeFilter;
 import la.clamor.Functiones;
 import la.clamor.FunctionesLimae;
 import la.clamor.LectorLimam;
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
+import la.clamor.PunctaTalearum;
 import la.clamor.ScriptorWav;
 import org.junit.Test;
 import origine_mundi.MidiMachines;
@@ -34,17 +35,19 @@ public abstract class Desktop {
     private final int SKIP_MIX   = 2;
     private final int SKIP_LUDUM = 3;
     public Desktop(){
-        this(true, true, true, true);
-    }
-    public Desktop(boolean midi, boolean limae, boolean mix, boolean ludum){
+    //    this(true, true, true, true);
+    //}
+    //public Desktop(boolean midi, boolean limae, boolean mix, boolean ludum){
         skip_set = new TreeSet<>();
-        setAction(midi, limae, mix, ludum);
+    //    setAction(midi, limae, mix, ludum);
     }
         
+    protected abstract void initialize();
     protected abstract void callDevices(MidiMachines midi_machines);
     protected abstract Tempus getTempus();
     protected abstract void getBrevs(HashMap<String, Brevs> brevs_map);
     protected abstract void getLusa(ArrayList<LimaLusa> lusa_list);
+    protected abstract void getTrackSettings(HashMap<Integer, PunctaTalearum> track_settings);
     protected final void setAction(boolean midi, boolean limae, boolean mix, boolean ludum){
         if(midi){
             skip_set.remove(SKIP_MIDI);
@@ -69,6 +72,7 @@ public abstract class Desktop {
     }
     @Test
     public void main(){
+        initialize();
         MidiMachines midi_machines = null;
         HashMap<String, Brevs> brevs_map = null;
         ArrayList<LimaLusa> lusa_list = null;
@@ -113,11 +117,11 @@ public abstract class Desktop {
             lusa_list = new ArrayList<>();
             getLusa(lusa_list);
 
-            Consilium cns = new Consilium();
+            Consilia cns = new Consilia();
             for(LimaLusa lusa:lusa_list){
-                double head = tempus.capioTempus(lusa.getTalea(), lusa.getBeat());
-                double tail = tempus.capioTempus(lusa.getTalea(), lusa.getBeat() + lusa.getDuration());
-                cns.addo(
+                double head = tempus.capioTempus(lusa.getTalea());
+                double tail = tempus.capioTempus(lusa.getTermina());
+                cns.getConcilia(lusa.getTrack()).addo(
                         head, 
                         FilterInfo.getFilter(
                             new EnvelopeFilter(
@@ -127,15 +131,34 @@ public abstract class Desktop {
                                 lusa.getVolume()), 
                             lusa.getFilterInfo()));
             }
+            HashMap<Integer, PunctaTalearum> track_settings = new HashMap<>();
+            getTrackSettings(track_settings);
+            Consilium csm = new Consilium();
+            for(Integer track:cns.keySet()){
+                Consilium t_csm = cns.getConcilia(track);
+                if(track_settings.containsKey(track)){
+                    System.out.println("track setting found" + track);
+                    t_csm.setPositiones(track_settings.get(track).capioPositiones(tempus, true));
+                }
+                csm.addo(0, cns.getConcilia(track));
+            }
 
             ScriptorWav sw = new ScriptorWav(out_file);
-            sw.scribo(cns, false);
+            sw.scribo(csm, false);
         }
         
         if(!skip_set.contains(SKIP_LUDUM)){
             Functiones.ludoLimam(out_file);
         }
                 
+    }
+    class Consilia extends HashMap<Integer, Consilium>{
+        Consilium getConcilia(int track){
+            if(!containsKey(track)){
+                put(track, new Consilium());
+            }
+            return get(track);
+        }
     }
     
 }

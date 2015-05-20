@@ -6,6 +6,7 @@
 package origine_mundi.opus;
 
 import javax.sound.midi.ShortMessage;
+import la.clamor.Talea;
 import origine_mundi.Integers;
 import origine_mundi.MidiMachines;
 import origine_mundi.ludior.BrevFactory;
@@ -36,7 +37,7 @@ public class Opus006 extends Ludior {
 
     @Override
     protected Tempus getTempus() {
-        return new Tempus(new Comes[]{}, new Rapidus[]{new Rapidus(0, 0, 100, true)});
+        return new Tempus(new Comes[]{}, new Rapidus[]{new Rapidus(new Talea(), 100, true)});
     }
 
     @Override
@@ -81,13 +82,13 @@ public class Opus006 extends Ludior {
         BrevFactory bf1 = new BrevFactory(new Iunctum(0, 2, 0));
         bf1.program(0, 10);
         brevs(bf1.remove());
-        bf1.setLoco(0, 0d);
+        bf1.setLoco(new Talea());
         bf1.note(0, new Integers(0, 1, 2), 100, 3.5, 1, stroke1, exp1, false);
         
         BrevFactory bf2 = new BrevFactory(new Iunctum(1, 3, 1));
         bf2.program(0, 0);
         brevs(bf2.remove());
-        bf2.setLoco(0, 0d);
+        bf2.setLoco(new Talea());
         bf2.note(0, new Integers(0, 1, 2, 3, 4), 100, 3.5, 1, stroke1, exp2, true);
         
         BrevFactory bf3 = new BrevFactory(
@@ -103,7 +104,7 @@ public class Opus006 extends Ludior {
         
 //bf3.control(0x0a, 18, 0);
         brevs(bf3.remove());
-        bf3.setLoco(0, 0d);
+        bf3.setLoco(new Talea());
         Integers st_d = new Integers(0, 1, 2, 3, 4, 5);
         Integers st_u = new Integers(5, 4, 3, 2, 1, 0);
         Integers st_i_d = new Integers(0, 1, 2, 3, 4, 5);
@@ -143,7 +144,7 @@ public class Opus006 extends Ludior {
         
         //bf4.control(0x0a, 110, 0);
         brevs(bf4.remove());
-        bf4.setLoco(0, 0d);
+        bf4.setLoco(new Talea());
         bf4.note(st_i_d, st_d, 120, 0.25, 1, stroke4, exp4, true);
         bf4.note(st_i_u, st_u,  70, 0.25, 0.4, stroke4, exp4, true);
         bf4.note(st_i_d, st_d,  50, 0.25, 0.3, stroke4, exp4, true);
@@ -179,7 +180,7 @@ public class Opus006 extends Ludior {
             new int[]{-1, 50, 57, 60, 65, 69}, 
         };
         for(int i = 0;i < 48;i++){
-            shift1.loco(i + 1, 0);
+            shift1.loco(new Talea(i + 1, 0));
             shift1.putNote(0, notes[i % notes.length][0]);
             shift1.putNote(1, notes[i % notes.length][1]);
             shift1.putNote(2, notes[i % notes.length][2]);
@@ -187,7 +188,7 @@ public class Opus006 extends Ludior {
             shift1.putNote(4, notes[i % notes.length][1] + 12);
             brevs(bf1.shift(shift1));
             brevs(bf2.shift(shift1));
-            shift2.loco(i + 1, 0);
+            shift2.loco(new Talea(i + 1, 0));
             shift2.putNote(0, chords[i % chords.length][0]);
             shift2.putNote(1, chords[i % chords.length][1]);
             shift2.putNote(2, chords[i % chords.length][2]);

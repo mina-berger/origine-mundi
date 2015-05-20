@@ -7,6 +7,7 @@
 package origine_mundi.ludior;
 
 import javax.sound.midi.ShortMessage;
+import la.clamor.Talea;
 import origine_mundi.MidiByte;
 
 /**
@@ -21,18 +22,16 @@ public class Brev {
     //private final int channel;
     private final MidiByte data1;
     private final MidiByte data2;
-    private final int talea;
-    private final double beat;
+    private final Talea talea;
     public Brev(Iunctum iunctum, int command, MidiByte data1, MidiByte data2, double beat){
-        this(iunctum, command, data1, data2, 0, beat);
+        this(iunctum, command, data1, data2, new Talea(0, beat));
     }
-    public Brev(Iunctum iunctum, int command, MidiByte data1, MidiByte data2, int talea, double beat){
+    public Brev(Iunctum iunctum, int command, MidiByte data1, MidiByte data2, Talea talea){
         this.iunctum = iunctum;
         this.command = command;
         this.data1 = data1;
         this.data2 = data2;
         this.talea = talea;
-        this.beat = beat;
     }
     public Iunctum getIunctum() {
         return iunctum;
@@ -48,17 +47,14 @@ public class Brev {
     public MidiByte getData2() {
         return data2;
     }
-    public int getTalea() {
+    public Talea getTalea() {
         return talea;
-    }
-    public double getBeat() {
-        return beat;
     }
     public static void main(String[] a){
         Brev brev = 
                 new Brev(new Iunctum(0, 0, 0), ShortMessage.PROGRAM_CHANGE, 
                         new MidiByte(1), 
-                        new MidiByte(0), 0, 0);
+                        new MidiByte(0), new Talea(0, 0));
     }
     public boolean isNote(){
         return command == ShortMessage.NOTE_ON || command == ShortMessage.NOTE_OFF;

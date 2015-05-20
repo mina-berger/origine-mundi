@@ -1,20 +1,19 @@
 package la.clamor;
 
 import la.clamor.Constantia.Unda;
-import la.clamor.Punctum.Aestimatio;
 
 /**
  *
  * @author minae.hiyamae
  */
-public abstract class AbstractPositiones {
+public abstract class AbstractPositionesOscillationis {
     long   longitudo;
     long   index;
-    AbstractPositiones[] modulatores;
+    AbstractPositionesOscillationis[] modulatores;
     Unda unda;
     double volume;
     double feedback;
-    public AbstractPositiones(long longitudo, Unda unda, double volume, double feedback){
+    public AbstractPositionesOscillationis(long longitudo, Unda unda, double volume, double feedback){
         //longitudo = (long)(diuturnitas * REGULA_EXAMPLI_D / 1000d);
         this.longitudo = longitudo;
         this.unda      = unda;
@@ -22,10 +21,10 @@ public abstract class AbstractPositiones {
         this.feedback  = feedback;
         index = 0;
     }
-    protected void ponoModulatores(AbstractPositiones[] modulatores){
+    protected void ponoModulatores(AbstractPositionesOscillationis[] modulatores){
         this.modulatores = modulatores;
     }
-    public AbstractPositiones[] capioModulatores(){
+    public AbstractPositionesOscillationis[] capioModulatores(){
         return modulatores;
     }
     public boolean paratusSum() {

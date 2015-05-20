@@ -9,7 +9,7 @@ import la.clamor.Constantia;
 import la.clamor.Legibilis;
 import la.clamor.Puncta;
 import la.clamor.Punctum;
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
 
 /**
  *

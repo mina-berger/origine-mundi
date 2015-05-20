@@ -7,7 +7,8 @@
 package origine_mundi.sampler;
 
 import la.clamor.Envelope;
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
+import la.clamor.Talea;
 import origine_mundi.filter.FilterInfo;
 
 /**
@@ -15,33 +16,32 @@ import origine_mundi.filter.FilterInfo;
  * @author Mina
  */
 public class LimaLusa {
-    private final String key;
     
-    private final int talea;
-    private final double beat;
+    private final int track;
+    private final String key;
+    private final Talea talea;
     private final double duration;
     private final Envelope env;
     private final FilterInfo filter_info;
     private final Aestimatio volume;
-    public LimaLusa(String key, int talea, double beat, double duration, Envelope env, FilterInfo filter_info, Aestimatio volume){
+    public LimaLusa(int track, String key, Talea talea, double duration, Envelope env, FilterInfo filter_info, Aestimatio volume){
+        this.track = track;
         this.key = key;
         this.talea = talea;
-        this.beat = beat;
         this.duration = duration;
         this.env = env;
         this.filter_info = filter_info;
         this.volume = volume;
     }
-    public int getTalea() {
+    public Talea getTalea() {
         return talea;
-    }
-    public double getBeat() {
-        return beat;
     }
     public String getKey() {
         return key;
     }
-
+    public Talea getTermina() {
+        return talea.shiftBeat(duration);
+    }
     public double getDuration() {
         return duration;
     }
@@ -58,6 +58,10 @@ public class LimaLusa {
 
     public Aestimatio getVolume() {
         return volume;
+    }
+
+    public int getTrack() {
+        return track;
     }
 
 }

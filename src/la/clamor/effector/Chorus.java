@@ -12,7 +12,7 @@ import la.clamor.Legibilis;
 import la.clamor.OrbisAestimationis;
 import la.clamor.OscillatioSimplex;
 import la.clamor.Punctum;
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
 import la.clamor.ScriptorWav;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;

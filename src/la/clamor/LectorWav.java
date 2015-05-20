@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 import la.clamor.Lima.FilumOctorum;
 import la.clamor.Lima.RiffData;
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

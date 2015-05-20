@@ -5,7 +5,7 @@
  */
 package la.clamor;
 
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
 
 /**
  *

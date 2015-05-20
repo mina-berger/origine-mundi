@@ -6,7 +6,7 @@
 package origine_mundi.filter;
 
 import la.clamor.Legibilis;
-import la.clamor.Punctum.Aestimatio;
+import la.clamor.Aestimatio;
 
 /**
  *

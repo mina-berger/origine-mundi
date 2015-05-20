@@ -9,7 +9,6 @@ package la.clamor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import la.clamor.Punctum.Aestimatio;
 import org.apache.commons.lang3.ArrayUtils;
 import origine_mundi.filter.FIRFilter;
 
@@ -20,9 +19,14 @@ import origine_mundi.filter.FIRFilter;
 public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Legibilis {
     Legibilis[] pueros;
     long index;
+    Positiones volumes;
     public Consilium(){
         pueros = new Legibilis[0];
+        volumes = new Positiones(true);
         index = 0;
+    }
+    public void setPositiones(Positiones volumes){
+        this.volumes = volumes;
     }
     
     public void addo(double tempus, Legibilis legibilis){
@@ -40,7 +44,7 @@ public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Le
     public Punctum lego() {
         Punctum punctum = new Punctum();
         for(Legibilis legibilis:pueros){
-            punctum = punctum.addo(legibilis.lego());
+            punctum = punctum.addo(legibilis.lego()).multiplico(volumes.capioPunctum(index));
         }
         index++;
         return punctum;
