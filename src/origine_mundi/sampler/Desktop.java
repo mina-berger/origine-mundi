@@ -19,6 +19,7 @@ import la.clamor.PunctaTalearum;
 import la.clamor.ScriptorWav;
 import org.junit.Test;
 import origine_mundi.MidiMachines;
+import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import origine_mundi.filter.FilterInfo;
 import origine_mundi.ludior.Brevs;
@@ -90,8 +91,13 @@ public abstract class Desktop {
             for(String key:brevs_map.keySet()){
                 Brevs brevs = brevs_map.get(key);
                 File wav_file = brevs.containsNote()?new File(dir, key + ".wav"):null;
-                sampler = new BrevsSampler(midi_machines, tempus, wav_file, brevs_map.get(key));
-                sampler.start();
+                try{
+                    sampler = new BrevsSampler(midi_machines, tempus, wav_file, brevs_map.get(key));
+                    sampler.start();
+                }catch(Exception e){
+                    e.printStackTrace();
+                    throw new OmException("faile to sample:" + key, e);
+                }
             }
         }
         if(!skip_set.contains(SKIP_LIMAE)){

@@ -88,12 +88,31 @@ public class Opus011 extends Desktop {
         BrevFactory bf1 = new BrevFactory(
                 new Iunctum(1, 1, 0), new Iunctum(1, 1, 1), new Iunctum(1, 1, 2), 
                 new Iunctum(1, 1, 3), new Iunctum(1, 1, 4), new Iunctum(1, 1, 5));
-        bf1.setLoco(new Talea());
+        bf1.setLoco(new Talea(1, 0));
+        
         bf1.note(new Integers(0, 1, 2, 3, 4, 5), new Integers(40, 47, 52, 56, 59, 64), 120, 1, 1, stroke0, exp0, true);
         brevs_map.put("01d", bf1.remove());
         
         bf1.note(new Integers(5, 4, 3, 2, 1, 0), new Integers(64, 59, 56, 52, 47, 40), 120, 1, 1, stroke0, exp0, true);
         brevs_map.put("01u", bf1.remove());
+        
+        bf1.note(new Integers(1, 2, 3, 4, 5), new Integers(47, 54, 59, 62, 66), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("02d", bf1.remove());
+        
+        bf1.note(new Integers(5, 4, 3, 2, 1), new Integers(66, 62, 59, 54, 47), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("02u", bf1.remove());
+        
+        bf1.note(new Integers(0, 1, 2, 3, 4, 5), new Integers(38, 45, 50, 54, 57, 62), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("03d", bf1.remove());
+        
+        bf1.note(new Integers(5, 4, 3, 2, 1, 0), new Integers(62, 57, 54, 50, 45, 38), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("03u", bf1.remove());
+        
+        bf1.note(new Integers(1, 2, 3, 4, 5), new Integers(45, 52, 57, 60, 64), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("04d", bf1.remove());
+        
+        bf1.note(new Integers(5, 4, 3, 2, 1), new Integers(64, 60, 57, 52, 45), 120, 1, 1, stroke0, exp0, true);
+        brevs_map.put("04u", bf1.remove());
 
     }
 
@@ -147,7 +166,7 @@ public class Opus011 extends Desktop {
         for(int i = 1;i <= measure;i++){
             //double m_temp = i * (temp_beat * 4);
             //String no = i % 2 == 0?"01":"02";
-            String no = "01";
+            String no = (i - 1) % 4 == 0?"01":(i - 1) % 4 == 1?"02":(i - 1) % 4 == 2?"03":"04";
             int count = 0;
             lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv1, gfi1, new Aestimatio(1)));
             lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv1, gfi1, new Aestimatio(0.8)));
@@ -185,7 +204,7 @@ public class Opus011 extends Desktop {
     @Override
     protected void initialize() {
         //setAction(false, false, true, true);
-        setAction(false, false, false, true);
+        setAction(true, true, true, true);
         //setAction();
     }
     
