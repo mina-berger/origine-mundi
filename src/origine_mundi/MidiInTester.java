@@ -10,8 +10,7 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
-import static origine_mundi.OmUtil.MICRO_LITE_5;
-import static origine_mundi.OmUtil.MU500;
+import static origine_mundi.OmUtil.*;
 import origine_mundi.OmUtil.Note;
 import static origine_mundi.OmUtil.getMidiDevice;
 
@@ -77,7 +76,16 @@ public class MidiInTester {
         try {
             
             //ex_dev = getMidiDevice("2- micro lite: Port 4", true);
-            ex_dev = getMidiDevice(MU500[0], true);
+            //ex_dev = getMidiDevice("2- micro lite: Port 2", true);
+            
+            //ex_dev = getMidiDevice(MICRO_LITE_1, true); //TG77
+            //ex_dev = getMidiDevice(MICRO_LITE_2, true); //U110
+            ex_dev = getMidiDevice(MICRO_LITE_3, true); //D110
+            //ex_dev = getMidiDevice(MICRO_LITE_6, true); //01R/W
+            //ex_dev = getMidiDevice(MICRO_LITE_7, true); //M3R
+            //ex_dev = getMidiDevice(MU500[0], true);//MU500
+            
+            //ex_dev = getMidiDevice(MU500[0], true);
             //ex_dev = getMidiDevice(MICRO_LITE_2, true);
             //ex_dev = getMidiDevice("Port 4 on MXPXT", true);
             //in_dev = getMidiDevice(MICRO_LITE_5, false);

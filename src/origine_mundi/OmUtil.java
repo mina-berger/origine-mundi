@@ -44,6 +44,11 @@ public class OmUtil {
     public static final String MICRO_LITE_3 = "2- micro lite: Port 3";
     public static final String MICRO_LITE_4 = "2- micro lite: Port 4";
     public static final String MICRO_LITE_5 = "2- micro lite: Port 5";
+    public static final String MICRO_LITE_6 = "3- micro lite: Port 1";
+    public static final String MICRO_LITE_7 = "3- micro lite: Port 2";
+    public static final String MICRO_LITE_8 = "3- micro lite: Port 3";
+    public static final String MICRO_LITE_9 = "3- micro lite: Port 4";
+    public static final String MICRO_LITE_A = "3- micro lite: Port 5";
     public static final String US_122 = "TASCAM US-122 MKII MIDI";
     
     /*public static List<Integer> toList(int[] data){
