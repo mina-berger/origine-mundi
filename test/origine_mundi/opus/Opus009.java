@@ -10,7 +10,6 @@ import java.util.HashMap;
 import la.clamor.Envelope;
 import la.clamor.Punctum;
 import la.clamor.Aestimatio;
-import la.clamor.PunctaTalearum;
 import la.clamor.Talea;
 import origine_mundi.sampler.Desktop;
 import origine_mundi.Integers;
@@ -24,6 +23,7 @@ import origine_mundi.ludior.Expression;
 import origine_mundi.ludior.Iunctum;
 import origine_mundi.ludior.Tempus;
 import origine_mundi.machine.D_110;
+import origine_mundi.sampler.LegibilisLusa;
 import origine_mundi.sampler.LimaLusa;
 
 /**
@@ -85,17 +85,14 @@ public class Opus009 extends Desktop {
     }
 
     @Override
-    protected void getLusa(ArrayList<LimaLusa> lusa_list) {
-        Envelope genv1 = new Envelope();
-        genv1.ponoPunctum(0, new Punctum(1));
+    protected void getLimaLusa(ArrayList<LimaLusa> lusa_list) {
+        Envelope genv1 = new Envelope(new Punctum(1));
         genv1.ponoPunctum(100, new Punctum(1));
         genv1.ponoPunctum(120, new Punctum(0));
-        Envelope genv2 = new Envelope();
-        genv2.ponoPunctum(0, new Punctum(1));
+        Envelope genv2 = new Envelope(new Punctum(1));
         genv2.ponoPunctum(50, new Punctum(1));
         genv2.ponoPunctum(60, new Punctum(0));
-        Envelope genv3 = new Envelope();
-        genv3.ponoPunctum(0, new Punctum(1));
+        Envelope genv3 = new Envelope(new Punctum(1));
         genv3.ponoPunctum(20, new Punctum(1));
         genv3.ponoPunctum(30, new Punctum(0));
         //double cutoff1 = 20000;// i % 2 == 0?1000:20000;
@@ -113,30 +110,34 @@ public class Opus009 extends Desktop {
             int count = 0;
             double back = 0.010;
             Talea t = new Talea(i, 0);
-            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv1, gfi1, new Aestimatio(1)));
-            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv1, gfi1, new Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv2, gfi1, new Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv1, gfi1, new Aestimatio(1)));
-            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv1, gfi1, new Aestimatio(1.0)));
-            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv1, gfi1, new Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv2, gfi1, new Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv1, gfi1, new Aestimatio(1.0)));
-            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv3, gfi2, new Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv1, new Aestimatio(1), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv1, new Aestimatio(0.8), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv2, new Aestimatio(0.8), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv1, new Aestimatio(1), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv1, new Aestimatio(1.0), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv1, new Aestimatio(0.8), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv2, new Aestimatio(0.8), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "d", t.shiftBeat(count++ * 0.25),        0.25, genv1, new Aestimatio(1.0), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "u", t.shiftBeat(count++ * 0.25 + back), 0.25, genv3, new Aestimatio(0.5), gfi2));
         }
             //cns.addo(3000, new FIRFilter(new LectorLimam(lima2), cutoff, false, true, volume));
         
     }
 
     @Override
-    protected void getTrackSettings(HashMap<Integer, PunctaTalearum> track_settings) {
+    protected void getTrackSettings(TrackSettings track_settings) {
         
+    }
+
+    @Override
+    protected void getLegibilisLusa(Tempus pempus, ArrayList<LegibilisLusa> lusa_list) {
     }
     
 }

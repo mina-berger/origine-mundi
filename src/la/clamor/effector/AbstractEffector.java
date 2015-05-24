@@ -14,17 +14,26 @@ import la.clamor.Punctum;
  */
 public abstract class AbstractEffector implements Legibilis {
     private Legibilis fons;
+    private boolean terminens;
     public AbstractEffector(Legibilis fons){
         this.fons = fons;
+        terminens = false;
     }
     public void ponoFons(Legibilis fons) {
         this.fons = fons;
     }
     protected boolean fonsParatusEst(){
-        return fons.paratusSum();
+        boolean parata = fons.paratusSum();
+        if(!parata){
+            terminens = true;
+        }
+        return parata;
     }
     protected Punctum legoAFontem(){
-        return fons.lego();
+        return terminens?new Punctum():fons.lego();
+    }
+    protected boolean terminens(){
+        return terminens;
     }
 
     

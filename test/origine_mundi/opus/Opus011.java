@@ -5,15 +5,26 @@
  */
 package origine_mundi.opus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import la.clamor.Aestimatio;
+import la.clamor.Constantia;
 import la.clamor.Envelope;
+import static la.clamor.Functiones.capioHZ;
+import la.clamor.LectorLimam;
+import la.clamor.Oscillatio;
+import la.clamor.Positiones;
+import la.clamor.PositionesOscillationis;
 import la.clamor.PunctaTalearum;
 import la.clamor.Punctum;
+import la.clamor.ScriptorLimam;
 import la.clamor.Talea;
+import la.clamor.effector.Mora;
 import origine_mundi.Integers;
 import origine_mundi.MidiMachines;
+import origine_mundi.OmUtil;
+import origine_mundi.effector.EffectorInfo.ChorusInfo;
 import origine_mundi.filter.FilterInfo;
 import origine_mundi.filter.FilterInfo.ThruInfo;
 import origine_mundi.ludior.BrevFactory;
@@ -25,6 +36,7 @@ import origine_mundi.ludior.Tempus;
 import origine_mundi.machine.D_110;
 import origine_mundi.machine.MU500;
 import origine_mundi.sampler.Desktop;
+import origine_mundi.sampler.LegibilisLusa;
 import origine_mundi.sampler.LimaLusa;
 
 /**
@@ -32,6 +44,7 @@ import origine_mundi.sampler.LimaLusa;
  * @author user
  */
 public class Opus011 extends Desktop {
+    static final int measure = 48;
 
     @Override
     protected void callDevices(MidiMachines midi_machines) {
@@ -43,7 +56,7 @@ public class Opus011 extends Desktop {
     protected Tempus getTempus() {
         return new Tempus(
                 new Tempus.Comes[]{}, 
-                new Tempus.Rapidus[]{new Tempus.Rapidus(new Talea(), 104, true)});
+                new Tempus.Rapidus[]{new Tempus.Rapidus(new Talea(), 110, true)});
     }
 
     @Override
@@ -117,95 +130,190 @@ public class Opus011 extends Desktop {
     }
 
     @Override
-    protected void getLusa(ArrayList<LimaLusa> lusa_list) {
-        Envelope env1 = new Envelope();
-        env1.ponoPunctum(0, new Punctum(1));
-        Envelope env2 = new Envelope();
-        env2.ponoPunctum(0, new Punctum(1));
+    protected void getLimaLusa(ArrayList<LimaLusa> lusa_list) {
+        Envelope env1 = new Envelope(new Punctum(1));
+        Envelope env2 = new Envelope(new Punctum(1));
         env2.ponoPunctum(200, new Punctum(0.8));
         env2.ponoPunctum(400, new Punctum(0));
         FilterInfo fi1 = new ThruInfo();
-        int measure = 24;
         //double temp_beat = 500;
         double duration = 1;
         double back = 0.002;
         int track = 0;
-        lusa_list.add(new LimaLusa(track, "b_120",   new Talea(0, 2.75 + back),    duration, env1, fi1, new Aestimatio(1)));
-        lusa_list.add(new LimaLusa(track, "s_120_d", new Talea(0, 2.98),           duration, env2, fi1, new Aestimatio(1)));
-        lusa_list.add(new LimaLusa(track, "h_120",   new Talea(0, 3.75 + back),    duration, env1, fi1, new Aestimatio(1)));
+        lusa_list.add(new LimaLusa(track, "b_120",   new Talea(0, 2.75 + back),    duration, env1, new Aestimatio(1), fi1));
+        lusa_list.add(new LimaLusa(track, "s_120_d", new Talea(0, 2.98),           duration, env2, new Aestimatio(1), fi1));
+        lusa_list.add(new LimaLusa(track, "h_120",   new Talea(0, 3.75 + back),    duration, env1, new Aestimatio(1), fi1));
         for(int i = 1;i <= measure;i++){
-            lusa_list.add(new LimaLusa(track, "b_120", new Talea(i, 0),           duration, env1, fi1, new Aestimatio(1)));
-            lusa_list.add(new LimaLusa(track, "s_120", new Talea(i, 1),           duration, env2, fi1, new Aestimatio(1)));
-            lusa_list.add(new LimaLusa(track, "b_60",  new Talea(i, 1.75 + back), duration, env1, fi1, new Aestimatio(0.6)));
-            lusa_list.add(new LimaLusa(track, "b_120", new Talea(i, 2),           duration, env1, fi1, new Aestimatio(1)));
-            lusa_list.add(new LimaLusa(track, "s_120", new Talea(i, 3),           duration, env2, fi1, new Aestimatio(1)));
+            lusa_list.add(new LimaLusa(track, "b_120", new Talea(i, 0),           duration, env1, new Aestimatio(1), fi1));
+            lusa_list.add(new LimaLusa(track, "s_120", new Talea(i, 1),           duration, env2, new Aestimatio(1), fi1));
+            lusa_list.add(new LimaLusa(track, "b_60",  new Talea(i, 1.75 + back), duration, env1, new Aestimatio(0.6), fi1));
+            lusa_list.add(new LimaLusa(track, "b_120", new Talea(i, 2),           duration, env1, new Aestimatio(1), fi1));
+            lusa_list.add(new LimaLusa(track, "s_120", new Talea(i, 3),           duration, env2, new Aestimatio(1), fi1));
             int count = 0;
             for(int j = 0;j < 4;j++){
-                lusa_list.add(new LimaLusa(track, "h_120", new Talea(i, count++ * 0.25),        duration, env1, fi1, new Aestimatio(1)));
-                lusa_list.add(new LimaLusa(track, "h_80",  new Talea(i, count++ * 0.25 + back), duration, env1, fi1, new Aestimatio(0.6)));
-                lusa_list.add(new LimaLusa(track, "h_80",  new Talea(i, count++ * 0.25),        duration, env1, fi1, new Aestimatio(0.6)));
-                lusa_list.add(new LimaLusa(track, "h_95",  new Talea(i, count++ * 0.25 + back), duration, env1, fi1, new Aestimatio(0.75)));
+                lusa_list.add(new LimaLusa(track, "h_120", new Talea(i, count++ * 0.25),        duration, env1, new Aestimatio(1), fi1));
+                lusa_list.add(new LimaLusa(track, "h_80",  new Talea(i, count++ * 0.25 + back), duration, env1, new Aestimatio(0.6), fi1));
+                lusa_list.add(new LimaLusa(track, "h_80",  new Talea(i, count++ * 0.25),        duration, env1, new Aestimatio(0.6), fi1));
+                lusa_list.add(new LimaLusa(track, "h_95",  new Talea(i, count++ * 0.25 + back), duration, env1, new Aestimatio(0.75), fi1));
             }
         }
-        Envelope genv1 = new Envelope();
-        genv1.ponoPunctum(0, new Punctum(1));
+        Envelope genv1 = new Envelope(new Punctum(1));
         genv1.ponoPunctum(100, new Punctum(1));
         genv1.ponoPunctum(120, new Punctum(0));
-        Envelope genv2 = new Envelope();
-        genv2.ponoPunctum(0, new Punctum(1));
+        Envelope genv2 = new Envelope(new Punctum(1));
         genv2.ponoPunctum(50, new Punctum(1));
         genv2.ponoPunctum(60, new Punctum(0));
-        Envelope genv3 = new Envelope();
-        genv3.ponoPunctum(0, new Punctum(1));
+        Envelope genv3 = new Envelope(new Punctum(1));
         genv3.ponoPunctum(20, new Punctum(1));
         genv3.ponoPunctum(30, new Punctum(0));
         boolean lpf = true;
         FilterInfo gfi1 = new FilterInfo.FIRInfo(20000, lpf, true, new Aestimatio(1));
         FilterInfo gfi2 = new FilterInfo.FIRInfo( 5000, lpf, true, new Aestimatio(1));
+        
+        
+        
         track = 1;
         for(int i = 1;i <= measure;i++){
             //double m_temp = i * (temp_beat * 4);
             //String no = i % 2 == 0?"01":"02";
             String no = (i - 1) % 4 == 0?"01":(i - 1) % 4 == 1?"02":(i - 1) % 4 == 2?"03":"04";
             int count = 0;
-            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv1, gfi1, new Aestimatio(1)));
-            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv1, gfi1, new Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv2, gfi1, new Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv1, gfi1, new Aestimatio(1)));
-            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv1, gfi1, new Aestimatio(1.0)));
-            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv1, gfi1, new Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv2, gfi1, new Aestimatio(0.8)));
-            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv3, gfi2, new Aestimatio(0.5)));
-            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv1, gfi1, new Aestimatio(1.0)));
-            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv3, gfi2, new Aestimatio(0.5)));
+            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv1, new Aestimatio(1), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv1, new Aestimatio(0.8), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv2, new Aestimatio(0.8), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv1, new Aestimatio(1), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv1, new Aestimatio(1.0), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv1, new Aestimatio(0.8), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv2, new Aestimatio(0.8), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv3, new Aestimatio(0.5), gfi2));
+            lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv1, new Aestimatio(1.0), gfi1));
+            lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv3, new Aestimatio(0.5), gfi2));
         }
         
     }
 
     @Override
-    protected void getTrackSettings(HashMap<Integer, PunctaTalearum> track_settings) {
-        PunctaTalearum pt0 = new PunctaTalearum();
-        pt0.put(new Talea(), new Punctum(1));
+    protected void getTrackSettings(TrackSettings track_settings) {
+        TrackSetting pt0 = new TrackSetting(new Punctum(1));
         track_settings.put(0, pt0);
         
-        PunctaTalearum pt1 = new PunctaTalearum();
-        pt1.put(new Talea(), new Punctum(0));
-        pt1.put(new Talea(1, 0), new Punctum(0));
-        pt1.put(new Talea(5, 0), new Punctum(0.8));
+        TrackSetting pt1 = new TrackSetting(new Punctum(0.8), new ChorusInfo(new Punctum(0.3), new Punctum(6), new Punctum(0.5), new Punctum(0.5, -0.5)));
+        pt1.putAmp(new Talea(33, 0), new Punctum(0.8));
+        pt1.putAmp(new Talea(33, 0.5), new Punctum());
+        pt1.putAmp(new Talea(36, 3.999), new Punctum());
+        pt1.putAmp(new Talea(37, 0), new Punctum(0.8));
         track_settings.put(1, pt1);
+        
+        double c_org = 0.12;
+        TrackSetting pt2 = new TrackSetting(new Punctum());
+        pt2.putAmp(new Talea(4, 0), new Punctum());
+        pt2.putAmp(new Talea(4, 1), new Punctum(c_org / 3d));
+        pt2.putAmp(new Talea(5, 0), new Punctum(c_org));
+        pt2.putAmp(new Talea(5, 1), new Punctum(c_org));
+        pt2.putAmp(new Talea(5, 2), new Punctum());
+        pt2.putAmp(new Talea(8, 0), new Punctum());
+        pt2.putAmp(new Talea(8, 1), new Punctum(c_org / 3d));
+        pt2.putAmp(new Talea(9, 0), new Punctum(c_org));
+        pt2.putAmp(new Talea(9, 1), new Punctum(c_org));
+        pt2.putAmp(new Talea(9, 2), new Punctum());
+        pt2.putAmp(new Talea(12, 0), new Punctum());
+        pt2.putAmp(new Talea(12, 1), new Punctum(c_org / 3d));
+        pt2.putAmp(new Talea(13, 0), new Punctum(c_org));
+        pt2.putAmp(new Talea(13, 1), new Punctum(c_org));
+        pt2.putAmp(new Talea(13, 2), new Punctum());
+        pt2.putAmp(new Talea(16, 0), new Punctum());
+        pt2.putAmp(new Talea(16, 1), new Punctum(c_org / 3d));
+        pt2.putAmp(new Talea(17, 0), new Punctum(c_org));
+        pt2.putAmp(new Talea(33, 1), new Punctum(c_org));
+        pt2.putAmp(new Talea(33, 2), new Punctum());
+        track_settings.put(2, pt2);
+        
+        TrackSetting master = track_settings.getMaster();
+        master.putAmp(new Talea(41, 0), new Punctum(1));
+        master.putAmp(new Talea(49, 0), new Punctum(0));
         
     }
     @Override
     protected void initialize() {
-        //setAction(false, false, true, true);
-        setAction(true, true, true, true);
+        setAction(false, false, false, true);
+        //setAction(true, true, true, true);
         //setAction();
+    }
+
+    @Override
+    protected void getLegibilisLusa(Tempus tempus, ArrayList<LegibilisLusa> lusa_list) {
+        int[][] notes = new int[][]{
+            new int[]{64, 71, 62, 69},
+            new int[]{68, 74, 66, 72},
+            new int[]{71, 66, 69, 64},
+            new int[]{75, 69, 73, 67}
+        };
+        double[][] pan = new double[][]{
+            new double[]{1.0, 0.6, 0.3, 0.0},
+            new double[]{0.6, 0.3, 0.0, 1.0},
+            new double[]{0.3, 0.0, 1.0, 0.6},
+            new double[]{0.0, 1.0, 0.6, 0.3}
+        };
+        Oscillatio.Oscillationes os = new Oscillatio.Oscillationes(3);
+        //os.add(o);
+        for(int i = 0;i < 4;i++){
+            PunctaTalearum pitch = new PunctaTalearum(new Punctum(capioHZ(notes[i][0], -5), capioHZ(notes[i][0], 5)));
+            pitch.put(new Talea(0, 3), new Punctum(capioHZ(notes[i][0], -5), capioHZ(notes[i][0], 5)));
+            pitch.put(new Talea(1, 0), new Punctum(capioHZ(notes[i][1], -5), capioHZ(notes[i][1], 5)));
+            pitch.put(new Talea(1, 3), new Punctum(capioHZ(notes[i][1], -5), capioHZ(notes[i][1], 5)));
+            pitch.put(new Talea(2, 0), new Punctum(capioHZ(notes[i][2], -5), capioHZ(notes[i][2], 5)));
+            pitch.put(new Talea(2, 3), new Punctum(capioHZ(notes[i][2], -5), capioHZ(notes[i][2], 5)));
+            pitch.put(new Talea(3, 0), new Punctum(capioHZ(notes[i][3], -5), capioHZ(notes[i][3], 5)));
+            pitch.put(new Talea(3, 1.5), new Punctum(capioHZ(notes[i][3], -5), capioHZ(notes[i][3], 5)));
+            pitch.put(new Talea(4, 0), new Punctum(capioHZ(notes[i][0], -5), capioHZ(notes[i][0], 5)));
+            PunctaTalearum pans = new PunctaTalearum(new Punctum(pan[i][0], 1 - pan[i][0]));
+            pans.put(new Talea(0, 1), new Punctum(pan[i][1], 1 - pan[i][1]));
+            pans.put(new Talea(0, 2), new Punctum(pan[i][0], 1 - pan[i][0]));
+            pans.put(new Talea(0, 3), new Punctum(pan[i][0], 1 - pan[i][0]));
+            pans.put(new Talea(1, 0), new Punctum(pan[i][1], 1 - pan[i][1]));
+            pans.put(new Talea(1, 1), new Punctum(pan[i][2], 1 - pan[i][2]));
+            pans.put(new Talea(1, 2), new Punctum(pan[i][1], 1 - pan[i][1]));
+            pans.put(new Talea(1, 3), new Punctum(pan[i][1], 1 - pan[i][1]));
+            pans.put(new Talea(2, 0), new Punctum(pan[i][2], 1 - pan[i][2]));
+            pans.put(new Talea(2, 1), new Punctum(pan[i][0], 1 - pan[i][0]));
+            pans.put(new Talea(2, 2), new Punctum(pan[i][2], 1 - pan[i][2]));
+            pans.put(new Talea(2, 3), new Punctum(pan[i][2], 1 - pan[i][2]));
+            pans.put(new Talea(3, 0), new Punctum(pan[i][3], 1 - pan[i][3]));
+            pans.put(new Talea(4, 0), new Punctum(pan[i][0], 1 - pan[i][0]));
+            PunctaTalearum amp = new PunctaTalearum(new Punctum(1));
+            amp.put(new Talea(4, 0), new Punctum(1));
+            
+            PositionesOscillationis p = new PositionesOscillationis(
+                Constantia.Unda.DENT, 1, 0, 
+                pitch.capioPositiones(tempus, true),
+                amp.capioPositiones(tempus, true),
+                new Positiones[]{
+                    pans.capioPositiones(tempus, true),
+                    pans.capioPositiones(tempus, true)
+                }, 
+                //null,
+                new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(true));
+
+            os.add(new Oscillatio(p));
+        }
+        double mora_temp = tempus.capioTempus(new Talea(0, 0.75));
+        Mora mora = new Mora(os, new Punctum(mora_temp), new Punctum(2), new Punctum(0.5));
+        File out_file = new File(OmUtil.getDirectory("sample"), "clamor1.lima");
+        ScriptorLimam sl = new ScriptorLimam(out_file);
+        while(mora.paratusSum()){
+            sl.scribo(mora.lego());
+        }
+        sl.close();
+        for(int i = 1;i <= measure;i += 4){
+            lusa_list.add(new LegibilisLusa(2, new LectorLimam(out_file), new Talea(i, 0), 16, new Aestimatio(1)));
+        }
+        
     }
     
 }

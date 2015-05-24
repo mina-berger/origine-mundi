@@ -15,12 +15,17 @@ import la.clamor.Functiones;
 import la.clamor.FunctionesLimae;
 import la.clamor.LectorLimam;
 import la.clamor.Aestimatio;
+import la.clamor.Legibilis;
 import la.clamor.PunctaTalearum;
+import la.clamor.Punctum;
 import la.clamor.ScriptorWav;
+import la.clamor.Talea;
 import org.junit.Test;
 import origine_mundi.MidiMachines;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
+import origine_mundi.ProcessorInfo;
+import origine_mundi.effector.EffectorInfo;
 import origine_mundi.filter.FilterInfo;
 import origine_mundi.ludior.Brevs;
 import origine_mundi.ludior.Tempus;
@@ -47,8 +52,9 @@ public abstract class Desktop {
     protected abstract void callDevices(MidiMachines midi_machines);
     protected abstract Tempus getTempus();
     protected abstract void getBrevs(HashMap<String, Brevs> brevs_map);
-    protected abstract void getLusa(ArrayList<LimaLusa> lusa_list);
-    protected abstract void getTrackSettings(HashMap<Integer, PunctaTalearum> track_settings);
+    protected abstract void getLimaLusa(ArrayList<LimaLusa> lusa_list);
+    protected abstract void getLegibilisLusa(Tempus tempus, ArrayList<LegibilisLusa> lusa_list);
+    protected abstract void getTrackSettings(TrackSettings track_settings);
     protected final void setAction(boolean midi, boolean limae, boolean mix, boolean ludum){
         if(midi){
             skip_set.remove(SKIP_MIDI);
@@ -76,7 +82,8 @@ public abstract class Desktop {
         initialize();
         MidiMachines midi_machines = null;
         HashMap<String, Brevs> brevs_map = null;
-        ArrayList<LimaLusa> lusa_list = null;
+        ArrayList<LimaLusa> lima_lusa_list = null;
+        ArrayList<LegibilisLusa> legi_lusa_list = null;
         Tempus tempus = getTempus();
         File dir = OmUtil.getDirectory("sample");
         File out_file = new File(OmUtil.getDirectory("opus"), getClass().getSimpleName() + ".wav");
@@ -120,37 +127,52 @@ public abstract class Desktop {
         }
         
         if(!skip_set.contains(SKIP_MIX)){
-            lusa_list = new ArrayList<>();
-            getLusa(lusa_list);
-
             Consilia cns = new Consilia();
-            for(LimaLusa lusa:lusa_list){
+            
+            lima_lusa_list = new ArrayList<>();
+            getLimaLusa(lima_lusa_list);
+
+            for(LimaLusa lusa:lima_lusa_list){
                 double head = tempus.capioTempus(lusa.getTalea());
                 double tail = tempus.capioTempus(lusa.getTermina());
                 cns.getConcilia(lusa.getTrack()).addo(
                         head, 
-                        FilterInfo.getFilter(
+                        getProcessor(
                             new EnvelopeFilter(
                                 new LectorLimam(new File(dir, lusa.getKey() + ".lima")), 
                                 lusa.getEnvelope(), 
                                 tail - head, 
                                 lusa.getVolume()), 
-                            lusa.getFilterInfo()));
+                            lusa.getProcessorInfo()));
             }
-            HashMap<Integer, PunctaTalearum> track_settings = new HashMap<>();
+            legi_lusa_list = new ArrayList<>();
+            getLegibilisLusa(tempus, legi_lusa_list);
+            for(LegibilisLusa lusa:legi_lusa_list){
+                double head = tempus.capioTempus(lusa.getTalea());
+                double tail = tempus.capioTempus(lusa.getTermina());
+                cns.getConcilia(lusa.getTrack()).addo(head, new EnvelopeFilter(lusa.getLegibilis(), null, tail - head, lusa.getVolume()));
+            }
+            
+            TrackSettings track_settings = new TrackSettings();
             getTrackSettings(track_settings);
             Consilium csm = new Consilium();
             for(Integer track:cns.keySet()){
+                Legibilis legibilis = cns.getConcilia(track);
                 Consilium t_csm = cns.getConcilia(track);
                 if(track_settings.containsKey(track)){
                     System.out.println("track setting found" + track);
-                    t_csm.setPositiones(track_settings.get(track).capioPositiones(tempus, true));
+                    TrackSetting track_setting = track_settings.get(track);
+                    t_csm.setPositiones(track_setting.getAmp().capioPositiones(tempus, true));
+                    legibilis = getProcessor(legibilis, track_setting.getProcessorInfoArray());
                 }
-                csm.addo(0, cns.getConcilia(track));
+                csm.addo(0, legibilis);
             }
+            
+            csm.setPositiones(track_settings.getMaster().getAmp().capioPositiones(tempus, true));
+            Legibilis master = getProcessor(csm, track_settings.getMaster().getProcessorInfoArray());
 
             ScriptorWav sw = new ScriptorWav(out_file);
-            sw.scribo(csm, false);
+            sw.scribo(master, false);
         }
         
         if(!skip_set.contains(SKIP_LUDUM)){
@@ -166,5 +188,48 @@ public abstract class Desktop {
             return get(track);
         }
     }
+    public class TrackSettings extends HashMap<Integer, TrackSetting>{
+        TrackSetting master;
+        TrackSettings(){
+            master = new TrackSetting(new Punctum(1));
+        }
+        public TrackSetting getMaster(){
+            return master;
+        }
+        
+    }
+    public static class TrackSetting {
+        private PunctaTalearum amp;
+        private ProcessorInfo[] infos;
+        public TrackSetting(Punctum initial_amp, ProcessorInfo... infos){
+            amp = new PunctaTalearum(initial_amp);
+            this.infos = infos;
+        }
+        public void putAmp(Talea talea, Punctum punctum){
+            amp.put(talea, punctum);
+        }
+        public PunctaTalearum getAmp(){
+            return amp;
+        }
+        public ProcessorInfo[] getProcessorInfoArray(){
+            return infos;
+        }
+        
+        
+    }
+    public static Legibilis getProcessor(Legibilis legibilis, ProcessorInfo[] infos){
+        Legibilis ret = legibilis;
+        for(ProcessorInfo info:infos){
+            if(info instanceof FilterInfo){
+                ret = FilterInfo.getFilter(legibilis, (FilterInfo)info);
+            }else if(info instanceof EffectorInfo){
+                ret = EffectorInfo.getEffector(legibilis, (EffectorInfo)info);
+            }else{
+                throw new OmException("unknown info:" + info.getClass().getName());
+            }
+        }
+        return ret;
+    }
+    
     
 }

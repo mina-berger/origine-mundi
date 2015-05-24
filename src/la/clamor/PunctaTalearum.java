@@ -13,6 +13,9 @@ import origine_mundi.ludior.Tempus;
  * @author user
  */
 public class PunctaTalearum extends HashMap<Talea, Punctum> {
+    public PunctaTalearum(Punctum initial){
+        put(new Talea(), initial);
+    }
     
     public Positiones capioPositiones(Tempus tempus, boolean unusEst){
         Positiones p = new Positiones(unusEst);

@@ -14,6 +14,12 @@ import static la.clamor.Constantia.CHANNEL;
  * @author user
  */
 public class Positiones extends TreeMap<Long, Punctum> {
+    public Positiones(Punctum initial, Positio... positiones){
+        put(0l, initial);
+        for(Positio positio:positiones){
+            put(positio.capioPositio(), positio.capioPunctum());
+        }
+    }
     public Positiones(boolean unusEst, Positio... positiones){
         for(Positio positio:positiones){
             put(positio.capioPositio(), positio.capioPunctum());

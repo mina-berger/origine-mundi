@@ -7,12 +7,13 @@ package origine_mundi.filter;
 
 import la.clamor.Legibilis;
 import la.clamor.Aestimatio;
+import origine_mundi.ProcessorInfo;
 
 /**
  *
  * @author user
  */
-public abstract class FilterInfo {
+public abstract class FilterInfo implements ProcessorInfo {
     public static class ThruInfo extends FilterInfo {
         
     }

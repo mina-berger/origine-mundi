@@ -3,7 +3,6 @@ package la.clamor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
-import la.clamor.Aestimatio;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
@@ -66,31 +65,31 @@ public class Oscillatio implements Constantia, Legibilis {
             }
         }
         modulatio = modulatio.addo(y_1.multiplico(feedback));
-        
+        //System.out.println(feedback);
         Punctum deinde = new Punctum();
         if(count_buffer == 1){
             count_buffer--;
             for(int i = 0;i < CHANNEL;i++){
                 Aestimatio omega_t = frequentia.capioAestimatio(i).multiplico(new Aestimatio(2 * FastMath.PI * t));
                 Aestimatio delta_t = delta.capioAestimatio(i).addo(frequentia.capioAestimatio(i).multiplico(new Aestimatio(t)));
+                Aestimatio _modulatio  = modulatio.capioAestimatio(i);//.addo(_aestimatio.multiplico(new Aestimatio(feedback)));
                 switch(unda){
                     case SINE:
                         Aestimatio _aestimatio = new Aestimatio(FastMath.sin(omega_t.doubleValue()));
-                        Aestimatio _modulatio  = modulatio.capioAestimatio(i);//.addo(_aestimatio.multiplico(new Aestimatio(feedback)));
                         deinde .ponoAestimatio(i, _aestimatio);
                         punctum.ponoAestimatio(i, new Aestimatio(FastMath.sin(omega_t.addo(_modulatio).doubleValue())));
                         break;
                     case QUAD:
                         deinde .ponoAestimatio(i, undaQuad(delta_t));
-                        punctum.ponoAestimatio(i, undaQuad(delta_t));
+                        punctum.ponoAestimatio(i, undaQuad(delta_t.addo(_modulatio)));
                         break;
                     case DENT:
                         deinde .ponoAestimatio(i, undaDent(delta_t));
-                        punctum.ponoAestimatio(i, undaDent(delta_t));
+                        punctum.ponoAestimatio(i, undaDent(delta_t.addo(_modulatio)));
                         break;
                     case TRIA:
                         deinde .ponoAestimatio(i, undaTria(delta_t));
-                        punctum.ponoAestimatio(i, undaTria(delta_t));
+                        punctum.ponoAestimatio(i, undaTria(delta_t.addo(_modulatio)));
                         break;
                     case FRAG:
                         deinde .ponoAestimatio(i, undaFrag());
@@ -107,11 +106,12 @@ public class Oscillatio implements Constantia, Legibilis {
             for(int i = 0;i < CHANNEL;i++){
                 Aestimatio omega_t = frequentia.capioAestimatio(i).multiplico(new Aestimatio(2 * FastMath.PI * t));
                 Aestimatio delta_t = delta.capioAestimatio(i).addo(frequentia.capioAestimatio(i).multiplico(new Aestimatio(t)));
+                Aestimatio _modulatio  = modulatio.capioAestimatio(i);//.addo(_aestimatio.multiplico(new Aestimatio(feedback)));
                 switch(unda){
                     case SINE:
-                        Aestimatio _aestimatio = new Aestimatio(FastMath.sin(omega_t.doubleValue()));
+                        //Aestimatio _aestimatio = new Aestimatio(FastMath.sin(omega_t.doubleValue()));
                         //System.out.println(FastMath.sin(delta_t.doubleValue()) + ":" + feedback);
-                        Aestimatio _modulatio  = modulatio.capioAestimatio(i);//.addo(_aestimatio.multiplico(new Aestimatio(feedback)));
+                        //Aestimatio _modulatio  = modulatio.capioAestimatio(i);//.addo(_aestimatio.multiplico(new Aestimatio(feedback)));
                         Aestimatio b1_d = new Aestimatio(2).multiplico(new Aestimatio(FastMath.cos(omega_t.doubleValue())));
                         deinde .ponoAestimatio(i, b1_d.multiplico(y_1.capioAestimatio(i)).subtraho(y_2.capioAestimatio(i)));
 
@@ -120,15 +120,17 @@ public class Oscillatio implements Constantia, Legibilis {
                         break;
                     case QUAD:
                         deinde .ponoAestimatio(i, undaQuad(delta_t));
-                        punctum.ponoAestimatio(i, undaQuad(delta_t));
+                        punctum.ponoAestimatio(i, undaQuad(delta_t.addo(_modulatio)));
                         break;
                     case DENT:
+                        //Aestimatio _modulatio  = modulatio.capioAestimatio(i);//.addo(_aestimatio.multiplico(new Aestimatio(feedback)));
                         deinde .ponoAestimatio(i, undaDent(delta_t));
-                        punctum.ponoAestimatio(i, undaDent(delta_t));
+                        punctum.ponoAestimatio(i, undaDent(delta_t.addo(_modulatio)));
+                        //System.out.println(_modulatio.doubleValue());
                         break;
                     case TRIA:
                         deinde .ponoAestimatio(i, undaTria(delta_t));
-                        punctum.ponoAestimatio(i, undaTria(delta_t));
+                        punctum.ponoAestimatio(i, undaTria(delta_t.addo(_modulatio)));
                         break;
                     case FRAG:
                         deinde .ponoAestimatio(i, undaFrag());
@@ -192,17 +194,17 @@ public class Oscillatio implements Constantia, Legibilis {
         
         PositionesOscillationis p2 = new PositionesOscillationis(
             Unda.QUAD, 1, 0, 
-            new Positio[]{new Positio(0, new Punctum(554)), new Positio(2000, new Punctum(200)), new Positio(3500, new Punctum(554))},
-            new Positio[]{new Positio(0, new Punctum(0)), new Positio(15, new Punctum(1)), new Positio(3000, new Punctum(1)), new Positio(3500, new Punctum(0))},
-            new Positio[][]{
-                new Positio[]{new Positio(0, new Punctum(1))},
-                new Positio[]{new Positio(0, new Punctum(1))}
+            new Positiones(new Punctum(554), new Positio(2000, new Punctum(200)), new Positio(3500, new Punctum(554))),
+            new Positiones(new Punctum(0), new Positio(15, new Punctum(1)), new Positio(3000, new Punctum(1)), new Positio(3500, new Punctum(0))),
+            new Positiones[]{
+                new Positiones(new Punctum(1)),
+                new Positiones(new Punctum(1))
             }, //new Positiones.Positio[]{new Positiones.Positio(0, new Punctum(1, 0)), new Positiones.Positio(3500, new Punctum(0, 1))},
-            new Positio[]{/*new Positiones.Positio(0, new Punctum(2.88))*/}, 
-            new Positio[]{/*new Positiones.Positio(0, new Punctum(0.031))*/}, 
-            new Positio[]{/*new Positiones.Positio(0, new Punctum(3))*/}, 
-            new Positio[]{/*new Positiones.Positio(0, new Punctum(1))*/},
-            new Positio[0]);
+            new Positiones(false),
+            new Positiones(false),
+            new Positiones(false),
+            new Positiones(false),
+            new Positiones(true));
         Oscillatio o = new Oscillatio(p2);
         File out_file = new File(OmUtil.getDirectory("opus"), "oscillatio.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
@@ -226,44 +228,50 @@ public class Oscillatio implements Constantia, Legibilis {
     public static void main(String[] args){
         PositionesOscillationis p = new PositionesOscillationis(
             Unda.SINE, 1, 0, 
-            new Positio[]{new Positio(0, new Punctum(435)), new Positio(1500, new Punctum(430)), new Positio(3000, new Punctum(440))},
-            new Positio[]{new Positio(0, new Punctum(1)), new Positio(1500, new Punctum(1)), new Positio(3000, new Punctum(0))},
+            new Positiones(new Punctum(435), new Positio(1500, new Punctum(430)), new Positio(3000, new Punctum(440))),
+            new Positiones(new Punctum(1), new Positio(1500, new Punctum(1)), new Positio(3000, new Punctum(0))),
             new PositionesOscillationis(
                 Unda.SINE, 1, 0, 
-                new Positio[]{new Positio(0, new Punctum(220)), new Positio(1500, new Punctum(880)), new Positio(3000, new Punctum(1880))},
-                new Positio[]{new Positio(0, new Punctum(0)), new Positio(1500, new Punctum(2)), new Positio(2800, new Punctum(4)), new Positio(3000, new Punctum(0))}),
+                new Positiones(new Punctum(220), new Positio(1500, new Punctum(880)), new Positio(3000, new Punctum(1880))),
+                new Positiones(new Punctum(),    new Positio(1500, new Punctum(2)), new Positio(2800, new Punctum(4)), new Positio(3000, new Punctum(0)))),
             new PositionesOscillationis(
                 Unda.SINE, 1, 0, 
-                new Positio[]{new Positio(0, new Punctum(823.25))},
-                new Positio[]{new Positio(0, new Punctum(1)), new Positio(500, new Punctum(0))},
+                new Positiones(new Punctum(823.25)),
+                new Positiones(new Punctum(1), new Positio(500, new Punctum(0))),
                 new PositionesOscillationis(
                     Unda.SINE, 1, 0, 
-                    new Positio[]{new Positio(0, new Punctum(340.25))},
-                    new Positio[]{new Positio(0, new Punctum(3)), new Positio(1000, new Punctum(0))}),
+                    new Positiones(new Punctum(340.25)),
+                    new Positiones(new Punctum(3), new Positio(1000, new Punctum(0)))),
                 new PositionesOscillationis(
                     Unda.SINE, 1, 0, 
-                    new Positio[]{new Positio(0, new Punctum(6.55))},
-                    new Positio[]{new Positio(0, new Punctum(1)), new Positio(2000, new Punctum(0))}))
+                    new Positiones(new Punctum(6.55)),
+                    new Positiones(new Punctum(1), new Positio(2000, new Punctum(0)))))
         );
         PositionesOscillationis p2 = new PositionesOscillationis(
-            Unda.TRIA, 1, 0, 
-            new Positio[]{new Positio(0, new Punctum(440))/*, new Positio(3000, new Punctum(440))*/},
-            new Positio[]{new Positio(0, new Punctum(1)), new Positio(3000, new Punctum(0))/*, new Positio(2000, new Punctum(0))*/},
-            new Positio[][]{
-                new Positio[]{new Positio(0, new Punctum(1))},
-                new Positio[]{new Positio(0, new Punctum(1))}
-            }, //new Positiones.Positio[]{new Positiones.Positio(0, new Punctum(1, 0)), new Positiones.Positio(3500, new Punctum(0, 1))},
-            //new Positio[]{new Positio(0, new Punctum(1, 1)), new Positio(1000, new Punctum(1, 0.5)), new Positio(2000, new Punctum(1, 0))},
-            new Positio[0], new Positio[0], new Positio[0], new Positio[0], new Positio[0]
-                
-            /*new PositionesFixi(
-                new Positio[]{new Possitio(0, new Punctum(4))},
-                new Positio[]{new Positio(0, new Punctum(4, -4)), new Positio(3000, new Punctum(4, -4))})*/);
+            Unda.DENT, 1, 0, 
+            new Positiones(new Punctum(440, 437), new Positio(1300, new Punctum(440, 437)), new Positio(1500, new Punctum(680, 674))),
+            new Positiones(new Punctum(1), new Positio(2500, new Punctum(1)), new Positio(3000, new Punctum(0))),
+            new Positiones[]{
+                new Positiones(new Punctum(1, 0), new Positio(1000, new Punctum(1, 0)),new Positio(1500, new Punctum(0, 1))),
+                new Positiones(new Punctum(1, 0), new Positio(1000, new Punctum(1, 0)),new Positio(1500, new Punctum(0, 1)))
+            }, 
+            //null,
+            new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(true));
+        PositionesOscillationis p3 = new PositionesOscillationis(
+            Unda.TRIA, 1, 1.2, 
+            new Positiones(new Punctum(660, 655), new Positio(1300, new Punctum(660, 655)), new Positio(1500, new Punctum(340, 337.5))),
+            new Positiones(new Punctum(1), new Positio(2500, new Punctum(1)), new Positio(3000, new Punctum(0))),
+            new Positiones[]{
+                new Positiones(new Punctum(0, 1), new Positio(1000, new Punctum(0, 1)), new Positio(1500, new Punctum(1, 0))),
+                new Positiones(new Punctum(0, 1), new Positio(1000, new Punctum(0, 1)), new Positio(1500, new Punctum(1, 0)))
+            }, 
+            //null,
+            new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(new Punctum(1.2)));
         Oscillatio o = new Oscillatio(p);
-        Oscillatio o2 = new Oscillatio(p2);
         Oscillationes os = new Oscillationes(1);
         //os.add(o);
-        os.add(o2);
+        //os.add(new Oscillatio(p2));
+        os.add(new Oscillatio(p3));
         
         File out_file = new File(OmUtil.getDirectory("opus"), "oscillatio.wav");
         ScriptorWav sw = new ScriptorWav(out_file);

@@ -15,6 +15,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.util.FastMath;
 
 public class Functiones implements Constantia {
     private static Integer clavis = null;
@@ -157,4 +158,10 @@ public class Functiones implements Constantia {
         }
         return null;
     }
+    public static double NUMERO_OCTAVI = 12;
+    public static double HZ_A4 = 440;
+    public static double capioHZ(double midi_note_number, double cents){
+        return FastMath.pow(2d, (midi_note_number - 69d + cents * 0.01d) * 1d / NUMERO_OCTAVI) * HZ_A4;        
+    }
+    
 }

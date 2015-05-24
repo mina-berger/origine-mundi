@@ -5,8 +5,6 @@
  */
 package la.clamor;
 
-import la.clamor.Aestimatio;
-
 /**
  *
  * @author user
@@ -19,7 +17,7 @@ public class EnvelopeFilter implements Legibilis {
     Aestimatio volume;
     public EnvelopeFilter(Legibilis legibilis, Envelope envelope, double duration, Aestimatio volume){
         this.legibilis = legibilis;
-        this.envelope = envelope;
+        this.envelope = envelope == null?new Envelope(new Punctum(1)):envelope;
         this.volume = volume;
         longitudo = Functiones.adPositio(duration);
         positio = 0;

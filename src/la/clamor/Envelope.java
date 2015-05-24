@@ -14,8 +14,8 @@ import static la.clamor.Constantia.CHANNEL;
  * @author user
  */
 public class Envelope extends TreeMap<Long, Punctum> {
-    public Envelope(){
-        put(0l, new Punctum());
+    public Envelope(Punctum initial){
+        put(0l, initial);
     }
     public void ponoPunctum(double temp, Punctum punctum){
         put(Functiones.adPositio(temp), punctum);

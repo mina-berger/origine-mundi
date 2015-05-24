@@ -28,7 +28,6 @@ public class Chorus extends AbstractEffector {
     Punctum compendium_humens;
     int longitudo;
     int terminum;
-    boolean terminens;
     OrbisAestimationis oa;
     OscillatioSimplex osc;
     public Chorus(Legibilis fons, 
@@ -48,13 +47,12 @@ public class Chorus extends AbstractEffector {
         oa = new OrbisAestimationis(longitudo * 2 + 1);
         osc = new OscillatioSimplex();
         terminum = oa.longitudo();
-        terminens = false;
         System.out.println("longitudo=" + terminum);
     }
 
     @Override
     public Punctum lego() {
-        Punctum lectum = terminens?new Punctum():super.legoAFontem();
+        Punctum lectum = super.legoAFontem();
         Punctum oscillatio = osc.lego(frequentia, new Punctum(1));
         Punctum punctum = new Punctum();
         for(int i = 0;i < CHANNEL;i++){
@@ -76,7 +74,7 @@ public class Chorus extends AbstractEffector {
         if(fonsParatusEst()){
             return true;
         }
-        terminens = true;
+        //terminens = true;
         if(terminum > 0){
             terminum--;
             //System.out.println(terminum);

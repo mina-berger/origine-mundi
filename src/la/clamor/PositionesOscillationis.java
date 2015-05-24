@@ -6,8 +6,6 @@
 package la.clamor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
 import java.util.TreeMap;
 import static la.clamor.Constantia.CHANNEL;
 import org.apache.commons.math3.util.FastMath;
@@ -57,46 +55,48 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     }
     public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback) {
         this(unda, volume, feedback, 
-            new Positio[0], new Positio[0], null, 
-            new Positio[0], new Positio[0], 
-            new Positio[0], new Positio[0], new Positio[0]);
+            new Positiones(true), new Positiones(false), null, 
+            new Positiones(false), new Positiones(false), 
+            new Positiones(false), new Positiones(false), new Positiones(true));
     }
-    public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback, Positio[] frequentiae, Positio[] quantitatis, AbstractPositionesOscillationis... positiones_modulatores) {
-        this(unda, volume, feedback, frequentiae, quantitatis, null, new Positio[0], new Positio[0], new Positio[0], new Positio[0], new Positio[0], positiones_modulatores);
+    public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback, Positiones frequentiae, Positiones quantitatis, AbstractPositionesOscillationis... positiones_modulatores) {
+        this(unda, volume, feedback, frequentiae, quantitatis, null, new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(true), positiones_modulatores);
     }
     public PositionesOscillationis(
             Constantia.Unda unda, double volume, double feedback,
-            Positio[] frequentiae, Positio[] quantitatis, Positio[][] pans,
-            Positio[] vco_frequentiae, Positio[] vco_quantitatis, 
-            Positio[] vca_frequentiae, Positio[] vca_quantitatis, 
-            Positio[] fb_quantitatis, 
+            Positiones frequentiae, Positiones quantitatis, Positiones[] pans,
+            Positiones vco_frequentiae, Positiones vco_quantitatis, 
+            Positiones vca_frequentiae, Positiones vca_quantitatis, 
+            Positiones fb_quantitatis, 
             AbstractPositionesOscillationis... positiones_modulatores) {
         super(capioUltimum(frequentiae, quantitatis), unda, volume, feedback);
-        map_frequentiae = new Positiones(true, frequentiae);
-        map_quantitatis = new Positiones(false, quantitatis);
+        map_frequentiae = frequentiae;//new Positiones(true, frequentiae);
+        map_quantitatis = quantitatis;//new Positiones(false, quantitatis);
         map_pans        = initioMap(pans, true);
         /*map_pans        = initioMap(pans == null?
                 new Positio[][]{
                     new Positio[]{new Positio(0, new Punctum(1))},
                     new Positio[]{new Positio(0, new Punctum(1))}
                 }:pans, true);*/
-        map_vco_frequentiae = new Positiones(false, vco_frequentiae);
-        map_vco_quantitatis = new Positiones(false, vco_quantitatis);
-        map_vca_frequentiae = new Positiones(false, vca_frequentiae);
-        map_vca_quantitatis = new Positiones(false, vca_quantitatis);
-        map_fb_quantitatis  = new Positiones(true, fb_quantitatis);
+        map_vco_frequentiae = vco_frequentiae;//new Positiones(false, vco_frequentiae);
+        map_vco_quantitatis = vco_quantitatis;//new Positiones(false, vco_quantitatis);
+        map_vca_frequentiae = vca_frequentiae;//new Positiones(false, vca_frequentiae);
+        map_vca_quantitatis = vca_quantitatis;//new Positiones(false, vca_quantitatis);
+        map_fb_quantitatis  = fb_quantitatis;//new Positiones(true, fb_quantitatis);
         vco = new OscillatioSimplex();
         vca = new OscillatioSimplex();
 
         ponoModulatores(positiones_modulatores);
     }
-    private static ArrayList<Positiones> initioMap(Positio[][] positiones, boolean unusEst){
+    private static ArrayList<Positiones> initioMap(Positiones[] positiones, boolean unusEst){
             ArrayList<Positiones> map = new ArrayList<>();
             for(int i = 0;i < CHANNEL;i++){
-                if(positiones != null && positiones[i] != null&& positiones[i].length > 0){
-                    map.add(new Positiones(unusEst, positiones[i]));
+                if(positiones != null && positiones[i] != null&& positiones[i].size() > 0){
+                    map.add(positiones[i]);
                 }else{
-                    map.add(new Positiones(unusEst));
+                    Punctum pc = new Punctum();
+                    pc.ponoAestimatio(i, new Aestimatio(1));
+                    map.add(new Positiones(false, new Positio(0, pc)));
                 }
             }
             return map;
@@ -153,10 +153,11 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     public void computoLongitudo(){
         ponoLongitudo(FastMath.max(map_frequentiae.lastKey(), map_quantitatis.lastKey()));
     }
-    private static long capioUltimum(Positio[] frequentiae, Positio[] quantitatis){
-        return FastMath.max(
-                Arrays.stream(frequentiae).mapToLong(e -> e.capioPositio()).reduce(0l, (x, y) -> x > y ? x : y),
-                Arrays.stream(quantitatis).mapToLong(e -> e.capioPositio()).reduce(0l, (x, y) -> x > y ? x : y));
+    private static long capioUltimum(Positiones frequentiae, Positiones quantitatis){
+        return FastMath.max(frequentiae.lastKey(), quantitatis.lastKey());
+                
+                //Arrays.stream(frequentiae).mapToLong(e -> e.capioPositio()).reduce(0l, (x, y) -> x > y ? x : y),
+                //Arrays.stream(quantitatis).mapToLong(e -> e.capioPositio()).reduce(0l, (x, y) -> x > y ? x : y));
     }
 
     @Override
@@ -235,5 +236,11 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
         return punctum;
 
     }*/
+    //public static void main(String[] arg){
+    //    Positiones p = new Positiones(new Punctum(1));
+    //    while(true){
+        //    System.out.println(p.capioPunctum(index).multiplico(feedback));
+    //    }
+    //}
     
 }
