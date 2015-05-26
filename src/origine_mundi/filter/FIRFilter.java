@@ -78,7 +78,7 @@ public class FIRFilter implements Constantia, Legibilis {
             ratio += tap_array[i];
         }
         volume_total = new Aestimatio(1d / Math.abs(ratio));
-        System.out.println("VOLUME:" + volume_total);
+        //System.out.println("VOLUME:" + volume_total);
         
     }
 

@@ -7,6 +7,7 @@ package origine_mundi.sampler;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeSet;
 import la.clamor.Consilium;
@@ -35,51 +36,25 @@ import origine_mundi.ludior.Tempus;
  * @author user
  */
 public abstract class Desktop {
-    TreeSet<Integer> skip_set;
-    private final int SKIP_MIDI  = 0;
-    private final int SKIP_LIMAE = 1;
-    private final int SKIP_MIX   = 2;
-    private final int SKIP_LUDUM = 3;
+    private final int ACTION_MIDI  = 0;
+    private final int ACTION_LIMAE = 1;
+    private final int ACTION_MIX   = 2;
+    private final int ACTION_LUDUM = 3;
     public Desktop(){
-    //    this(true, true, true, true);
-    //}
-    //public Desktop(boolean midi, boolean limae, boolean mix, boolean ludum){
-        skip_set = new TreeSet<>();
-    //    setAction(midi, limae, mix, ludum);
+        
     }
         
-    protected abstract void initialize();
+    protected abstract void initialize(InitialSettings initials);
     protected abstract void callDevices(MidiMachines midi_machines);
     protected abstract Tempus getTempus();
     protected abstract void getBrevs(HashMap<String, Brevs> brevs_map);
     protected abstract void getLimaLusa(ArrayList<LimaLusa> lusa_list);
     protected abstract void getLegibilisLusa(Tempus tempus, ArrayList<LegibilisLusa> lusa_list);
     protected abstract void getTrackSettings(TrackSettings track_settings);
-    protected final void setAction(boolean midi, boolean limae, boolean mix, boolean ludum){
-        if(midi){
-            skip_set.remove(SKIP_MIDI);
-        }else{
-            skip_set.add(SKIP_MIDI);
-        }
-        if(limae){
-            skip_set.remove(SKIP_LIMAE);
-        }else{
-            skip_set.add(SKIP_LIMAE);
-        }
-        if(mix){
-            skip_set.remove(SKIP_MIX);
-        }else{
-            skip_set.add(SKIP_MIX);
-        }
-        if(ludum){
-            skip_set.remove(SKIP_LUDUM);
-        }else{
-            skip_set.add(SKIP_LUDUM);
-        }
-    }
     @Test
     public void main(){
-        initialize();
+        InitialSettings initials = new InitialSettings();
+        initialize(initials);
         MidiMachines midi_machines = null;
         HashMap<String, Brevs> brevs_map = null;
         ArrayList<LimaLusa> lima_lusa_list = null;
@@ -87,7 +62,7 @@ public abstract class Desktop {
         Tempus tempus = getTempus();
         File dir = OmUtil.getDirectory("sample");
         File out_file = new File(OmUtil.getDirectory("opus"), getClass().getSimpleName() + ".wav");
-        if(!skip_set.contains(SKIP_MIDI)){
+        if(initials.action(ACTION_MIDI)){
             midi_machines = new MidiMachines();
             callDevices(midi_machines);
             brevs_map = new HashMap<>();
@@ -96,6 +71,10 @@ public abstract class Desktop {
             //sampling
             BrevsSampler sampler;
             for(String key:brevs_map.keySet()){
+                if(initials.skipLima(key)){
+                    System.out.println("MIDI:skip:" + key);
+                    continue;
+                }
                 Brevs brevs = brevs_map.get(key);
                 File wav_file = brevs.containsNote()?new File(dir, key + ".wav"):null;
                 try{
@@ -107,12 +86,16 @@ public abstract class Desktop {
                 }
             }
         }
-        if(!skip_set.contains(SKIP_LIMAE)){
+        if(initials.action(ACTION_LIMAE)){
             if(brevs_map == null){
                 brevs_map = new HashMap<>();
                 getBrevs(brevs_map);
             }
             for(String key:brevs_map.keySet()){
+                if(initials.skipLima(key)){
+                    System.out.println("LIMAE:skip:" + key);
+                    continue;
+                }
                 if(!brevs_map.get(key).containsNote()){
                     continue;
                 }
@@ -126,7 +109,7 @@ public abstract class Desktop {
             }
         }
         
-        if(!skip_set.contains(SKIP_MIX)){
+        if(initials.action(ACTION_MIX)){
             Consilia cns = new Consilia();
             
             lima_lusa_list = new ArrayList<>();
@@ -175,7 +158,7 @@ public abstract class Desktop {
             sw.scribo(master, false);
         }
         
-        if(!skip_set.contains(SKIP_LUDUM)){
+        if(initials.action(ACTION_LUDUM)){
             Functiones.ludoLimam(out_file);
         }
                 
@@ -187,6 +170,50 @@ public abstract class Desktop {
             }
             return get(track);
         }
+    }
+    public class InitialSettings {
+        TreeSet<Integer> action_set;
+        TreeSet<String>  skip_limae;
+        public InitialSettings(){
+            action_set = new TreeSet<>();
+            action_set.add(ACTION_MIDI);
+            action_set.add(ACTION_LIMAE);
+            action_set.add(ACTION_MIX);
+            action_set.add(ACTION_LUDUM);
+            skip_limae = new TreeSet<>();
+        }
+        public boolean skipLima(String lima){
+            return skip_limae.contains(lima);
+        }
+        public void setSkipLimae(String... limae){
+            skip_limae.addAll(Arrays.asList(limae));
+        }
+        public void setAction(boolean midi, boolean limae, boolean mix, boolean ludum){
+            if(midi){
+                action_set.add(ACTION_MIDI);
+            }else{
+                action_set.remove(ACTION_MIDI);
+            }
+            if(limae){
+                action_set.add(ACTION_LIMAE);
+            }else{
+                action_set.remove(ACTION_LIMAE);
+            }
+            if(mix){
+                action_set.add(ACTION_MIX);
+            }else{
+                action_set.remove(ACTION_MIX);
+            }
+            if(ludum){
+                action_set.add(ACTION_LUDUM);
+            }else{
+                action_set.remove(ACTION_LUDUM);
+            }
+        }
+        public boolean action(int action){
+            return action_set.contains(action);
+        }
+        
     }
     public class TrackSettings extends HashMap<Integer, TrackSetting>{
         TrackSetting master;

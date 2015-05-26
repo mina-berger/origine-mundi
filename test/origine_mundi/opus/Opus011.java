@@ -240,10 +240,10 @@ public class Opus011 extends Desktop {
         
     }
     @Override
-    protected void initialize() {
-        setAction(false, false, false, true);
-        //setAction(true, true, true, true);
-        //setAction();
+    protected void initialize(InitialSettings initials) {
+        initials.setAction(false, true, true, true);
+        initials.setSkipLimae("b_120", "b_60", "s_120", "s_120_d", "h_120", "h_95", "h_80");
+        initials.setSkipLimae("01d", "01u", "02d", "02u", "03d", "03u", "04d", "04u");
     }
 
     @Override

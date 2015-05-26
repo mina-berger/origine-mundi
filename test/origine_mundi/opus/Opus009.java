@@ -32,8 +32,8 @@ import origine_mundi.sampler.LimaLusa;
  */
 public class Opus009 extends Desktop {
     @Override
-    public void initialize(){
-        setAction(false, true, true, true);
+    public void initialize(InitialSettings initials){
+        initials.setAction(false, true, true, true);
     }
 
     @Override
