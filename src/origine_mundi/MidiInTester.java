@@ -80,8 +80,8 @@ public class MidiInTester {
             
             //ex_dev = getMidiDevice(MICRO_LITE_1, true); //TG77
             //ex_dev = getMidiDevice(MICRO_LITE_2, true); //U110
-            ex_dev = getMidiDevice(MICRO_LITE_3, true); //D110
-            //ex_dev = getMidiDevice(MICRO_LITE_6, true); //01R/W
+            //ex_dev = getMidiDevice(MICRO_LITE_3, true); //D110
+            ex_dev = getMidiDevice(MICRO_LITE_6, true); //01R/W
             //ex_dev = getMidiDevice(MICRO_LITE_7, true); //M3R
             //ex_dev = getMidiDevice(MU500[0], true);//MU500
             

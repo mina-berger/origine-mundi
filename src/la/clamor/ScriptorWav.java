@@ -23,6 +23,7 @@ import static la.clamor.Constantia.REGULA_EXAMPLI;
 import la.clamor.Aestimatio;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import origine_mundi.OmUtil;
 
 public class ScriptorWav implements Constantia {
     public static Log log = LogFactory.getLog(ScriptorWav.class);
@@ -261,40 +262,9 @@ public class ScriptorWav implements Constantia {
         
     }*/
     public static void main(String[] args){
-        LectorWav ll = new LectorWav(new File("doc/sample/sample01.wav"), new Aestimatio(1));
-        ScriptorWav sl = new ScriptorWav(new File("doc/sample/sample02.wav"));
-        /*ZTransformare zt = new ZTransformare(new ModAddens(
-                new ModCapiens(1), 
-                new ModCapiens(1, Fons.IN, 12000)/*, 
-                new ModCapiens(1, Fons.IN, 2), 
-                new ModCapiens(1, Fons.IN, 3), 
-                new ModCapiens(1, Fons.IN, 4), 
-                new ModCapiens(1, Fons.IN, 5), 
-                new ModCapiens(1, Fons.IN, 6), 
-                new ModCapiens(1, Fons.IN, 7), 
-                new ModCapiens(1, Fons.IN, 8), 
-                new ModCapiens(1, Fons.IN, 9), 
-                new ModCapiens(1, Fons.IN, 10), 
-                new ModCapiens(1, Fons.IN, 11), 
-                new ModCapiens(1, Fons.IN, 12), 
-                new ModCapiens(1, Fons.IN, 13), 
-                new ModCapiens(1, Fons.IN, 14), 
-                new ModCapiens(1, Fons.IN, 15), 
-                new ModCapiens(1, Fons.IN, 16), 
-                new ModCapiens(1, Fons.IN, 17), 
-                new ModCapiens(1, Fons.IN, 18), 
-                new ModCapiens(1, Fons.IN, 19), 
-                new ModCapiens(1, Fons.IN, 20), 
-                new ModCapiens(1, Fons.IN, 21), 
-                new ModCapiens(1, Fons.IN, 22), 
-                new ModCapiens(1, Fons.IN, 23), 
-                new ModCapiens(1, Fons.IN, 24), 
-                new ModCapiens(1, Fons.IN, 25)*//*));
-        /*ZTransformare zt = new ZTransformare(new ModAddens(
-                new ModCapiens(1), 
-                new ModCapiens(Fons.EX, 0, -0.9999)));*//*
-        zt.ponoFons(ll);*/
-        sl.scribo(ll, true);
+        LectorLimam ll = new LectorLimam(new File(OmUtil.getDirectory("sample"), "ba_1_h_40.lima"));
+        ScriptorWav sl = new ScriptorWav(new File(OmUtil.getDirectory("sample"), "sample011.wav"));
+        sl.scribo(ll, false);
     }
     public static class LegibilisInputStream extends InputStream {
         ObjectInputStream o_in;

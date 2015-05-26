@@ -34,7 +34,7 @@ import origine_mundi.ludior.Expression;
 import origine_mundi.ludior.Iunctum;
 import origine_mundi.ludior.Tempus;
 import origine_mundi.machine.D_110;
-import origine_mundi.machine.MU500;
+import origine_mundi.machine.K_01RW;
 import origine_mundi.sampler.Desktop;
 import origine_mundi.sampler.LegibilisLusa;
 import origine_mundi.sampler.LimaLusa;
@@ -48,8 +48,11 @@ public class Opus011 extends Desktop {
 
     @Override
     protected void callDevices(MidiMachines midi_machines) {
-        midi_machines.put(0, MU500.instance(0));
-        midi_machines.put(1, D_110.instance());
+        //midi_machines.put(0, MU500.instance(0));
+        //midi_machines.put(1, D_110.instance());
+        midi_machines.put(0, D_110.instance());//dummy
+        midi_machines.put(1, D_110.instance());//dummy
+        midi_machines.put(2, K_01RW.instance());//
     }
 
     @Override
@@ -127,6 +130,19 @@ public class Opus011 extends Desktop {
         bf1.note(new Integers(5, 4, 3, 2, 1), new Integers(64, 60, 57, 52, 45), 120, 1, 1, stroke0, exp0, true);
         brevs_map.put("04u", bf1.remove());
 
+        BrevFactory bf2 = new BrevFactory(new Iunctum(2, 2, 0));
+        bf2.setLoco(new Talea());
+        int [] bass_notes = new int[]{40, 35, 38, 33};
+        for(int i = 0;i < bass_notes.length;i++){
+            bf2.note(bass_notes[i], 0x40, 1, 1, false);
+            brevs_map.put("ba_" + i + "_l_40", bf2.remove());
+            bf2.note(bass_notes[i], 0x78, 1, 1, false);
+            brevs_map.put("ba_" + i + "_l_78", bf2.remove());
+            bf2.note(bass_notes[i] + 12, 0x40, 1, 1, false);
+            brevs_map.put("ba_" + i + "_h_40", bf2.remove());
+            bf2.note(bass_notes[i] + 12, 0x78, 1, 1, false);
+            brevs_map.put("ba_" + i + "_h_78", bf2.remove());
+        }
     }
 
     @Override
@@ -195,7 +211,6 @@ public class Opus011 extends Desktop {
             lusa_list.add(new LimaLusa(track, no + "d", new Talea(i, count++ * 0.25),        0.25, genv1, new Aestimatio(1.0), gfi1));
             lusa_list.add(new LimaLusa(track, no + "u", new Talea(i, count++ * 0.25 + back), 0.25, genv3, new Aestimatio(0.5), gfi2));
         }
-        
     }
 
     @Override
@@ -241,7 +256,7 @@ public class Opus011 extends Desktop {
     }
     @Override
     protected void initialize(InitialSettings initials) {
-        initials.setAction(false, true, true, true);
+        initials.setAction(true, true, false, true);
         initials.setSkipLimae("b_120", "b_60", "s_120", "s_120_d", "h_120", "h_95", "h_80");
         initials.setSkipLimae("01d", "01u", "02d", "02u", "03d", "03u", "04d", "04u");
     }
