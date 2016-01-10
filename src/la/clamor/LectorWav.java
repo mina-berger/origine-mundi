@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import la.clamor.Lima.FilumOctorum;
 import la.clamor.Lima.RiffData;
-import la.clamor.Aestimatio;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -214,7 +213,7 @@ public class LectorWav implements Constantia, Legibilis {
     }
     public static void main(String[] arg){
 
-        //WavFileWriter wavfile = new WavFileWriter(new File("C:/drive/phthongos/test.wav"));
+        //WavFileWriter wavfile = new WavFileWriter(new File(Functiones.getHomePath() + "phthongos/test.wav"));
         //wavfile.write(new LectorLimam("drum" ,"bd1", 1).getClip(0, 1));
         //AudioUtil.playAudio(wavfile.getFile());
 

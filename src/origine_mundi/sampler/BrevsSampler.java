@@ -16,6 +16,7 @@ import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Transmitter;
+import la.clamor.Functiones;
 import la.clamor.Talea;
 import origine_mundi.Integers;
 import origine_mundi.MidiMachines;
@@ -182,12 +183,12 @@ public class BrevsSampler {
         bf0.setLoco(new Talea(1, 0d));
         bf0.note(new Integers(0, 1, 2, 3, 4, 5), new Integers(40, 47, 52, 56, 59, 64), 120, 1, 1, stroke0, exp0, true);
         sampler = new BrevsSampler(midi_machines, new Tempus(new Tempus.Comes[]{}, new Tempus.Rapidus[]{new Tempus.Rapidus(new Talea(), 100, true)}), 
-                new File("C:\\drive\\doc\\origine_mundi\\sample\\sample01.wav"), bf0.remove());
+                new File(Functiones.getHomePath() + "doc/origine_mundi/sample/sample01.wav"), bf0.remove());
         sampler.start();
         
         /*bf0.note(new Integers(5, 4, 3, 2, 1, 0), new Integers(64, 59, 56, 52, 47, 40), 120, 1, 1, stroke0, exp0, true);
         sampler = new BrevsSampler(midi_machines, new Tempus(new Tempus.Comes[]{}, new Tempus.Rapidus[]{new Tempus.Rapidus(0, 0, 100, true)}), 
-                new File("C:\\drive\\doc\\origine_mundi\\sample\\sample02.wav"), bf0.remove());
+                new File(Functiones.getHomePath() + "doc/origine_mundi/sample/sample02.wav"), bf0.remove());
         sampler.record();*/
     }
 }

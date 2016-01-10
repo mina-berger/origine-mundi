@@ -213,7 +213,7 @@ public class Oscillatio implements Constantia, Legibilis {
 
         /*Pretia pretia = new Pretia();
         Tabula tabula = Tabula.combo(
-                "OSCILLATIO", new File("c://drive/doc/clamor/spec/osc.html"), "ratio", 
+                "OSCILLATIO", new File(com.mina.util.Util.getHomePath() + "doc/clamor/spec/osc.html"), "ratio", 
                 new String[]{"Ampitudo"}, 
                 new Collocatio("Ampitudo", true));
         int index = 0;
@@ -280,7 +280,7 @@ public class Oscillatio implements Constantia, Legibilis {
         
         /*Pretia pretia = new Pretia();
         Tabula tabula = Tabula.combo(
-                "OSCILLATIO", new File("c://drive/doc/clamor/spec/osc.html"), "ratio", 
+                "OSCILLATIO", new File(com.mina.util.Util.getHomePath() + "doc/clamor/spec/osc.html"), "ratio", 
                 new String[]{"Ampitudo"}, 
                 new Collocatio("Ampitudo", true));
         int index = 0;

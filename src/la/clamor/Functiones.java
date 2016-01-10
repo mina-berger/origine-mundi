@@ -72,7 +72,7 @@ public class Functiones implements Constantia {
         */
 
 
-//Tabula tabula = Tabula.scatter("Zero", new File("c://drive/doc/clamor/spec/pole.html"), 
+//Tabula tabula = Tabula.scatter("Zero", new File(com.mina.util.Util.getHomePath() + "doc/clamor/spec/pole.html"), 
         //        "Real", "Imaginary", "Zero");
         /*int count = 12;
         for(int i = 0;i < count;i++){
@@ -163,5 +163,10 @@ public class Functiones implements Constantia {
     public static double capioHZ(double midi_note_number, double cents){
         return FastMath.pow(2d, (midi_note_number - 69d + cents * 0.01d) * 1d / NUMERO_OCTAVI) * HZ_A4;        
     }
-    
+    public static String getHomePath(){
+        return isMac()?"/Users/mina/drive/":"C://drive/";
+    }
+    public static boolean isMac(){
+        return System.getProperty("os.name").toLowerCase().startsWith("mac");        
+    }    
 }

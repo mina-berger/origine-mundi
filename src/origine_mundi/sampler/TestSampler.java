@@ -7,6 +7,7 @@
 package origine_mundi.sampler;
 import javax.sound.sampled.*;
 import java.io.*;
+import la.clamor.Functiones;
  
 /**
  * A sample program is to demonstrate how to record sound in Java
@@ -17,7 +18,7 @@ public class TestSampler {
     static final long RECORD_TIME = 60000;  // 1 minute
  
     // path of the wav file
-    File wavFile = new File("C:\\drive\\doc\\origine_mundi\\sample\\RecordAudio.wav");
+    File wavFile = new File(Functiones.getHomePath() + "doc/origine_mundi/sample/RecordAudio.wav");
  
     // format of audio file
     AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;

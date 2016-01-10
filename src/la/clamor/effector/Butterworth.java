@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import la.clamor.Constantia.Fons;
 import static la.clamor.Constantia.REGULA_EXAMPLI_D;
+import la.clamor.Functiones;
 import la.clamor.effector.Modulus.ModAddens;
 import la.clamor.effector.Modulus.ModCapiens;
 import static la.clamor.effector.Modulus.convert;
@@ -420,7 +421,7 @@ public class Butterworth {
         + "  cutoff2: cutoff frequency (bandpass)";
 
     public static void main(String[] args) throws IOException, UnsupportedAudioFileException {
-        File f = new File("c://drive/doc/clamor/spec/bw.html");
+        File f = new File(Functiones.getHomePath() + "doc/clamor/spec/bw.html");
         f.getParentFile().mkdirs();
         spec(convert(Butterworth.capioModulum(2, 1, false)), f);
         
@@ -428,6 +429,6 @@ public class Butterworth {
             1};
         double[] b = new double[]{
             1, 1};
-        //spec(convert(Butterworth.capioModulum(a, b)), new File("c://drive/doc/clamor/spec/bw.html"), 1000);
+        //spec(convert(Butterworth.capioModulum(a, b)), new File(Functiones.getHomePath() + "doc/clamor/spec/bw.html"), 1000);
     }
 }

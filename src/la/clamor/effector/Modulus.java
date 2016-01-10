@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import la.clamor.Constantia.Fons;
 import la.clamor.ExceptioClamoris;
+import la.clamor.Functiones;
 import la.clamor.Punctum;
 import la.clamor.effector.Tabula.Collocatio;
 
@@ -286,7 +287,7 @@ public abstract class Modulus {
         //duobus = new DuobusRerumZeta(
         //        new ResZeta[]{new ResZeta(1), new ResZeta(-1, -2)},
         //        new ResZeta[]{new ResZeta(2)});
-        //spec(duobus, new File("c://drive/doc/clamor/spec/bpf.html"));
+        //spec(duobus, new File(Functiones.getHomePath() + "doc/clamor/spec/bpf.html"));
         
         //lowpass
         //mod = new ModAddens(
@@ -295,7 +296,7 @@ public abstract class Modulus {
         //uobus = new DuobusRerumZeta(
         //        new ResZeta[]{new ResZeta(5), new ResZeta(-5, -4)},
         //        new ResZeta[]{new ResZeta(1), new ResZeta(-1, -1)});
-        //spec(duobus, new File("c://drive/doc/clamor/spec/lpf_iir.html"));
+        //spec(duobus, new File(Functiones.getHomePath() + "doc/clamor/spec/lpf_iir.html"));
         //mod = new ModAddens(
         //        new ModCapiens(new Fraction(0.5)),
         //        new ModCapiens(new Fraction(0.5), Fons.IN, 0));
@@ -309,18 +310,18 @@ public abstract class Modulus {
                 new ModCapiens(new Fraction(1d / 3d)),
                 new ModCapiens(new Fraction(-1d / 3d), Fons.IN, 1),
                 new ModCapiens(new Fraction(1d / 3d), Fons.IN, 3));
-        spec(convert(mod), new File("c://drive/doc/clamor/spec/fir.html"));
+        spec(convert(mod), new File(Functiones.getHomePath() + "doc/clamor/spec/fir.html"));
         
         //highpass
         //mod = new ModAddens(
         //        new ModCapiens(new Fraction(0.8), Fons.EX, 0), 
         //        new ModCapiens(new Fraction(1.0)), 
         //        new ModCapiens(new Fraction(-1.0), Fons.IN, 0));
-        //spec(convert(mod), new File("c://drive/doc/clamor/spec/hpf_iir.html"));
+        //spec(convert(mod), new File(Functiones.getHomePath() + "doc/clamor/spec/hpf_iir.html"));
         //mod = new ModAddens(
         //        new ModCapiens(new Fraction(0.5)),
         //        new ModCapiens(new Fraction(-0.5), Fons.IN, 0));
-        //spec(convert(mod), new File("c://drive/doc/clamor/spec/hpf_fir.html"));
+        //spec(convert(mod), new File(Functiones.getHomePath() + "doc/clamor/spec/hpf_fir.html"));
 
         /*int count = 12;
         ModAddens mod_addens = new ModAddens();
@@ -333,6 +334,6 @@ public abstract class Modulus {
             }
         }
         mod = mod_addens;
-        spec(convert(mod), new File("c://drive/doc/clamor/spec/fir.html"));*/
+        spec(convert(mod), new File(Functiones.getHomePath() + "doc/clamor/spec/fir.html"));*/
     }
 }

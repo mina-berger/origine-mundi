@@ -25,6 +25,7 @@ import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
+import la.clamor.Functiones;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -69,8 +70,7 @@ public class OmUtil {
         return format;
     }
     public static File getDirectory(String subdir){
-        boolean is_mac = System.getProperty("os.name").toLowerCase().startsWith("mac");
-        File dir = new File((is_mac?"/Users/user/origine_mundi/":"C:\\drive\\doc\\origine_mundi\\") + subdir);
+        File dir = new File(Functiones.getHomePath() + "doc/origine_mundi/" + subdir);
         dir.mkdirs();
         return dir;
     }
@@ -197,7 +197,7 @@ public class OmUtil {
                 out.println(message);
             }
             /*try {
-                PrintWriter out = new PrintWriter(new File("c:/drive/test.midi" + id + ".txt"));
+                PrintWriter out = new PrintWriter(new File(Functiones.getHomePath() + "test.midi" + id + ".txt"));
                 out.append(name + "\n");
                 out.append(message.toString() + "\n");
                 out.flush();
@@ -438,14 +438,14 @@ public class OmUtil {
     }
     public static void ghmain(String[] args) throws Exception {
 
-playMidi(new File("C:/drive/doc/origine_mundi/mid/bwv788.mid"), new String[]{MU500[0]});
-//playMidi(new File("C:/drive/doc/origine_mundi/mid/rv297_2.mid"), new String[]{MLP_I_1});
-//playMidi(new File("C:/drive/doc/origine_mundi/mid/MatineeIdol.mid"), new String[]{MLP_I_1});
-        //playMidi(new File("C:/drive/doc/origine_mundi/mid/MatineeIdol.mid"));//rv297_2.mid
-        //playMidi(new File("C:/drive/doc/origine_mundi/mid/yes-roundabout.mid"));
-        //playMidi(new File("C:/drive/doc/origine_mundi/mid/bwv788.mid"));
-        //playMidi(new File("C:/drive/doc/origine_mundi/mid/weather_report-teentown.mid"));
-        //playMidi(new File("C:/drive/doc/origine_mundi/mid/sledgehammer.mid"));
+playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid"), new String[]{MU500[0]});
+//playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/rv297_2.mid"), new String[]{MLP_I_1});
+//playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/MatineeIdol.mid"), new String[]{MLP_I_1});
+        //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/MatineeIdol.mid"));//rv297_2.mid
+        //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/yes-roundabout.mid"));
+        //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid"));
+        //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/weather_report-teentown.mid"));
+        //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/sledgehammer.mid"));
         
         
     }
