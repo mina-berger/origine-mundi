@@ -1,10 +1,9 @@
 package la.clamor;
 
-import la.clamor.Aestimatio;
-
 public interface Constantia {
     public static final int CHANNEL = 2;
-    public static final int REGULA_EXAMPLI = 48000;
+    public static final int REGULA_EXAMPLI = 8000;
+    //public static final int REGULA_EXAMPLI = 48000;
     //public static final int REGULA_EXAMPLI = 44100;
     public static final double REGULA_EXAMPLI_D = REGULA_EXAMPLI;
     public static final Aestimatio REGULA_MAGISTRI = new Aestimatio(0.95);

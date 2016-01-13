@@ -1,10 +1,8 @@
 package la.clamor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.math3.util.FastMath;
 
 public class Punctum implements Constantia, Serializable, Comparable<Punctum> {
     public static final Punctum ZERO = new Punctum();

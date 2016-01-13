@@ -7,6 +7,7 @@ package la.clamor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import org.apache.commons.math3.util.FastMath;
 
 /**
@@ -79,8 +80,8 @@ public class Aestimatio implements Cloneable, Comparable<Aestimatio>, Serializab
 
     @Override
     public String toString() {
-        //return Double.toString(doubleValue());
-        return Double.toString(value);
+        return Functiones.toString(value);
+        //return Double.toString(value);
     }
 
     @Override

@@ -4,6 +4,7 @@ package la.clamor;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -169,4 +170,9 @@ public class Functiones implements Constantia {
     public static boolean isMac(){
         return System.getProperty("os.name").toLowerCase().startsWith("mac");        
     }    
+    private static final DecimalFormat df = new DecimalFormat("+0.000000000;-0.000000000");
+    public static String toString(double value) {
+        return df.format(value);
+    }
+    
 }

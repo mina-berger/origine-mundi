@@ -27,6 +27,13 @@ public class Puncta {
     public Punctum capioPunctum(int index) {
         return aestimationes[index];
     }
+    public double[] capioDoubleArray(int index){
+        double[] values = new double[aestimationes.length];
+        for(int i = 0;i < aestimationes.length;i++){
+            values[i] = aestimationes[i].capioAestimatio(index).doubleValue();
+        }
+        return values;
+    }
     
     public Punctum ponoPunctum(int index, Punctum positum) {
         Punctum punctum = aestimationes[index];

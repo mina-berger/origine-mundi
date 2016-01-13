@@ -3,7 +3,6 @@ package la.clamor;
 
 
 import java.io.File;
-import la.clamor.Aestimatio;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
 
@@ -70,7 +69,7 @@ public class OscillatioSimplex implements Constantia {
         sw.scribo(new Legibilis(){
             OscillatioSimplex o = new OscillatioSimplex();
             int count= 0;
-            double pitch = 220;
+            double pitch = 110;
             @Override
             public Punctum lego() {
                 count++;
