@@ -1,5 +1,6 @@
 package la.clamor;
 
+import origine_mundi.OmUtil;
 import java.io.BufferedOutputStream;
 import java.io.EOFException;
 import java.io.File;
@@ -23,7 +24,6 @@ import static la.clamor.Constantia.REGULA_EXAMPLI;
 import la.clamor.Aestimatio;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import origine_mundi.OmUtil;
 
 public class ScriptorWav implements Constantia {
     public static Log log = LogFactory.getLog(ScriptorWav.class);

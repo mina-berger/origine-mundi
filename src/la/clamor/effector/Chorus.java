@@ -10,7 +10,7 @@ import static la.clamor.Constantia.CHANNEL;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.OrbisAestimationis;
-import la.clamor.OscillatioSimplex;
+import la.clamor.SineOscillatio;
 import la.clamor.Punctum;
 import la.clamor.Aestimatio;
 import la.clamor.ScriptorWav;
@@ -29,7 +29,7 @@ public class Chorus extends AbstractEffector {
     int longitudo;
     int terminum;
     OrbisAestimationis oa;
-    OscillatioSimplex osc;
+    SineOscillatio osc;
     public Chorus(Legibilis fons, 
         Punctum profundum, Punctum frequentia, 
         Punctum compendium_siccus, Punctum compendium_humens) {
@@ -45,7 +45,7 @@ public class Chorus extends AbstractEffector {
         }
         longitudo = new Long(l_longitudo).intValue();
         oa = new OrbisAestimationis(longitudo * 2 + 1);
-        osc = new OscillatioSimplex();
+        osc = new SineOscillatio();
         terminum = oa.longitudo();
         System.out.println("longitudo=" + terminum);
     }
@@ -86,7 +86,7 @@ public class Chorus extends AbstractEffector {
         File out_file = new File(OmUtil.getDirectory("opus"), "chorus.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Chorus(new Legibilis(){
-            OscillatioSimplex o = new OscillatioSimplex();
+            SineOscillatio o = new SineOscillatio();
             int count= 0;
             @Override
             public Punctum lego() {

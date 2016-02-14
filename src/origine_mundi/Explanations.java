@@ -7,7 +7,6 @@
 package origine_mundi;
 
 import java.util.ArrayList;
-import origine_mundi.OmUtil;
 import origine_mundi.Explanations.Explanation;
 
 /**

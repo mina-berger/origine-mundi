@@ -174,5 +174,27 @@ public class Functiones implements Constantia {
     public static String toString(double value) {
         return df.format(value);
     }
+    public static String toString(int value, int digit) {
+        String format = "";
+        while(format.length() < digit){
+            format += "0";
+        }
+        return new DecimalFormat(format).format(value);
+    }
+    public static boolean approximateZero(Punctum punctum){
+        return approximateZero(punctum, 0.000000001);
+    }
+    public static boolean approximateZero(Punctum punctum, double threshold){
+        return punctum.abs().isLessThan(threshold);
+    }
+    public static double[] hanningWindow(int length){
+        double w[] = new double[length];
+        int n;
+        double offset = (length % 2 == 0)?0:0.5;
+        for (n = 0; n < length; n++){
+            w[n] = 0.5 - 0.5 * FastMath.cos(2.0 * FastMath.PI * (n + offset) / length);
+        }
+        return w;
+    }
     
 }

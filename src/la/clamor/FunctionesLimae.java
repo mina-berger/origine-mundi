@@ -1,5 +1,6 @@
 package la.clamor;
 
+import origine_mundi.OmUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,7 +16,6 @@ import la.clamor.Aestimatio;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import origine_mundi.OmUtil;
 
 
 public class FunctionesLimae implements Constantia {

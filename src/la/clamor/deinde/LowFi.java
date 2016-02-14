@@ -32,6 +32,7 @@ public class LowFi extends AbstractEffector {
         oa.pono(legoAFontem());
         long index = index_raw - (long) Math.ceil(Math.floor((double)index_raw / ratio) * ratio);
         index_raw++;
+        //System.out.println(index + ":" + oa.capio((int)index));
         return oa.capio((int)index);
     }
 
@@ -45,7 +46,7 @@ public class LowFi extends AbstractEffector {
         //OrbisAestimationis oa = new OrbisAestimationis((int) Math.ceil(ratio));
         for(int i = 0;i < 20;i++){
             long index = (long) Math.ceil(Math.floor((double)index_raw / ratio) * ratio);
-            //System.out.println(i + ":" + index + ":" + capio_index);
+            System.out.println(i + ":" + index);
             index_raw++;
         }
         

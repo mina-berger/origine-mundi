@@ -8,6 +8,15 @@ package la.clamor;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import static la.clamor.Constantia.CHANNEL;
+import la.clamor.Constantia.Res;
+import static la.clamor.Constantia.Res.FB_QUANT;
+import static la.clamor.Constantia.Res.FREQ;
+import static la.clamor.Constantia.Res.PAN;
+import static la.clamor.Constantia.Res.QUANT;
+import static la.clamor.Constantia.Res.VCA_FREQ;
+import static la.clamor.Constantia.Res.VCA_QUANT;
+import static la.clamor.Constantia.Res.VCO_FREQ;
+import static la.clamor.Constantia.Res.VCO_QUANT;
 import org.apache.commons.math3.util.FastMath;
 
 /**
@@ -16,7 +25,6 @@ import org.apache.commons.math3.util.FastMath;
  */
 public class PositionesOscillationis extends AbstractPositionesOscillationis {
 
-    public enum Res{FREQ, QUANT, PAN, VCO_FREQ, VCO_QUANT, VCA_FREQ, VCA_QUANT, FB_QUANT};
     Positiones map_frequentiae;
     Positiones map_quantitatis;
     ArrayList<Positiones> map_pans;
@@ -25,8 +33,8 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     Positiones map_vca_frequentiae;
     Positiones map_vca_quantitatis;
     Positiones map_fb_quantitatis;
-    OscillatioSimplex vco;
-    OscillatioSimplex vca;
+    SineOscillatio vco;
+    SineOscillatio vca;
     @Override
     public String toString(){
         //if(1 == 1)throw new RuntimeException();
@@ -83,8 +91,8 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
         map_vca_frequentiae = vca_frequentiae;//new Positiones(false, vca_frequentiae);
         map_vca_quantitatis = vca_quantitatis;//new Positiones(false, vca_quantitatis);
         map_fb_quantitatis  = fb_quantitatis;//new Positiones(true, fb_quantitatis);
-        vco = new OscillatioSimplex();
-        vca = new OscillatioSimplex();
+        vco = new SineOscillatio();
+        vca = new SineOscillatio();
 
         ponoModulatores(positiones_modulatores);
     }
@@ -191,7 +199,7 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     }
 
 
-    private static Punctum capio(Positiones map, OscillatioSimplex vc_osc, 
+    private static Punctum capio(Positiones map, SineOscillatio vc_osc, 
             Positiones map_vc_frequentiae, 
             Positiones map_vc_quantitatis, long index){
         Punctum punctum = map.capioPunctum(index);

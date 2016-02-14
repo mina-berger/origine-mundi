@@ -7,7 +7,6 @@ package la.clamor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import org.apache.commons.math3.util.FastMath;
 
 /**
@@ -77,6 +76,16 @@ public class Aestimatio implements Cloneable, Comparable<Aestimatio>, Serializab
     public Aestimatio abs() {
         return new Aestimatio(FastMath.abs(value));
     }
+    public Aestimatio sqrt(){
+        return new Aestimatio(FastMath.sqrt(value));
+    }
+    public Aestimatio pow(double y){
+        return new Aestimatio(FastMath.pow(value, y));
+    }
+    public static Aestimatio atan2(Aestimatio ordinate, Aestimatio abscissa){
+        return new Aestimatio(FastMath.atan2(ordinate.value, abscissa.value));
+    }
+            
 
     @Override
     public String toString() {

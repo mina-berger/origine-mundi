@@ -1,8 +1,16 @@
-package la.clamor;
+package la.clamor.primo;
 
 
 
 import java.io.File;
+import la.clamor.Aestimatio;
+import la.clamor.Constantia;
+import static la.clamor.Constantia.CHANNEL;
+import static la.clamor.Constantia.REGULA_EXAMPLI_D;
+import la.clamor.Functiones;
+import la.clamor.Legibilis;
+import la.clamor.Punctum;
+import la.clamor.ScriptorWav;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
 
@@ -64,17 +72,15 @@ public class OscillatioSimplex implements Constantia {
     }
     public static void main(String[] args){
         
-        File out_file = new File(OmUtil.getDirectory("opus"), "oscillatio_sumplex.wav");
+        File out_file = new File(OmUtil.getDirectory("opus"), "oscillatio_simplex.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Legibilis(){
             OscillatioSimplex o = new OscillatioSimplex();
             int count= 0;
-            double pitch = 110;
             @Override
             public Punctum lego() {
                 count++;
-                pitch += 0.02;
-                return o.lego(new Punctum(pitch), new Punctum(1));
+                return o.lego(new Punctum(440), new Punctum(1));
             }
 
             @Override

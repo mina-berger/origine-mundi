@@ -1,6 +1,7 @@
 package la.clamor;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -47,5 +48,18 @@ public class Puncta {
         for(int i = 0;i < aestimationes.length;i++){
             out.println(String.format("Puncta[%d] %s", i, aestimationes[i].toString()));
         }
+    }
+    public void removeo(ArrayList<Integer> indeces){
+        int[] indeces_i = ArrayUtils.toPrimitive(indeces.toArray(new Integer[]{}));
+        aestimationes = ArrayUtils.removeAll(aestimationes, indeces_i);
+    }
+    public static void main(String[] args){
+        Puncta p = new Puncta(new Punctum[]{
+        new Punctum(1), new Punctum(2), new Punctum(3), new Punctum(4)});
+        ArrayList<Integer> indeces = new ArrayList<>();
+        indeces.add(3);
+        indeces.add(1);
+        p.removeo(indeces);
+        p.print(System.out);
     }
 }

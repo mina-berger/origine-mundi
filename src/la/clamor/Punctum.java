@@ -85,6 +85,35 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum> {
         }
         return punctum;
     }
+    public Punctum sqrt(){
+        Punctum punctum = new Punctum();
+        for(int i = 0;i < CHANNEL;i++){
+            punctum.aestimationes[i] = aestimationes[i].sqrt();
+        }
+        return punctum;
+    }
+    public Punctum pow(double y){
+        Punctum punctum = new Punctum();
+        for(int i = 0;i < CHANNEL;i++){
+            punctum.aestimationes[i] = aestimationes[i].pow(y);
+        }
+        return punctum;
+    }
+    public static Punctum atan2(Punctum ordinate, Punctum abscissa){
+        Punctum punctum = new Punctum();
+        for(int i = 0;i < CHANNEL;i++){
+            punctum.aestimationes[i] = Aestimatio.atan2(ordinate.aestimationes[i], abscissa.aestimationes[i]);
+        }
+        return punctum;
+    }
+    public boolean isLessThan(double value){
+        for(int i = 0;i < CHANNEL;i++){
+            if(aestimationes[i].doubleValue() >= value){
+                return false;
+            }
+        }
+        return true;
+    }
     public int longitudo(){
         return aestimationes.length;
     }
@@ -100,6 +129,13 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum> {
             aestimatio = aestimatio.max(capioAestimatio(i).abs());
         }
         return aestimatio;
+    }
+    public Aestimatio average(){
+        Aestimatio aestimatio = new Aestimatio();
+        for(int i = 0;i < CHANNEL;i++){
+            aestimatio = aestimatio.addo(capioAestimatio(i));
+        }
+        return aestimatio.partior(new Aestimatio(CHANNEL));
     }
     @Override
     public String toString() {
