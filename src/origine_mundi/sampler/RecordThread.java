@@ -41,7 +41,7 @@ public class RecordThread extends Thread {
     /**
      * Closes the target data line to finish capturing and recording
      */
-    void terminate() {
+    public void terminate() {
         line.stop();
         line.close();
     }

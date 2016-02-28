@@ -304,8 +304,8 @@ public class OmUtil {
             receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 91, 40), 1);
             Thread.sleep(1000);
             int[] notes = new int[]{24, 60, 64, 67, 70};
-            playNote(receiver1, channel, notes, 0, true);
-            playNote(receiver2, channel, notes, 0, true);
+            playNotes(receiver1, channel, notes, 0, true);
+            playNotes(receiver2, channel, notes, 0, true);
             for (int c = 0; c < 5; c++) {
                 for (int p = 0; p < pan.length; p++) {
                     //PAN
@@ -376,8 +376,8 @@ public class OmUtil {
                     //Thread.sleep(100);
                 }
             }
-            playNote(receiver1, channel, notes, 0, false);
-            playNote(receiver2, channel, notes, 0, false);
+            playNotes(receiver1, channel, notes, 0, false);
+            playNotes(receiver2, channel, notes, 0, false);
         } finally {
             if (receiver1 != null) {
                 receiver1.close();
@@ -385,7 +385,17 @@ public class OmUtil {
         }
     }
 
-    public static void playNote(Receiver receiver, int channel, int[] notes, int shift, int ms) throws InvalidMidiDataException, InterruptedException {
+    public static void playNote(Receiver receiver, int channel, int note, int velocity, int ms) throws InvalidMidiDataException, InterruptedException {
+        ShortMessage sm1 = new ShortMessage();
+        sm1.setMessage(ShortMessage.NOTE_ON, channel, note, velocity);
+        receiver.send(sm1, 1);
+        Thread.sleep(ms);
+        ShortMessage sm2 = new ShortMessage();
+        sm2.setMessage(ShortMessage.NOTE_OFF, channel, note, 0);
+        receiver.send(sm2, 1);
+
+    }
+    public static void playNotes(Receiver receiver, int channel, int[] notes, int shift, int ms) throws InvalidMidiDataException, InterruptedException {
         for (int i = 0; i < notes.length; i++) {
             ShortMessage note = new ShortMessage();
             note.setMessage(ShortMessage.NOTE_ON, channel, notes[i] + shift, 90);
@@ -400,7 +410,7 @@ public class OmUtil {
         }
 
     }
-    public static void playNote(Receiver receiver, int channel, int[] notes, int shift, boolean on) throws InvalidMidiDataException, InterruptedException {
+    public static void playNotes(Receiver receiver, int channel, int[] notes, int shift, boolean on) throws InvalidMidiDataException, InterruptedException {
         for (int i = 0; i < notes.length; i++) {
             ShortMessage note = new ShortMessage();
             note.setMessage(ShortMessage.NOTE_ON, channel, notes[i] + shift, on?90:0);
@@ -570,8 +580,8 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
             receiver1 = device1.getReceiver();
             int channel = 0;
             int[] notes = new int[]{24, 60, 64, 67, 70};
-            playNote(receiver1, channel, notes, 0, true);
-            playNote(receiver1, channel, notes, 0, false);
+            playNotes(receiver1, channel, notes, 0, true);
+            playNotes(receiver1, channel, notes, 0, false);
             
         } finally {
             if (receiver1 != null) {

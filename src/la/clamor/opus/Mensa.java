@@ -32,6 +32,9 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
 import origine_mundi.OmUtil;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
 
 /**
  *

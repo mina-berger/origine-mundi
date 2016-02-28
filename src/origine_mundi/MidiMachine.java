@@ -20,6 +20,9 @@ import static origine_mundi.OmUtil.fill;
 import static origine_mundi.OmUtil.getMidiDevice;
 import static origine_mundi.OmUtil.noteoff;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
+import static origine_mundi.OmUtil.fill;
+import static origine_mundi.OmUtil.fill;
+import static origine_mundi.OmUtil.fill;
 
 /**
  *

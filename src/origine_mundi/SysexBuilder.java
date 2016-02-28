@@ -14,6 +14,9 @@ import static origine_mundi.OmUtil.SYSEX_STATUS_AB;
 import static origine_mundi.OmUtil.SYSEX_STATUS_AD;
 import origine_mundi.SysexDataModel.DataUnitIndex;
 import static origine_mundi.SysexDataModel.as7bitValues;
+import static origine_mundi.SysexDataModel.as7bitValues;
+import static origine_mundi.SysexDataModel.as7bitValues;
+import static origine_mundi.SysexDataModel.as7bitValues;
 
 /**
  *
