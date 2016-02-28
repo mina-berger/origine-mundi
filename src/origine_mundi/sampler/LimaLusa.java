@@ -6,8 +6,8 @@
 
 package origine_mundi.sampler;
 
-import la.clamor.Envelope;
 import la.clamor.Aestimatio;
+import la.clamor.Envelope;
 import la.clamor.Talea;
 import origine_mundi.ProcessorInfo;
 

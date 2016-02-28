@@ -7,7 +7,7 @@
 package origine_mundi.opus;
 
 import javax.sound.midi.ShortMessage;
-import origine_mundi.Integers;
+import com.mina.util.Integers;
 import origine_mundi.player.OmPlayer;
 import origine_mundi.machine.D_110;
 

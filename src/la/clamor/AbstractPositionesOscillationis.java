@@ -50,11 +50,11 @@ public abstract class AbstractPositionesOscillationis {
     public abstract Punctum capioFrequentiae();
     public abstract Punctum capioQuantitatis();
     public abstract Punctum[] capioPans();
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         int index = 3;
         Aestimatio a1 = 
                 new Aestimatio(5).multiplico(new Aestimatio(5 - index)).addo( 
                 new Aestimatio(10).multiplico(new Aestimatio(index - 0))).partior(new Aestimatio(5));
         System.out.println(a1);
-    }
+    }*/
 }

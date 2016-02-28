@@ -6,7 +6,7 @@
 package origine_mundi.ludior;
 
 import java.util.ArrayList;
-import origine_mundi.Integers;
+import com.mina.util.Integers;
 import origine_mundi.MidiByte;
 
 /**

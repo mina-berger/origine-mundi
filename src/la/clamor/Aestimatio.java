@@ -22,12 +22,12 @@ public class Aestimatio implements Cloneable, Comparable<Aestimatio>, Serializab
     }
 
     public Aestimatio(double aestimatio) {
-        this(aestimatio, false);
-    }
-
-    Aestimatio(double aestimatio, boolean is_raw) {
         value = aestimatio;
     }
+
+    //Aestimatio(double aestimatio, boolean is_raw) {
+    //    value = aestimatio;
+    //}
 
     Aestimatio(BigDecimal value) {
         this.value = value.doubleValue();
@@ -98,7 +98,7 @@ public class Aestimatio implements Cloneable, Comparable<Aestimatio>, Serializab
         return Double.compare(value, a.value);
     }
 
-    public double rawValue() {
-        return doubleValue();
-    }
+    //public double rawValue() {
+    //    return doubleValue();
+    //}
 }

@@ -18,17 +18,7 @@ import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.util.FastMath;
 
-public class Functiones implements Constantia {
-    private static Integer clavis = null;
-    public static Integer deinde(){
-        if(clavis == null){
-            clavis = 0;
-        }else{
-            clavis = clavis + 1;
-        }
-        return clavis;
-    }
-    
+public interface Functiones extends Constantia {
     public static long adPositio(double tempus){
         return (long)(tempus * REGULA_EXAMPLI_D / 1000d);
     }
@@ -49,46 +39,6 @@ public class Functiones implements Constantia {
         return new LaguerreSolver().solveAllComplex(coefficientes, 0.0);
     }
     
-    public static void main(String[] args){
-        ludoLimam(new File("doc/sample/sample01.wav"));
-        
-        /*List<Double> list = Arrays.asList(1d, 2d, 3d, 4d, 5d);
-        String str = "";
-        str = list.stream().map((Double d) -> 
-            d.toString().concat(" ")
-        ).reduce(str, String::concat);
-        System.out.println(str);*/
-        /*String[] values = {"A001", "B001", "AB001", "BA001"};
-        List<String> list = Arrays.asList(values);
-        list.stream().filter(e -> e.contains("A"))      // 「A」で始まるもののみ取得
-        .forEach(e -> System.out.println(e));  */
-
-        // p(x) = x^5 - x^4 - 12x^3 + x^2 - x - 12 = (x+1)(x+3)(x-4)(x^2-x+1)
-        
-        /*
-        int count = 12;
-        double[] coefficients = new double[count];
-        Arrays.fill(coefficients, 1.0 / (double)count);
-        ComplexFormat f = ComplexFormat.getInstance();
-        */
-
-
-//Tabula tabula = Tabula.scatter("Zero", new File(com.mina.util.Util.getHomePath() + "doc/clamor/spec/pole.html"), 
-        //        "Real", "Imaginary", "Zero");
-        /*int count = 12;
-        for(int i = 0;i < count;i++){
-            double rad = FastMath.PI * 2.0 * (double)i / (double)count;
-            tabula.addo(FastMath.cos(rad), null, FastMath.sin(rad));
-        }*/
-        /*for(Complex result:solvo(coefficients)){
-            tabula.addo(result.getReal(), result.getImaginary());
-            System.out.println(f.format(result));
-            System.out.println("gain :" + result.abs());
-            System.out.println("phase:" + FastMath.atan2(result.getImaginary(), result.getReal()));
-        }
-        tabula.imprimo();*/
-
-    }
     public static final int DEFAULT_EXTERNAL_BUFFER_SIZE = 128000;
     public static void ludoLimam(File audio_file) {
         int external_buffer_size = DEFAULT_EXTERNAL_BUFFER_SIZE;
@@ -170,8 +120,9 @@ public class Functiones implements Constantia {
     public static boolean isMac(){
         return System.getProperty("os.name").toLowerCase().startsWith("mac");        
     }    
-    private static final DecimalFormat df = new DecimalFormat("+0.000000000;-0.000000000");
+    //private static final DecimalFormat df = new DecimalFormat("+0.000000000;-0.000000000");
     public static String toString(double value) {
+        final DecimalFormat df = new DecimalFormat("+0.000000000;-0.000000000");
         return df.format(value);
     }
     public static String toString(int value, int digit) {
@@ -195,6 +146,7 @@ public class Functiones implements Constantia {
             w[n] = 0.5 - 0.5 * FastMath.cos(2.0 * FastMath.PI * (n + offset) / length);
         }
         return w;
+        
     }
     
 }

@@ -7,13 +7,13 @@ package la.clamor.deinde;
 
 import la.clamor.Legibilis;
 import la.clamor.Punctum;
-import la.clamor.effector.AbstractEffector;
+import la.clamor.LegibileAbstractum;
 
 /**
  *
  * @author mina
  */
-public class Resampler extends AbstractEffector {
+public class Resampler extends LegibileAbstractum {
     private final double ratio;
     private double index;
     private Punctum ante;

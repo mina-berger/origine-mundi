@@ -5,7 +5,7 @@
  */
 package origine_mundi.ludior;
 
-import com.mina.sound.midi.EndOfTrackListner;
+import origine_mundi.EndOfTrackListner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.sound.midi.InvalidMidiDataException;

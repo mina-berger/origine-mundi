@@ -8,11 +8,11 @@ package origine_mundi.opus;
 import java.io.File;
 import la.clamor.Aestimatio;
 import la.clamor.Functiones;
-import la.clamor.FunctionesLimae;
-import la.clamor.LectorLimam;
+import la.clamor.io.FunctionesLimae;
+import la.clamor.io.LectorLimam;
 import la.clamor.Punctum;
-import la.clamor.ScriptorWav;
-import la.clamor.effector.Chorus;
+import la.clamor.io.ScriptorWav;
+import origine_mundi.deprec.ChorusDeprec;
 import origine_mundi.OmUtil;
 
 /**
@@ -28,7 +28,7 @@ public class Opus010 {
         FunctionesLimae.facioLimam(src_file, lima, new Aestimatio(1), true);
             
         ScriptorWav sw = new ScriptorWav(out_file);
-        sw.scribo(new Chorus(new LectorLimam(lima), new Punctum(0.5), new Punctum(3.5, -3.5), new Punctum(-1, 1), new Punctum(0.5, -0.5)), false);
+        sw.scribo(new ChorusDeprec(new LectorLimam(lima), new Punctum(0.5), new Punctum(3.5, -3.5), new Punctum(-1, 1), new Punctum(0.5, -0.5)), false);
         
         //sw.scribo(new LectorLimam(lima), false);
         Functiones.ludoLimam(out_file);

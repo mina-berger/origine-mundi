@@ -10,23 +10,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import la.clamor.Aestimatio;
 import la.clamor.Constantia;
-import la.clamor.Envelope;
 import static la.clamor.Functiones.capioHZ;
-import la.clamor.LectorLimam;
-import la.clamor.Oscillatio;
-import la.clamor.Positiones;
+import la.clamor.io.LectorLimam;
+import la.clamor.Envelope;
+import la.clamor.deinde.bk.OscillatioDeprec;
+import la.clamor.deinde.bk.PositionesDeprec;
 import la.clamor.PositionesOscillationis;
 import la.clamor.PunctaTalearum;
 import la.clamor.Punctum;
-import la.clamor.ScriptorLimam;
+import la.clamor.io.ScriptorLimam;
 import la.clamor.Talea;
-import la.clamor.effector.Mora;
-import origine_mundi.Integers;
+import origine_mundi.deprec.MoraDeprec;
+import com.mina.util.Integers;
 import origine_mundi.MidiMachines;
 import origine_mundi.OmUtil;
-import origine_mundi.effector.EffectorInfo.ChorusInfo;
-import origine_mundi.filter.FilterInfo;
-import origine_mundi.filter.FilterInfo.ThruInfo;
+import origine_mundi.sampler.EffectorInfo.ChorusInfo;
+import origine_mundi.deprec.FilterInfo;
+import origine_mundi.deprec.FilterInfo.ThruInfo;
 import origine_mundi.ludior.BrevFactory;
 import origine_mundi.ludior.Brevs;
 import origine_mundi.ludior.ChordStroke;
@@ -275,7 +275,7 @@ public class Opus011 extends Desktop {
             new double[]{0.3, 0.0, 1.0, 0.6},
             new double[]{0.0, 1.0, 0.6, 0.3}
         };
-        Oscillatio.Oscillationes os = new Oscillatio.Oscillationes(3);
+        OscillatioDeprec.Oscillationes os = new OscillatioDeprec.Oscillationes(3);
         //os.add(o);
         for(int i = 0;i < 4;i++){
             PunctaTalearum pitch = new PunctaTalearum(new Punctum(capioHZ(notes[i][0], -5), capioHZ(notes[i][0], 5)));
@@ -308,17 +308,17 @@ public class Opus011 extends Desktop {
                 Constantia.Unda.DENT, 1, 0, 
                 pitch.capioPositiones(tempus, true),
                 amp.capioPositiones(tempus, true),
-                new Positiones[]{
+                new PositionesDeprec[]{
                     pans.capioPositiones(tempus, true),
                     pans.capioPositiones(tempus, true)
                 }, 
                 //null,
-                new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(true));
+                new PositionesDeprec(false), new PositionesDeprec(false), new PositionesDeprec(false), new PositionesDeprec(false), new PositionesDeprec(true));
 
-            os.add(new Oscillatio(p));
+            os.add(new OscillatioDeprec(p));
         }
         double mora_temp = tempus.capioTempus(new Talea(0, 0.75));
-        Mora mora = new Mora(os, new Punctum(mora_temp), new Punctum(2), new Punctum(0.5));
+        MoraDeprec mora = new MoraDeprec(os, new Punctum(mora_temp), new Punctum(2), new Punctum(0.5));
         File out_file = new File(OmUtil.getDirectory("sample"), "clamor1.lima");
         ScriptorLimam sl = new ScriptorLimam(out_file);
         while(mora.paratusSum()){

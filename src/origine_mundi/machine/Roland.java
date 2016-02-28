@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
-import origine_mundi.Integers;
+import com.mina.util.Integers;
 import origine_mundi.OmUtil;
 import origine_mundi.SysexDataModel;
 import origine_mundi.SysexDataModel.ByteValues;

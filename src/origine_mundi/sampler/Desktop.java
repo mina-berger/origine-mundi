@@ -13,21 +13,20 @@ import java.util.TreeSet;
 import la.clamor.Consilium;
 import la.clamor.EnvelopeFilter;
 import la.clamor.Functiones;
-import la.clamor.FunctionesLimae;
-import la.clamor.LectorLimam;
+import la.clamor.io.FunctionesLimae;
+import la.clamor.io.LectorLimam;
 import la.clamor.Aestimatio;
 import la.clamor.Legibilis;
 import la.clamor.PunctaTalearum;
 import la.clamor.Punctum;
-import la.clamor.ScriptorWav;
+import la.clamor.io.ScriptorWav;
 import la.clamor.Talea;
 import org.junit.Test;
 import origine_mundi.MidiMachines;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import origine_mundi.ProcessorInfo;
-import origine_mundi.effector.EffectorInfo;
-import origine_mundi.filter.FilterInfo;
+import origine_mundi.deprec.FilterInfo;
 import origine_mundi.ludior.Brevs;
 import origine_mundi.ludior.Tempus;
 
@@ -40,8 +39,12 @@ public abstract class Desktop {
     private final int ACTION_LIMAE = 1;
     private final int ACTION_MIX   = 2;
     private final int ACTION_LUDUM = 3;
+    private File sample_dir;
     public Desktop(){
-        
+        this(OmUtil.getDirectory("sample"));
+    }
+    public Desktop(File dir){
+        sample_dir = dir;
     }
         
     protected abstract void initialize(InitialSettings initials);
@@ -60,7 +63,6 @@ public abstract class Desktop {
         ArrayList<LimaLusa> lima_lusa_list = null;
         ArrayList<LegibilisLusa> legi_lusa_list = null;
         Tempus tempus = getTempus();
-        File dir = OmUtil.getDirectory("sample");
         File out_file = new File(OmUtil.getDirectory("opus"), getClass().getSimpleName() + ".wav");
         if(initials.action(ACTION_MIDI)){
             midi_machines = new MidiMachines();
@@ -76,7 +78,7 @@ public abstract class Desktop {
                     continue;
                 }
                 Brevs brevs = brevs_map.get(key);
-                File wav_file = brevs.containsNote()?new File(dir, key + ".wav"):null;
+                File wav_file = brevs.containsNote()?new File(sample_dir, key + ".wav"):null;
                 try{
                     sampler = new BrevsSampler(midi_machines, tempus, wav_file, brevs_map.get(key));
                     sampler.start();
@@ -99,8 +101,8 @@ public abstract class Desktop {
                 if(!brevs_map.get(key).containsNote()){
                     continue;
                 }
-                File wav_file = new File(dir, key + ".wav");
-                File lima     = new File(dir, key + ".lima");
+                File wav_file = new File(sample_dir, key + ".wav");
+                File lima     = new File(sample_dir, key + ".lima");
                 //System.out.println("1:" + lima.exists());
                 FunctionesLimae.facioLimam(wav_file, lima, new Aestimatio(1), false);
                 //System.out.println("2:" + lima.exists() + ":" + lima.length());
@@ -122,7 +124,7 @@ public abstract class Desktop {
                         head, 
                         getProcessor(
                             new EnvelopeFilter(
-                                new LectorLimam(new File(dir, lusa.getKey() + ".lima")), 
+                                new LectorLimam(new File(sample_dir, lusa.getKey() + ".lima")), 
                                 lusa.getEnvelope(), 
                                 tail - head, 
                                 lusa.getVolume()), 

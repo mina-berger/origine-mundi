@@ -5,6 +5,7 @@
  */
 package la.clamor;
 
+import la.clamor.deinde.bk.PositionesDeprec;
 import java.util.HashMap;
 import origine_mundi.ludior.Tempus;
 
@@ -17,8 +18,8 @@ public class PunctaTalearum extends HashMap<Talea, Punctum> {
         put(new Talea(), initial);
     }
     
-    public Positiones capioPositiones(Tempus tempus, boolean unusEst){
-        Positiones p = new Positiones(unusEst);
+    public PositionesDeprec capioPositiones(Tempus tempus, boolean unusEst){
+        PositionesDeprec p = new PositionesDeprec(unusEst);
         for(Talea talea:keySet()){
             long positio = Functiones.adPositio(tempus.capioTempus(talea));
             if(positio != 0 && p.containsKey(positio)){

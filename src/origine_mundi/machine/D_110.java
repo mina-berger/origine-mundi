@@ -37,12 +37,15 @@ public class D_110 extends Roland {
     private static D_110 instance = null;
     public static D_110 instance(){
         if(instance == null){
-            instance = new D_110();
+            instance = new D_110(MIDI_PORT);
         }
         return instance;
     }
-    private D_110(){
+    /*private D_110(){
         super(DEVICE_ID, MODEL_ID, MIDI_PORT, MIDI_PORT);
+    }*/
+    public D_110(String midi_port){
+        super(DEVICE_ID, MODEL_ID, midi_port, midi_port);
     }
     private static final DataBlock TIMBRE_COMMON_BLOCK = new DataBlock("common",
             new CodeValue("tone group", 0, 3, new KV(0, "a"), new KV(1, "b"), new KV(2, "i/c"), new KV(3, "r")),

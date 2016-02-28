@@ -5,12 +5,14 @@
  */
 package la.clamor.deinde;
 
+import la.clamor.deinde.bk.Spectrum;
+import la.clamor.deinde.bk.FourierSampler2;
 import java.io.File;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.SineOscillatio;
 import la.clamor.Punctum;
-import la.clamor.ScriptorWav;
+import la.clamor.io.ScriptorWav;
 import origine_mundi.OmUtil;
 
 /**

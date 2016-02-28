@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.sound.midi.ShortMessage;
 import la.clamor.Talea;
-import origine_mundi.Integers;
+import com.mina.util.Integers;
 import origine_mundi.MidiByte;
 import origine_mundi.OmException;
+import origine_mundi.ProgramValue;
 import origine_mundi.ludior.Expression.Command;
 import origine_mundi.ludior.Expression.Control;
 import origine_mundi.ludior.Expression.SettingHolder;
@@ -127,6 +128,13 @@ public class BrevFactory {
     }
     public void command(int iunctum_index, int command, int msb, int lsb, double offset){
         brevs.add(new Brev(iuncta[iunctum_index], command, new MidiByte(lsb), new MidiByte(msb), talea.shiftBeat(offset)));
+    }
+    public void program(ProgramValue value){
+        if(value.hasBank()){
+            program(value.getBank_m(), value.getBank_l(), value.getProgram());
+        }else{
+            program(value.getProgram());
+        }
     }
     public void program(int bank_m, int bank_l, int program){
         for(int i = 0;i < iuncta.length;i++){

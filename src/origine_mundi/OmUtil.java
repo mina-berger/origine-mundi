@@ -5,7 +5,7 @@
  */
 package origine_mundi;
 
-import com.mina.sound.midi.RealTimeSequencer;
+import ext.sequencer.RealTimeSequencer;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;

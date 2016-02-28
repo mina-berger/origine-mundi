@@ -6,6 +6,7 @@
 
 package origine_mundi;
 
+import com.mina.util.Integers;
 import java.util.List;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;

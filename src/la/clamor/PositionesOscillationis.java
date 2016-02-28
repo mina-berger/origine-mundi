@@ -25,14 +25,14 @@ import org.apache.commons.math3.util.FastMath;
  */
 public class PositionesOscillationis extends AbstractPositionesOscillationis {
 
-    Positiones map_frequentiae;
-    Positiones map_quantitatis;
-    ArrayList<Positiones> map_pans;
-    Positiones map_vco_frequentiae;
-    Positiones map_vco_quantitatis;
-    Positiones map_vca_frequentiae;
-    Positiones map_vca_quantitatis;
-    Positiones map_fb_quantitatis;
+    Envelope map_frequentiae;
+    Envelope map_quantitatis;
+    ArrayList<Envelope> map_pans;
+    Envelope map_vco_frequentiae;
+    Envelope map_vco_quantitatis;
+    Envelope map_vca_frequentiae;
+    Envelope map_vca_quantitatis;
+    Envelope map_fb_quantitatis;
     SineOscillatio vco;
     SineOscillatio vca;
     @Override
@@ -63,19 +63,19 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     }
     public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback) {
         this(unda, volume, feedback, 
-            new Positiones(true), new Positiones(false), null, 
-            new Positiones(false), new Positiones(false), 
-            new Positiones(false), new Positiones(false), new Positiones(true));
+            new Envelope(true), new Envelope(false), null, 
+            new Envelope(false), new Envelope(false), 
+            new Envelope(false), new Envelope(false), new Envelope(true));
     }
-    public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback, Positiones frequentiae, Positiones quantitatis, AbstractPositionesOscillationis... positiones_modulatores) {
-        this(unda, volume, feedback, frequentiae, quantitatis, null, new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(false), new Positiones(true), positiones_modulatores);
+    public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback, Envelope frequentiae, Envelope quantitatis, AbstractPositionesOscillationis... positiones_modulatores) {
+        this(unda, volume, feedback, frequentiae, quantitatis, null, new Envelope(false), new Envelope(false), new Envelope(false), new Envelope(false), new Envelope(true), positiones_modulatores);
     }
     public PositionesOscillationis(
             Constantia.Unda unda, double volume, double feedback,
-            Positiones frequentiae, Positiones quantitatis, Positiones[] pans,
-            Positiones vco_frequentiae, Positiones vco_quantitatis, 
-            Positiones vca_frequentiae, Positiones vca_quantitatis, 
-            Positiones fb_quantitatis, 
+            Envelope frequentiae, Envelope quantitatis, Envelope[] pans,
+            Envelope vco_frequentiae, Envelope vco_quantitatis, 
+            Envelope vca_frequentiae, Envelope vca_quantitatis, 
+            Envelope fb_quantitatis, 
             AbstractPositionesOscillationis... positiones_modulatores) {
         super(capioUltimum(frequentiae, quantitatis), unda, volume, feedback);
         map_frequentiae = frequentiae;//new Positiones(true, frequentiae);
@@ -96,15 +96,15 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
 
         ponoModulatores(positiones_modulatores);
     }
-    private static ArrayList<Positiones> initioMap(Positiones[] positiones, boolean unusEst){
-            ArrayList<Positiones> map = new ArrayList<>();
+    private static ArrayList<Envelope> initioMap(Envelope[] positiones, boolean unusEst){
+            ArrayList<Envelope> map = new ArrayList<>();
             for(int i = 0;i < CHANNEL;i++){
                 if(positiones != null && positiones[i] != null&& positiones[i].size() > 0){
                     map.add(positiones[i]);
                 }else{
                     Punctum pc = new Punctum();
                     pc.ponoAestimatio(i, new Aestimatio(1));
-                    map.add(new Positiones(false, new Positio(0, pc)));
+                    map.add(new Envelope(false, new Positio(0, pc)));
                 }
             }
             return map;
@@ -161,7 +161,7 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     public void computoLongitudo(){
         ponoLongitudo(FastMath.max(map_frequentiae.lastKey(), map_quantitatis.lastKey()));
     }
-    private static long capioUltimum(Positiones frequentiae, Positiones quantitatis){
+    private static long capioUltimum(Envelope frequentiae, Envelope quantitatis){
         return FastMath.max(frequentiae.lastKey(), quantitatis.lastKey());
                 
                 //Arrays.stream(frequentiae).mapToLong(e -> e.capioPositio()).reduce(0l, (x, y) -> x > y ? x : y),
@@ -199,9 +199,9 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     }
 
 
-    private static Punctum capio(Positiones map, SineOscillatio vc_osc, 
-            Positiones map_vc_frequentiae, 
-            Positiones map_vc_quantitatis, long index){
+    private static Punctum capio(Envelope map, SineOscillatio vc_osc, 
+            Envelope map_vc_frequentiae, 
+            Envelope map_vc_quantitatis, long index){
         Punctum punctum = map.capioPunctum(index);
         punctum = punctum.multiplico(vc_osc.lego(
                 map_vc_frequentiae.capioPunctum(index), 

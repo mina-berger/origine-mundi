@@ -8,7 +8,7 @@ package origine_mundi.machine;
 
 import origine_mundi.SysexBuilder;
 import java.text.DecimalFormat;
-import origine_mundi.Integers;
+import com.mina.util.Integers;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.MICRO_LITE_1;

@@ -5,7 +5,7 @@
  */
 package origine_mundi.sampler;
 
-import com.mina.sound.midi.EndOfTrackListner;
+import origine_mundi.EndOfTrackListner;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Transmitter;
 import la.clamor.Functiones;
 import la.clamor.Talea;
-import origine_mundi.Integers;
+import com.mina.util.Integers;
 import origine_mundi.MidiMachines;
 import origine_mundi.OmException;
 import origine_mundi.OmReceiver;

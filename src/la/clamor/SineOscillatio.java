@@ -2,6 +2,7 @@ package la.clamor;
 
 
 
+import la.clamor.io.ScriptorWav;
 import origine_mundi.OmUtil;
 import java.io.File;
 import org.apache.commons.math3.util.FastMath;

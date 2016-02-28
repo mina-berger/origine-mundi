@@ -6,7 +6,7 @@
 
 package origine_mundi.player;
 
-import com.mina.sound.midi.EndOfTrackListner;
+import origine_mundi.EndOfTrackListner;
 import java.util.ArrayList;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;

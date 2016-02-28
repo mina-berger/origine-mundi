@@ -9,4 +9,7 @@ public class ExceptioClamoris extends RuntimeException {
     public ExceptioClamoris(Throwable iacibilis){
         super(iacibilis);
     }
+    public ExceptioClamoris(String nuntius, Throwable iacibilis){
+        super(nuntius, iacibilis);
+    }
 }

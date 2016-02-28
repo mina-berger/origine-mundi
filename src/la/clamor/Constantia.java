@@ -21,4 +21,5 @@ public interface Constantia {
     public enum Parma {FCO, FCA, QCO, QCA, PCO, PCA};
     public enum Unda {SINE, QUAD, TRIA, DENT, FRAG}
     public enum Effector {DIST, CHOR, MORA, COMP};
+
 }

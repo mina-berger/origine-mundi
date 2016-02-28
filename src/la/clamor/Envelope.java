@@ -5,17 +5,32 @@
  */
 package la.clamor;
 
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import static la.clamor.Constantia.CHANNEL;
 
 /**
  *
- * @author user
+ * @author mina
  */
-public class Envelope extends TreeMap<Long, Punctum> {
-    public Envelope(Punctum initial){
+public class Envelope extends TreeMap<Long, Punctum>{
+    public Envelope(){
+    }
+    public Envelope(Positio... positiones){
+        ponoPositiones(positiones);
+    }
+    public Envelope(boolean unusEst, Positio... positiones){
+        put(0l, unusEst?new Punctum(1):new Punctum());
+        ponoPositiones(positiones);
+    }
+    public Envelope(Punctum initial, Positio... positiones){
         put(0l, initial);
+        ponoPositiones(positiones);
+    }
+    public final void ponoPositiones(Positio... positiones){
+        for(Positio positio:positiones){
+            put(positio.capioPositio(), positio.capioPunctum());
+        }
     }
     public void ponoPunctum(double temp, Punctum punctum){
         put(Functiones.adPositio(temp), punctum);
@@ -34,8 +49,8 @@ public class Envelope extends TreeMap<Long, Punctum> {
             punctum_solum  = get(index);
             punctum_tectum = get(index);
         }else{
-            Map.Entry<Long, Punctum> solum  = floorEntry  (index);
-            Map.Entry<Long, Punctum> tectum = ceilingEntry(index);
+            Entry<Long, Punctum> solum  = floorEntry  (index);
+            Entry<Long, Punctum> tectum = ceilingEntry(index);
             if(tectum == null){
                 index_solum  = solum.getKey();
                 index_tectum = index;
@@ -58,5 +73,4 @@ public class Envelope extends TreeMap<Long, Punctum> {
         }
         return punctum;
     }
-    
 }

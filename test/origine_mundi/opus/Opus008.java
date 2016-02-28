@@ -7,7 +7,7 @@ package origine_mundi.opus;
 
 import javax.sound.midi.ShortMessage;
 import la.clamor.Talea;
-import origine_mundi.Integers;
+import com.mina.util.Integers;
 import origine_mundi.MidiMachines;
 import origine_mundi.ludior.BrevFactory;
 import origine_mundi.ludior.BrevFactory.Shift;
