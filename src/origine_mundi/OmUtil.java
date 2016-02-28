@@ -212,7 +212,7 @@ public class OmUtil {
         public void close() {}
     }
 
-    public static void main(String[] args) {
+    public static void _main(String[] args) {
         printEnv(System.out);
 
             //MidiDevice out_dev = getMidiDevice(D_110, true);
@@ -562,5 +562,22 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
         out.println(head + "Description : " + mdi.getDescription());
         //MidiDevice md = MidiSystem.getMidiDevice(mdi);
     }
-
+    public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException, InterruptedException{
+       Receiver receiver1 = null;
+        try {
+            MidiDevice device1 = getMidiDevice(US_122, true);
+            printMidiDeviceInfo(device1.getDeviceInfo(), System.out, 1);
+            receiver1 = device1.getReceiver();
+            int channel = 0;
+            int[] notes = new int[]{24, 60, 64, 67, 70};
+            playNote(receiver1, channel, notes, 0, true);
+            playNote(receiver1, channel, notes, 0, false);
+            
+        } finally {
+            if (receiver1 != null) {
+                receiver1.close();
+            }
+        }
+    }
+    
 }
