@@ -86,7 +86,7 @@ public class FunctionesLimae implements Constantia {
         log.info("count=" + count + ":" + ab_index + " - " + ad_index);
     }
     public static AudioFormat facioLimam(File source, File target, Aestimatio volume, boolean teneo_pan, boolean teneo_sample){
-        FileInputStream in;
+        FileInputStream source_in;
         int longitudo;
         int channel = 0;
         int regula_exampli_fontis = 0;
@@ -100,26 +100,26 @@ public class FunctionesLimae implements Constantia {
         }
 
         try{
-            in = new FileInputStream(source);
+            source_in = new FileInputStream(source);
         }catch(FileNotFoundException e){
             throw new ExceptioClamoris(e);
         }
 
         FilumOctorum filum_octorum;
-        filum_octorum = legoFilumOctorum(in, 4);
+        filum_octorum = legoFilumOctorum(source_in, 4);
         if(!filum_octorum.toString().equals(Lima.RIFF)){
             throw new ExceptioClamoris("this is not a RIFF file(" + source.getAbsolutePath() + ")");
         }
-        legoFilumOctorum(in, 4);//file size
-        if(!legoFilumOctorum(in, 4).toString().equals(Lima.WAVE)){
+        legoFilumOctorum(source_in, 4);//file size
+        if(!legoFilumOctorum(source_in, 4).toString().equals(Lima.WAVE)){
             throw new ExceptioClamoris("this is not a WAVE file(" + source.getAbsolutePath() + ")");
         }
         //System.out.println(type);
         while(true){
-            filum_octorum = legoFilumOctorum(in, 4);
+            filum_octorum = legoFilumOctorum(source_in, 4);
             //if(octets == null) break;
             String tag = filum_octorum.toString();
-            long longitudo1 = legoFilumOctorum(in, 4).capioLong();
+            long longitudo1 = legoFilumOctorum(source_in, 4).capioLong();
             if(longitudo1 > Integer.MAX_VALUE){
                 throw new IllegalArgumentException("extra longitudo(" + longitudo1 + ")");
             }
@@ -129,7 +129,7 @@ public class FunctionesLimae implements Constantia {
                 break;
             }else if(tag.equals("fmt ")){
                 read_fmt = true;
-                RiffData fmt = new RiffData(tag, legoFilumOctorum(in, (int)longitudo1));
+                RiffData fmt = new RiffData(tag, legoFilumOctorum(source_in, (int)longitudo1));
                 if(fmt.filum_octorum.capioInt(0, 2) != 1){
                     throw new ExceptioClamoris("wav format(" + fmt.filum_octorum.capioInt(0, 2) + ") must be PCM(1).");
                 }
@@ -181,7 +181,7 @@ public class FunctionesLimae implements Constantia {
             for(int i = 0;i < octets_length;i++){
                 Punctum punctum;
                 if(channel == 1){
-                    FilumOctorum read = legoFilumOctorum(in, bytes);
+                    FilumOctorum read = legoFilumOctorum(source_in, bytes);
                     Aestimatio monoral_data = new Aestimatio(read.getByteValueInteger(0, bytes));
                     punctum = new Punctum(monoral_data);
                     //max = max.max(monoral_data);
@@ -189,7 +189,7 @@ public class FunctionesLimae implements Constantia {
                 }else{
                     punctum = new Punctum();
                     for(int j = 0;j < channel;j++){
-                        FilumOctorum read = legoFilumOctorum(in, bytes);
+                        FilumOctorum read = legoFilumOctorum(source_in, bytes);
                         Aestimatio datum = new Aestimatio(read.getByteValueInteger(0, bytes));
                         punctum.ponoAestimatio(j, datum);
                         //max = max.max(datum);
@@ -209,6 +209,7 @@ public class FunctionesLimae implements Constantia {
             //o_out.close();
             //f_out.close();
             sl.close();
+            source_in.close();
             log.info("max=" + max.punctum);
             log.info(tmp_file1.getAbsolutePath());
             //o_in = new ObjectInputStream(new FileInputStream(tmp_file1));

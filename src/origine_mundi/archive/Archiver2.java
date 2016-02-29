@@ -69,10 +69,11 @@ public class Archiver2 {
     }
     public static void main(String[] args) throws Exception{
         //File dir = new File("/Users/mina/drive/doc/origine_mundi/archive/");
-        File dir = new File("C:/drive/doc/origine_mundi/archive/");
-        Archiver2 a = new Archiver2(getAudioFormat(96000, 2, 2), dir);
+        File dir = new File("D:/origine_mundi/archive/m3r/east_of_java");
+        dir.mkdirs();
+        Archiver2 a = new Archiver2(getAudioFormat(48000, 2, 2), dir);
         for(int i = 0;i < 128;i++){
-            for(int j = 0;j < 16;i++){
+            for(int j = 0;j < 16;j++){
                 File file = a.record(i, j * 8 + 7);
                 String name = file.getName().substring(0, file.getName().indexOf(".raw"));
                 File lima     = new File(file.getParentFile(), name + ".lima");
@@ -82,9 +83,12 @@ public class Archiver2 {
                 LectorLimam ll = new LectorLimam(lima);
                 ScriptorWav sw = new ScriptorWav(out_file, format);
                 sw.scribo(ll, false);
-                lima.delete();
+                ll.close();
                 file.delete();
+                lima.delete();
+                //break;
             }
+            //break;
         }
         
         //Functiones.ludoLimam(out_file);
