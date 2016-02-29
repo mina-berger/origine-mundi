@@ -55,7 +55,7 @@ public class Archiver2 {
         final int channel = 0;
         RecordThread record_thread = new RecordThread(
             new File(dir, toDodeciString(note) + "_" + toHexString(velocity) + ".raw.wav"),
-            getAudioFormat(48000, 2, 2));
+            getAudioFormat(96000, 2, 2));
         System.out.println("Start recording...");
         record_thread.start();
         Thread.sleep(500);
@@ -65,12 +65,12 @@ public class Archiver2 {
         System.out.println("terminated");
     }
     public static void main(String[] args) throws Exception{
-        Archiver2 a = new Archiver2();
+        /*Archiver2 a = new Archiver2();
         try {
             a.record(60, 120);
         } catch (InvalidMidiDataException | InterruptedException ex) {
             a.terminate();
-        }
+        }*/
         //String dir = "/Users/mina/drive/doc/origine_mundi/archive/";
         String dir = "C:/drive/doc/origine_mundi/archive/";
         File file = new File(dir + "50_78.raw.wav");
