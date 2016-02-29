@@ -30,7 +30,7 @@ import origine_mundi.sampler.RecordThread;
  */
 public class Archiver2 {
     static int ms = 16000;
-    static File dir = new File("Y:/origine_mundi/archive");
+    static File dir = new File("C:/drive/doc/origine_mundi/archive/");
     MidiDevice device;
     Receiver receiver;
     public Archiver2(){
@@ -54,32 +54,34 @@ public class Archiver2 {
     public void record(int note, int velocity) throws InvalidMidiDataException, InterruptedException{
         final int channel = 0;
         RecordThread record_thread = new RecordThread(
-            new File(dir, toDodeciString(note) + "_" + toHexString(velocity) + ".wav"),
+            new File(dir, toDodeciString(note) + "_" + toHexString(velocity) + ".raw.wav"),
             getAudioFormat(48000, 2, 2));
         System.out.println("Start recording...");
         record_thread.start();
         Thread.sleep(500);
-        OmUtil.playNote(receiver, channel, note, 0, ms);
+        OmUtil.playNote(receiver, channel, note, velocity, ms);
         Thread.sleep(1000);
         record_thread.terminate();
         System.out.println("terminated");
     }
     public static void main(String[] args) throws Exception{
-        /*Archiver2 a = new Archiver2();
+        Archiver2 a = new Archiver2();
         try {
             a.record(60, 120);
         } catch (InvalidMidiDataException | InterruptedException ex) {
             a.terminate();
-        }*/
-        File file = new File("/Users/mina/drive/doc/origine_mundi/archive/50_78.raw.wav");
-        File lima = new File("/Users/mina/drive/doc/origine_mundi/archive/50_78.lima");
+        }
+        //String dir = "/Users/mina/drive/doc/origine_mundi/archive/";
+        String dir = "C:/drive/doc/origine_mundi/archive/";
+        File file = new File(dir + "50_78.raw.wav");
+        File lima = new File(dir + "50_78.lima");
         AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
         System.out.println(format);
         
-        FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), true);
+        FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), false);
         FunctionesLimae.trim(lima, new Aestimatio(0.01));
         LectorLimam ll = new LectorLimam(lima);
-        File out_file = new File("/Users/mina/drive/doc/origine_mundi/archive/50_78.wav");
+        File out_file = new File(dir + "50_78.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
 
         sw.scribo(ll, false);
