@@ -13,12 +13,16 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import la.clamor.io.FunctionesLimae;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.util.FastMath;
 
 public interface Functiones extends Constantia {
+    public static Log log = LogFactory.getLog(Functiones.class);
     public static long adPositio(double tempus){
         return (long)(tempus * REGULA_EXAMPLI_D / 1000d);
     }
@@ -52,6 +56,7 @@ public interface Functiones extends Constantia {
             throw new IllegalArgumentException(e);
         }
         AudioFormat audio_format = audio_input_stream.getFormat();
+        log.info("audio format:" + audio_format.toString());
         line = capioSourceDataLine(null, audio_format, internal_buffer_size);
         if (line == null) {
             throw new IllegalArgumentException(

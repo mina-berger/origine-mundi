@@ -1,9 +1,5 @@
 package la.clamor.io;
 
-import la.clamor.io.Lima;
-import la.clamor.io.LectorLimam;
-import la.clamor.io.ScriptorWav;
-import la.clamor.io.ScriptorLimam;
 import origine_mundi.OmUtil;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,14 +7,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import la.clamor.io.Lima.FilumOctorum;
 import la.clamor.io.Lima.RiffData;
 import la.clamor.Aestimatio;
-import la.clamor.Aestimatio;
 import la.clamor.Constantia;
+import static la.clamor.Constantia.getAudioFormat;
 import la.clamor.ExceptioClamoris;
 import la.clamor.Functiones;
 import la.clamor.Punctum;
@@ -78,9 +75,9 @@ public class FunctionesLimae implements Constantia {
             }
             ll.close();
             sl.close();
-            System.out.println("d1:" + lima.exists());
+            //System.out.println("d1:" + lima.exists());
             lima.delete();
-            System.out.println("d2:" + lima.exists());
+            //System.out.println("d2:" + lima.exists());
             tmp_file1.renameTo(lima);
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
@@ -88,13 +85,19 @@ public class FunctionesLimae implements Constantia {
         
         log.info("count=" + count + ":" + ab_index + " - " + ad_index);
     }
-    public static void facioLimam(File source, File target, Aestimatio volume, boolean teneo_pan){
+    public static AudioFormat facioLimam(File source, File target, Aestimatio volume, boolean teneo_pan, boolean teneo_sample){
         FileInputStream in;
         int longitudo;
         int channel = 0;
         int regula_exampli_fontis = 0;
         int bytes = 0;
         boolean read_fmt = false;
+        AudioFormat format;
+        try {
+            format = AudioSystem.getAudioFileFormat(source).getFormat();
+        } catch (UnsupportedAudioFileException | IOException ex) {
+            throw new ExceptioClamoris(ex);
+        }
 
         try{
             in = new FileInputStream(source);
@@ -234,14 +237,14 @@ public class FunctionesLimae implements Constantia {
             //o_out.close();
             //f_out.close();
             tmp_file1.delete();
-            if(regula_exampli_fontis == REGULA_EXAMPLI){
+            if(teneo_sample || regula_exampli_fontis == REGULA_EXAMPLI){
                 //puncta_stream = new ObjectInputStream(new FileInputStream(tmp_file2));
-                tmp_file1.delete();
+                //tmp_file1.delete();
                 //if(target.exists()){
-                    target.delete();
+                target.delete();
                 //}
                 tmp_file2.renameTo(target);
-                return;
+                return format;
             }
             octets_length = (int)((double)octets_length * (double)REGULA_EXAMPLI / (double)regula_exampli_fontis);
             log.info("resample octets_length=" + octets_length);
@@ -306,9 +309,9 @@ public class FunctionesLimae implements Constantia {
             //}
             tmp_file3.renameTo(target);
         } catch (IOException ex) {
-            Logger.getLogger(FunctionesLimae.class.getName()).log(Level.SEVERE, null, ex);
             throw new IllegalStateException(ex);
         }
+        return getAudioFormat();
     }
     private static class Maximum {
         Punctum punctum;

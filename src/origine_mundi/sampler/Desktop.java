@@ -104,7 +104,7 @@ public abstract class Desktop {
                 File wav_file = new File(sample_dir, key + ".wav");
                 File lima     = new File(sample_dir, key + ".lima");
                 //System.out.println("1:" + lima.exists());
-                FunctionesLimae.facioLimam(wav_file, lima, new Aestimatio(1), false);
+                FunctionesLimae.facioLimam(wav_file, lima, new Aestimatio(1), false, false);
                 //System.out.println("2:" + lima.exists() + ":" + lima.length());
                 FunctionesLimae.trim(lima, new Aestimatio(0.01));
                 //System.out.println("3:" + lima.exists() + ":" + lima.length());

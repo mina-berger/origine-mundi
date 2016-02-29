@@ -10,10 +10,10 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.AudioFormat;
 import la.clamor.Aestimatio;
 import static la.clamor.Constantia.getAudioFormat;
+import la.clamor.Functiones;
 import la.clamor.io.FunctionesLimae;
 import la.clamor.io.LectorLimam;
 import la.clamor.io.ScriptorWav;
@@ -30,10 +30,13 @@ import origine_mundi.sampler.RecordThread;
  */
 public class Archiver2 {
     static int ms = 16000;
-    static File dir = new File("C:/drive/doc/origine_mundi/archive/");
+    File dir;
     MidiDevice device;
     Receiver receiver;
-    public Archiver2(){
+    AudioFormat format;
+    public Archiver2(AudioFormat format, File directory){
+        this.format = format;
+        dir = directory;
         device = getMidiDevice(US_122, true);
         printMidiDeviceInfo(device.getDeviceInfo(), System.out, 1);
         try {
@@ -51,11 +54,10 @@ public class Archiver2 {
             receiver.close();
         }
     }
-    public void record(int note, int velocity) throws InvalidMidiDataException, InterruptedException{
+    public File record(int note, int velocity) throws InvalidMidiDataException, InterruptedException{
         final int channel = 0;
-        RecordThread record_thread = new RecordThread(
-            new File(dir, toDodeciString(note) + "_" + toHexString(velocity) + ".raw.wav"),
-            getAudioFormat(96000, 2, 2));
+        File file = new File(dir, toDodeciString(note) + "_" + toHexString(velocity) + ".raw.wav");
+        RecordThread record_thread = new RecordThread(file, format);
         System.out.println("Start recording...");
         record_thread.start();
         Thread.sleep(500);
@@ -63,32 +65,31 @@ public class Archiver2 {
         Thread.sleep(1000);
         record_thread.terminate();
         System.out.println("terminated");
+        return file;
     }
     public static void main(String[] args) throws Exception{
-        /*Archiver2 a = new Archiver2();
-        try {
-            a.record(60, 120);
-        } catch (InvalidMidiDataException | InterruptedException ex) {
-            a.terminate();
-        }*/
-        //String dir = "/Users/mina/drive/doc/origine_mundi/archive/";
-        String dir = "C:/drive/doc/origine_mundi/archive/";
-        File file = new File(dir + "50_78.raw.wav");
-        File lima = new File(dir + "50_78.lima");
-        //AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
-        //System.out.println(format);
+        //File dir = new File("/Users/mina/drive/doc/origine_mundi/archive/");
+        File dir = new File("C:/drive/doc/origine_mundi/archive/");
+        Archiver2 a = new Archiver2(getAudioFormat(96000, 2, 2), dir);
+        for(int i = 0;i < 128;i++){
+            for(int j = 0;j < 16;i++){
+                File file = a.record(i, j * 8 + 7);
+                String name = file.getName().substring(0, file.getName().indexOf(".raw"));
+                File lima     = new File(file.getParentFile(), name + ".lima");
+                File out_file = new File(file.getParentFile(), name + ".wav");
+                AudioFormat format = FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), false, true);
+                FunctionesLimae.trim(lima, new Aestimatio(0.01));
+                LectorLimam ll = new LectorLimam(lima);
+                ScriptorWav sw = new ScriptorWav(out_file, format);
+                sw.scribo(ll, false);
+                lima.delete();
+                file.delete();
+            }
+        }
         
-        FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), false);
-        FunctionesLimae.trim(lima, new Aestimatio(0.01));
-        LectorLimam ll = new LectorLimam(lima);
-        File out_file = new File(dir + "50_78.wav");
-        ScriptorWav sw = new ScriptorWav(out_file);
+        //Functiones.ludoLimam(out_file);
 
-        sw.scribo(ll, false);
-        
-        //AudioFileFormat format2 = new AudioFileFormat(AudioFileFormat.Type.WAVE, getAudioFormat(), 310272);
-        //System.out.println(format2);
-        
+        a.terminate();
         
     }
     private static String toHexString(int i){
