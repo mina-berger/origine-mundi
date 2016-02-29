@@ -6,12 +6,17 @@
 package origine_mundi.archive;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioSystem;
+import la.clamor.Aestimatio;
+import static la.clamor.Constantia.getAudioFormat;
+import la.clamor.io.FunctionesLimae;
+import la.clamor.io.LectorLimam;
+import la.clamor.io.ScriptorWav;
 import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.US_122;
@@ -49,7 +54,8 @@ public class Archiver2 {
     public void record(int note, int velocity) throws InvalidMidiDataException, InterruptedException{
         final int channel = 0;
         RecordThread record_thread = new RecordThread(
-            new File(dir, toDodeciString(note) + "_" + toHexString(velocity) + ".wav"));
+            new File(dir, toDodeciString(note) + "_" + toHexString(velocity) + ".wav"),
+            getAudioFormat(48000, 2, 2));
         System.out.println("Start recording...");
         record_thread.start();
         Thread.sleep(500);
@@ -58,13 +64,29 @@ public class Archiver2 {
         record_thread.terminate();
         System.out.println("terminated");
     }
-    public static void main(String[] args){
-        Archiver2 a = new Archiver2();
+    public static void main(String[] args) throws Exception{
+        /*Archiver2 a = new Archiver2();
         try {
             a.record(60, 120);
         } catch (InvalidMidiDataException | InterruptedException ex) {
             a.terminate();
-        }
+        }*/
+        File file = new File("/Users/mina/drive/doc/origine_mundi/archive/50_78.raw.wav");
+        File lima = new File("/Users/mina/drive/doc/origine_mundi/archive/50_78.lima");
+        AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
+        System.out.println(format);
+        
+        FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), true);
+        FunctionesLimae.trim(lima, new Aestimatio(0.01));
+        LectorLimam ll = new LectorLimam(lima);
+        File out_file = new File("/Users/mina/drive/doc/origine_mundi/archive/50_78.wav");
+        ScriptorWav sw = new ScriptorWav(out_file);
+
+        sw.scribo(ll, false);
+        
+        //AudioFileFormat format2 = new AudioFileFormat(AudioFileFormat.Type.WAVE, getAudioFormat(), 310272);
+        //System.out.println(format2);
+        
         
     }
     private static String toHexString(int i){
@@ -77,6 +99,7 @@ public class Archiver2 {
     private static String toDodeciString(int i){
         return Integer.toHexString(i / 12) + Integer.toHexString(i % 12);
     }
+    
     
     
     

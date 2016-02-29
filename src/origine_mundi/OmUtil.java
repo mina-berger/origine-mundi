@@ -61,16 +61,6 @@ public class OmUtil {
         return ArrayUtils.toPrimitive(data.toArray(new Integer[]{}));
     }*/
     public static AudioFileFormat.Type FILETYPE = AudioFileFormat.Type.WAVE;
-    public static AudioFormat getAudioFormat() {
-        float sampleRate = 48000;
-        int sampleSizeInBits = 16;
-        int channels = 2;
-        boolean signed = true;
-        boolean bigEndian = true;
-        AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits,
-                                             channels, signed, bigEndian);
-        return format;
-    }
     public static File getDirectory(String subdir){
         File dir = new File(Functiones.getHomePath() + "doc/origine_mundi/" + subdir);
         dir.mkdirs();

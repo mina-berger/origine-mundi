@@ -9,10 +9,9 @@ import javax.sound.sampled.*;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import la.clamor.Functiones;
+import static la.clamor.Constantia.getAudioFormat;
 import origine_mundi.OmException;
 import static origine_mundi.OmUtil.FILETYPE;
-import static origine_mundi.OmUtil.getAudioFormat;
  
 /**
  * A sample program is to demonstrate how to record sound in Java
@@ -23,8 +22,11 @@ public class RecordThread extends Thread {
     private TargetDataLine line;
     private AudioFormat format;
     public RecordThread(File out_file){
+        this(out_file, getAudioFormat());
+    }
+    public RecordThread(File out_file, AudioFormat format){
         this.out_file = out_file;
-        format = getAudioFormat();
+        this.format = format;
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 
         // checks if system supports the data line

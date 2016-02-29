@@ -1,5 +1,7 @@
 package la.clamor;
 
+import javax.sound.sampled.AudioFormat;
+
 public interface Constantia {
     public enum Res{FREQ, QUANT, PAN, VCO_FREQ, VCO_QUANT, VCA_FREQ, VCA_QUANT, FB_QUANT};
     public static final int CHANNEL = 2;
@@ -21,5 +23,15 @@ public interface Constantia {
     public enum Parma {FCO, FCA, QCO, QCA, PCO, PCA};
     public enum Unda {SINE, QUAD, TRIA, DENT, FRAG}
     public enum Effector {DIST, CHOR, MORA, COMP};
+    public static AudioFormat getAudioFormat() {
+        return getAudioFormat((float)REGULA_EXAMPLI, BYTE_PER_EXAMPLUM, CHANNEL);
+    }
+    public static AudioFormat getAudioFormat(float sample_rate, int sample_size_byte, int channels) {
+        boolean signed = true;
+        boolean big_endian = false;
+        AudioFormat format = new AudioFormat(sample_rate, sample_size_byte * 8,
+                                             channels, signed, big_endian);
+        return format;
+    }
 
 }

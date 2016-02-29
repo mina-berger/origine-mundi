@@ -1,6 +1,5 @@
 package la.clamor.io;
 
-import la.clamor.io.Lima;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

@@ -333,7 +333,7 @@ public class FunctionesLimae implements Constantia {
     /*public Clip getClip(double pan, double velocity){
         return new Clip(wave_data, pan, velocity);
     }*/
-    private static FilumOctorum legoFilumOctorum(InputStream in, int longitudo){
+    public static FilumOctorum legoFilumOctorum(InputStream in, int longitudo){
         byte[] buffer = new byte[longitudo];
         try {
             if(in.read(buffer) != longitudo){

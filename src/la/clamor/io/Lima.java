@@ -3,9 +3,9 @@ package la.clamor.io;
 import java.util.ArrayList;
 
 public class Lima {
-    protected static final String DATA_TAG = "data";
-    protected static final String RIFF     = "RIFF";
-    protected static final String WAVE     = "WAVE";
+    public static final String DATA_TAG = "data";
+    public static final String RIFF     = "RIFF";
+    public static final String WAVE     = "WAVE";
     public static class FilumOctorum extends ArrayList<Octo> {
         private static final long serialVersionUID = 1L;
         public FilumOctorum() {
