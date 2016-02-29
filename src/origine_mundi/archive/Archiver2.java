@@ -75,8 +75,8 @@ public class Archiver2 {
         String dir = "C:/drive/doc/origine_mundi/archive/";
         File file = new File(dir + "50_78.raw.wav");
         File lima = new File(dir + "50_78.lima");
-        AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
-        System.out.println(format);
+        //AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
+        //System.out.println(format);
         
         FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), false);
         FunctionesLimae.trim(lima, new Aestimatio(0.01));
