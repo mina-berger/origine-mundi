@@ -299,6 +299,10 @@ public class OscillatioDeprec implements Constantia, Legibilis {
         }
         tabula.imprimo();*/
     }
+
+    @Override
+    public void close() {
+    }
     public static class Oscillationes extends ArrayList<OscillatioDeprec> implements Legibilis {
 
         public Oscillationes(int initialCapacity){
@@ -321,6 +325,10 @@ public class OscillatioDeprec implements Constantia, Legibilis {
                     return true;
             }
             return false;
+        }
+
+        @Override
+        public void close() {
         }
         
     }

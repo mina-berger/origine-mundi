@@ -81,6 +81,10 @@ public class Chorus implements Forma {
             public boolean paratusSum() {
                 return count < 144000;
             }
+
+            @Override
+            public void close() {
+            }
         }, new Chorus(new Punctum(0.3), new Punctum(9, 10), new Punctum(1), new Punctum(1, -1))), false);
         Functiones.ludoLimam(out_file);
     }

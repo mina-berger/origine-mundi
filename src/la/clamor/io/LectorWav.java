@@ -31,11 +31,13 @@ public class LectorWav implements Constantia, Legibilis {
     private int channel;
     private int regula_exampli_fontis;
     private int bytes;
-    ObjectInputStream  puncta_stream;
+    private ObjectInputStream  puncta_stream;
+    private File lima;
 
     //RiffData format;
     //private Puncta puncta;
     public LectorWav(File file, Aestimatio volume){
+        lima = null;
         FileInputStream in;
         try{
             in = new FileInputStream(file);
@@ -100,7 +102,7 @@ public class LectorWav implements Constantia, Legibilis {
         FileOutputStream f_out;
         Aestimatio max = new Aestimatio();
         try {
-            File tmp_file1 = File.createTempFile("l_lima1", Long.toString(System.currentTimeMillis()));
+            File tmp_file1 = File.createTempFile("l_lima1_", Long.toString(System.currentTimeMillis()));
             f_out = new FileOutputStream(tmp_file1);
             o_out = new ObjectOutputStream(f_out);
             for(int i = 0;i < octets_length;i++){
@@ -129,20 +131,19 @@ public class LectorWav implements Constantia, Legibilis {
             log.info("max=" + max);
             log.info(tmp_file1.getAbsolutePath());
             o_in = new ObjectInputStream(new FileInputStream(tmp_file1));
-            File tmp_file2 = File.createTempFile("l_lima2", Long.toString(System.currentTimeMillis()));
+            File tmp_file2 = File.createTempFile("l_lima2_", Long.toString(System.currentTimeMillis()));
             f_out = new FileOutputStream(tmp_file2);
             o_out = new ObjectOutputStream(f_out);
             while(o_in.available() > 0){
                 o_out.writeDouble(new Aestimatio(o_in.readDouble()).multiplico(volume).partior(max).doubleValue());
-                /*Punctum punctum = (Punctum)o_in.readObject();
-                System.out.println("write:" + punctum.toString());
-                punctum = punctum.multiplico(volume / max);
-                o_out.writeObject(punctum);*/
             }
             o_out.flush();
             o_out.close();
             f_out.close();
+            o_in.close();
+            tmp_file1.delete();
             if(regula_exampli_fontis == REGULA_EXAMPLI){
+                lima = tmp_file2;
                 puncta_stream = new ObjectInputStream(new FileInputStream(tmp_file2));
                 return;
             }
@@ -150,7 +151,7 @@ public class LectorWav implements Constantia, Legibilis {
             log.info("resample octets_length=" + octets_length);
             //Puncta resampled = new Puncta(octets_length);
             o_in = new ObjectInputStream(new FileInputStream(tmp_file2));
-            File tmp_file3 = File.createTempFile("l_lima3", Long.toString(System.currentTimeMillis()));
+            File tmp_file3 = File.createTempFile("l_lima3_", Long.toString(System.currentTimeMillis()));
             f_out = new FileOutputStream(tmp_file3);
             o_out = new ObjectOutputStream(f_out);
             TreeMap<Integer, Punctum> map = new TreeMap<>();
@@ -196,6 +197,9 @@ public class LectorWav implements Constantia, Legibilis {
             }
             o_out.flush();
             o_out.close();
+            o_in.close();
+            tmp_file2.delete();
+            lima = tmp_file3;
             puncta_stream = new ObjectInputStream(new FileInputStream(tmp_file3));
         } catch (IOException ex) {
             Logger.getLogger(LectorWav.class.getName()).log(Level.SEVERE, null, ex);
@@ -238,11 +242,33 @@ public class LectorWav implements Constantia, Legibilis {
     }
     @Override
     public boolean paratusSum() {
+        if(puncta_stream == null){
+            return false;
+        }
         try {
-            return puncta_stream.available() > 0;
+            boolean paratus = puncta_stream.available() > 0;
+            if(!paratus){
+                puncta_stream.close();
+                lima.delete();
+                puncta_stream = null;
+                lima = null;
+            }
+            return paratus;
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
+    @Override
+    public void close() {
+        if(puncta_stream != null){
+            try {
+                puncta_stream.close();
+            } catch (IOException ex) {
+            }
+        }
+        if(lima != null){
+            lima.delete();
+        }
+    }
 }

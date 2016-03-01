@@ -316,6 +316,10 @@ public class OscillatorUtil {
             public boolean paratusSum() {
                 return cns.paratusSum();
             }
+
+            @Override
+            public void close() {
+            }
         }, false);
         
         Functiones.ludoLimam(out_file);

@@ -25,7 +25,7 @@ public class Opus010 {
         File src_file = new File(OmUtil.getDirectory("opus"), "opus009.wav");
         
         File lima = new File(OmUtil.getDirectory("sample"), "opus010.lima");
-        FunctionesLimae.facioLimam(src_file, lima, new Aestimatio(1), true);
+        FunctionesLimae.facioLimam(src_file, lima, new Aestimatio(1), true, false);
             
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new ChorusDeprec(new LectorLimam(lima), new Punctum(0.5), new Punctum(3.5, -3.5), new Punctum(-1, 1), new Punctum(0.5, -0.5)), false);
@@ -39,7 +39,7 @@ public class Opus010 {
         File lima = new File(OmUtil.getDirectory("sample"), "01d.lima");
         File out_file = new File(OmUtil.getDirectory("opus"), "opus009_t.wav");
         System.out.println(lima.getAbsolutePath());
-        FunctionesLimae.facioLimam(wav_file, lima, new Aestimatio(1), true);
+        FunctionesLimae.facioLimam(wav_file, lima, new Aestimatio(1), true, false);
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new LectorLimam(lima), false);
  

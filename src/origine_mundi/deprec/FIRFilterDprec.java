@@ -99,6 +99,11 @@ public class FIRFilterDprec implements Constantia, Legibilis {
     public boolean paratusSum() {
         return legibilis.paratusSum();
     }
+
+    @Override
+    public void close() {
+        legibilis.close();
+    }
     public static class Buffer{
         Puncta buffer;
         int point;

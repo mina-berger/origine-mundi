@@ -5,7 +5,6 @@
  */
 package la.clamor.deinde.bk;
 
-import la.clamor.deinde.bk.Spectrum;
 import java.util.ArrayList;
 import la.clamor.Constantia;
 import la.clamor.Functiones;
@@ -51,6 +50,13 @@ public class OscillatioSpectrum implements Legibilis, Constantia {
     public boolean paratusSum() {
         return count < longitudo;
     }
+
+    @Override
+    public void close() {
+        for(SineLegibilis legibilis:legibiles){
+            legibilis.close();
+        }
+    }
     static class SineLegibilis implements Legibilis {
         SineOscillatio so;
         Punctum pitch;
@@ -70,6 +76,10 @@ public class OscillatioSpectrum implements Legibilis, Constantia {
         @Override
         public boolean paratusSum() {
             return true;
+        }
+
+        @Override
+        public void close() {
         }
         
     }

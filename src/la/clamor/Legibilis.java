@@ -12,4 +12,6 @@ public interface Legibilis {
      * @return 
      */
     public boolean paratusSum();
+    
+    public void close();
 }

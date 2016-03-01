@@ -66,6 +66,10 @@ public class Distortion implements Forma {
             public boolean paratusSum() {
                 return count < 144000;
             }
+
+            @Override
+            public void close() {
+            }
         }, new Distortion(new Punctum(0.1), new Punctum(1.5), new Punctum(1))), false);        
         Functiones.ludoLimam(out_file);
         

@@ -75,6 +75,10 @@ public class Marker extends LegibileAbstractum {
             public boolean paratusSum() {
                 return true;
             }
+
+            @Override
+            public void close() {
+            }
         });
         System.out.println(m.lego());
         System.out.println(m.lego());

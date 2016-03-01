@@ -40,4 +40,9 @@ public class FormaLegibilis implements Legibilis {
         }
         return punctum;
     }
+
+    @Override
+    public void close() {
+        fons.close();
+    }
 }

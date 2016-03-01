@@ -214,6 +214,10 @@ public class Oscillatio implements Constantia, Legibilis {
         sw.scribo(o, false);
         Functiones.ludoLimam(out_file);
     }
+
+    @Override
+    public void close() {
+    }
     public static class Oscillationes extends ArrayList<Oscillatio> implements Legibilis {
 
         public Oscillationes(int initialCapacity){
@@ -236,6 +240,10 @@ public class Oscillatio implements Constantia, Legibilis {
                     return true;
             }
             return false;
+        }
+
+        @Override
+        public void close() {
         }
         
     }

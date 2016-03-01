@@ -12,8 +12,6 @@ import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.SineOscillatio;
 import la.clamor.Punctum;
-import la.clamor.io.ScriptorWav;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -40,6 +38,10 @@ public class DeindeTest {
         @Override
         public boolean paratusSum() {
             return count < 144000;
+        }
+
+        @Override
+        public void close() {
         }
     };
 

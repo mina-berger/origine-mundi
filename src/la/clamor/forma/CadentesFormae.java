@@ -52,6 +52,11 @@ public class CadentesFormae extends ArrayList<Forma> {
             public boolean paratusSum() {
                 return count < 144000;
             }
+
+            @Override
+            public void close() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
         }), false);        
         Functiones.ludoLimam(out_file);
     }    

@@ -140,6 +140,10 @@ public class Compressor implements Forma {
             public boolean paratusSum() {
                 return count < 240000;
             }
+
+            @Override
+            public void close() {
+            }
             },
             new Compressor(
             new Punctum(0.5), new Punctum(0.1), 

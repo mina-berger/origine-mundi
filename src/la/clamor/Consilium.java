@@ -67,4 +67,11 @@ public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Le
         //System.out.println(isEmpty() + ":" + pueros.length);
         return !isEmpty() || pueros.length > 0;
     }
+
+    @Override
+    public void close() {
+        for(Legibilis puer:pueros){
+            puer.close();
+        }
+    }
 }

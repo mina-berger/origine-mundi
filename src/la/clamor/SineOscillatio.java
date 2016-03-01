@@ -76,6 +76,10 @@ public class SineOscillatio implements Constantia {
             public boolean paratusSum() {
                 return count < 144000;
             }
+
+            @Override
+            public void close() {
+            }
         }, false);
         Functiones.ludoLimam(out_file);
                 

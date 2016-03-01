@@ -92,6 +92,10 @@ public class Delay implements Forma {
             public boolean paratusSum() {
                 return count < 144000;
             }
+
+            @Override
+            public void close() {
+            }
         }, new Delay(new Punctum(1000), new Punctum(10), new Punctum(0.6))), false);
         Functiones.ludoLimam(out_file);
         

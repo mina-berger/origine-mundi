@@ -34,5 +34,10 @@ public class EnvelopeFilter implements Legibilis {
         return positio < longitudo && legibilis.paratusSum();
         
     }
+
+    @Override
+    public void close() {
+        legibilis.close();
+    }
     
 }

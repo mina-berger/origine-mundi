@@ -5,9 +5,6 @@
 
 package la.clamor;
 
-import la.clamor.Legibilis;
-import la.clamor.Punctum;
-
 /**
  *
  * @author minae.hiyamae
@@ -34,6 +31,10 @@ public abstract class LegibileAbstractum implements Legibilis {
     }
     protected boolean terminens(){
         return terminens;
+    }
+    @Override
+    public void close(){
+        fons.close();
     }
 
     

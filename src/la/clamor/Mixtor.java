@@ -9,6 +9,13 @@ public abstract class Mixtor implements Legibilis {
     }
     protected abstract Punctum capioPan(int id);
     @Override
+    public void close() {
+        for(Integer id:legibiles.keySet()){
+            legibiles.get(id).close();
+        }
+        
+    }
+    @Override
     public Punctum lego(){
         Punctum punctum = new Punctum();
         for(Integer id:legibiles.keySet()){
@@ -38,5 +45,6 @@ public abstract class Mixtor implements Legibilis {
         protected Punctum capioPan(int id) {
             return panes.get(id);
         }
+
     }
 }
