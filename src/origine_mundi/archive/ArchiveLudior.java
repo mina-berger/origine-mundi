@@ -33,6 +33,7 @@ public class ArchiveLudior extends TreeMap<Integer, TreeSet<Integer>> implements
         }
         name = "archive_" + sound + "_" + sound;
         decay = Functiones.adPositio(temps_decay);
+        init();
     }
 
     @Override
@@ -40,7 +41,8 @@ public class ArchiveLudior extends TreeMap<Integer, TreeSet<Integer>> implements
         return capioNotum(note, diuturnitas, velocity.capio(0));
     }
     public ArchiveNote capioNotum(int note, double diuturnitas, Punctum velocity) {
-        if(containsKey(note)){
+        note += 60;
+        if(!containsKey(note)){
             throw new IllegalArgumentException("note inexists:" + note);
         }
         TreeSet<Integer> set = get(note);

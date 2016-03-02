@@ -14,6 +14,7 @@ import la.clamor.Instrument;
 import la.clamor.io.ScriptorWav;
 import la.clamor.Velocitas;
 import origine_mundi.OmUtil;
+import origine_mundi.archive.ArchiveLudior;
 
 /**
  *
@@ -21,7 +22,8 @@ import origine_mundi.OmUtil;
  */
 public class Demo {
     public static void main(String[] args) throws IOException {
-        demoOscillator("epiano");
+        //demoOscillator("epiano");
+        demoArchiveLudior("m3r","east_of_java");
         //getPreset("epiano").print();
     }
     public static void play(String name){
@@ -31,6 +33,9 @@ public class Demo {
     }
     public static void demoOscillator(String name) throws IOException{
         demo(new Oscillator(name));
+    }
+    public static void demoArchiveLudior(String machine, String sound) throws IOException{
+        demo(new ArchiveLudior(machine, sound, 500));
     }
     public static void demo(Instrument inst) throws IOException{
         Consilium cns = new Consilium();
@@ -64,7 +69,7 @@ public class Demo {
         cns.addo(current, inst.capioNotum(8, interval, Velocitas.una(1)));
         cns.addo(current, inst.capioNotum(10, interval, Velocitas.una(1)));
         current += interval;
-        interval *= 10;
+        //interval *= 10;
         cns.addo(current, inst.capioNotum(-24 + 11, interval, Velocitas.una(1)));
         cns.addo(current, inst.capioNotum(-12 + 10, interval, Velocitas.una(1)));
         cns.addo(current, inst.capioNotum(3, interval, Velocitas.una(1)));
