@@ -1,8 +1,8 @@
 package la.clamor;
 
 import la.clamor.io.ScriptorWav;
-import com.mina.util.Mjson;
 import java.io.File;
+import java.io.IOException;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import static la.clamor.Constantia.CHANNEL;
@@ -17,6 +17,7 @@ import static la.clamor.Constantia.Res.VCO_FREQ;
 import static la.clamor.Constantia.Res.VCO_QUANT;
 import la.clamor.Constantia.Unda;
 import la.clamor.Oscillatio.Oscillationes;
+import static la.clamor.OscillatorUtil.getPreset;
 import la.clamor.Positiones.PositionesFixi;
 import origine_mundi.OmUtil;
 
@@ -24,13 +25,14 @@ import origine_mundi.OmUtil;
  *
  * @author minae.hiyamae
  */
-public class Oscillator {
+public class Oscillator implements Instrument {
     private OscillatorSettings[] acies_iugorum;
-    public Oscillator(Mjson elems){
-        this(OscillatorSettings.toSettingsArray(elems));
+    private String name;
+    public Oscillator(String name){
+        this(name, OscillatorSettings.toSettingsArray(getPreset(name)));
     }
-
-    public Oscillator(OscillatorSettings... acies_iugorum) {
+    public Oscillator(String name, OscillatorSettings... acies_iugorum) {
+        this.name = name;
         this.acies_iugorum = acies_iugorum;
     }
 
@@ -119,6 +121,9 @@ public class Oscillator {
             //if(res == FREQ) System.out.println("DEBUG5:" + submap3.get(key).capioPunctum(velocitas).multiplico(factor));
         });
     }
+    public Legibilis capioNotum(int note, double diuturnitas, Velocitas velocitas){
+        return capioOscillationes(new Punctum(Temperamentum.instance.capioHZ(note)), diuturnitas, velocitas);
+    }
     public Oscillationes capioOscillationes(Punctum frequentia, double diuturnitas, Velocitas velocitas) {
         Oscillationes oscillationes = new Oscillationes(acies_iugorum.length);
         for (OscillatorSettings acies_iugorum1 : acies_iugorum) {
@@ -132,7 +137,7 @@ public class Oscillator {
     }
 
     public static void main(String[] args) {
-        Oscillator osc = new Oscillator(
+        Oscillator osc = new Oscillator("test",
             new OscillatorSettings(
                 //Unda unda,
                 //double volume, double feedback,
@@ -279,6 +284,11 @@ public class Oscillator {
             tabula.addo(index++, y.capioAestimatio(0).doubleValue());
         }
         tabula.imprimo();*/
+    }
+
+    @Override
+    public String getName() {
+        return "osc_" + name;
     }
 
 }

@@ -139,7 +139,7 @@ public abstract class Positiones {
                 Envelope vca_frequentiae, Envelope vca_quantitatis, 
                 Envelope fb_quantitatis, 
                 Positiones... positiones_modulatores) {
-            super(capioUltimum(frequentiae, quantitatis), unda, volume, feedback);
+            super(capioUltimum(initioEnvelope(frequentiae, true), initioEnvelope(quantitatis, false)), unda, volume, feedback);
             map_frequentiae = initioEnvelope(frequentiae, true);
             map_quantitatis = initioEnvelope(quantitatis, false);
             map_pans        = initioEnvelopes(pans, true);

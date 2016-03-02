@@ -36,6 +36,9 @@ public class LectorWav implements Constantia, Legibilis {
 
     //RiffData format;
     //private Puncta puncta;
+    public LectorWav(File file){
+        this(file, new Aestimatio(1));
+    }
     public LectorWav(File file, Aestimatio volume){
         lima = null;
         FileInputStream in;

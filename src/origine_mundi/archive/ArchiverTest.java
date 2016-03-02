@@ -16,8 +16,8 @@ import la.clamor.io.LectorWav;
 public class ArchiverTest {
     public static void main(String[] args){
         File file = new File("/Users/mina/drive/doc/origine_mundi/archive/50_78.wav");
-        LectorWav l1 = new LectorWav(file, new Aestimatio(1));
-        LectorWav l2 = new LectorWav(file, new Aestimatio(1));
+        LectorWav l1 = new LectorWav(file);
+        LectorWav l2 = new LectorWav(file);
         while(l1.paratusSum()){
             l1.lego();
             l2.lego();

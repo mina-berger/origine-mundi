@@ -92,14 +92,9 @@ public abstract class Mensa implements ConstantiaOperis {
         ponoOscillator(id, pan, name, null);
     }
     public void ponoOscillator(int id, Punctum pan, String name, CadentesFormae cf){
-        Oscillator osc;
-        try {
-            osc = new Oscillator(getPreset(name));
-        } catch (IOException ex) {
-            throw new ExceptioClamoris("cannot find preset:" + name, ex);
-        }
+        Oscillator osc = new Oscillator(name);
         //System.out.println("DEBUG:" + (fe == null?"null":fe.size()));
-       // for(PositionesEffectoris pe:fe){
+        //for(PositionesEffectoris pe:fe){
         //    pe.print();
         //}
         oscillatores.put(id, osc);

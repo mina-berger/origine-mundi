@@ -159,7 +159,7 @@ public class OscillatorUtil {
         return list((Object[])str.split(":"));
     }
     public static void _main(String[] args) throws IOException {
-        Oscillator osc = new Oscillator(getPreset("epiano"));
+        Oscillator osc = new Oscillator("epiano");
         double a = Temperamentum.instance.capioHZ(9);
         Consilium cns = new Consilium();
         cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, Velocitas.una(1)));
@@ -170,8 +170,13 @@ public class OscillatorUtil {
         //sw.scribo(new FIRFilterDeinde(cns, 3000, 500, true), false);
         Functiones.ludoLimam(out_file);
     }
-    public static Mjson getPreset(String name) throws IOException{
-        CSVFile csv = new CSVFile("doc/oscillator/" + name + ".csv");
+    public static Mjson getPreset(String name){
+        CSVFile csv;
+        try {
+            csv = new CSVFile("doc/oscillator/" + name + ".csv");
+        } catch (IOException ex) {
+            throw new IllegalArgumentException("preset inexists:" + name);
+        }
         MjsonMap all_map = Mjson.map();
         int row = 0;
         while(true){
@@ -279,7 +284,7 @@ public class OscillatorUtil {
                         map().unit("tempus", 0).unit("altum", 0))))
         ));
 
-        Oscillator osc = new Oscillator(json);
+        Oscillator osc = new Oscillator("test", OscillatorSettings.toSettingsArray(json));
         double a = Temperamentum.instance.capioHZ(9);
         Consilium cns = new Consilium();
         cns.addo(0, osc.capioOscillationes(new Punctum(a), 5000, Velocitas.una(1)));

@@ -6,6 +6,7 @@
 package origine_mundi.archive;
 
 import java.io.File;
+import static java.lang.Integer.toHexString;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
@@ -22,6 +23,7 @@ import static origine_mundi.OmUtil.getMidiDevice;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
 import origine_mundi.sampler.RecordThread;
 import static la.clamor.Constantia.getAudioFormat;
+import static origine_mundi.archive.ArchiveUtil.toDodeciString;
 
 /**
  *
@@ -66,46 +68,51 @@ public class Archiver {
         System.out.println("terminated");
         return file;
     }
-    private static String toHexString(int i){
-        String str = Integer.toHexString(i);
-        if(str.length() < 2){
-            return "0" + str;
-        }
-        return str;
+    public void archive(int note, int velocity) throws InvalidMidiDataException, InterruptedException{
+        File file = record(note, velocity);
+        String name = file.getName().substring(0, file.getName().indexOf(".raw"));
+        File lima     = new File(file.getParentFile(), name + ".lima");
+        File out_file = new File(file.getParentFile(), name + ".wav");
+        AudioFormat format = FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), false, true);
+        FunctionesLimae.trim(lima, new Aestimatio(0.01));
+        LectorLimam ll = new LectorLimam(lima);
+        ScriptorWav sw = new ScriptorWav(out_file, format);
+        sw.scribo(ll, false);
+        ll.close();
+        file.delete();
+        lima.delete();
     }
-    private static String toDodeciString(int i){
-        return Integer.toHexString(i / 12) + Integer.toHexString(i % 12);
-    }
-    public static void main(String[] args) throws Exception{
-        archive("m3r", "east_of_java");
-    }
-    public static void archive(String machine, String sound) throws Exception{
+    public static void archive_all(String machine, String sound, boolean test) throws Exception{
         //File dir = new File("/Users/mina/drive/doc/origine_mundi/archive/");
         File dir = new File("D:/origine_mundi/archive/" + machine + "/" + sound);
         dir.mkdirs();
         Archiver a = new Archiver(getAudioFormat(48000, 2, 2), dir);
-        for(int i = 21;i < 108;i++){ // 88 key for piano 
-            for(int j = 0;j < 16;j++){
-                File file = a.record(i, j * 8 + 7);
-                String name = file.getName().substring(0, file.getName().indexOf(".raw"));
-                File lima     = new File(file.getParentFile(), name + ".lima");
-                File out_file = new File(file.getParentFile(), name + ".wav");
-                AudioFormat format = FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), false, true);
-                FunctionesLimae.trim(lima, new Aestimatio(0.01));
-                LectorLimam ll = new LectorLimam(lima);
-                ScriptorWav sw = new ScriptorWav(out_file, format);
-                sw.scribo(ll, false);
-                ll.close();
-                file.delete();
-                lima.delete();
-                //break;
+        if(test){
+            a.archive(60, 127);
+        }else{
+            for(int i = 21;i < 108;i++){ // 88 key for piano 
+                for(int j = 4;j < 16;j++){
+                    a.archive(i, j * 8 + 7);
+                    /*File file = a.record(i, j * 8 + 7);
+                    String name = file.getName().substring(0, file.getName().indexOf(".raw"));
+                    File lima     = new File(file.getParentFile(), name + ".lima");
+                    File out_file = new File(file.getParentFile(), name + ".wav");
+                    AudioFormat format = FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), false, true);
+                    FunctionesLimae.trim(lima, new Aestimatio(0.01));
+                    LectorLimam ll = new LectorLimam(lima);
+                    ScriptorWav sw = new ScriptorWav(out_file, format);
+                    sw.scribo(ll, false);
+                    ll.close();
+                    file.delete();
+                    lima.delete();*/
+                }
             }
-            //break;
         }
-        
-        //Functiones.ludoLimam(out_file);
-
         a.terminate();
         
+    }
+    public static void main(String[] args) throws Exception{
+        //OmUtil.playNote(receiver, channel, note, velocity, ms);
+        archive_all("m3r", "east_of_java", false);
     }
 }

@@ -89,7 +89,7 @@ public class IIRFilter implements Forma {
         cns.addo(0, osc.capioOscillationes(new Punctum(a), 5000, Velocitas.una(1)));
         */
         File in_file = new File(OmUtil.getDirectory("opus"), "filter2.wav");
-        LectorWav lw = new LectorWav(in_file, new Aestimatio(1));
+        LectorWav lw = new LectorWav(in_file);
         File out_file = new File(OmUtil.getDirectory("opus"), "iir_l23.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);
