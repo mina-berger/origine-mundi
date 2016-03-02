@@ -30,7 +30,7 @@ import static origine_mundi.archive.ArchiveUtil.toDodeciString;
  * @author mina
  */
 public class Archiver {
-    static int ms = 16000;
+    static int ms = 10000;
     File dir;
     MidiDevice device;
     Receiver receiver;
@@ -56,17 +56,21 @@ public class Archiver {
         }
     }
     public File record(int note, int velocity) throws InvalidMidiDataException, InterruptedException{
-        final int channel = 0;
         File file = new File(dir, toDodeciString(note) + "_" + toHexString(velocity) + ".raw.wav");
         RecordThread record_thread = new RecordThread(file, format);
         System.out.println("Start recording...");
         record_thread.start();
         Thread.sleep(500);
-        OmUtil.playNote(receiver, channel, note, velocity, ms);
+        //OmUtil.playNote(receiver, channel, note, velocity, ms);
+        play(note, velocity);
         Thread.sleep(1000);
         record_thread.terminate();
         System.out.println("terminated");
         return file;
+    }
+    public void play(int note, int velocity) throws InvalidMidiDataException, InterruptedException{
+        final int channel = 0;
+        OmUtil.playNote(receiver, channel, note, velocity, ms);
     }
     public void archive(int note, int velocity) throws InvalidMidiDataException, InterruptedException{
         File file = record(note, velocity);
@@ -113,6 +117,7 @@ public class Archiver {
     }
     public static void main(String[] args) throws Exception{
         //OmUtil.playNote(receiver, channel, note, velocity, ms);
-        archive_all("m3r", "east_of_java", false);
+        archive_all("m3r", "sparkles", false);
+        //new Archiver(getAudioFormat(48000, 2, 2),  new File("D:/origine_mundi/archive/")).play(60, 127);
     }
 }

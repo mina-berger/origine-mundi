@@ -571,6 +571,7 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
             int channel = 0;
             int[] notes = new int[]{24, 60, 64, 67, 70};
             playNotes(receiver1, channel, notes, 0, true);
+            Thread.sleep(1000);
             playNotes(receiver1, channel, notes, 0, false);
             
         } finally {
