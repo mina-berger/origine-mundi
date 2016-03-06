@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
-import origine_mundi.OmException;
 
 /**
  *
@@ -25,6 +24,16 @@ public class Integers extends ArrayList<Integer> {
     }
     public Integers(List<Integer> ints){
         addAll(ints);
+    }
+    public static Integers getSequence(int start, int end, boolean includes_end){
+        Integers is = new Integers();
+        for(int i = start;i < end;i++){
+            is.add(i);
+        }
+        if(includes_end){
+            is.add(end);
+        }
+        return is;
     }
     public int[] toPrimitiveArray(){
         return ArrayUtils.toPrimitive(toArray(new Integer[]{}));

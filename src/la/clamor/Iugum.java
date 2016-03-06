@@ -23,7 +23,7 @@ public class Iugum {
     double tempus;
     public Iugum(double tempus, Punctum altum){
         //this(tempus, null, null, altum, altum);
-        this(tempus, null, altum, altum);
+        this(tempus, null, altum, null);
     }
     public Iugum(double tempus, Punctum altum, Punctum humile){
         //this(tempus, null, null, altum, humile);

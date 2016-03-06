@@ -22,8 +22,8 @@ import origine_mundi.archive.ArchiveLudior;
  */
 public class Demo {
     public static void main(String[] args) throws IOException {
-        //demoOscillator("epiano");
-        demoArchiveLudior("m3r","sparkles");
+        demoOscillator("epiano");
+        //demoArchiveLudior("m3r","sparkles");
         //getPreset("epiano").print();
     }
     public static void play(String name){
