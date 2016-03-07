@@ -21,7 +21,7 @@ public class ArchiveNote implements Legibilis{
     long decay;
     long index;
     ArchiveNote(File note_file, Punctum volume, long length, long decay){
-        lw = new LectorWav(note_file);
+        lw = new LectorWav(note_file, length);
         this.volume = volume;
         this.length = length;
         this.decay = decay;

@@ -21,7 +21,7 @@ public class Temperamentum {
         this.hz_medii = hz_medii;
     }
     public double capioHZ(double clevis){
-        return FastMath.pow(2d, clevis * 1d / numero_octavi) * hz_medii;        
+        return FastMath.pow(2d, (clevis - 60) * 1d / numero_octavi) * hz_medii;        
     }
     
 }

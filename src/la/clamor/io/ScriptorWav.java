@@ -60,6 +60,9 @@ public class ScriptorWav implements Constantia {
     }
 
     public void scribo(Legibilis legibilis, boolean pono_locus) {
+        scribo(legibilis, pono_locus, REGULA_MAGISTRI);
+    }
+    public void scribo(Legibilis legibilis, boolean pono_locus, Aestimatio master_volume) {
         ObjectOutputStream o_out;
         //FileOutputStream   f_out;
         ObjectInputStream  o_in;
@@ -125,8 +128,8 @@ public class ScriptorWav implements Constantia {
             log.info("maximum  =" + max);
             log.info("minimum  =" + min);
             ratio = 
-                    REGULA_MAGISTRI.multiplico(MAX_AMPLITUDO).partior(max).abs().min(
-                    REGULA_MAGISTRI.multiplico(MIN_AMPLITUDO).partior(min).abs());
+                    master_volume.multiplico(MAX_AMPLITUDO).partior(max).abs().min(
+                    master_volume.multiplico(MIN_AMPLITUDO).partior(min).abs());
             longitudo += locus * 2;
             log.info("ratio   =" + ratio);
             log.info("tmp_file=" + tmp_file.getAbsolutePath());

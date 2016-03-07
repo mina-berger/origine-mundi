@@ -40,14 +40,14 @@ public class ZZZSample1 extends Mensa {
         ponoOscillator(0, new Punctum(1, 1.0), "epiano");
                 
         for(int i = 0;i < count;i++){
-            ludo(0, i, 0.0, 0.5, i + 5,  Velocitas.una(1));
-            ludo(0, i, 0.5, 0.5, i + 9,  Velocitas.una(1));
-            ludo(0, i, 1.0, 0.5, i + 12, Velocitas.una(1));
-            ludo(0, i, 1.5, 0.5, i + 16, Velocitas.una(1));
-            ludo(0, i, 2.0, 0.5, i + 19, Velocitas.una(1));
-            ludo(0, i, 2.5, 0.5, i + 16, Velocitas.una(1));
-            ludo(0, i, 3.0, 0.5, i + 12, Velocitas.una(1));
-            ludo(0, i, 3.5, 0.5, i + 9,  Velocitas.una(1));
+            ludo(0, i, 0.0, 0.5, i + 65,  Velocitas.una(1));
+            ludo(0, i, 0.5, 0.5, i + 69,  Velocitas.una(1));
+            ludo(0, i, 1.0, 0.5, i + 72, Velocitas.una(1));
+            ludo(0, i, 1.5, 0.5, i + 76, Velocitas.una(1));
+            ludo(0, i, 2.0, 0.5, i + 79, Velocitas.una(1));
+            ludo(0, i, 2.5, 0.5, i + 76, Velocitas.una(1));
+            ludo(0, i, 3.0, 0.5, i + 72, Velocitas.una(1));
+            ludo(0, i, 3.5, 0.5, i + 69,  Velocitas.una(1));
         }
     }
 

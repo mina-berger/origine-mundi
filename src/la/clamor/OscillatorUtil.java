@@ -160,7 +160,7 @@ public class OscillatorUtil {
     }
     public static void _main(String[] args) throws IOException {
         Oscillator osc = new Oscillator("epiano");
-        double a = Temperamentum.instance.capioHZ(9);
+        double a = Temperamentum.instance.capioHZ(69);
         Consilium cns = new Consilium();
         cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, Velocitas.una(1)));
         File out_file = new File(OmUtil.getDirectory("opus"), "oscillatior.wav");
@@ -285,7 +285,7 @@ public class OscillatorUtil {
         ));
 
         Oscillator osc = new Oscillator("test", OscillatorSettings.toSettingsArray(json));
-        double a = Temperamentum.instance.capioHZ(9);
+        double a = Temperamentum.instance.capioHZ(69);
         Consilium cns = new Consilium();
         cns.addo(0, osc.capioOscillationes(new Punctum(a), 5000, Velocitas.una(1)));
         File out_file = new File(OmUtil.getDirectory("opus"), "quad.wav");

@@ -37,9 +37,12 @@ public class LectorWav implements Constantia, Legibilis {
     //RiffData format;
     //private Puncta puncta;
     public LectorWav(File file){
-        this(file, new Aestimatio(1));
+        this(file, new Aestimatio(1), null);
     }
-    public LectorWav(File file, Aestimatio volume){
+    public LectorWav(File file, long length){
+        this(file, new Aestimatio(1), length);
+    }
+    public LectorWav(File file, Aestimatio volume, Long length){
         lima = null;
         FileInputStream in;
         try{
@@ -97,7 +100,10 @@ public class LectorWav implements Constantia, Legibilis {
         }
 
         //index = 0;
-        int octets_length = (int)(longitudo / bytes / channel);
+        long octets_length = (long)(longitudo / bytes / channel);
+        if(length != null && octets_length > length){
+            octets_length = length;
+        }
         log.info("octets_length=" + octets_length);
         //puncta = new Puncta(octets_length);
         ObjectOutputStream o_out;

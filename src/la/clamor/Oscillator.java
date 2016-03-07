@@ -121,6 +121,11 @@ public class Oscillator implements Instrument {
             //if(res == FREQ) System.out.println("DEBUG5:" + submap3.get(key).capioPunctum(velocitas).multiplico(factor));
         });
     }
+    @Override
+    public Legibilis capioNotum(int octave, int note, double diuturnitas, Velocitas velocitas){
+        return capioNotum(octave * 12 + note, diuturnitas, velocitas);
+    }
+    @Override
     public Legibilis capioNotum(int note, double diuturnitas, Velocitas velocitas){
         return capioOscillationes(new Punctum(Temperamentum.instance.capioHZ(note)), diuturnitas, velocitas);
     }
@@ -252,12 +257,12 @@ public class Oscillator implements Instrument {
                         )*/
             )
         );
-        double f = Temperamentum.instance.capioHZ(5);
-        double a = Temperamentum.instance.capioHZ(9);
-        double c = Temperamentum.instance.capioHZ(12);
-        double e = Temperamentum.instance.capioHZ(16);
-        double g = Temperamentum.instance.capioHZ(19);
-        double b = Temperamentum.instance.capioHZ(23);
+        double f = Temperamentum.instance.capioHZ(65);
+        double a = Temperamentum.instance.capioHZ(69);
+        double c = Temperamentum.instance.capioHZ(72);
+        double e = Temperamentum.instance.capioHZ(76);
+        double g = Temperamentum.instance.capioHZ(79);
+        double b = Temperamentum.instance.capioHZ(83);
         Consilium cns = new Consilium();
         cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, Velocitas.una(1)));
         /*cns.addo(   0, osc.capioOscillationes(new Punctum(f), 5000, Velocitas.una(1)));

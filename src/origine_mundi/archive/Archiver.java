@@ -23,6 +23,8 @@ import static origine_mundi.OmUtil.getMidiDevice;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
 import origine_mundi.sampler.RecordThread;
 import static la.clamor.Constantia.getAudioFormat;
+import la.clamor.forma.FormaLegibilis;
+import la.clamor.forma.MonoOut;
 import static origine_mundi.OmUtil.MU500;
 import static origine_mundi.archive.ArchiveUtil.toDodeciString;
 
@@ -73,7 +75,8 @@ public class Archiver {
         //final int channel = 0;
         OmUtil.playNote(receiver, channel, note, velocity, ms);
     }
-    public void archive(int channel, int note, int velocity) throws InvalidMidiDataException, InterruptedException{
+    public void archive(boolean drum, int note, int velocity) throws InvalidMidiDataException, InterruptedException{
+        int channel = drum?9:0;
         File file = record(channel, note, velocity);
         String name = file.getName().substring(0, file.getName().indexOf(".raw"));
         File lima     = new File(file.getParentFile(), name + ".lima");
@@ -82,20 +85,19 @@ public class Archiver {
         FunctionesLimae.trim(lima, new Aestimatio(0.01));
         LectorLimam ll = new LectorLimam(lima);
         ScriptorWav sw = new ScriptorWav(out_file, format);
-        sw.scribo(ll, false);
+        sw.scribo(drum?new FormaLegibilis(ll, new MonoOut()):ll, false);
         ll.close();
         file.delete();
         lima.delete();
     }
     public static void archive_all(String midi_out, String machine, String sound, boolean drum, Integers range, Integers velocity) throws Exception{
-        int channel = drum?9:0;
         //File dir = new File("/Users/mina/drive/doc/origine_mundi/archive/");
         File dir = new File("D:/origine_mundi/archive/" + machine + "/" + sound);
         dir.mkdirs();
         Archiver a = new Archiver(midi_out, getAudioFormat(48000, 2, 2), dir);
         for(int i:range){ 
             for(int j:velocity){
-                a.archive(channel, i, j);
+                a.archive(drum, i, j);
             }
         }
         a.terminate();

@@ -37,11 +37,14 @@ public class ArchiveLudior extends TreeMap<Integer, TreeSet<Integer>> implements
     }
 
     @Override
+    public Legibilis capioNotum(int octave, int note, double diuturnitas, Velocitas velocitas){
+        return capioNotum(octave * 12 + note, diuturnitas, velocitas);
+    }
+    @Override
     public Legibilis capioNotum(int note, double diuturnitas, Velocitas velocity) {
         return capioNotum(note, diuturnitas, velocity.capio(0));
     }
     public ArchiveNote capioNotum(int note, double diuturnitas, Punctum velocity) {
-        note += 60;
         if(!containsKey(note)){
             throw new IllegalArgumentException("note inexists:" + note);
         }
