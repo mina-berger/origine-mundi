@@ -82,7 +82,7 @@ public class Archiver {
         File lima     = new File(file.getParentFile(), name + ".lima");
         File out_file = new File(file.getParentFile(), name + ".wav");
         AudioFormat format = FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), false, true);
-        FunctionesLimae.trim(lima, new Aestimatio(0.01));
+        FunctionesLimae.trim(lima, new Aestimatio(0.02));
         LectorLimam ll = new LectorLimam(lima);
         ScriptorWav sw = new ScriptorWav(out_file, format);
         sw.scribo(drum?new FormaLegibilis(ll, new MonoOut()):ll, false);
@@ -106,11 +106,11 @@ public class Archiver {
     public static void main(String[] args) throws Exception{
         Integers r_piano = Integers.getSequence(21, 108, true);
         Integers r_drum = Integers.getSequence(13, 84, true);
-        Integers r_test = new Integers(40);
+        Integers r_test = new Integers(51);
         
         Integers v_full = new Integers(39, 47, 55, 63, 71, 79, 87, 95, 103, 111, 119, 127);
         Integers v_drum = new Integers(63, 79, 95, 111, 127);
-        Integers v_test = new Integers(39, 127);
+        Integers v_test = new Integers(63);
         //OmUtil.playNote(receiver, channel, note, velocity, ms);
         //archive_all(US_122,  "m3r", "sparkles", false);
         archive_all(MU500[0],  "mu500r", "drum_basic", true, r_drum, v_drum);
