@@ -12,6 +12,7 @@ import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.SineOscillatio;
 import la.clamor.Punctum;
+import origine_mundi.OmUtil;
 
 /**
  *
@@ -73,7 +74,11 @@ public class DeindeTest {
         //sw.scribo(new Resampler(legibilis, Constantia.REGULA_EXAMPLI_D, Constantia.REGULA_EXAMPLI_D / 2), false);
         //sw.scribo(legibilis, false);
         //Functiones.ludoLimam(out_file);
-        Functiones.ludoLimam(new File("/Users/mina/Music/iTunes/iTunes Media/Music/Johann Sebastian Bach/Die Weltlichen Kantaten/6-12 BWV0212-2 Mer hahn en neue Oberkeet.mp3"));
+        File out_file;
+        out_file = new File(OmUtil.getDirectory("sample/"), "Opus021_0.wav");
+        Functiones.ludoLimam(out_file);
+        out_file = new File(OmUtil.getDirectory("sample/"), "Opus021_1.wav");
+        Functiones.ludoLimam(out_file);
 
     }
     public static void __main(String[] args){

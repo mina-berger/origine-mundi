@@ -3,7 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package la.clamor;
+package origine_mundi.deprec.sampler;
+
+import la.clamor.Aestimatio;
+import la.clamor.Envelope;
+import la.clamor.Functiones;
+import la.clamor.Legibilis;
+import la.clamor.Punctum;
 
 /**
  *

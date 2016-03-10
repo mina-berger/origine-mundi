@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package origine_mundi.sampler;
+package origine_mundi.deprec.sampler;
 import javax.sound.sampled.*;
 import java.io.*;
 import la.clamor.Functiones;

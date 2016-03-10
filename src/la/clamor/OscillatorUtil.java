@@ -294,8 +294,8 @@ public class OscillatorUtil {
         //sw.scribo(cns, false);
         //sw.scribo(new FIRFilterDeinde(cns, 1000, 500, true), false);
         sw.scribo(new Legibilis() {
-            FIRFilter f1 = new FIRFilter(500);
-            FIRFilter f2 = new FIRFilter(500);
+            FIRFilter f1 = new FIRFilter(500, 1000, true);
+            FIRFilter f2 = new FIRFilter(500, 1000, true);
             int index = 0;
             @Override
             public Punctum lego() {

@@ -6,6 +6,7 @@
 
 package la.clamor.opus;
 
+import java.util.ArrayList;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -16,7 +17,7 @@ import java.util.TreeMap;
 public class Taleae {
     TreeMap<Integer, Double> map_comitis;
     TreeMap<Double, Rapidus> map_rapidi;
-    public Taleae(Comes[] comites, Rapidus[] rapidi){
+    public Taleae(ArrayList<Comes> comites, ArrayList<Rapidus> rapidi){
         map_comitis = new TreeMap<>();
         for(Comes comes:comites){
             map_comitis.put(comes.talea, comes.comes);

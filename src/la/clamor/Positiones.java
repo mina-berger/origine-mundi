@@ -1,7 +1,6 @@
 package la.clamor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import static la.clamor.Constantia.CHANNEL;
 import la.clamor.Constantia.Unda;
 import la.clamor.Constantia.Res;

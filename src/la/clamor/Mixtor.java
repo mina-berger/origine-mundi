@@ -1,50 +1,80 @@
 package la.clamor;
 
 import java.util.TreeMap;
+import la.clamor.forma.CadentesFormae;
 
-public abstract class Mixtor implements Legibilis {
-    TreeMap<Integer, Legibilis> legibiles = new TreeMap<>();
-    public void ponoLegibilem(int id, Legibilis legibilem){
-        legibiles.put(id, legibilem);
+public class Mixtor implements Legibilis {
+
+    private final TreeMap<Integer, TrackInfo> tracks;
+
+    private long index;
+
+    public Mixtor() {
+        tracks = new TreeMap<>();
+        index = 0;
     }
-    protected abstract Punctum capioPan(int id);
+
+    private TrackInfo capioTrack(int id, boolean creo) {
+        if (!tracks.containsKey(id)) {
+            if (!creo) {
+                throw new IllegalArgumentException("no track:" + id);
+            }
+            tracks.put(id, new TrackInfo());
+        }
+        return tracks.get(id);
+    }
+
+    public void ponoLegibilem(int id, Legibilis legibilem) {
+        capioTrack(id, true).fons = legibilem;
+    }
+
+    public void ponoInitialPan(int id, Punctum pan) {
+        Envelope envelope = new Envelope();
+        envelope.ponoPunctum(0, pan);
+        capioTrack(id, true).panes = envelope;
+    }
+
+    public void ponoPan(int id, double temps, Punctum pan) {
+        capioTrack(id, false).panes.ponoPunctum(temps, pan);
+    }
+
+    protected Punctum capioPan(int id, long index) {
+        return capioTrack(id, false).panes.capioPunctum(index);
+    }
+
     @Override
     public void close() {
-        for(Integer id:legibiles.keySet()){
-            legibiles.get(id).close();
+        for (Integer id : tracks.keySet()) {
+            tracks.get(id).fons.close();
         }
-        
     }
+
     @Override
-    public Punctum lego(){
+    public Punctum lego() {
         Punctum punctum = new Punctum();
-        for(Integer id:legibiles.keySet()){
-            Legibilis legibilis = legibiles.get(id);
-            if(!legibilis.paratusSum()){
+        for (Integer id : tracks.keySet()) {
+            Legibilis legibilis = capioTrack(id, false).fons;
+            if (!legibilis.paratusSum()) {
                 continue;
             }
             Punctum lectum = legibilis.lego();
-            lectum = lectum.multiplico(capioPan(id));
+            lectum = lectum.multiplico(capioPan(id, index));
             punctum = punctum.addo(lectum);
             //System.out.println("DEBUG:" + id + ":" + capioPan(id) + ":" + lectum + ":" + punctum);
         }
+        index++;
         return punctum;
     }
+
     @Override
     public boolean paratusSum() {
-        return legibiles.keySet().stream().anyMatch((id) -> (legibiles.get(id).paratusSum()));
+        return tracks.keySet().stream().anyMatch((id) -> (tracks.get(id).fons.paratusSum()));
     }
-    public static class MixtorFixus extends Mixtor {
-        TreeMap<Integer, Punctum> panes = new TreeMap<>();
 
-        public void ponoPan(int id, Punctum pan) {
-            //System.out.println("DEBUG:" + pan);
-            panes.put(id, pan);
-        }
-        @Override
-        protected Punctum capioPan(int id) {
-            return panes.get(id);
-        }
+    private class TrackInfo {
 
+        Legibilis fons = null;
+        Envelope panes = null;
+        //CadentesFormae formae = null;
     }
 }

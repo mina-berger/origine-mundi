@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package origine_mundi.sampler;
+package origine_mundi.deprec.sampler;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,13 +11,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeSet;
 import la.clamor.Consilium;
-import la.clamor.EnvelopeFilter;
 import la.clamor.Functiones;
 import la.clamor.io.FunctionesLimae;
 import la.clamor.io.LectorLimam;
 import la.clamor.Aestimatio;
 import la.clamor.Legibilis;
-import la.clamor.PunctaTalearum;
 import la.clamor.Punctum;
 import la.clamor.io.ScriptorWav;
 import la.clamor.Talea;

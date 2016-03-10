@@ -11,7 +11,7 @@ import la.clamor.Punctum;
 import la.clamor.Aestimatio;
 import la.clamor.Envelope;
 import la.clamor.Talea;
-import origine_mundi.sampler.Desktop;
+import origine_mundi.deprec.sampler.Desktop;
 import com.mina.util.Integers;
 import origine_mundi.MidiMachines;
 import origine_mundi.deprec.FilterInfo;
@@ -23,8 +23,8 @@ import origine_mundi.ludior.Expression;
 import origine_mundi.ludior.Iunctum;
 import origine_mundi.ludior.Tempus;
 import origine_mundi.machine.D_110;
-import origine_mundi.sampler.LegibilisLusa;
-import origine_mundi.sampler.LimaLusa;
+import origine_mundi.deprec.sampler.LegibilisLusa;
+import origine_mundi.deprec.sampler.LimaLusa;
 
 /**
  *

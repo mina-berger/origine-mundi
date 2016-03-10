@@ -122,11 +122,11 @@ public class Oscillator implements Instrument {
         });
     }
     @Override
-    public Legibilis capioNotum(int octave, int note, double diuturnitas, Velocitas velocitas){
-        return capioNotum(octave * 12 + note, diuturnitas, velocitas);
+    public Legibilis capioNotum(int octave, double note, double diuturnitas, Velocitas velocitas){
+        return capioNotum((double)octave * 12. + note, diuturnitas, velocitas);
     }
     @Override
-    public Legibilis capioNotum(int note, double diuturnitas, Velocitas velocitas){
+    public Legibilis capioNotum(double note, double diuturnitas, Velocitas velocitas){
         return capioOscillationes(new Punctum(Temperamentum.instance.capioHZ(note)), diuturnitas, velocitas);
     }
     public Oscillationes capioOscillationes(Punctum frequentia, double diuturnitas, Velocitas velocitas) {

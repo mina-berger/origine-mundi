@@ -28,9 +28,9 @@ public class FIRFilter implements Forma {
     double[] b;
     private final OrbisPuncti oa;
 
-    public FIRFilter(double range) {
-        this(range, LPF, 1000, 1000);
-    }
+    //public FIRFilter(double range) {
+    //    this(range, LPF, 1000, 1000);
+    //}
     public FIRFilter(double range, double freq, boolean is_lpf) {
         this(range, is_lpf?LPF:HPF, freq, freq);
     }

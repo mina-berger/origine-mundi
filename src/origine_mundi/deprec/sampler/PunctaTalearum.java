@@ -3,10 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package la.clamor;
+package origine_mundi.deprec.sampler;
 
 import la.clamor.deinde.bk.PositionesDeprec;
 import java.util.HashMap;
+import la.clamor.ExceptioClamoris;
+import la.clamor.Functiones;
+import la.clamor.Punctum;
+import la.clamor.Talea;
 import origine_mundi.ludior.Tempus;
 
 /**

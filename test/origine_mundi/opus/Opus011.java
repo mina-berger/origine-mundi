@@ -16,7 +16,7 @@ import la.clamor.Envelope;
 import la.clamor.deinde.bk.OscillatioDeprec;
 import la.clamor.deinde.bk.PositionesDeprec;
 import la.clamor.PositionesOscillationis;
-import la.clamor.PunctaTalearum;
+import origine_mundi.deprec.sampler.PunctaTalearum;
 import la.clamor.Punctum;
 import la.clamor.io.ScriptorLimam;
 import la.clamor.Talea;
@@ -24,7 +24,7 @@ import origine_mundi.deprec.MoraDeprec;
 import com.mina.util.Integers;
 import origine_mundi.MidiMachines;
 import origine_mundi.OmUtil;
-import origine_mundi.sampler.EffectorInfo.ChorusInfo;
+import origine_mundi.deprec.sampler.EffectorInfo.ChorusInfo;
 import origine_mundi.deprec.FilterInfo;
 import origine_mundi.deprec.FilterInfo.ThruInfo;
 import origine_mundi.ludior.BrevFactory;
@@ -35,9 +35,9 @@ import origine_mundi.ludior.Iunctum;
 import origine_mundi.ludior.Tempus;
 import origine_mundi.machine.D_110;
 import origine_mundi.machine.K_01RW;
-import origine_mundi.sampler.Desktop;
-import origine_mundi.sampler.LegibilisLusa;
-import origine_mundi.sampler.LimaLusa;
+import origine_mundi.deprec.sampler.Desktop;
+import origine_mundi.deprec.sampler.LegibilisLusa;
+import origine_mundi.deprec.sampler.LimaLusa;
 
 /**
  *

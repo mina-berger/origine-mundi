@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package origine_mundi.sampler;
+package origine_mundi.deprec.sampler;
 
 import la.clamor.Aestimatio;
 import la.clamor.Envelope;

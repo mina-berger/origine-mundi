@@ -20,28 +20,30 @@ import origine_mundi.OmUtil;
  * @author mina
  */
 public class CadentesFormae extends ArrayList<Forma> {
-    
-    public CadentesFormae(Forma... formae){
+
+    public CadentesFormae(Forma... formae) {
         addAll(Arrays.asList(formae));
     }
-    
-    public Legibilis capioLegibilis(Legibilis fons){
+
+    public Legibilis capioLegibilis(Legibilis fons) {
         Legibilis l = fons;
-        for(Forma forma:this){
+        for (Forma forma : this) {
             l = new FormaLegibilis(l, forma);
         }
         return l;
     }
-     public static void main(String[] args){
+
+    public static void main(String[] args) {
         File out_file = new File(OmUtil.getDirectory("opus"), "cadentes.wav");
-         
+
         ScriptorWav sl = new ScriptorWav(out_file);
         CadentesFormae cf = new CadentesFormae(
             new Distortion(new Punctum(1), new Punctum(1.1), new Punctum(1)),
             new Chorus(new Punctum(1), new Punctum(3), new Punctum(1), new Punctum(1, -1)));
-        sl.scribo(cf.capioLegibilis(new Legibilis(){
+        sl.scribo(cf.capioLegibilis(new Legibilis() {
             SineOscillatio o = new SineOscillatio();
-            int count= 0;
+            int count = 0;
+
             @Override
             public Punctum lego() {
                 count++;
@@ -57,8 +59,8 @@ public class CadentesFormae extends ArrayList<Forma> {
             public void close() {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
-        }), false);        
+        }), false);
         Functiones.ludoLimam(out_file);
-    }    
-    
+    }
+
 }
