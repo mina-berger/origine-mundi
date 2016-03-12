@@ -10,8 +10,12 @@ package la.clamor;
  * @author mina
  */
 public interface Instrument {
-    public Legibilis capioNotum(double note, double diuturnitas, Velocitas velocitas);
-    public Legibilis capioNotum(int octave, double note, double diuturnitas, Velocitas velocitas);
-    
+
+    //public Legibilis capioNotum(double note, double diuturnitas, Velocitas velocitas);
+
+    //public Legibilis capioNotum(int octave, double note, double diuturnitas, Velocitas velocitas);
+    public Legibilis capioNotum(double note, double temps, Velocitas velocitas);
+
     public String getName();
+
 }

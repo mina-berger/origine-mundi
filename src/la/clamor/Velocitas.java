@@ -6,8 +6,7 @@
 
 package la.clamor;
 
-import java.util.HashMap;
-import la.clamor.Punctum;
+import java.util.TreeMap;
 
 /**
  *
@@ -17,32 +16,29 @@ public class Velocitas {
     Punctum primo;
     VelocitasMap map;
     //boolean unus_est;
-    public static Velocitas una(double velocitas){
-        Velocitas v = new Velocitas();
-        v.primo = new Punctum(velocitas);
-        v.map = new VelocitasMap();
-        return v;
+    public Velocitas(double primo_value){
+        this(new Punctum(primo_value));
     }
-    public static Velocitas multae(double velocitas, VelocitasMap map){
-        Velocitas v = new Velocitas();
-        v.primo = new Punctum(velocitas);
-        v.map = map;
-        return v;
+    public Velocitas(Punctum primo){
+        this.primo = primo;
+        map = new VelocitasMap();
     }
-    /*@Deprecated
-    public static Velocitas multae(Aestimatio[] velocitatis){
-        Velocitas v = new Velocitas();
-        v.primo = new Punctum(velocitatis[0]);
-        v.map = new VelocitasMap();
-        if(velocitatis.length <= 1){
-            for(int i = 1;i < velocitatis.length;i++){
-                v.map.put(i - 1, new Punctum(velocitatis[i]));
-            }
+    public Velocitas pono(int index, Punctum velocitas){
+        map.put(index, velocitas);
+        return this;
+    }
+    public Velocitas pono(int index, double velocitas){
+        map.put(index, new Punctum(velocitas));
+        return this;
+    }
+    public Velocitas multiplico(double value){
+        Velocitas v = new Velocitas(primo.multiplico(value));
+        for(Integer i:map.keySet()){
+            v.pono(i, map.get(i).multiplico(value));
         }
         return v;
-    }*/
-    public static class VelocitasMap extends HashMap<Integer, Punctum> {
-        
+    }
+    public static class VelocitasMap extends TreeMap<Integer, Punctum> {
     }
     public Punctum capio(Integer index){
         if(map.containsKey(index)){

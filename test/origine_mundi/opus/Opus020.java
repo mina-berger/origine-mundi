@@ -43,14 +43,14 @@ public class Opus020 extends Mensa {
         ponoInstrument(0, new Punctum(1, 1.0), new Oscillator("epiano"));
                 
         for(int i = 0;i < count;i++){
-            ludo(0, i, 0.0, 0.5, i + 65,  Velocitas.una(1));
-            ludo(0, i, 0.5, 0.5, i + 69,  Velocitas.una(1));
-            ludo(0, i, 1.0, 0.5, i + 72, Velocitas.una(1));
-            ludo(0, i, 1.5, 0.5, i + 76, Velocitas.una(1));
-            ludo(0, i, 2.0, 0.5, i + 79, Velocitas.una(1));
-            ludo(0, i, 2.5, 0.5, i + 76, Velocitas.una(1));
-            ludo(0, i, 3.0, 0.5, i + 72, Velocitas.una(1));
-            ludo(0, i, 3.5, 0.5, i + 69,  Velocitas.una(1));
+            ludo(0, i, 0.0, 0.5, i + 65,  new Velocitas(1));
+            ludo(0, i, 0.5, 0.5, i + 69,  new Velocitas(1));
+            ludo(0, i, 1.0, 0.5, i + 72, new Velocitas(1));
+            ludo(0, i, 1.5, 0.5, i + 76, new Velocitas(1));
+            ludo(0, i, 2.0, 0.5, i + 79, new Velocitas(1));
+            ludo(0, i, 2.5, 0.5, i + 76, new Velocitas(1));
+            ludo(0, i, 3.0, 0.5, i + 72, new Velocitas(1));
+            ludo(0, i, 3.5, 0.5, i + 69,  new Velocitas(1));
         }
     }
 

@@ -75,9 +75,11 @@ public class DeindeTest {
         //sw.scribo(legibilis, false);
         //Functiones.ludoLimam(out_file);
         File out_file;
-        out_file = new File(OmUtil.getDirectory("sample/"), "Opus021_0.wav");
-        Functiones.ludoLimam(out_file);
-        out_file = new File(OmUtil.getDirectory("sample/"), "Opus021_1.wav");
+        //out_file = new File(OmUtil.getDirectory("sample/"), "Opus021_0.wav");
+        //Functiones.ludoLimam(out_file);
+        //out_file = new File(OmUtil.getDirectory("sample/"), "Opus021_1.wav");
+        //Functiones.ludoLimam(out_file);
+        out_file = new File(OmUtil.getDirectory("sample/"), "Opus021_2.wav");
         Functiones.ludoLimam(out_file);
 
     }

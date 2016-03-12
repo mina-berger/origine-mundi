@@ -2,7 +2,6 @@ package la.clamor;
 
 import la.clamor.io.ScriptorWav;
 import java.io.File;
-import java.io.IOException;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import static la.clamor.Constantia.CHANNEL;
@@ -122,22 +121,16 @@ public class Oscillator implements Instrument {
         });
     }
     @Override
-    public Legibilis capioNotum(int octave, double note, double diuturnitas, Velocitas velocitas){
-        return capioNotum((double)octave * 12. + note, diuturnitas, velocitas);
+    public Legibilis capioNotum(double note, double temps, Velocitas velocitas){
+        return capioOscillationes(
+            new Punctum(Temperamentum.instance.capioHZ(note)), temps, velocitas);
     }
-    @Override
-    public Legibilis capioNotum(double note, double diuturnitas, Velocitas velocitas){
-        return capioOscillationes(new Punctum(Temperamentum.instance.capioHZ(note)), diuturnitas, velocitas);
-    }
-    public Oscillationes capioOscillationes(Punctum frequentia, double diuturnitas, Velocitas velocitas) {
+    public Oscillationes capioOscillationes(Punctum frequentia, double temps, Velocitas velocitas) {
         Oscillationes oscillationes = new Oscillationes(acies_iugorum.length);
         for (OscillatorSettings acies_iugorum1 : acies_iugorum) {
-            PositionesFixi p = capioPositionesFixi(acies_iugorum1, frequentia, diuturnitas, velocitas);
-            //System.out.println(p);
+            PositionesFixi p = capioPositionesFixi(acies_iugorum1, frequentia, temps, velocitas);
             oscillationes.add(new Oscillatio(p));
         }
-        //System.out.println(oscillationes.size());
-        //System.out.println(oscillationes.paratusSum());
         return oscillationes;
     }
 
@@ -264,13 +257,13 @@ public class Oscillator implements Instrument {
         double g = Temperamentum.instance.capioHZ(79);
         double b = Temperamentum.instance.capioHZ(83);
         Consilium cns = new Consilium();
-        cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, Velocitas.una(1)));
-        /*cns.addo(   0, osc.capioOscillationes(new Punctum(f), 5000, Velocitas.una(1)));
-        cns.addo( 500, osc.capioOscillationes(new Punctum(a), 5500, Velocitas.una(1)));
-        cns.addo(1000, osc.capioOscillationes(new Punctum(c), 6000, Velocitas.una(1)));
-        cns.addo(1500, osc.capioOscillationes(new Punctum(e), 6500, Velocitas.una(1)));
-        cns.addo(2000, osc.capioOscillationes(new Punctum(g), 7000, Velocitas.una(1)));
-        cns.addo(2500, osc.capioOscillationes(new Punctum(b), 7500, Velocitas.una(1)));
+        cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, new Velocitas(1)));
+        /*cns.addo(   0, osc.capioOscillationes(new Punctum(f), 5000, new Velocitas(1)));
+        cns.addo( 500, osc.capioOscillationes(new Punctum(a), 5500, new Velocitas(1)));
+        cns.addo(1000, osc.capioOscillationes(new Punctum(c), 6000, new Velocitas(1)));
+        cns.addo(1500, osc.capioOscillationes(new Punctum(e), 6500, new Velocitas(1)));
+        cns.addo(2000, osc.capioOscillationes(new Punctum(g), 7000, new Velocitas(1)));
+        cns.addo(2500, osc.capioOscillationes(new Punctum(b), 7500, new Velocitas(1)));
          */
         File out_file = new File(OmUtil.getDirectory("opus"), "oscillatior.wav");
         ScriptorWav sw = new ScriptorWav(out_file);

@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import la.clamor.Consilium;
 import la.clamor.Functiones;
 import la.clamor.Instrument;
+import la.clamor.Ludum;
 import la.clamor.Mixtor;
 import la.clamor.Velocitas;
 import la.clamor.Punctum;
@@ -27,6 +28,37 @@ import org.junit.Before;
 import org.junit.Test;
 import origine_mundi.OmUtil;
 import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
 
 /**
  *
@@ -36,6 +68,7 @@ public abstract class Mensa implements ConstantiaOperis {
 
     TreeMap<Integer, Instrument> instruments;
     TreeMap<Integer, Consilium> consilia;
+    TreeMap<Integer, Humanizer> humanizers;
     Mixtor mixtor;
     Taleae taleae;
     String nomen;
@@ -61,6 +94,7 @@ public abstract class Mensa implements ConstantiaOperis {
         this.lusurus = lusurus;
         instruments = new TreeMap<>();
         consilia = new TreeMap<>();
+        humanizers = new TreeMap<>();
         mixtor = new Mixtor();
         talea_ab = null;
         talea_ad = null;
@@ -104,6 +138,12 @@ public abstract class Mensa implements ConstantiaOperis {
         mixtor.ponoInitialPan(id, pan);
     }
 
+    public void ponoHumanizer(Humanizer humanizer, int... ids) {
+        for (int id : ids) {
+            humanizers.put(id, humanizer);
+        }
+    }
+
     public String capioNomen() {
         return nomen == null ? getClass().getSimpleName() : nomen;
     }
@@ -119,25 +159,33 @@ public abstract class Mensa implements ConstantiaOperis {
     protected abstract void creo();
 
     protected void ludo(int id, int talea, double repenso, double diutius, double clevis, Velocitas velocitas) {
-        /*Causa c = CT(talea, repenso);
-        if ((talea_ab != null && ConstantiaOperis.compare(c, talea_ab) < 0)
-            || (talea_ad != null && ConstantiaOperis.compare(talea_ad, c) < 0)
-            || (!track_list.isEmpty() && !track_list.contains(id))) {
-            return;
-        }*/
-        if(!inRange(id, talea, repenso)){
+        if (!inRange(id, talea, repenso)) {
             return;
         }
         if (!instruments.containsKey(id)) {
             throw new IllegalArgumentException(String.format("Instrument is unset for track(%s)", id));
         }
+        Ludum ludum;
+        if (humanizers.containsKey(id)) {
+            ludum = humanizers.get(id).humanize(taleae, talea, repenso, diutius, clevis, velocitas);
+        } else {
+            ludum = new Ludum(talea, repenso, clevis, diutius, velocitas);
+        }
+        //taleae.capioTempus(talea, repenso + diutius) - taleae.capioTempus(talea, repenso), 
+        double temp
+            = taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso() + ludum.capioDiuturnitas())
+            - taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso());
+        consilia.get(id).addo(taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso()),
+            instruments.get(id).capioNotum(ludum.capioNote(), temp, ludum.capioVelocitas()));
+        /*
         consilia.get(id).addo(taleae.capioTempus(talea, repenso),
-            instruments.get(id).capioNotum(clevis,
+            instruments.get(id).capioNotum(new Ludum(talea, repenso, clevis,
             taleae.capioTempus(talea, repenso + diutius) - taleae.capioTempus(talea, repenso),
-            velocitas));
+            velocitas)));*/
     }
+
     public void ponoPan(int id, int talea, double repenso, Punctum pan) {
-        if(!inRange(id, talea, repenso)){
+        if (!inRange(id, talea, repenso)) {
             return;
         }
         if (!instruments.containsKey(id)) {

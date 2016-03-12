@@ -11,6 +11,7 @@ import java.io.IOException;
 import la.clamor.Consilium;
 import la.clamor.Functiones;
 import la.clamor.Instrument;
+import la.clamor.Ludum;
 import la.clamor.io.ScriptorWav;
 import la.clamor.Velocitas;
 import origine_mundi.OmUtil;
@@ -45,41 +46,42 @@ public class Demo {
         double interval = 150;
         double current = 0;
         for(int note:notes){
-            cns.addo(current, inst.capioNotum(note, interval, Velocitas.una(0.2)));
+            cns.addo(current, inst.capioNotum(note, interval, new Velocitas(0.2)));
             current += interval;
         }
         for(int note:notes){
-            cns.addo(current, inst.capioNotum(note + 1, interval, Velocitas.una(0.6)));
+            cns.addo(current, inst.capioNotum(note + 1, interval, new Velocitas(0.6)));
             current += interval;
         }
         for(int note:notes){
-            cns.addo(current, inst.capioNotum(note + 2, interval, Velocitas.una(1)));
+            cns.addo(current, inst.capioNotum(note + 2, interval, new Velocitas(1)));
             current += interval;
         }
         interval *= 8;
-        cns.addo(current, inst.capioNotum(-24 + 3, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(-12 + 10, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(3, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(7, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(10, interval, Velocitas.una(1)));
+        cns.addo(current, inst.capioNotum(-24 + 3, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(-12 + 10, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(3, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(7, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(10, interval, new Velocitas(1)));
         current += interval;
-        cns.addo(current, inst.capioNotum(-24 + 10, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(-12 + 10, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(2, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(8, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(10, interval, Velocitas.una(1)));
+        cns.addo(current, inst.capioNotum(-24 + 10, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(-12 + 10, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(2, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(8, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(10, interval, new Velocitas(1)));
         current += interval;
         //interval *= 10;
-        cns.addo(current, inst.capioNotum(-24 + 11, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(-12 + 10, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(3, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(6, interval, Velocitas.una(1)));
-        cns.addo(current, inst.capioNotum(10, interval, Velocitas.una(1)));
+        cns.addo(current, inst.capioNotum(-24 + 11, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(-12 + 10, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(3, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(6, interval, new Velocitas(1)));
+        cns.addo(current, inst.capioNotum(10, interval, new Velocitas(1)));
         
         File out_file = new File(OmUtil.getDirectory("opus"), "demo_" + inst.getName() + ".wav");
         ScriptorWav sw = new ScriptorWav(out_file);
 
         sw.scribo(cns, false);
+        cns.close();
         //sw.scribo(new FIRFilterDeinde(cns, 3000, 500, true), false);
         Functiones.ludoLimam(out_file);
     }

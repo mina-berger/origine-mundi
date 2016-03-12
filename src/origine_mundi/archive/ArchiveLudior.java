@@ -11,6 +11,7 @@ import java.util.TreeSet;
 import la.clamor.Functiones;
 import la.clamor.Instrument;
 import la.clamor.Legibilis;
+import la.clamor.Ludum;
 import la.clamor.Punctum;
 import la.clamor.Velocitas;
 import org.apache.commons.math3.util.FastMath;
@@ -38,14 +39,11 @@ public class ArchiveLudior extends TreeMap<Integer, TreeSet<Integer>> implements
     }
 
     @Override
-    public Legibilis capioNotum(int octave, double note, double diuturnitas, Velocitas velocitas){
-        return capioNotum((double)octave * 12. + note, diuturnitas, velocitas);
+    public Legibilis capioNotum(double note, double temps, Velocitas velocitas) {
+        return capioNotum(note, temps, velocitas.capio(0));
     }
-    @Override
-    public Legibilis capioNotum(double note, double diuturnitas, Velocitas velocity) {
-        return capioNotum(note, diuturnitas, velocity.capio(0));
-    }
-    public ArchiveNote capioNotum(double note, double diuturnitas, Punctum velocity) {
+    public ArchiveNote capioNotum(double note, double temps, Punctum velocity) {
+        System.out.println(velocity);
         int i_note = (int)FastMath.round(note);
         if(!containsKey(i_note)){
             throw new IllegalArgumentException("note inexists:" + i_note);
@@ -60,13 +58,13 @@ public class ArchiveLudior extends TreeMap<Integer, TreeSet<Integer>> implements
             throw new IllegalArgumentException("note inexists:note=" + note + 
                 ":velocity=" + velocity + "(" + i_velocity + ")");
         }
-        String name = ArchiveUtil.getName(i_note, f_velocity);
-        long length = Functiones.adPositio(diuturnitas);
-        File file = new File(dir, name + ".wav");
+        String _name = ArchiveUtil.getName(i_note, f_velocity);
+        long length = Functiones.adPositio(temps);
+        File file = new File(dir, _name + ".wav");
         return new ArchiveNote(file, velocity, length, decay);
     }
     final public void init(){
-        File[] files = dir.listFiles((File dir1, String name) -> name.toLowerCase().matches("^[0-9ab]{2}_[0-9a-f]{2}\\.wav"));
+        File[] files = dir.listFiles((File dir1, String filename) -> filename.toLowerCase().matches("^[0-9ab]{2}_[0-9a-f]{2}\\.wav"));
         for(File file:files){
             String name = file.getName();
             int note     = getNote(name);
