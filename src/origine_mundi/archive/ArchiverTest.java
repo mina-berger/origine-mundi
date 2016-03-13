@@ -11,7 +11,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import origine_mundi.OmUtil;
-import static origine_mundi.OmUtil.US_122;
+import static origine_mundi.OmUtil.MU500;
 import static origine_mundi.OmUtil.getMidiDevice;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
 
@@ -70,11 +70,16 @@ public class ArchiverTest {
     }
     
     public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException, InterruptedException{
-        ArchiverTest test = new ArchiverTest(US_122, 0);
+        OmUtil.printEnv(System.out);
+        ArchiverTest test = new ArchiverTest("2- Yamaha MU500-1", 0);
         test.allNoteoff();
         test.reset();
+        test.program(0, 64, 33);
         test.pan(64);
         test.effect(0, 0, 0, 0, 0);
-        test.playNotes(24, 60, 64, 67, 70);
+        test.playNotes(24);
+        test.playNotes(28);
+        test.playNotes(31);
+        //test.playNotes(24, 60, 64, 67, 70);
     }
 }

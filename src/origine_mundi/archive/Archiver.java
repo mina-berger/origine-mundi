@@ -107,6 +107,7 @@ public class Archiver {
     }
     public static void main(String[] args) throws Exception{
         Integers r_piano = Integers.getSequence(21, 108, true);
+        Integers r_bass = Integers.getSequence(21, 72, true);
         Integers r_drum = Integers.getSequence(13, 84, true);
         Integers r_test = new Integers(51);
         
@@ -115,7 +116,7 @@ public class Archiver {
         Integers v_test = new Integers(63);
         //OmUtil.playNote(receiver, channel, note, velocity, ms);
         //archive_all(US_122,  "m3r", "sparkles", false);
-        archive_all(MU500[0],  "mu500r", "drum_basic", true, r_drum, v_drum);
+        archive_all("2- Yamaha MU500-1",  "mu500r", "bass006433", false, r_bass, v_full);
         //new Archiver(getAudioFormat(48000, 2, 2),  new File("D:/origine_mundi/archive/")).play(60, 127);
     }
 }
