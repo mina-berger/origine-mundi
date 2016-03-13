@@ -28,6 +28,7 @@ import la.clamor.forma.FormaLegibilis;
 import la.clamor.forma.MonoOut;
 import static origine_mundi.OmUtil.MU500;
 import static origine_mundi.archive.ArchiveUtil.toDodeciString;
+import static la.clamor.Constantia.getAudioFormat;
 
 /**
  *

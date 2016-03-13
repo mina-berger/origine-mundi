@@ -29,6 +29,7 @@ import static la.clamor.Constantia.REGULA_EXAMPLI;
 import static la.clamor.Constantia.getAudioFormat;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import static la.clamor.Constantia.getAudioFormat;
 
 public class ScriptorWav implements Constantia {
     public static Log log = LogFactory.getLog(ScriptorWav.class);

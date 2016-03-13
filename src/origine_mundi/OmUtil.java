@@ -24,11 +24,8 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
 import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-import la.clamor.Functiones;
 import la.clamor.Functiones;
 import org.apache.commons.lang3.ArrayUtils;
-import origine_mundi.OmReceiver;
 
 /**
  *
@@ -294,8 +291,8 @@ public class OmUtil {
             receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 91, 40), 1);
             Thread.sleep(1000);
             int[] notes = new int[]{24, 60, 64, 67, 70};
-            playNotes(receiver1, channel, notes, 0, true);
-            playNotes(receiver2, channel, notes, 0, true);
+            playNoteons(receiver1, channel, notes, 0, true);
+            playNoteons(receiver2, channel, notes, 0, true);
             for (int c = 0; c < 5; c++) {
                 for (int p = 0; p < pan.length; p++) {
                     //PAN
@@ -366,8 +363,8 @@ public class OmUtil {
                     //Thread.sleep(100);
                 }
             }
-            playNotes(receiver1, channel, notes, 0, false);
-            playNotes(receiver2, channel, notes, 0, false);
+            playNoteons(receiver1, channel, notes, 0, false);
+            playNoteons(receiver2, channel, notes, 0, false);
         } finally {
             if (receiver1 != null) {
                 receiver1.close();
@@ -400,7 +397,7 @@ public class OmUtil {
         }
 
     }
-    public static void playNotes(Receiver receiver, int channel, int[] notes, int shift, boolean on) throws InvalidMidiDataException, InterruptedException {
+    public static void playNoteons(Receiver receiver, int channel, int[] notes, int shift, boolean on) throws InvalidMidiDataException, InterruptedException {
         for (int i = 0; i < notes.length; i++) {
             ShortMessage note = new ShortMessage();
             note.setMessage(ShortMessage.NOTE_ON, channel, notes[i] + shift, on?90:0);
@@ -570,9 +567,9 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
             receiver1 = device1.getReceiver();
             int channel = 0;
             int[] notes = new int[]{24, 60, 64, 67, 70};
-            playNotes(receiver1, channel, notes, 0, true);
+            playNoteons(receiver1, channel, notes, 0, true);
             Thread.sleep(1000);
-            playNotes(receiver1, channel, notes, 0, false);
+            playNoteons(receiver1, channel, notes, 0, false);
             
         } finally {
             if (receiver1 != null) {

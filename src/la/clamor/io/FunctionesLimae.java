@@ -22,6 +22,7 @@ import la.clamor.Punctum;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import static la.clamor.Constantia.getAudioFormat;
 
 
 public class FunctionesLimae implements Constantia {

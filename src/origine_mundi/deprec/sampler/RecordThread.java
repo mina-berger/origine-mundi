@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import static la.clamor.Constantia.getAudioFormat;
 import origine_mundi.OmException;
 import static origine_mundi.OmUtil.FILETYPE;
+import static la.clamor.Constantia.getAudioFormat;
  
 /**
  * A sample program is to demonstrate how to record sound in Java

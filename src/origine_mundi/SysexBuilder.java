@@ -17,6 +17,10 @@ import static origine_mundi.SysexDataModel.as7bitValues;
 import static origine_mundi.SysexDataModel.as7bitValues;
 import static origine_mundi.SysexDataModel.as7bitValues;
 import static origine_mundi.SysexDataModel.as7bitValues;
+import static origine_mundi.SysexDataModel.as7bitValues;
+import static origine_mundi.SysexDataModel.as7bitValues;
+import static origine_mundi.SysexDataModel.as7bitValues;
+import static origine_mundi.SysexDataModel.as7bitValues;
 
 /**
  *
