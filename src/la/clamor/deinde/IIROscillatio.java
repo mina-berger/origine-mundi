@@ -61,9 +61,9 @@ public class IIROscillatio implements Legibilis {
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new IIROscillatio(
             new PulseOscillatio(), 
-            new Envelope(new Punctum(12000), 
-                new Positio(1000., new Punctum(12000)), 
-                new Positio(2000., new Punctum(10000))
+            new Envelope(new Punctum(10000), 
+                new Positio(500., new Punctum(1200)), 
+                new Positio(2000., new Punctum(100))
             )), false);
         
         Functiones.ludoLimam(out_file);

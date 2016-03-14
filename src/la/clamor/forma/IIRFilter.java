@@ -18,11 +18,13 @@ import static org.apache.commons.math3.util.FastMath.PI;
  */
 public class IIRFilter implements Forma {
 
-    private final OrbisPuncti oa;
+    private final OrbisPuncti oa_a;
+    private final OrbisPuncti oa_b;
     IIRCoefficients coef;
 
     public IIRFilter(double freq, boolean is_lpf) {
-        oa = new OrbisPuncti(3);
+        oa_a = new OrbisPuncti(3);
+        oa_b = new OrbisPuncti(3);
         coef = getCoefficientsLpfHpf(freq, 1.0 / FastMath.sqrt(2.0), is_lpf);
     }
     public void rescribo(double freq, boolean is_lpf) {
@@ -36,15 +38,19 @@ public class IIRFilter implements Forma {
 
     @Override
     public Punctum formo(Punctum lectum) {
-        Punctum p = new Punctum(lectum);
+        Punctum reditum = new Punctum();
+        //for (int i = 1; i < coef.b.length; i++) {
+        //    reditum = reditum.addo(oa_b.capio(i - 1).multiplico(coef.b[i]));
+        //}
         for (int i = 0; i < coef.b.length; i++) {
-            p = p.addo((i == 0 ? lectum : oa.capio(i - 1)).multiplico(coef.b[i]));
+            reditum = reditum.addo((i == 0 ? lectum : oa_b.capio(i - 1)).multiplico(coef.b[i]));
         }
         for (int i = 1; i < coef.a.length; i++) {
-            p = p.addo(oa.capio(i - 1).multiplico(coef.a[i] * -1.0));
+            reditum = reditum.addo(oa_a.capio(i - 1).multiplico(coef.a[i] * -1.0));
         }
-        oa.pono(p);
-        return p;
+        oa_b.pono(lectum);
+        oa_a.pono(reditum);
+        return reditum;
     }
 
     public static IIRCoefficients getCoefficientsBpfBef(double freq1, double freq2, double q, boolean is_bpf) {
