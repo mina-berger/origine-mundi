@@ -11,7 +11,7 @@ import org.apache.commons.math3.util.FastMath;
  * Oscillation with duration specified, but frequency nor volume unspecified
  * @author minae.hiyamae
  */
-public class SineOscillatio implements Constantia {
+public class SineOscillatio implements Referibilis, Constantia {
     double t;
     Punctum y_1;
     Punctum y_2;
@@ -26,6 +26,7 @@ public class SineOscillatio implements Constantia {
         count_buffer = 2;
         
     }
+    @Override
     public Punctum lego(Punctum frequentia, Punctum quantitas) {
         frequentia = (frequentia == null)?new Punctum():frequentia;
         quantitas  = (quantitas  == null)?new Punctum():quantitas;

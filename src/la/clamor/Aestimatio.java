@@ -48,6 +48,10 @@ public class Aestimatio implements Cloneable, Comparable<Aestimatio>, Serializab
     public Aestimatio partior(Aestimatio partitor) {
         return new Aestimatio(value / partitor.value);
     }
+    
+    public Aestimatio resto(Aestimatio partitor) {
+        return new Aestimatio(value % partitor.value);
+    }
 
     public Aestimatio multiplico(Aestimatio multiplicator) {
         return new Aestimatio(value * multiplicator.value);

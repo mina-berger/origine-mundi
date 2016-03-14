@@ -1,17 +1,18 @@
 package la.clamor;
 
 import java.util.TreeMap;
-import la.clamor.forma.CadentesFormae;
 
 public class Mixtor implements Legibilis {
 
     private final TreeMap<Integer, TrackInfo> tracks;
+    private Envelope levels = null;
 
     private long index;
 
     public Mixtor() {
         tracks = new TreeMap<>();
         index = 0;
+        levels = new Envelope(true);
     }
 
     private TrackInfo capioTrack(int id, boolean creo) {
@@ -28,18 +29,22 @@ public class Mixtor implements Legibilis {
         capioTrack(id, true).fons = legibilem;
     }
 
-    public void ponoInitialPan(int id, Punctum pan) {
+    public void ponoInitialLevel(int id, Punctum pan) {
         Envelope envelope = new Envelope();
         envelope.ponoPunctum(0, pan);
-        capioTrack(id, true).panes = envelope;
+        capioTrack(id, true).levels = envelope;
     }
 
-    public void ponoPan(int id, double temps, Punctum pan) {
-        capioTrack(id, false).panes.ponoPunctum(temps, pan);
+    public void ponoLevel(int id, double temps, Punctum pan) {
+        capioTrack(id, false).levels.ponoPunctum(temps, pan);
     }
 
-    protected Punctum capioPan(int id, long index) {
-        return capioTrack(id, false).panes.capioPunctum(index);
+    protected Punctum capioLevel(int id, long index) {
+        return capioTrack(id, false).levels.capioPunctum(index);
+    }
+    
+    protected Punctum capioMasterLevel(long index) {
+        return levels.capioPunctum(index);
     }
 
     @Override
@@ -58,10 +63,11 @@ public class Mixtor implements Legibilis {
                 continue;
             }
             Punctum lectum = legibilis.lego();
-            lectum = lectum.multiplico(capioPan(id, index));
+            lectum = lectum.multiplico(capioLevel(id, index));
             punctum = punctum.addo(lectum);
             //System.out.println("DEBUG:" + id + ":" + capioPan(id) + ":" + lectum + ":" + punctum);
         }
+        punctum = punctum.multiplico(capioMasterLevel(index));
         index++;
         return punctum;
     }
@@ -74,7 +80,7 @@ public class Mixtor implements Legibilis {
     private class TrackInfo {
 
         Legibilis fons = null;
-        Envelope panes = null;
+        Envelope levels = null;
         //CadentesFormae formae = null;
     }
 }

@@ -28,6 +28,21 @@ import org.junit.Before;
 import org.junit.Test;
 import origine_mundi.OmUtil;
 import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
+import static la.clamor.opus.ConstantiaOperis.CT;
 
 /**
  *
@@ -104,7 +119,7 @@ public abstract class Mensa implements ConstantiaOperis {
         instruments.put(id, inst);
         consilia.putIfAbsent(id, new Consilium());
         mixtor.ponoLegibilem(id, cf == null ? consilia.get(id) : cf.capioLegibilis(consilia.get(id)));
-        mixtor.ponoInitialPan(id, pan);
+        mixtor.ponoInitialLevel(id, pan);
     }
 
     public void ponoHumanizer(Humanizer humanizer, int... ids) {
@@ -153,14 +168,14 @@ public abstract class Mensa implements ConstantiaOperis {
             velocitas)));*/
     }
 
-    public void ponoPan(int id, int talea, double repenso, Punctum pan) {
+    public void ponoLevel(int id, int talea, double repenso, Punctum pan) {
         if (!inRange(id, talea, repenso)) {
             return;
         }
         if (!instruments.containsKey(id)) {
             throw new IllegalArgumentException(String.format("Instrument is unset for track(%s)", id));
         }
-        mixtor.ponoPan(id, taleae.capioTempus(talea, repenso), pan);
+        mixtor.ponoLevel(id, taleae.capioTempus(talea, repenso), pan);
     }
 
     private boolean inRange(int id, int talea, double repenso) {
