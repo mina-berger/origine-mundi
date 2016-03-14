@@ -116,7 +116,8 @@ public class Archiver {
         Integers v_test = new Integers(63);
         //OmUtil.playNote(receiver, channel, note, velocity, ms);
         //archive_all(US_122,  "m3r", "sparkles", false);
-        archive_all("2- Yamaha MU500-1",  "mu500r", "bass006433", false, r_bass, v_full);
+        archive_all("Yamaha MU500-1",  "mu500r", "bass006433", false, r_bass, v_full);
+        //archive_all("Yamaha MU500-1",  "mu500r", "bass006433", false, r_test, v_test);
         //new Archiver(getAudioFormat(48000, 2, 2),  new File("D:/origine_mundi/archive/")).play(60, 127);
     }
 }

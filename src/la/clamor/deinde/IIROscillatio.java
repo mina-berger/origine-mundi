@@ -31,7 +31,7 @@ public class IIROscillatio implements Legibilis {
             new Envelope(new Punctum(), 
                 new Positio(50, new Punctum(1)), 
                 //new Positio(2000, new Punctum(0.5)), 
-                new Positio(3000, new Punctum(0))));
+                new Positio(3000, new Punctum(1))));
         this.freqs = freqs;
         filter = new IIRFilter(freqs.capioPunctum(0).capioAestimatio(0).doubleValue(), true);
     }
@@ -62,11 +62,12 @@ public class IIROscillatio implements Legibilis {
         sw.scribo(new IIROscillatio(
             new PulseOscillatio(), 
             new Envelope(new Punctum(12000), 
-                new Positio(1000., new Punctum(1200)), 
-                new Positio(3000., new Punctum(50)))), false);
+                new Positio(1000., new Punctum(12000)), 
+                new Positio(2000., new Punctum(10000))
+            )), false);
         
         Functiones.ludoLimam(out_file);
-        Functiones.ludoLimam(new File("/Users/mina/Downloads/chapter07/ex7_1/ex7_1.wav"));
+        //Functiones.ludoLimam(new File("/Users/mina/Downloads/chapter07/ex7_1/ex7_1.wav"));
     }
     
 }

@@ -71,7 +71,7 @@ public class ArchiverTest {
     
     public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException, InterruptedException{
         OmUtil.printEnv(System.out);
-        ArchiverTest test = new ArchiverTest("2- Yamaha MU500-1", 0);
+        ArchiverTest test = new ArchiverTest("Yamaha MU500-1", 0);
         test.allNoteoff();
         test.reset();
         test.program(0, 64, 33);
