@@ -18,10 +18,10 @@ import org.apache.commons.lang3.ArrayUtils;
 public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Legibilis {
     Legibilis[] pueros;
     long index;
-    PositionesDeprec volumes;
+    Envelope<Punctum> volumes;
     public Consilium(){
         pueros = new Legibilis[0];
-        volumes = new PositionesDeprec(true);
+        volumes = new Envelope<>(new Punctum(1));
         index = 0;
     }
     public void setPositiones(PositionesDeprec volumes){
@@ -43,7 +43,7 @@ public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Le
     public Punctum lego() {
         Punctum punctum = new Punctum();
         for(Legibilis legibilis:pueros){
-            punctum = punctum.addo(legibilis.lego()).multiplico(volumes.capioPunctum(index));
+            punctum = punctum.addo(legibilis.lego()).multiplico(volumes.capioValue(index));
         }
         index++;
         return punctum;

@@ -13,12 +13,12 @@ import org.apache.commons.math3.util.FastMath;
  */
 public class Referibile implements Legibilis {
     private final Referibilis referibilis;
-    private final Envelope frequentiae;
-    private final Envelope quantitates;
+    private final Envelope<Punctum> frequentiae;
+    private final Envelope<Punctum> quantitates;
     private long index;
     private final long length;
     
-    public Referibile(Referibilis referibilis, Envelope frequentiae, Envelope quantitates){
+    public Referibile(Referibilis referibilis, Envelope<Punctum> frequentiae, Envelope<Punctum> quantitates){
         this.referibilis = referibilis;
         this.frequentiae = frequentiae;
         this.quantitates = quantitates;
@@ -28,7 +28,7 @@ public class Referibile implements Legibilis {
 
     @Override
     public Punctum lego() {
-        Punctum lectum = referibilis.lego(frequentiae.capioPunctum(index), quantitates.capioPunctum(index));
+        Punctum lectum = referibilis.lego(frequentiae.capioValue(index), quantitates.capioValue(index));
         index++;
         return lectum;
     }

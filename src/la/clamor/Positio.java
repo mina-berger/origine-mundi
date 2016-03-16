@@ -8,18 +8,19 @@ package la.clamor;
 /**
  *
  * @author user
+ * @param <V>
  */
-public class Positio {
+public class Positio<V extends Mergibilis> {
     long positio;
-    Punctum punctum;
-    public Positio(double tempus, Punctum punctum){
+    V value;
+    public Positio(double tempus, V value){
         positio = Functiones.adPositio(tempus);//(long)(tempus * REGULA_EXAMPLI_D / 1000d);
-        this.punctum = punctum;
+        this.value = value;
     }
     public long capioPositio(){
         return positio;
     }
-    public Punctum capioPunctum(){
-        return punctum;
+    public V capioValue(){
+        return value;
     }
 }

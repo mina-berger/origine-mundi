@@ -87,14 +87,14 @@ public class Opus009 extends Desktop {
     @Override
     protected void getLimaLusa(ArrayList<LimaLusa> lusa_list) {
         Envelope genv1 = new Envelope(new Punctum(1));
-        genv1.ponoPunctum(100, new Punctum(1));
-        genv1.ponoPunctum(120, new Punctum(0));
+        genv1.ponoValue(100, new Punctum(1));
+        genv1.ponoValue(120, new Punctum(0));
         Envelope genv2 = new Envelope(new Punctum(1));
-        genv2.ponoPunctum(50, new Punctum(1));
-        genv2.ponoPunctum(60, new Punctum(0));
+        genv2.ponoValue(50, new Punctum(1));
+        genv2.ponoValue(60, new Punctum(0));
         Envelope genv3 = new Envelope(new Punctum(1));
-        genv3.ponoPunctum(20, new Punctum(1));
-        genv3.ponoPunctum(30, new Punctum(0));
+        genv3.ponoValue(20, new Punctum(1));
+        genv3.ponoValue(30, new Punctum(0));
         //double cutoff1 = 20000;// i % 2 == 0?1000:20000;
         //double cutoff2 = 5000;// i % 2 == 0?1000:20000;
         boolean lpf = true;

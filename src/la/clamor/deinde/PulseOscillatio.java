@@ -62,7 +62,7 @@ public class PulseOscillatio implements Referibilis, Constantia {
 
         File out_file = new File(OmUtil.getDirectory("opus"), "pulse_train.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
-        sw.scribo(new Referibile(new PulseOscillatio(), new Envelope(new Punctum(20), new Positio(3000, new Punctum(1000))), new Envelope(true)), false);
+        sw.scribo(new Referibile(new PulseOscillatio(), new Envelope<Punctum>(new Punctum(20), new Positio(3000, new Punctum(1000))), new Envelope<Punctum>(new Punctum(1))), false);
         
         Functiones.ludoLimam(out_file);
     }

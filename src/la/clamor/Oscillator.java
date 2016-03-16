@@ -5,15 +5,15 @@ import java.io.File;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import static la.clamor.Constantia.CHANNEL;
-import la.clamor.Constantia.Res;
-import static la.clamor.Constantia.Res.FB_QUANT;
-import static la.clamor.Constantia.Res.FREQ;
-import static la.clamor.Constantia.Res.PAN;
-import static la.clamor.Constantia.Res.QUANT;
-import static la.clamor.Constantia.Res.VCA_FREQ;
-import static la.clamor.Constantia.Res.VCA_QUANT;
-import static la.clamor.Constantia.Res.VCO_FREQ;
-import static la.clamor.Constantia.Res.VCO_QUANT;
+import la.clamor.Constantia.Rebus;
+import static la.clamor.Constantia.Rebus.FB_QUANT;
+import static la.clamor.Constantia.Rebus.FREQ;
+import static la.clamor.Constantia.Rebus.PAN;
+import static la.clamor.Constantia.Rebus.QUANT;
+import static la.clamor.Constantia.Rebus.VCA_FREQ;
+import static la.clamor.Constantia.Rebus.VCA_QUANT;
+import static la.clamor.Constantia.Rebus.VCO_FREQ;
+import static la.clamor.Constantia.Rebus.VCO_QUANT;
 import la.clamor.Constantia.Unda;
 import la.clamor.Oscillatio.Oscillationes;
 import static la.clamor.OscillatorUtil.getPreset;
@@ -77,7 +77,7 @@ public class Oscillator implements Instrument {
     }
 
     private static void ponoPositiones(
-        PositionesFixi p, Res res, Integer channel,
+        PositionesFixi p, Rebus res, Integer channel,
         TreeMap<Double, Iugum> map_corporis,
         TreeMap<Double, Iugum> map_caudae,
         Punctum factor, double diuturnitas, Velocitas velocitas) {

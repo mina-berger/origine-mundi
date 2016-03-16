@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import la.clamor.Cinctum;
 import la.clamor.Consilium;
 import la.clamor.Functiones;
 import la.clamor.Instrument;
@@ -27,21 +28,6 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
 import origine_mundi.OmUtil;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
-import static la.clamor.opus.ConstantiaOperis.CT;
 import static la.clamor.opus.ConstantiaOperis.CT;
 
 /**
@@ -111,15 +97,16 @@ public abstract class Mensa implements ConstantiaOperis {
         talea_ad = CT(talea, repenso);
     }
 
-    public void ponoInstrument(int id, Punctum pan, Instrument inst) {
-        Mensa.this.ponoInstrument(id, pan, inst, null);
+    public void ponoInstrument(int id, Punctum level, Cinctum pan, Instrument inst) {
+        Mensa.this.ponoInstrument(id, level, pan, inst, null);
     }
 
-    public void ponoInstrument(int id, Punctum pan, Instrument inst, CadentesFormae cf) {
+    public void ponoInstrument(int id, Punctum level, Cinctum pan, Instrument inst, CadentesFormae cf) {
         instruments.put(id, inst);
         consilia.putIfAbsent(id, new Consilium());
         mixtor.ponoLegibilem(id, cf == null ? consilia.get(id) : cf.capioLegibilis(consilia.get(id)));
-        mixtor.ponoInitialLevel(id, pan);
+        mixtor.ponoInitialLevel(id, level);
+        mixtor.ponoInitialPan(id, pan);
     }
 
     public void ponoHumanizer(Humanizer humanizer, int... ids) {
@@ -168,23 +155,39 @@ public abstract class Mensa implements ConstantiaOperis {
             velocitas)));*/
     }
 
-    public void ponoLevel(int id, int talea, double repenso, Punctum pan) {
+    public void ponoMasterLevel(int talea, double repenso, Punctum level) {
+        if (!inRange(null, talea, repenso)) {
+            return;
+        }
+        mixtor.ponoMasterLevel(taleae.capioTempus(talea, repenso), level);
+    }
+    public void ponoLevel(int id, int talea, double repenso, Punctum level) {
         if (!inRange(id, talea, repenso)) {
             return;
         }
         if (!instruments.containsKey(id)) {
             throw new IllegalArgumentException(String.format("Instrument is unset for track(%s)", id));
         }
-        mixtor.ponoLevel(id, taleae.capioTempus(talea, repenso), pan);
+        mixtor.ponoLevel(id, taleae.capioTempus(talea, repenso), level);
     }
 
-    private boolean inRange(int id, int talea, double repenso) {
+    public void ponoPan(int id, int talea, double repenso, Cinctum pan) {
+        if (!inRange(id, talea, repenso)) {
+            return;
+        }
+        if (!instruments.containsKey(id)) {
+            throw new IllegalArgumentException(String.format("Instrument is unset for track(%s)", id));
+        }
+        mixtor.ponoPan(id, taleae.capioTempus(talea, repenso), pan);
+    }
+
+    private boolean inRange(Integer id, int talea, double repenso) {
         Causa c = CT(talea, repenso);
         if (talea_ab != null && ConstantiaOperis.compare(c, talea_ab) < 0) {
             return false;
         } else if (talea_ad != null && ConstantiaOperis.compare(talea_ad, c) < 0) {
             return false;
-        } else if (!track_list.isEmpty() && !track_list.contains(id)) {
+        } else if (id != null &&!track_list.isEmpty() && !track_list.contains(id)) {
             return false;
         }
         return true;

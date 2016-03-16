@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
 
-public class Punctum implements Constantia, Serializable, Comparable<Punctum> {
+public class Punctum implements Constantia, Serializable, Comparable<Punctum>, Mergibilis<Punctum> {
     public static final Punctum ZERO = new Punctum();
     private static final long serialVersionUID = 5303754051401035301L;
     private Aestimatio[] aestimationes;
@@ -189,12 +189,22 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum> {
     }
     public boolean minorAbsTotiSunt(Aestimatio value){
         Aestimatio value_abs = value.abs();
-        boolean idEst = false;
+        //boolean idEst = false;
         for(int i = 0;i < aestimationes.length;i++){
             if(aestimationes[i].abs().compareTo(value_abs) >= 0){
                 return false;
             }
         }
         return true;
+    }
+
+    @Override
+    public Punctum mergo(long diff, long index, Punctum tectum) {
+        Punctum punctum = new Punctum();
+        for (int i = 0; i < CHANNEL; i++) {
+            punctum.ponoAestimatio(i,
+                capioAestimatio(i).mergo(diff, index, tectum.capioAestimatio(i)));
+        }
+        return punctum;
     }
 }

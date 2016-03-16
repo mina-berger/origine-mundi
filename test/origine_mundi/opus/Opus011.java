@@ -149,8 +149,8 @@ public class Opus011 extends Desktop {
     protected void getLimaLusa(ArrayList<LimaLusa> lusa_list) {
         Envelope env1 = new Envelope(new Punctum(1));
         Envelope env2 = new Envelope(new Punctum(1));
-        env2.ponoPunctum(200, new Punctum(0.8));
-        env2.ponoPunctum(400, new Punctum(0));
+        env2.ponoValue(200, new Punctum(0.8));
+        env2.ponoValue(400, new Punctum(0));
         FilterInfo fi1 = new ThruInfo();
         //double temp_beat = 500;
         double duration = 1;
@@ -174,14 +174,14 @@ public class Opus011 extends Desktop {
             }
         }
         Envelope genv1 = new Envelope(new Punctum(1));
-        genv1.ponoPunctum(100, new Punctum(1));
-        genv1.ponoPunctum(120, new Punctum(0));
+        genv1.ponoValue(100, new Punctum(1));
+        genv1.ponoValue(120, new Punctum(0));
         Envelope genv2 = new Envelope(new Punctum(1));
-        genv2.ponoPunctum(50, new Punctum(1));
-        genv2.ponoPunctum(60, new Punctum(0));
+        genv2.ponoValue(50, new Punctum(1));
+        genv2.ponoValue(60, new Punctum(0));
         Envelope genv3 = new Envelope(new Punctum(1));
-        genv3.ponoPunctum(20, new Punctum(1));
-        genv3.ponoPunctum(30, new Punctum(0));
+        genv3.ponoValue(20, new Punctum(1));
+        genv3.ponoValue(30, new Punctum(0));
         boolean lpf = true;
         FilterInfo gfi1 = new FilterInfo.FIRInfo(20000, lpf, true, new Aestimatio(1));
         FilterInfo gfi2 = new FilterInfo.FIRInfo( 5000, lpf, true, new Aestimatio(1));

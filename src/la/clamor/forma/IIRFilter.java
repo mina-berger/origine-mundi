@@ -5,12 +5,17 @@
  */
 package la.clamor.forma;
 
+import java.io.File;
 import java.io.IOException;
 import la.clamor.Constantia;
+import la.clamor.Functiones;
 import la.clamor.OrbisPuncti;
 import la.clamor.Punctum;
+import la.clamor.io.LectorWav;
+import la.clamor.io.ScriptorWav;
 import org.apache.commons.math3.util.FastMath;
 import static org.apache.commons.math3.util.FastMath.PI;
+import origine_mundi.OmUtil;
 
 /**
  *
@@ -50,6 +55,7 @@ public class IIRFilter implements Forma {
         }
         oa_b.pono(lectum);
         oa_a.pono(reditum);
+        //System.out.println(lectum + ":" + reditum);
         return reditum;
     }
 
@@ -119,7 +125,7 @@ public class IIRFilter implements Forma {
         double[] b;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void _main(String[] args) throws IOException {
         int length = 1000;
         for (int n = 0; n < length; n++) {
             System.out.println(10000.0 * Math.exp(-5.0 * n / length));
@@ -130,16 +136,16 @@ public class IIRFilter implements Forma {
         cns.addo(0, osc.capioOscillationes(new Punctum(a), 5000, Velocitas.una(1)));
          */
     }
-    /*public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         File in_file = new File(OmUtil.getDirectory("opus"), "filter2.wav");
         LectorWav lw = new LectorWav(in_file);
-        File out_file = new File(OmUtil.getDirectory("opus"), "iir_l23.wav");
+        File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);
-        sw.scribo(new FormaLegibilis(lw, new IIRFilter(5000, false)), false);
+        sw.scribo(new FormaLegibilis(lw, new IIRFilter(1000, true)), false);
 
         Functiones.ludoLimam(in_file);
         Functiones.ludoLimam(out_file);
-    }*/
+    }
 
 }

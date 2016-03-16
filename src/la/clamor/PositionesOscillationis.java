@@ -8,15 +8,15 @@ package la.clamor;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import static la.clamor.Constantia.CHANNEL;
-import la.clamor.Constantia.Res;
-import static la.clamor.Constantia.Res.FB_QUANT;
-import static la.clamor.Constantia.Res.FREQ;
-import static la.clamor.Constantia.Res.PAN;
-import static la.clamor.Constantia.Res.QUANT;
-import static la.clamor.Constantia.Res.VCA_FREQ;
-import static la.clamor.Constantia.Res.VCA_QUANT;
-import static la.clamor.Constantia.Res.VCO_FREQ;
-import static la.clamor.Constantia.Res.VCO_QUANT;
+import la.clamor.Constantia.Rebus;
+import static la.clamor.Constantia.Rebus.FB_QUANT;
+import static la.clamor.Constantia.Rebus.FREQ;
+import static la.clamor.Constantia.Rebus.PAN;
+import static la.clamor.Constantia.Rebus.QUANT;
+import static la.clamor.Constantia.Rebus.VCA_FREQ;
+import static la.clamor.Constantia.Rebus.VCA_QUANT;
+import static la.clamor.Constantia.Rebus.VCO_FREQ;
+import static la.clamor.Constantia.Rebus.VCO_QUANT;
 import org.apache.commons.math3.util.FastMath;
 
 /**
@@ -25,14 +25,14 @@ import org.apache.commons.math3.util.FastMath;
  */
 public class PositionesOscillationis extends AbstractPositionesOscillationis {
 
-    Envelope map_frequentiae;
-    Envelope map_quantitatis;
-    ArrayList<Envelope> map_pans;
-    Envelope map_vco_frequentiae;
-    Envelope map_vco_quantitatis;
-    Envelope map_vca_frequentiae;
-    Envelope map_vca_quantitatis;
-    Envelope map_fb_quantitatis;
+    Envelope<Punctum> map_frequentiae;
+    Envelope<Punctum> map_quantitatis;
+    ArrayList<Envelope<Punctum>> map_pans;
+    Envelope<Punctum> map_vco_frequentiae;
+    Envelope<Punctum> map_vco_quantitatis;
+    Envelope<Punctum> map_vca_frequentiae;
+    Envelope<Punctum> map_vca_quantitatis;
+    Envelope<Punctum> map_fb_quantitatis;
     SineOscillatio vco;
     SineOscillatio vca;
     @Override
@@ -63,19 +63,23 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     }
     public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback) {
         this(unda, volume, feedback, 
-            new Envelope(true), new Envelope(false), null, 
-            new Envelope(false), new Envelope(false), 
-            new Envelope(false), new Envelope(false), new Envelope(true));
+            new Envelope<>(new Punctum(1)), new Envelope<>(new Punctum()), null, 
+            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()), 
+            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()), 
+            new Envelope<>(new Punctum(1)));
     }
-    public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback, Envelope frequentiae, Envelope quantitatis, AbstractPositionesOscillationis... positiones_modulatores) {
-        this(unda, volume, feedback, frequentiae, quantitatis, null, new Envelope(false), new Envelope(false), new Envelope(false), new Envelope(false), new Envelope(true), positiones_modulatores);
+    public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback, Envelope<Punctum> frequentiae, Envelope<Punctum> quantitatis, AbstractPositionesOscillationis... positiones_modulatores) {
+        this(unda, volume, feedback, frequentiae, quantitatis, null, 
+            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()), 
+            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()), 
+            new Envelope<>(new Punctum(1)), positiones_modulatores);
     }
     public PositionesOscillationis(
             Constantia.Unda unda, double volume, double feedback,
-            Envelope frequentiae, Envelope quantitatis, Envelope[] pans,
-            Envelope vco_frequentiae, Envelope vco_quantitatis, 
-            Envelope vca_frequentiae, Envelope vca_quantitatis, 
-            Envelope fb_quantitatis, 
+            Envelope<Punctum> frequentiae, Envelope<Punctum> quantitatis, Envelope<Punctum>[] pans,
+            Envelope<Punctum> vco_frequentiae, Envelope<Punctum> vco_quantitatis, 
+            Envelope<Punctum> vca_frequentiae, Envelope<Punctum> vca_quantitatis, 
+            Envelope<Punctum> fb_quantitatis, 
             AbstractPositionesOscillationis... positiones_modulatores) {
         super(capioUltimum(frequentiae, quantitatis), unda, volume, feedback);
         map_frequentiae = frequentiae;//new Positiones(true, frequentiae);
@@ -96,15 +100,15 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
 
         ponoModulatores(positiones_modulatores);
     }
-    private static ArrayList<Envelope> initioMap(Envelope[] positiones, boolean unusEst){
-            ArrayList<Envelope> map = new ArrayList<>();
+    private static ArrayList<Envelope<Punctum>> initioMap(Envelope<Punctum>[] positiones, boolean unusEst){
+            ArrayList<Envelope<Punctum>> map = new ArrayList<>();
             for(int i = 0;i < CHANNEL;i++){
                 if(positiones != null && positiones[i] != null&& positiones[i].size() > 0){
                     map.add(positiones[i]);
                 }else{
                     Punctum pc = new Punctum();
                     pc.ponoAestimatio(i, new Aestimatio(1));
-                    map.add(new Envelope(false, new Positio(0, pc)));
+                    map.add(new Envelope<>(new Punctum(), new Positio(0, pc)));
                 }
             }
             return map;
@@ -117,7 +121,7 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
         map.putIfAbsent(0l, unusEst?new Punctum(1):new Punctum());
         return map;
     }*/
-    private TreeMap<Long, Punctum> capioMap(Res res, Integer channel){
+    private TreeMap<Long, Punctum> capioMap(Rebus res, Integer channel){
         TreeMap<Long, Punctum> map;
         switch(res){
             case FREQ:
@@ -149,19 +153,19 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
         }
         return map;
     }
-    public void pono(Res res, Integer channel, long positio, Punctum punctum){
+    public void pono(Rebus res, Integer channel, long positio, Punctum punctum){
         //if(res == FB_QUANT){
         //    System.out.println("DEBUG");
         //
         capioMap(res, channel).put(positio, punctum);
     }
-    public boolean habet(Res res, Integer channel, long positio){
+    public boolean habet(Rebus res, Integer channel, long positio){
         return capioMap(res, channel).containsKey(positio);
     }
     public void computoLongitudo(){
         ponoLongitudo(FastMath.max(map_frequentiae.lastKey(), map_quantitatis.lastKey()));
     }
-    private static long capioUltimum(Envelope frequentiae, Envelope quantitatis){
+    private static long capioUltimum(Envelope<Punctum> frequentiae, Envelope<Punctum> quantitatis){
         return FastMath.max(frequentiae.lastKey(), quantitatis.lastKey());
                 
                 //Arrays.stream(frequentiae).mapToLong(e -> e.capioPositio()).reduce(0l, (x, y) -> x > y ? x : y),
@@ -189,23 +193,23 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     public Punctum[] capioPans() {
         Punctum[] pans = new Punctum[CHANNEL];
         for(int i = 0;i < CHANNEL;i++){
-            pans[i] = map_pans.get(i).capioPunctum(index);
+            pans[i] = map_pans.get(i).capioValue(index);
         }
         return pans;
     }        
     @Override
     public Punctum capioFeedback() {
-        return map_fb_quantitatis.capioPunctum(index).multiplico(feedback);
+        return map_fb_quantitatis.capioValue(index).multiplico(feedback);
     }
 
 
-    private static Punctum capio(Envelope map, SineOscillatio vc_osc, 
-            Envelope map_vc_frequentiae, 
-            Envelope map_vc_quantitatis, long index){
-        Punctum punctum = map.capioPunctum(index);
+    private static Punctum capio(Envelope<Punctum> map, SineOscillatio vc_osc, 
+            Envelope<Punctum> map_vc_frequentiae, 
+            Envelope<Punctum> map_vc_quantitatis, long index){
+        Punctum punctum = map.capioValue(index);
         punctum = punctum.multiplico(vc_osc.lego(
-                map_vc_frequentiae.capioPunctum(index), 
-                map_vc_quantitatis.capioPunctum(index)).addo(new Punctum(1)));
+                map_vc_frequentiae.capioValue(index), 
+                map_vc_quantitatis.capioValue(index)).addo(new Punctum(1)));
         return punctum;
     }
     /*private static Punctum capioPunctum(TreeMap<Long, Punctum> map, long index){

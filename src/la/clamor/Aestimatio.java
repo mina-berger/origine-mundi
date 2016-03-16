@@ -13,7 +13,7 @@ import org.apache.commons.math3.util.FastMath;
  *
  * @author user
  */
-public class Aestimatio implements Cloneable, Comparable<Aestimatio>, Serializable {
+public class Aestimatio implements Cloneable, Comparable<Aestimatio>, Serializable, Mergibilis<Aestimatio> {
 
     private double value;
 
@@ -105,4 +105,10 @@ public class Aestimatio implements Cloneable, Comparable<Aestimatio>, Serializab
     //public double rawValue() {
     //    return doubleValue();
     //}
+
+    @Override
+    public Aestimatio mergo(long diff, long index, Aestimatio tectum) {
+        return multiplico(new Aestimatio(diff - index)).addo(
+            tectum.multiplico(new Aestimatio(index))).partior(new Aestimatio(diff));
+    }
 }

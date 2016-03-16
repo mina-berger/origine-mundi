@@ -8,7 +8,12 @@ package la.clamor.deinde;
 import la.clamor.deinde.bk.Spectrum;
 import la.clamor.deinde.bk.FourierSampler2;
 import java.io.File;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.SourceDataLine;
+import la.clamor.Constantia;
 import la.clamor.Functiones;
+import static la.clamor.Functiones.capioSourceDataLine;
 import la.clamor.Legibilis;
 import la.clamor.SineOscillatio;
 import la.clamor.Punctum;
@@ -67,8 +72,29 @@ public class DeindeTest {
         //Functiones.ludoLimam(out_file);
 
     }
+    
+    
     public static void main(String[] args) {
-        //File out_file = new File(OmUtil.getDirectory("opus"), "oscillatio_multi.wav");
+        //Constantia.CHANNEL = 4;
+        Punctum punctum = new Punctum();
+        System.out.println(punctum);
+        //String mixer_name = "TASCAM US-4x4 Audio Device";
+        //Port TASCAM US-4x4 Audio Device
+        //Mixer.Info mixerInfo = capioMixerInfo(mixer_name);
+        //System.out.println(mixerInfo);
+        //Mixer mixer = AudioSystem.getMixer(mixerInfo);
+        
+        //AudioFormat format = Constantia.getAudioFormat(48000, 2, 4);
+        //SourceDataLine line = capioSourceDataLine(null, format, AudioSystem.NOT_SPECIFIED);
+        //System.out.println(line.);
+        //audio format:PCM_SIGNED 48000.0 Hz, 16 bit, stereo, 4 bytes/frame, little-endian
+        
+        /*Mixer.Info[] aInfos = AudioSystem.getMixerInfo();
+        for (Mixer.Info aInfo : aInfos) {
+            System.out.println(aInfo.getName());
+        }*/
+    }
+    public static void main2(String[] args) {
         //ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(new LowFi(legibilis, 20), false);
         //sw.scribo(new Resampler(legibilis, Constantia.REGULA_EXAMPLI_D, Constantia.REGULA_EXAMPLI_D / 2), false);

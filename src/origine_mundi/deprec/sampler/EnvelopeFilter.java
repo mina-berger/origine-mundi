@@ -17,13 +17,13 @@ import la.clamor.Punctum;
  */
 public class EnvelopeFilter implements Legibilis {
     Legibilis legibilis;
-    Envelope envelope;
+    Envelope<Punctum> envelope;
     long longitudo;
     long positio;
     Aestimatio volume;
-    public EnvelopeFilter(Legibilis legibilis, Envelope envelope, double duration, Aestimatio volume){
+    public EnvelopeFilter(Legibilis legibilis, Envelope<Punctum> envelope, double duration, Aestimatio volume){
         this.legibilis = legibilis;
-        this.envelope = envelope == null?new Envelope(new Punctum(1)):envelope;
+        this.envelope = envelope == null?new Envelope<>(new Punctum(1)):envelope;
         this.volume = volume;
         longitudo = Functiones.adPositio(duration);
         positio = 0;
@@ -32,7 +32,7 @@ public class EnvelopeFilter implements Legibilis {
     @Override
     public Punctum lego() {
         positio++;
-        return legibilis.lego().multiplico(envelope.capioPunctum(positio)).multiplico(volume);
+        return legibilis.lego().multiplico(envelope.capioValue(positio)).multiplico(volume);
     }
 
     @Override

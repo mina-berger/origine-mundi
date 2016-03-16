@@ -14,15 +14,15 @@ import la.clamor.Punctum;
  * @author user
  */
 public class PositionesDeprec extends Envelope {
-    public PositionesDeprec(Punctum initial, Positio... positiones){
+    public PositionesDeprec(Punctum initial, Positio<Punctum>... positiones){
         put(0l, initial);
-        for(Positio positio:positiones){
-            put(positio.capioPositio(), positio.capioPunctum());
+        for(Positio<Punctum> positio:positiones){
+            put(positio.capioPositio(), positio.capioValue());
         }
     }
-    public PositionesDeprec(boolean unusEst, Positio... positiones){
-        for(Positio positio:positiones){
-            put(positio.capioPositio(), positio.capioPunctum());
+    public PositionesDeprec(boolean unusEst, Positio<Punctum>... positiones){
+        for(Positio<Punctum> positio:positiones){
+            put(positio.capioPositio(), positio.capioValue());
         }
         putIfAbsent(0l, unusEst?new Punctum(1):new Punctum());
     }

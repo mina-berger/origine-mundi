@@ -3,8 +3,10 @@ package la.clamor;
 import javax.sound.sampled.AudioFormat;
 
 public interface Constantia {
-    public enum Res{FREQ, QUANT, PAN, VCO_FREQ, VCO_QUANT, VCA_FREQ, VCA_QUANT, FB_QUANT};
-    public static final int CHANNEL = 2;
+    public enum Rebus{FREQ, QUANT, PAN, VCO_FREQ, VCO_QUANT, VCA_FREQ, VCA_QUANT, FB_QUANT};
+    public static int CHANNEL = 2;
+    
+    
     public static final int REGULA_EXAMPLI = 48000;
     //public static final int REGULA_EXAMPLI = 48000;
     //public static final int REGULA_EXAMPLI = 44100;

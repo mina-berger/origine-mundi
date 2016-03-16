@@ -22,25 +22,25 @@ import origine_mundi.OmUtil;
  * @author mina
  */
 public class IIROscillatio implements Legibilis {
-    private Referibile referibile;
-    private Envelope freqs;
-    private IIRFilter filter;
-    public IIROscillatio(Referibilis referibilis, Envelope freqs){
+    private final Referibile referibile;
+    private final Envelope<Punctum> freqs;
+    private final IIRFilter filter;
+    public IIROscillatio(Referibilis referibilis, Envelope<Punctum> freqs){
         this.referibile = new Referibile(referibilis, 
-            new Envelope(new Punctum(500), new Positio(3000, new Punctum(500))), 
-            new Envelope(new Punctum(), 
+            new Envelope<>(new Punctum(500), new Positio(3000, new Punctum(500))), 
+            new Envelope<>(new Punctum(), 
                 new Positio(50, new Punctum(1)), 
                 //new Positio(2000, new Punctum(0.5)), 
                 new Positio(3000, new Punctum(1))));
         this.freqs = freqs;
-        filter = new IIRFilter(freqs.capioPunctum(0).capioAestimatio(0).doubleValue(), true);
+        filter = new IIRFilter(freqs.capioValue(0).capioAestimatio(0).doubleValue(), true);
     }
 
     @Override
     public Punctum lego() {
         long index = referibile.capioIndecem();
         Punctum lectum = referibile.lego();
-        double freq = freqs.capioPunctum(index).capioAestimatio(0).doubleValue();
+        double freq = freqs.capioValue(index).capioAestimatio(0).doubleValue();
         //System.out.println(freq);
         filter.rescribo(freq, true);
         lectum = filter.formo(lectum);
@@ -61,7 +61,7 @@ public class IIROscillatio implements Legibilis {
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new IIROscillatio(
             new PulseOscillatio(), 
-            new Envelope(new Punctum(10000), 
+            new Envelope<>(new Punctum(10000), 
                 new Positio(500., new Punctum(1200)), 
                 new Positio(2000., new Punctum(100))
             )), false);
