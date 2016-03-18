@@ -11,8 +11,8 @@ import java.util.Arrays;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.Punctum;
-import la.clamor.SineOscillatio;
 import la.clamor.io.ScriptorWav;
+import la.clamor.referibile.OscillatioSine;
 import origine_mundi.OmUtil;
 
 /**
@@ -41,7 +41,7 @@ public class CadentesFormae extends ArrayList<Forma> {
             new Distortion(new Punctum(1), new Punctum(1.1), new Punctum(1)),
             new Chorus(new Punctum(1), new Punctum(3), new Punctum(1), new Punctum(1, -1)));
         sl.scribo(cf.capioLegibilis(new Legibilis() {
-            SineOscillatio o = new SineOscillatio();
+            OscillatioSine o = new OscillatioSine();
             int count = 0;
 
             @Override

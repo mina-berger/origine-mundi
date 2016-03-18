@@ -8,11 +8,15 @@ package la.clamor.forma;
 import java.io.File;
 import java.io.IOException;
 import la.clamor.Constantia;
+import la.clamor.Envelope;
 import la.clamor.Functiones;
 import la.clamor.OrbisPuncti;
+import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.io.LectorWav;
 import la.clamor.io.ScriptorWav;
+import la.clamor.referibile.OscillatioFrag;
+import la.clamor.referibile.Referibile;
 import org.apache.commons.math3.util.FastMath;
 import static org.apache.commons.math3.util.FastMath.PI;
 import origine_mundi.OmUtil;
@@ -28,10 +32,22 @@ public class IIRFilter implements Forma {
     IIRCoefficients coef;
 
     public IIRFilter(double freq, boolean is_lpf) {
+        this(getCoefficientsLpfHpf(freq, 1.0 / FastMath.sqrt(2.0), is_lpf));
+        //oa_a = new OrbisPuncti(3);
+        //oa_b = new OrbisPuncti(3);
+        //coef = getCoefficientsLpfHpf(freq, 1.0 / FastMath.sqrt(2.0), is_lpf);
+    }
+
+    private IIRFilter(IIRCoefficients coef) {
+        this.coef = coef;
         oa_a = new OrbisPuncti(3);
         oa_b = new OrbisPuncti(3);
-        coef = getCoefficientsLpfHpf(freq, 1.0 / FastMath.sqrt(2.0), is_lpf);
     }
+
+    public static IIRFilter resonator(double freq, double band) {
+        return new IIRFilter(getCoefficientsResonator(freq, band));
+    }
+
     public void rescribo(double freq, boolean is_lpf) {
         coef = getCoefficientsLpfHpf(freq, 1.0 / FastMath.sqrt(2.0), is_lpf);
     }
@@ -52,7 +68,7 @@ public class IIRFilter implements Forma {
         }
         for (int i = 1; i < coef.a.length; i++) {
             reditum = reditum.addo(oa_a.capio(i - 1).multiplico(coef.a[i] * -1.0));
-        }
+        }   
         oa_b.pono(lectum);
         oa_a.pono(reditum);
         //System.out.println(lectum + ":" + reditum);
@@ -70,8 +86,8 @@ public class IIRFilter implements Forma {
         coef.a[1] = (8.0 * PI * PI * fc1 * fc2 - 2.0) / denom;
         coef.a[2] = (1.0 - 2.0 * PI * (fc2 - fc1) / q + 4.0 * PI * PI * fc1 * fc2) / denom;
         if (is_bpf) {
-            coef.b[0] =  2.0 * PI * (fc2 - fc1) / denom;
-            coef.b[1] =  0.0;
+            coef.b[0] = 2.0 * PI * (fc2 - fc1) / denom;
+            coef.b[1] = 0.0;
             coef.b[2] = -2.0 * PI * (fc2 - fc1) / denom;
         } else {
             coef.b[0] = (4.0 * PI * PI * fc1 * fc2 + 1.0) / denom;
@@ -102,20 +118,33 @@ public class IIRFilter implements Forma {
             coef.b[1] = 8.0 * PI * PI * fc * fc / denom;
             coef.b[2] = 4.0 * PI * PI * fc * fc / denom;
         } else {
-            //coef.b[0] = 4.0 * PI * PI * fc * fc / denom;
-            //coef.b[1] = -8.0 * PI * PI * fc * fc / denom;
-            //coef.b[2] = 4.0 * PI * PI * fc * fc / denom;
             coef.b[0] = 1.0 / denom;
             coef.b[1] = -2.0 / denom;
             coef.b[2] = 1.0 / denom;
         }
 
-        //System.out.println(coef.a[0]);
-        //System.out.println(coef.a[1]);
-        //System.out.println(coef.a[2]);
-        //System.out.println(coef.b[0]);
-        //System.out.println(coef.b[1]);
-        //System.out.println(coef.b[2]);
+        return coef;
+    }
+
+    public static IIRCoefficients getCoefficientsResonator(double freq, double band) {
+        IIRCoefficients coef = new IIRCoefficients();
+        double fc = FastMath.tan(PI * freq / Constantia.REGULA_EXAMPLI_D) / (2.0 * PI);
+        double q = freq / band;
+        coef.a = new double[3];
+        coef.b = new double[3];
+        double denom = 1.0 + 2.0 * PI * fc / q + 4.0 * PI * PI * fc * fc;
+        coef.a[0] = 1.0;
+        coef.a[1] = (8.0 * PI * PI * fc * fc - 2.0) / denom;
+        coef.a[2] = (1.0 - 2.0 * PI * fc / q + 4.0 * PI * PI * fc * fc) / denom;
+        coef.b[0] = 2.0 * PI * fc / q / denom;
+        coef.b[1] = 0.0;
+        coef.b[2] = -2.0 * PI * fc / q / denom;
+        System.out.println("a0:" + coef.a[0]);
+        System.out.println("a1:" + coef.a[1]);
+        System.out.println("a2:" + coef.a[2]);
+        System.out.println("b0:" + coef.b[0]);
+        System.out.println("b1:" + coef.b[1]);
+        System.out.println("b2:" + coef.b[2]);
         return coef;
     }
 
@@ -123,6 +152,12 @@ public class IIRFilter implements Forma {
 
         double[] a;
         double[] b;
+        //System.out.println(coef.a[0]);
+        //System.out.println(coef.a[1]);
+        //System.out.println(coef.a[2]);
+        //System.out.println(coef.b[0]);
+        //System.out.println(coef.b[1]);
+        //System.out.println(coef.b[2]);
     }
 
     public static void _main(String[] args) throws IOException {
@@ -136,10 +171,30 @@ public class IIRFilter implements Forma {
         cns.addo(0, osc.capioOscillationes(new Punctum(a), 5000, Velocitas.una(1)));
          */
     }
+
     public static void main(String[] args) throws IOException {
-        File in_file = new File(OmUtil.getDirectory("opus"), "filter2.wav");
+        Referibile noise = new Referibile(new OscillatioFrag(), 
+            new Envelope<>(new Punctum(200),
+                new Positio(2000., new Punctum(200))),
+            new Envelope<>(new Punctum(), 
+                new Positio(50, new Punctum(1)), 
+                new Positio(3000, new Punctum(1)), 
+                new Positio(4000, new Punctum(0)))
+        );
+        File out_file = new File(OmUtil.getDirectory("opus"), "iir_noise.wav");
+        //File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
+        ScriptorWav sw = new ScriptorWav(out_file);
+        //sw.scribo(cns, false);
+        sw.scribo(new FormaLegibilis(noise, new IIRFilter(1000, true)), false);
+
+        Functiones.ludoLimam(out_file);
+    }
+    public static void __main(String[] args) throws IOException {
+        File in_file = new File(OmUtil.getDirectory("opus"), "osc_quad.wav");
+        //File in_file = new File(OmUtil.getDirectory("opus"), "filter2.wav");
         LectorWav lw = new LectorWav(in_file);
-        File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
+        File out_file = new File(OmUtil.getDirectory("opus"), "iir_quad.wav");
+        //File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);
         sw.scribo(new FormaLegibilis(lw, new IIRFilter(1000, true)), false);

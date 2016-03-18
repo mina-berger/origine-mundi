@@ -101,6 +101,9 @@ public class Aestimatio implements Cloneable, Comparable<Aestimatio>, Serializab
     public int compareTo(Aestimatio a) {
         return Double.compare(value, a.value);
     }
+    public boolean equals(Aestimatio a){
+        return compareTo(a) == 0;
+    }
 
     //public double rawValue() {
     //    return doubleValue();

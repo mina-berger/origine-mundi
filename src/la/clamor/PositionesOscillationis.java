@@ -5,9 +5,9 @@
  */
 package la.clamor;
 
+import la.clamor.referibile.OscillatioSine;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import static la.clamor.Constantia.CHANNEL;
 import la.clamor.Constantia.Rebus;
 import static la.clamor.Constantia.Rebus.FB_QUANT;
 import static la.clamor.Constantia.Rebus.FREQ;
@@ -33,17 +33,18 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     Envelope<Punctum> map_vca_frequentiae;
     Envelope<Punctum> map_vca_quantitatis;
     Envelope<Punctum> map_fb_quantitatis;
-    SineOscillatio vco;
-    SineOscillatio vca;
+    OscillatioSine vco;
+    OscillatioSine vca;
+
     @Override
-    public String toString(){
+    public String toString() {
         //if(1 == 1)throw new RuntimeException();
         String str = "PositionesFixi\n map_frequentiae\n";
         str += toString(map_frequentiae);
         str += " map_quantitatis\n";
         str += toString(map_quantitatis);
         str += " map_pans\n";
-        for(TreeMap<Long, Punctum> map:map_pans){
+        for (TreeMap<Long, Punctum> map : map_pans) {
             str += toString(map);
         }
         str += " map_vco_frequentiae\n";
@@ -57,34 +58,38 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
         return str;
 
     }
-    private static String toString(TreeMap<Long, Punctum> map){
+
+    private static String toString(TreeMap<Long, Punctum> map) {
         return map.entrySet().stream().map(
-                (entry) -> "  " + entry.getKey() + ":" + entry.getValue().toString() + "\n").reduce("", String::concat);
+            (entry) -> "  " + entry.getKey() + ":" + entry.getValue().toString() + "\n").reduce("", String::concat);
     }
+
     public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback) {
-        this(unda, volume, feedback, 
-            new Envelope<>(new Punctum(1)), new Envelope<>(new Punctum()), null, 
-            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()), 
-            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()), 
+        this(unda, volume, feedback,
+            new Envelope<>(new Punctum(1)), new Envelope<>(new Punctum()), null,
+            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()),
+            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()),
             new Envelope<>(new Punctum(1)));
     }
+
     public PositionesOscillationis(Constantia.Unda unda, double volume, double feedback, Envelope<Punctum> frequentiae, Envelope<Punctum> quantitatis, AbstractPositionesOscillationis... positiones_modulatores) {
-        this(unda, volume, feedback, frequentiae, quantitatis, null, 
-            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()), 
-            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()), 
+        this(unda, volume, feedback, frequentiae, quantitatis, null,
+            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()),
+            new Envelope<>(new Punctum()), new Envelope<>(new Punctum()),
             new Envelope<>(new Punctum(1)), positiones_modulatores);
     }
+
     public PositionesOscillationis(
-            Constantia.Unda unda, double volume, double feedback,
-            Envelope<Punctum> frequentiae, Envelope<Punctum> quantitatis, Envelope<Punctum>[] pans,
-            Envelope<Punctum> vco_frequentiae, Envelope<Punctum> vco_quantitatis, 
-            Envelope<Punctum> vca_frequentiae, Envelope<Punctum> vca_quantitatis, 
-            Envelope<Punctum> fb_quantitatis, 
-            AbstractPositionesOscillationis... positiones_modulatores) {
+        Constantia.Unda unda, double volume, double feedback,
+        Envelope<Punctum> frequentiae, Envelope<Punctum> quantitatis, Envelope<Punctum>[] pans,
+        Envelope<Punctum> vco_frequentiae, Envelope<Punctum> vco_quantitatis,
+        Envelope<Punctum> vca_frequentiae, Envelope<Punctum> vca_quantitatis,
+        Envelope<Punctum> fb_quantitatis,
+        AbstractPositionesOscillationis... positiones_modulatores) {
         super(capioUltimum(frequentiae, quantitatis), unda, volume, feedback);
         map_frequentiae = frequentiae;//new Positiones(true, frequentiae);
         map_quantitatis = quantitatis;//new Positiones(false, quantitatis);
-        map_pans        = initioMap(pans, true);
+        map_pans = initioMap(pans, true);
         /*map_pans        = initioMap(pans == null?
                 new Positio[][]{
                     new Positio[]{new Positio(0, new Punctum(1))},
@@ -94,25 +99,27 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
         map_vco_quantitatis = vco_quantitatis;//new Positiones(false, vco_quantitatis);
         map_vca_frequentiae = vca_frequentiae;//new Positiones(false, vca_frequentiae);
         map_vca_quantitatis = vca_quantitatis;//new Positiones(false, vca_quantitatis);
-        map_fb_quantitatis  = fb_quantitatis;//new Positiones(true, fb_quantitatis);
-        vco = new SineOscillatio();
-        vca = new SineOscillatio();
+        map_fb_quantitatis = fb_quantitatis;//new Positiones(true, fb_quantitatis);
+        vco = new OscillatioSine();
+        vca = new OscillatioSine();
 
         ponoModulatores(positiones_modulatores);
     }
-    private static ArrayList<Envelope<Punctum>> initioMap(Envelope<Punctum>[] positiones, boolean unusEst){
-            ArrayList<Envelope<Punctum>> map = new ArrayList<>();
-            for(int i = 0;i < CHANNEL;i++){
-                if(positiones != null && positiones[i] != null&& positiones[i].size() > 0){
-                    map.add(positiones[i]);
-                }else{
-                    Punctum pc = new Punctum();
-                    pc.ponoAestimatio(i, new Aestimatio(1));
-                    map.add(new Envelope<>(new Punctum(), new Positio(0, pc)));
-                }
+
+    private static ArrayList<Envelope<Punctum>> initioMap(Envelope<Punctum>[] positiones, boolean unusEst) {
+        ArrayList<Envelope<Punctum>> map = new ArrayList<>();
+        for (int i = 0; i < Res.publica.channel(); i++) {
+            if (positiones != null && positiones[i] != null && positiones[i].size() > 0) {
+                map.add(positiones[i]);
+            } else {
+                Punctum pc = new Punctum();
+                pc.ponoAestimatio(i, new Aestimatio(1));
+                map.add(new Envelope<>(new Punctum(), new Positio(0, pc)));
             }
-            return map;
+        }
+        return map;
     }
+
     /*private static TreeMap<Long, Punctum> initioMap(Positio[] positiones, boolean unusEst){
         TreeMap<Long, Punctum> map = new TreeMap<>();
         for(Positio positio:positiones){
@@ -121,9 +128,9 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
         map.putIfAbsent(0l, unusEst?new Punctum(1):new Punctum());
         return map;
     }*/
-    private TreeMap<Long, Punctum> capioMap(Rebus res, Integer channel){
+    private TreeMap<Long, Punctum> capioMap(Rebus res, Integer channel) {
         TreeMap<Long, Punctum> map;
-        switch(res){
+        switch (res) {
             case FREQ:
                 map = map_frequentiae;
                 break;
@@ -153,29 +160,34 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
         }
         return map;
     }
-    public void pono(Rebus res, Integer channel, long positio, Punctum punctum){
+
+    public void pono(Rebus res, Integer channel, long positio, Punctum punctum) {
         //if(res == FB_QUANT){
         //    System.out.println("DEBUG");
         //
         capioMap(res, channel).put(positio, punctum);
     }
-    public boolean habet(Rebus res, Integer channel, long positio){
+
+    public boolean habet(Rebus res, Integer channel, long positio) {
         return capioMap(res, channel).containsKey(positio);
     }
-    public void computoLongitudo(){
+
+    public void computoLongitudo() {
         ponoLongitudo(FastMath.max(map_frequentiae.lastKey(), map_quantitatis.lastKey()));
     }
-    private static long capioUltimum(Envelope<Punctum> frequentiae, Envelope<Punctum> quantitatis){
+
+    private static long capioUltimum(Envelope<Punctum> frequentiae, Envelope<Punctum> quantitatis) {
         return FastMath.max(frequentiae.lastKey(), quantitatis.lastKey());
-                
-                //Arrays.stream(frequentiae).mapToLong(e -> e.capioPositio()).reduce(0l, (x, y) -> x > y ? x : y),
-                //Arrays.stream(quantitatis).mapToLong(e -> e.capioPositio()).reduce(0l, (x, y) -> x > y ? x : y));
+
+        //Arrays.stream(frequentiae).mapToLong(e -> e.capioPositio()).reduce(0l, (x, y) -> x > y ? x : y),
+        //Arrays.stream(quantitatis).mapToLong(e -> e.capioPositio()).reduce(0l, (x, y) -> x > y ? x : y));
     }
 
     @Override
     public Punctum capioFrequentiae() {
         return capio(map_frequentiae, vco, map_vco_frequentiae, map_vco_quantitatis, index);
     }
+
     /*public void print(){
         for(long key:map_frequentiae.keySet()){
             System.out.println("DEBUG:" + map_frequentiae.get(key));
@@ -185,31 +197,32 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     @Override
     public Punctum capioQuantitatis() {
         return capio(
-            map_quantitatis, vca, 
-            map_vca_frequentiae, map_vca_quantitatis, 
+            map_quantitatis, vca,
+            map_vca_frequentiae, map_vca_quantitatis,
             index).multiplico(volume);
     }
+
     @Override
     public Punctum[] capioPans() {
-        Punctum[] pans = new Punctum[CHANNEL];
-        for(int i = 0;i < CHANNEL;i++){
+        Punctum[] pans = new Punctum[Res.publica.channel()];
+        for (int i = 0; i < Res.publica.channel(); i++) {
             pans[i] = map_pans.get(i).capioValue(index);
         }
         return pans;
-    }        
+    }
+
     @Override
     public Punctum capioFeedback() {
         return map_fb_quantitatis.capioValue(index).multiplico(feedback);
     }
 
-
-    private static Punctum capio(Envelope<Punctum> map, SineOscillatio vc_osc, 
-            Envelope<Punctum> map_vc_frequentiae, 
-            Envelope<Punctum> map_vc_quantitatis, long index){
+    private static Punctum capio(Envelope<Punctum> map, OscillatioSine vc_osc,
+        Envelope<Punctum> map_vc_frequentiae,
+        Envelope<Punctum> map_vc_quantitatis, long index) {
         Punctum punctum = map.capioValue(index);
         punctum = punctum.multiplico(vc_osc.lego(
-                map_vc_frequentiae.capioValue(index), 
-                map_vc_quantitatis.capioValue(index)).addo(new Punctum(1)));
+            map_vc_frequentiae.capioValue(index),
+            map_vc_quantitatis.capioValue(index)).addo(new Punctum(1)));
         return punctum;
     }
     /*private static Punctum capioPunctum(TreeMap<Long, Punctum> map, long index){
@@ -240,7 +253,7 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
 
         Punctum punctum = new Punctum();
         Aestimatio diff = new Aestimatio(index_tectum - index_solum);
-        for(int i = 0;i < CHANNEL;i++){
+        for(int i = 0;i < Res.publica.channel();i++){
             punctum.ponoAestimatio(i, 
                     punctum_solum .capioAestimatio(i).multiplico(new Aestimatio(index_tectum - index)).addo( 
                     punctum_tectum.capioAestimatio(i).multiplico(new Aestimatio(index - index_solum))).partior(diff));
@@ -251,8 +264,8 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
     //public static void main(String[] arg){
     //    Positiones p = new Positiones(new Punctum(1));
     //    while(true){
-        //    System.out.println(p.capioPunctum(index).multiplico(feedback));
+    //    System.out.println(p.capioPunctum(index).multiplico(feedback));
     //    }
     //}
-    
+
 }

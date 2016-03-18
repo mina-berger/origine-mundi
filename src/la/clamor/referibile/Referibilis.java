@@ -1,4 +1,6 @@
-package la.clamor;
+package la.clamor.referibile;
+
+import la.clamor.Punctum;
 
 
 public interface Referibilis {

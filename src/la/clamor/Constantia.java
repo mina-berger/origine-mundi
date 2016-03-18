@@ -4,7 +4,7 @@ import javax.sound.sampled.AudioFormat;
 
 public interface Constantia {
     public enum Rebus{FREQ, QUANT, PAN, VCO_FREQ, VCO_QUANT, VCA_FREQ, VCA_QUANT, FB_QUANT};
-    public static int CHANNEL = 2;
+    //public static int CHANNEL = 2;
     
     
     public static final int REGULA_EXAMPLI = 48000;
@@ -26,7 +26,7 @@ public interface Constantia {
     public enum Unda {SINE, QUAD, TRIA, DENT, FRAG}
     public enum Effector {DIST, CHOR, MORA, COMP};
     public static AudioFormat getAudioFormat() {
-        return getAudioFormat((float)REGULA_EXAMPLI, BYTE_PER_EXAMPLUM, CHANNEL);
+        return getAudioFormat((float)REGULA_EXAMPLI, BYTE_PER_EXAMPLUM, Res.publica.channel());
     }
     public static AudioFormat getAudioFormat(float sample_rate, int sample_size_byte, int channels) {
         boolean signed = true;

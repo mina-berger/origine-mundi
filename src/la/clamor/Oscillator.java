@@ -4,7 +4,6 @@ import la.clamor.io.ScriptorWav;
 import java.io.File;
 import java.util.NavigableMap;
 import java.util.TreeMap;
-import static la.clamor.Constantia.CHANNEL;
 import la.clamor.Constantia.Rebus;
 import static la.clamor.Constantia.Rebus.FB_QUANT;
 import static la.clamor.Constantia.Rebus.FREQ;
@@ -25,11 +24,14 @@ import origine_mundi.OmUtil;
  * @author minae.hiyamae
  */
 public class Oscillator implements Instrument {
+
     private OscillatorSettings[] acies_iugorum;
     private String name;
-    public Oscillator(String name){
+
+    public Oscillator(String name) {
         this(name, OscillatorSettings.toSettingsArray(getPreset(name)));
     }
+
     public Oscillator(String name, OscillatorSettings... acies_iugorum) {
         this.name = name;
         this.acies_iugorum = acies_iugorum;
@@ -44,7 +46,7 @@ public class Oscillator implements Instrument {
         ponoPositiones(p, QUANT, null,
             iugi.map_primo_qco, iugi.map_primo_qca,
             new Punctum(1), diuturnitas, velocitas);
-        for (int i = 0; i < CHANNEL; i++) {
+        for (int i = 0; i < Res.publica.channel(); i++) {
             ponoPositiones(p, PAN, i,
                 iugi.map_primo_pco.get(i), iugi.map_primo_pca.get(i),
                 new Punctum(1), diuturnitas, velocitas);
@@ -102,7 +104,7 @@ public class Oscillator implements Instrument {
                 Punctum punctum_tectum = submap2.get(tempus_tectum).capioPunctum(velocitas);
                 long index_tectum = Functiones.adPositio(tempus_tectum) + ultimo;
                 Punctum punctum = new Punctum();
-                for (int i = 0; i < CHANNEL; i++) {
+                for (int i = 0; i < Res.publica.channel(); i++) {
                     punctum.ponoAestimatio(i,
                         punctum_solum.capioAestimatio(i).multiplico(new Aestimatio(index_tectum - ultimo)).addo(
                         punctum_tectum.capioAestimatio(i).multiplico(new Aestimatio(ultimo - index_solum))).partior(
@@ -120,11 +122,13 @@ public class Oscillator implements Instrument {
             //if(res == FREQ) System.out.println("DEBUG5:" + submap3.get(key).capioPunctum(velocitas).multiplico(factor));
         });
     }
+
     @Override
-    public Legibilis capioNotum(double note, double temps, Velocitas velocitas){
+    public Legibilis capioNotum(double note, double temps, Velocitas velocitas) {
         return capioOscillationes(
             new Punctum(Temperamentum.instance.capioHZ(note)), temps, velocitas);
     }
+
     public Oscillationes capioOscillationes(Punctum frequentia, double temps, Velocitas velocitas) {
         Oscillationes oscillationes = new Oscillationes(acies_iugorum.length);
         for (OscillatorSettings acies_iugorum1 : acies_iugorum) {
@@ -194,7 +198,7 @@ public class Oscillator implements Instrument {
                 new Iugum[]{new Iugum(0, new Punctum(0), new Punctum(0))},
                 //Iugum[] iuga_fb_quantitatis_caudae,
                 new Iugum[]{new Iugum(0, new Punctum(1), new Punctum(1))}//,
-                //Iuga... pueros) {
+            //Iuga... pueros) {
             /*new Iuga(
                                 Unda.SINE, 1, 0, 
                                 new Iugum[]{
@@ -267,7 +271,7 @@ public class Oscillator implements Instrument {
          */
         File out_file = new File(OmUtil.getDirectory("opus"), "oscillatior.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
-        
+
         sw.scribo(cns, false);
         //sw.scribo(new FIRFilterDeinde(cns, 1000, 500, true), false);
         Functiones.ludoLimam(out_file);

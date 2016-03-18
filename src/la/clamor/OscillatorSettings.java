@@ -8,7 +8,6 @@ package la.clamor;
 import com.mina.util.Mjson;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import static la.clamor.Constantia.CHANNEL;
 import com.mina.util.Mjson.MjsonElement;
 import com.mina.util.Mjson.MjsonList;
 
@@ -61,8 +60,8 @@ public class OscillatorSettings {
             OscillatorUtil.toIugumArray(json.get("fb.corp")),
             OscillatorUtil.toIugumArray(json.get("fb.tail")),
             OscillatorSettings.toSettingsArray(new Mjson(json.get("pueros", new MjsonList()))));
-            
-            //    null, null, null, null, null, null, null, null, null, null, null, null, pueros);
+
+        //    null, null, null, null, null, null, null, null, null, null, null, null, pueros);
     }
 
     public OscillatorSettings(
@@ -111,7 +110,7 @@ public class OscillatorSettings {
 
     private static ArrayList<TreeMap<Double, Iugum>> init(ArrayList<ArrayList<Iugum>> iugi, boolean corpusEst, boolean unusEst) {
         ArrayList<TreeMap<Double, Iugum>> map = new ArrayList<>();
-        for (int i = 0; i < CHANNEL; i++) {
+        for (int i = 0; i < Res.publica.channel(); i++) {
             map.add(init(iugi == null ? new Iugum[0] : iugi.get(i).toArray(new Iugum[0]), corpusEst, unusEst));
         }
         return map;
@@ -130,14 +129,15 @@ public class OscillatorSettings {
         }
         return map;
     }
-    public static OscillatorSettings[] toSettingsArray(Mjson json){
+
+    public static OscillatorSettings[] toSettingsArray(Mjson json) {
         MjsonElement[] elems = json.getAsArray(null);
         //System.out.println(elems);
-        if(elems == null){
+        if (elems == null) {
             return null;
         }
         OscillatorSettings[] array = new OscillatorSettings[elems.length];
-        for(int i = 0;i < elems.length;i++){
+        for (int i = 0; i < elems.length; i++) {
             array[i] = new OscillatorSettings(new Mjson(elems[i]));
         }
         return array;

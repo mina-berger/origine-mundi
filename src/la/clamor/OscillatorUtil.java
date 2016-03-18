@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import static la.clamor.Constantia.CHANNEL;
 import com.mina.util.Mjson.MjsonElement;
 import com.mina.util.Mjson.MjsonList;
 import com.mina.util.Mjson.MjsonMap;
@@ -66,9 +65,9 @@ public class OscillatorUtil {
                     throw new IllegalArgumentException("empty punctum:" + elem.getClass().getSimpleName());
                 }
                 return null;
-            } else if (list.size() >= CHANNEL) {
-                double[] aestimationes = new double[CHANNEL];
-                for (int i = 0; i < CHANNEL; i++) {
+            } else if (list.size() >= Res.publica.channel()) {
+                double[] aestimationes = new double[Res.publica.channel()];
+                for (int i = 0; i < Res.publica.channel(); i++) {
                     aestimationes[i] = Mjson.toDouble(list.get(i));
                 }
                 return new Punctum(aestimationes);
@@ -88,76 +87,82 @@ public class OscillatorUtil {
         }
         return null;
     }
-    private static MjsonMap readCorpTail(CSVFile csv, int row, int col){
+
+    private static MjsonMap readCorpTail(CSVFile csv, int row, int col) {
         MjsonList corp = Mjson.list();
-        for(int i = 0;i < 4;i++){
-            if(csv.isEmpty(row, col + i)){
+        for (int i = 0; i < 4; i++) {
+            if (csv.isEmpty(row, col + i)) {
                 break;
             }
             corp.add(toUnit(csv.getString(row, col + i)));
         }
         MjsonList tail = Mjson.list();
-        for(int i = 4;i < 6;i++){
-            if(csv.isEmpty(row, col + i)){
+        for (int i = 4; i < 6; i++) {
+            if (csv.isEmpty(row, col + i)) {
                 break;
             }
             tail.add(toUnit(csv.getString(row, col + i)));
         }
         return map().unit("corp", corp).unit("tail", tail);
     }
-    private static MjsonMap toUnit(String str){
-        if(str == null || str.isEmpty()){
+
+    private static MjsonMap toUnit(String str) {
+        if (str == null || str.isEmpty()) {
             return null;
         }
         String[] strs = str.split(":");
         MjsonMap map = map();
         Double tempus = CSVFile.toDouble(strs[0]);
-        if(tempus == null){
+        if (tempus == null) {
             throw new IllegalArgumentException("illegal unit setting:" + str);
         }
         map.unit("tempus", tempus);
-        if(strs.length == 1){
+        if (strs.length == 1) {
             map.unit("altum", 0d);
-        }else{
+        } else {
             map.unit("altum", toDoubleValue(strs[1]));
         }
-        if(strs.length >= 3){
+        if (strs.length >= 3) {
             map.unit("humile", toDoubleValue(strs[2]));
         }
         return map;
     }
-    private static MjsonElement toDoubleValue(String str){
-        if(str.startsWith("[") && str.endsWith(("]"))){
+
+    private static MjsonElement toDoubleValue(String str) {
+        if (str.startsWith("[") && str.endsWith(("]"))) {
             String[] strs = str.substring(1, str.length() - 1).split(":");
             Double[] ret = new Double[strs.length];
-            for(int i = 0;i < strs.length;i++){
+            for (int i = 0; i < strs.length; i++) {
                 ret[i] = CSVFile.toDouble(strs[i]);
             }
-            return new MjsonList((Object[])ret);
-        }else{
+            return new MjsonList((Object[]) ret);
+        } else {
             return new MjsonSingle(CSVFile.toDouble(str));
         }
     }
-    private static void fillMap(MjsonMap all_map, MjsonList list, String search_key){
-        for(String key:all_map.keySet()){
-            MjsonMap map = (MjsonMap)all_map.get(key);
+
+    private static void fillMap(MjsonMap all_map, MjsonList list, String search_key) {
+        for (String key : all_map.keySet()) {
+            MjsonMap map = (MjsonMap) all_map.get(key);
             //System.out.println(key + " has out:" + new Mjson(map).get("out"));
             List<String> outs = Arrays.asList(new Mjson(map).getAsStringArray("out"));
-            if(outs.contains(search_key)){
+            if (outs.contains(search_key)) {
                 System.out.println(key + " has search key:" + search_key);
                 MjsonList pueros = list();
                 fillMap(all_map, pueros, key);
                 list.add(map);
             }
         }
-        
+
     }
-    private static MjsonList toOuts(String str){
-        if(str.isEmpty()){
+
+    private static MjsonList toOuts(String str) {
+        if (str.isEmpty()) {
             return list();
         }
-        return list((Object[])str.split(":"));
+        return list((Object[]) str.split(":"));
     }
+
     public static void _main(String[] args) throws IOException {
         Oscillator osc = new Oscillator("epiano");
         double a = Temperamentum.instance.capioHZ(69);
@@ -170,7 +175,8 @@ public class OscillatorUtil {
         //sw.scribo(new FIRFilterDeinde(cns, 3000, 500, true), false);
         Functiones.ludoLimam(out_file);
     }
-    public static Mjson getPreset(String name){
+
+    public static Mjson getPreset(String name) {
         CSVFile csv;
         try {
             csv = new CSVFile("doc/oscillator/" + name + ".csv");
@@ -179,14 +185,14 @@ public class OscillatorUtil {
         }
         MjsonMap all_map = Mjson.map();
         int row = 0;
-        while(true){
+        while (true) {
             MjsonMap map = Mjson.map();
-            if(csv.isEmpty(row, 0)){
+            if (csv.isEmpty(row, 0)) {
                 break;
             }
             String id = csv.getString(row, 0);
             //map.unit("id",   csv.getString(row, 0));
-            map.unit("out",  toOuts(csv.getString(row, 1)));
+            map.unit("out", toOuts(csv.getString(row, 1)));
             map.unit("unda", csv.getString(row, 2));
             map.unit("volume", csv.getDouble(row, 3));
             map.unit("feedback", csv.getDouble(row, 4));
@@ -195,20 +201,20 @@ public class OscillatorUtil {
             map.list("pan", readCorpTail(csv, row + 1, 5), readCorpTail(csv, row + 1, 11));
             map.unit("vco", map()
                 .unit("freq", readCorpTail(csv, row + 2, 5))
-                .unit("amp",  readCorpTail(csv, row + 2, 11)));
+                .unit("amp", readCorpTail(csv, row + 2, 11)));
             map.unit("vca", map()
                 .unit("freq", readCorpTail(csv, row + 3, 5))
-                .unit("amp",  readCorpTail(csv, row + 3, 11)));
+                .unit("amp", readCorpTail(csv, row + 3, 11)));
             //new Mjson(map).print();
             all_map.put(id, map);
             row += 5;
         }
         MjsonList list = list();
-        for(String key:all_map.keySet()){
-            MjsonMap map = (MjsonMap)all_map.get(key);
+        for (String key : all_map.keySet()) {
+            MjsonMap map = (MjsonMap) all_map.get(key);
             String[] outs = new Mjson(map).getAsStringArray("out");
             //System.out.println(outs.length);
-            if(outs.length == 0){
+            if (outs.length == 0) {
                 MjsonList pueros = list();
                 fillMap(all_map, pueros, key);
                 map.unit("pueros", pueros);
@@ -297,6 +303,7 @@ public class OscillatorUtil {
             FIRFilter f1 = new FIRFilter(500, 1000, true);
             FIRFilter f2 = new FIRFilter(500, 1000, true);
             int index = 0;
+
             @Override
             public Punctum lego() {
                 //return f.filter(cns.lego(), 1000, true);
@@ -306,15 +313,15 @@ public class OscillatorUtil {
                 //    2000 + (index % 12000 > 6000?1000:0), true);
                 Punctum lectum = cns.lego();
                 return new Punctum(
-                    f1.formo(lectum, 
-                    //200  + (double)index /  (48000. * 5.) * 1000, 
-                    2000 + ((double)index /  (48000. * 5.) * 2000) % 2000, true).capioAestimatio(0).doubleValue()
-                    //,
-                    //f2.filter(lectum, 
-                    //200  + (1000. - (double)index /  (48000. * 5.) * 1000), 
-                    //2000 + (1000. - (double)index /  (48000. * 5.) * 1000), true).capioAestimatio(0).doubleValue() 
+                    f1.formo(lectum,
+                        //200  + (double)index /  (48000. * 5.) * 1000, 
+                        2000 + ((double) index / (48000. * 5.) * 2000) % 2000, true).capioAestimatio(0).doubleValue()
+                //,
+                //f2.filter(lectum, 
+                //200  + (1000. - (double)index /  (48000. * 5.) * 1000), 
+                //2000 + (1000. - (double)index /  (48000. * 5.) * 1000), true).capioAestimatio(0).doubleValue() 
                 );
-                    
+
             }
 
             @Override
@@ -326,7 +333,7 @@ public class OscillatorUtil {
             public void close() {
             }
         }, false);
-        
+
         Functiones.ludoLimam(out_file);
 
     }

@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package la.clamor;
+package la.clamor.referibile;
 
+import la.clamor.Envelope;
+import la.clamor.Legibilis;
+import la.clamor.Punctum;
 import org.apache.commons.math3.util.FastMath;
 
 /**

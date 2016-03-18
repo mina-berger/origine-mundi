@@ -5,14 +5,14 @@
 package la.clamor.forma;
 
 import java.io.File;
-import static la.clamor.Constantia.CHANNEL;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.OrbisPuncti;
 import la.clamor.Punctum;
 import la.clamor.Aestimatio;
-import la.clamor.SineOscillatio;
+import la.clamor.Res;
 import la.clamor.io.ScriptorWav;
+import la.clamor.referibile.OscillatioSine;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
 
@@ -50,7 +50,7 @@ public class Delay implements Forma {
     @Override
     public Punctum formo(Punctum lectum) {
         Punctum punctum = new Punctum();
-        for (int i = 0; i < CHANNEL; i++) {
+        for (int i = 0; i < Res.publica.channel(); i++) {
             int i_aetas = (int) FastMath.ceil(aetas.capioAestimatio(i).doubleValue());
             int index = (int) FastMath.round(Functiones.adPositio(diutius.capioAestimatio(i).doubleValue()));
             //System.out.println(i_aetas + ":" + index + ":" + diutius.capioAestimatio(i).doubleValue() + ":"
@@ -77,7 +77,7 @@ public class Delay implements Forma {
         File out_file = new File(OmUtil.getDirectory("sample"), "delay.wav");
         ScriptorWav sl = new ScriptorWav(out_file);
         sl.scribo(new FormaLegibilis(new Legibilis() {
-            SineOscillatio o = new SineOscillatio();
+            OscillatioSine o = new OscillatioSine();
             int count = 0;
 
             @Override
@@ -101,9 +101,10 @@ public class Delay implements Forma {
         Functiones.ludoLimam(out_file);
 
     }
-    public static double temps(double tempo, double repenso){
+
+    public static double temps(double tempo, double repenso) {
         return 60000. / tempo * repenso;
-        
+
     }
 
 }

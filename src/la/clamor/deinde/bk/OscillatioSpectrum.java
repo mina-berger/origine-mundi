@@ -10,7 +10,7 @@ import la.clamor.Constantia;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.Punctum;
-import la.clamor.SineOscillatio;
+import la.clamor.referibile.OscillatioSine;
 
 /**
  *
@@ -58,12 +58,12 @@ public class OscillatioSpectrum implements Legibilis, Constantia {
         }
     }
     static class SineLegibilis implements Legibilis {
-        SineOscillatio so;
+        OscillatioSine so;
         Punctum pitch;
         Punctum amp;
         
         public SineLegibilis(double pitch, Punctum amp){
-            so = new SineOscillatio();
+            so = new OscillatioSine();
             this.pitch = new Punctum(pitch);
             this.amp = amp;
         }

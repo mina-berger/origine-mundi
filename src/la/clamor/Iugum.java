@@ -5,8 +5,6 @@
  */
 package la.clamor;
 
-import static la.clamor.Constantia.CHANNEL;
-
 /**
  *
  * @author minae.hiyamae
@@ -49,7 +47,7 @@ public class Iugum {
         //hv + l(1 - v)
         Punctum punctum = new Punctum();
         Punctum p_velocitas = velocitas.capio(index);
-        for (int i = 0; i < CHANNEL; i++) {
+        for (int i = 0; i < Res.publica.channel(); i++) {
             Aestimatio a_velocitas = p_velocitas.capioAestimatio(i);
             punctum.ponoAestimatio(i,
                 altum.capioAestimatio(i).multiplico(a_velocitas).addo(

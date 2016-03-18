@@ -11,16 +11,18 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import la.clamor.ExceptioClamoris;
 import la.clamor.Punctum;
-import static la.clamor.Constantia.CHANNEL;
+import la.clamor.Res;
 
 /**
  *
  * @author user
  */
 public class ScriptorLimam {
+
     private ObjectOutputStream o_out;
     private FileOutputStream f_out;
-    public ScriptorLimam(File lima){
+
+    public ScriptorLimam(File lima) {
         //if(lima.exists()){
         //    lima.delete();
         //}
@@ -31,8 +33,9 @@ public class ScriptorLimam {
             throw new ExceptioClamoris(ex);
         }
     }
-    public void scribo(Punctum punctum){
-        for(int k = 0;k < CHANNEL;k++){
+
+    public void scribo(Punctum punctum) {
+        for (int k = 0; k < Res.publica.channel(); k++) {
             try {
                 o_out.writeDouble(punctum.capioAestimatio(k).doubleValue());
             } catch (IOException ex) {
@@ -40,7 +43,8 @@ public class ScriptorLimam {
             }
         }
     }
-    public void close(){
+
+    public void close() {
         try {
             o_out.flush();
             o_out.close();
@@ -49,5 +53,5 @@ public class ScriptorLimam {
             throw new ExceptioClamoris(ex);
         }
     }
-    
+
 }
