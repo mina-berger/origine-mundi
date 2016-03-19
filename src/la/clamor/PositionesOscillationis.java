@@ -221,7 +221,7 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
         Envelope<Punctum> map_vc_quantitatis, long index) {
         Punctum punctum = map.capioValue(index);
         punctum = punctum.multiplico(vc_osc.lego(
-            map_vc_frequentiae.capioValue(index),
+            map_vc_frequentiae.capioValue(index)).multiplico(
             map_vc_quantitatis.capioValue(index)).addo(new Punctum(1)));
         return punctum;
     }

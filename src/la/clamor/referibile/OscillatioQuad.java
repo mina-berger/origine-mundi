@@ -3,6 +3,7 @@ package la.clamor.referibile;
 import java.io.File;
 import la.clamor.Aestimatio;
 import la.clamor.Envelope;
+import la.clamor.Functiones;
 import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.io.ScriptorWav;
@@ -31,8 +32,8 @@ public class OscillatioQuad extends OscillatioDelta {
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Referibile(new OscillatioQuad(),
             new Envelope<>(new Punctum(240), new Positio(3000, new Punctum(960))),
-            new Envelope<>(new Punctum(1))), false);
-        //Functiones.ludoLimam(out_file);
+            4000), false);
+        Functiones.ludoLimam(out_file);
 
     }
 }

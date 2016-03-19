@@ -137,7 +137,7 @@ public class Compressor implements Forma {
             @Override
             public Punctum lego() {
                 count++;
-                return o.lego(new Punctum(440), new Punctum(count < 120000 ? 1 : 0.5));
+                return o.lego(new Punctum(440)).multiplico(count < 120000 ? 1 : 0.5);
             }
 
             @Override

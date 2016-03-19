@@ -33,8 +33,8 @@ public class DeindeTest {
             count++;
             //pitch1 += 0.02;
             //return o1.lego(new Punctum(pitch1), new Punctum(1));
-            return o1.lego(new Punctum(pitch1), new Punctum(1)).addo(
-                o2.lego(new Punctum(pitch2), new Punctum(1)));
+            return o1.lego(new Punctum(pitch1)).addo(
+                o2.lego(new Punctum(pitch2)));
         }
 
         @Override

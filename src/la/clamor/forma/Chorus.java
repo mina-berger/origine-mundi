@@ -50,7 +50,7 @@ public class Chorus implements Forma {
 
     @Override
     public Punctum formo(Punctum lectum) {
-        Punctum oscillatio = osc.lego(frequentia, new Punctum(1));
+        Punctum oscillatio = osc.lego(frequentia);
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
             double index = oscillatio.capioAestimatio(i).addo(new Aestimatio(1)).multiplico(new Aestimatio(longitudo)).doubleValue();
@@ -76,7 +76,7 @@ public class Chorus implements Forma {
             @Override
             public Punctum lego() {
                 count++;
-                return o.lego(new Punctum(880), new Punctum(1));
+                return o.lego(new Punctum(880));
             }
 
             @Override

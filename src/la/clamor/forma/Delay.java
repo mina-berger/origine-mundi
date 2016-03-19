@@ -86,7 +86,7 @@ public class Delay implements Forma {
                 if (count >= 14400) {
                     return new Punctum();
                 }
-                return o.lego(new Punctum(440, 340), new Punctum(1));
+                return o.lego(new Punctum(440, 340));
             }
 
             @Override

@@ -37,7 +37,7 @@ public class OscillatioSine implements Referibilis, Constantia {
     }
 
     @Override
-    public Punctum lego(Punctum frequentia, Punctum quantitas) {
+    public Punctum lego(Punctum frequentia) {
         //frequentia = (frequentia == null) ? new Punctum() : frequentia;
         //quantitas = (quantitas == null) ? new Punctum() : quantitas;
         Punctum punctum = new Punctum();
@@ -60,13 +60,13 @@ public class OscillatioSine implements Referibilis, Constantia {
             y_2 = y_1;
         }
         y_1 = punctum;
-        return punctum.multiplico(quantitas);
+        return punctum;
     }
 
     public static void _main(String[] arg) {
         OscillatioSine o = new OscillatioSine();
         for (int i = 0; i < 200; i++) {
-            System.out.println(o.lego(new Punctum(0), new Punctum(1)));
+            System.out.println(o.lego(new Punctum(0)));
         }
     }
 
@@ -83,7 +83,7 @@ public class OscillatioSine implements Referibilis, Constantia {
             public Punctum lego() {
                 count++;
                 pitch += 0.02;
-                return o.lego(new Punctum(pitch), new Punctum(1));
+                return o.lego(new Punctum(pitch));
             }
 
             @Override

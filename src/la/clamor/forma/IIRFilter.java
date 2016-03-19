@@ -176,16 +176,19 @@ public class IIRFilter implements Forma {
         Referibile noise = new Referibile(new OscillatioFrag(), 
             new Envelope<>(new Punctum(200),
                 new Positio(2000., new Punctum(200))),
-            new Envelope<>(new Punctum(), 
-                new Positio(50, new Punctum(1)), 
-                new Positio(3000, new Punctum(1)), 
-                new Positio(4000, new Punctum(0)))
+            5000
         );
         File out_file = new File(OmUtil.getDirectory("opus"), "iir_noise.wav");
         //File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);
-        sw.scribo(new FormaLegibilis(noise, new IIRFilter(1000, true)), false);
+        sw.scribo(
+            new CadentesFormae( 
+            new IIRFilter(1000, true),
+            new Amplitudo(new Envelope<>(new Punctum(), 
+                new Positio(50, new Punctum(1)), 
+                new Positio(3000, new Punctum(1)), 
+                new Positio(4000, new Punctum(0))))).capioLegibilis(noise), false);
 
         Functiones.ludoLimam(out_file);
     }

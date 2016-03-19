@@ -28,8 +28,8 @@ public class IIROscillatio implements Legibilis {
     private final Envelope<Punctum> quantitates;
     private final Envelope<Punctum> filters;
     private final IIRFilter[] iirs;
-    public IIROscillatio(Referibilis referibilis, Envelope<Punctum> frequentiae, Envelope<Punctum> quantitates, Envelope<Punctum> filters){
-        this.referibile = new Referibile(referibilis, frequentiae, capioFalsum(quantitates));
+    public IIROscillatio(Referibilis referibilis, Envelope<Punctum> frequentiae, Envelope<Punctum> quantitates, Envelope<Punctum> filters, double tempus){
+        this.referibile = new Referibile(referibilis, frequentiae, tempus);
         this.quantitates = quantitates;
         this.filters = filters;
         this.iirs = new IIRFilter[Res.publica.channel()];
@@ -38,11 +38,11 @@ public class IIROscillatio implements Legibilis {
             iirs[i] = new IIRFilter(primo_filter.capioAestimatio(i).doubleValue(), true);
         }
     }
-    private static Envelope<Punctum> capioFalsum(Envelope<Punctum> env){
+    /*private static Envelope<Punctum> capioFalsum(Envelope<Punctum> env){
         Envelope falsum = new Envelope<>(new Punctum(1));
         falsum.put(env.lastKey(), new Punctum(1));
         return falsum;
-    }
+    }*/
 
     @Override
     public Punctum lego() {
@@ -82,11 +82,17 @@ public class IIROscillatio implements Legibilis {
                 new Positio(3000, new Punctum(0, 0, 1, 0)), 
                 new Positio(4000, new Punctum(1, 0, 0, 0)), 
                 new Positio(5000, new Punctum(0))),
-            new Envelope<>(new Punctum(500))
+            new Envelope<>(new Punctum(500)), 5000
                 //new Positio(2000., new Punctum(100))
             ), false);
     }
     public static void main(String[] args){
+        double value = 10000;
+        Envelope<Punctum> env = new Envelope<>(new Punctum(value));
+        for(int i = 0;i < 40;i++){
+            value *= 0.9;
+            env.ponoPositiones(new Positio<>(i * 100, new Punctum(value)));
+        }
         File out_file = new File(OmUtil.getDirectory("opus"), "iir_osc1.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new IIROscillatio(
@@ -104,8 +110,7 @@ public class IIROscillatio implements Legibilis {
                 new Positio(50, new Punctum(1)), 
                 new Positio(3000, new Punctum(1)), 
                 new Positio(4000, new Punctum(0))),
-            new Envelope<>(new Punctum(500),
-                new Positio(2000., new Punctum(100)))
+            env, 5000
             ), false);
         /*
         /*

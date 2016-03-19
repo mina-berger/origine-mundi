@@ -4,7 +4,7 @@ import java.io.File;
 import la.clamor.Aestimatio;
 import la.clamor.Constantia;
 import la.clamor.Envelope;
-import la.clamor.Positio;
+import la.clamor.Functiones;
 import la.clamor.Punctum;
 import la.clamor.Res;
 import la.clamor.io.ScriptorWav;
@@ -26,6 +26,7 @@ public class OscillatioPulse implements Referibilis, Constantia {
 
     /**
      * setting for this oscillatio
+     * @param con_negatif
      */
     public OscillatioPulse(boolean con_negatif) {
         this.con_negatif = con_negatif;
@@ -37,7 +38,7 @@ public class OscillatioPulse implements Referibilis, Constantia {
     }
 
     @Override
-    public Punctum lego(Punctum frequentia, Punctum quantitas) {
+    public Punctum lego(Punctum frequentia) {
         //f//requentia = (frequentia == null) ? new Punctum() : frequentia;
         //quantitas = (quantitas == null) ? new Punctum() : quantitas;
         Punctum punctum = new Punctum();
@@ -54,7 +55,7 @@ public class OscillatioPulse implements Referibilis, Constantia {
             x.ponoAestimatio(i, current_x.resto(threshold));
         }
         last = punctum;
-        return punctum.multiplico(quantitas);
+        return punctum;
     }
 
     /*public static void main(String[] arg) {
@@ -68,9 +69,9 @@ public class OscillatioPulse implements Referibilis, Constantia {
         File out_file = new File(OmUtil.getDirectory("opus"), "pulse_train1.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Referibile(new OscillatioPulse(false),
-            new Envelope<>(new Punctum(100), new Positio(3000, new Punctum(100))),
-            new Envelope<>(new Punctum(1))), false);
+            new Envelope<>(new Punctum(100)),
+            3000), false);
 
-        //Functiones.ludoLimam(out_file);
+        Functiones.ludoLimam(out_file);
     }
 }

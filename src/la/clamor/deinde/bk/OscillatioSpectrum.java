@@ -70,7 +70,7 @@ public class OscillatioSpectrum implements Legibilis, Constantia {
 
         @Override
         public Punctum lego() {
-            return so.lego(pitch, amp);
+            return so.lego(pitch).multiplico(amp);
         }
 
         @Override

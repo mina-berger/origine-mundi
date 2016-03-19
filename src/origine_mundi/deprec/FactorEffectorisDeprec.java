@@ -92,7 +92,7 @@ public class FactorEffectorisDeprec extends ArrayList<PositionesEffectoris> {
             @Override
             public Punctum lego() {
                 count++;
-                return o.lego(new Punctum(440), new Punctum(1));
+                return o.lego(new Punctum(440));
             }
 
             @Override
