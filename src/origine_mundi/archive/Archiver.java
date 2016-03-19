@@ -21,12 +21,9 @@ import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.getMidiDevice;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
-import origine_mundi.deprec.sampler.RecordThread;
-import static la.clamor.Constantia.getAudioFormat;
 import la.clamor.Functiones;
 import la.clamor.forma.FormaLegibilis;
 import la.clamor.forma.MonoOut;
-import static origine_mundi.OmUtil.MU500;
 import static origine_mundi.archive.ArchiveUtil.toDodeciString;
 import static la.clamor.Constantia.getAudioFormat;
 

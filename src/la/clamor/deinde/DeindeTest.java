@@ -5,8 +5,6 @@
  */
 package la.clamor.deinde;
 
-import la.clamor.deinde.bk.Spectrum;
-import la.clamor.deinde.bk.FourierSampler2;
 import java.io.File;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
@@ -47,27 +45,6 @@ public class DeindeTest {
         }
     };
 
-    public static void _main(String[] args) {
-        //File out_file = new File(OmUtil.getDirectory("opus"), "oscillatio_multi.wav");
-        boolean create = true;
-        if (create) {
-            //FourierSampler2 fs = new FourierSampler2(new Resampler(legibilis, Constantia.REGULA_EXAMPLI_D, Constantia.REGULA_EXAMPLI_D / 2), 4096, 0);
-            FourierSampler2 fs = new FourierSampler2(legibilis, 1048576, 0);
-            //for (Spectrum spectrum : fs.lego()) {
-            //spectrum.optimize();
-            //spectrum.print(System.out);
-
-            //}
-            Spectrum spectrum = fs.lego().get(0);
-            //spectrum.print(System.out, REGULA_EXAMPLI_D);
-            //System.out.println(spectrum.getLoudFrequency(REGULA_EXAMPLI_D));
-            //ScriptorWav sw = new ScriptorWav(out_file);
-            //sw.scribo(new OscillatioMulti(spectrum, 3000.), false);
-        }
-        //sw.scribo(new LowFi(legibilis, 0.5), false);
-        //Functiones.ludoLimam(out_file);
-
-    }
 
     public static void main(String[] args) {
         Res.publica.ponoChannel(4);
