@@ -188,12 +188,6 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
         return capio(map_frequentiae, vco, map_vco_frequentiae, map_vco_quantitatis, index);
     }
 
-    /*public void print(){
-        for(long key:map_frequentiae.keySet()){
-            System.out.println("DEBUG:" + map_frequentiae.get(key));
-        }
-    }*/
-
     @Override
     public Punctum capioQuantitatis() {
         return capio(

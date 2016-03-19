@@ -6,7 +6,6 @@
 
 package la.clamor;
 
-import la.clamor.deinde.bk.PositionesDeprec;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import org.apache.commons.lang3.ArrayUtils;
@@ -24,7 +23,7 @@ public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Le
         volumes = new Envelope<>(new Punctum(1));
         index = 0;
     }
-    public void setPositiones(PositionesDeprec volumes){
+    public void setPositiones(Envelope<Punctum> volumes){
         this.volumes = volumes;
     }
     
@@ -43,10 +42,11 @@ public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Le
     public Punctum lego() {
         Punctum punctum = new Punctum();
         for(Legibilis legibilis:pueros){
-            punctum = punctum.addo(legibilis.lego()).multiplico(volumes.capioValue(index));
+            punctum = punctum.addo(legibilis.lego());
         }
+        Punctum volume = volumes.capioValue(index);
         index++;
-        return punctum;
+        return punctum.multiplico(volume);
     }
 
     @Override

@@ -26,6 +26,7 @@ public class OscillatioPulse implements Referibilis, Constantia {
 
     /**
      * setting for this oscillatio
+     *
      * @param con_negatif
      */
     public OscillatioPulse(boolean con_negatif) {
@@ -58,12 +59,6 @@ public class OscillatioPulse implements Referibilis, Constantia {
         return punctum;
     }
 
-    /*public static void main(String[] arg) {
-        PulseOscillatio o = new PulseOscillatio();
-        for (int i = 0; i < 200; i++) {
-            System.out.println(i + ":" + o.lego(new Punctum(4800), new Punctum(1)));
-        }
-    }*/
     public static void main(String[] args) {
 
         File out_file = new File(OmUtil.getDirectory("opus"), "pulse_train1.wav");

@@ -36,9 +36,6 @@ public interface Functiones extends Constantia {
      */
     public static Complex[] solvo(double[] coefficientes){
         ArrayUtils.reverse(coefficientes);
-        /*for(int i = 0;i < coefficientes.length;i++){
-            System.out.println(coefficientes[i]);
-        }*/
         return new LaguerreSolver().solveAllComplex(coefficientes, 0.0);
     }
     

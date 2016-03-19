@@ -67,9 +67,9 @@ public class CSVFile extends ArrayList<ArrayList<String>>{
         CSVFile file = new CSVFile("doc/oscillator/primum.csv");
         for (ArrayList<String> row : file) {
             for(String cell:row){
-                System.out.print(cell + "(" + cell.isEmpty() + "),");
+                //System.out.print(cell + "(" + cell.isEmpty() + "),");
             }
-            System.out.println();
+            //System.out.println();
         }
     }
 }

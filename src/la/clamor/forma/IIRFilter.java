@@ -139,12 +139,12 @@ public class IIRFilter implements Forma {
         coef.b[0] = 2.0 * PI * fc / q / denom;
         coef.b[1] = 0.0;
         coef.b[2] = -2.0 * PI * fc / q / denom;
-        System.out.println("a0:" + coef.a[0]);
-        System.out.println("a1:" + coef.a[1]);
-        System.out.println("a2:" + coef.a[2]);
-        System.out.println("b0:" + coef.b[0]);
-        System.out.println("b1:" + coef.b[1]);
-        System.out.println("b2:" + coef.b[2]);
+        //System.out.println("a0:" + coef.a[0]);
+        //System.out.println("a1:" + coef.a[1]);
+        //System.out.println("a2:" + coef.a[2]);
+        //System.out.println("b0:" + coef.b[0]);
+        //System.out.println("b1:" + coef.b[1]);
+        //System.out.println("b2:" + coef.b[2]);
         return coef;
     }
 

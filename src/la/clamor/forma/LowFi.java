@@ -30,18 +30,5 @@ public class LowFi implements Forma {
         return 0;
     }
 
-    /*public static void main(String[] a){
-        long index_raw = 0;
-        double ratio = 3.5;
-        //OrbisAestimationis oa = new OrbisAestimationis((int) Math.ceil(ratio));
-        for(int i = 0;i < 20;i++){
-            long index = (long) Math.ceil(Math.floor((double)index_raw / ratio) * ratio);
-            System.out.println(i + ":" + index);
-            index_raw++;
-        }
-        
-        
-    }*/
-
 
 }

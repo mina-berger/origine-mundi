@@ -285,13 +285,6 @@ public class ScriptorWav implements Constantia {
         }
         return bytes;
     }*/
- /*public static void main(String[] args){
-        for(int i = MIN_AMPLITUDO.intValue();i < MAX_AMPLITUDO.intValue();i++){
-            byte[] data = convertoBytes(i, 2);
-            System.out.println(i + ":" + Integer.toHexString(data[0] & 0xff) + ":" + Integer.toHexString(data[1] & 0xff));
-        }
-        
-    }*/
     public static void main(String[] args) {
         LectorLimam ll = new LectorLimam(new File(OmUtil.getDirectory("sample"), "ba_1_h_40.lima"));
         ScriptorWav sl = new ScriptorWav(new File(OmUtil.getDirectory("sample"), "sample011.wav"));
@@ -388,12 +381,5 @@ public class ScriptorWav implements Constantia {
             str += Byte.toString(_byte);
         }
         return str;
-    }
-    public static void main(String[] args){
-        ByteBuffer lb = ByteBuffer.allocate(8);
-        lb.putLong(1);
-        for(byte _byte:lb.array()){
-            System.out.println(_byte);
-        }
     }*/
 }

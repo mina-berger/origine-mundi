@@ -4,8 +4,8 @@ import java.io.File;
 import la.clamor.Aestimatio;
 import la.clamor.Constantia;
 import static la.clamor.Constantia.REGULA_EXAMPLI_D;
+import la.clamor.Envelope;
 import la.clamor.Functiones;
-import la.clamor.Legibilis;
 import la.clamor.Punctum;
 import la.clamor.Res;
 import la.clamor.io.ScriptorWav;
@@ -63,38 +63,12 @@ public class OscillatioSine implements Referibilis, Constantia {
         return punctum;
     }
 
-    public static void _main(String[] arg) {
-        OscillatioSine o = new OscillatioSine();
-        for (int i = 0; i < 200; i++) {
-            System.out.println(o.lego(new Punctum(0)));
-        }
-    }
-
     public static void main(String[] args) {
-        Res.publica.ponoChannel(4);
-        File out_file = new File(OmUtil.getDirectory("opus"), "sine_oscillatio.wav");
+        //Res.publica.ponoChannel(4);
+        File out_file = new File(OmUtil.getDirectory("opus"), "osc_sine.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
-        sw.scribo(new Legibilis() {
-            OscillatioSine o = new OscillatioSine();
-            int count = 0;
-            double pitch = 110;
-
-            @Override
-            public Punctum lego() {
-                count++;
-                pitch += 0.02;
-                return o.lego(new Punctum(pitch));
-            }
-
-            @Override
-            public boolean paratusSum() {
-                return count < 144000;
-            }
-
-            @Override
-            public void close() {
-            }
-        }, false);
+        sw.scribo(new Referibile(new OscillatioSine(),
+            new Envelope<>(new Punctum(220)),4000), false);
         Functiones.ludoLimam(out_file);
 
     }

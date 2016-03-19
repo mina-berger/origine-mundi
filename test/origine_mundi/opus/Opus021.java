@@ -31,7 +31,7 @@ public class Opus021 extends Mensa {
     int count = 32;
 
     public Opus021() {
-        super(false, true);
+        super(true, true);
     }
 
     @Override

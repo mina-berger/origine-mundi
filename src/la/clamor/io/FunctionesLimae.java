@@ -57,7 +57,7 @@ public class FunctionesLimae implements Constantia {
         ll = new LectorLimam(lima);
         count = 0;
             
-        System.out.println(ab_index + ":" + ad_index + ":" + length);
+        //System.out.println(ab_index + ":" + ad_index + ":" + length);
         try {
             File tmp_file1 = File.createTempFile("l_lima1", Long.toString(System.currentTimeMillis()));
             ScriptorLimam sl = new ScriptorLimam(tmp_file1);

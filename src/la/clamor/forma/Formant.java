@@ -6,9 +6,9 @@
 package la.clamor.forma;
 
 import java.io.File;
+import la.clamor.Consilium;
 import la.clamor.Envelope;
 import la.clamor.Functiones;
-import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioPulse;
@@ -23,10 +23,10 @@ public class Formant implements Forma{
     
     private final IIRFilter[] filters;
     private Punctum deenphasis;
-    public Formant(double... freqs){
+    public Formant(double band, double... freqs){
         filters = new IIRFilter[freqs.length];
         for(int i = 0;i < freqs.length;i++){
-            filters[i] = IIRFilter.resonator(freqs[i], 100);
+            filters[i] = IIRFilter.resonator(freqs[i], band);
         }
         deenphasis = new Punctum();
     }
@@ -47,26 +47,105 @@ public class Formant implements Forma{
         return 0;
     }
     public static void main(String[] args){
-        File out_file = new File(OmUtil.getDirectory("opus"), "formant.wav");
+        File out_file = new File(OmUtil.getDirectory("opus"), "formant2_i.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
-        sw.scribo(new FormaLegibilis(new Referibile(new OscillatioPulse(false),
-            new Envelope<>(new Punctum(100), 
-                new Positio(1000, new Punctum(800))
-            ),
-            2000),
-            new Formant(
+        Consilium c = new Consilium();
+        double temps = 0;
+        double duration = 3000;
+        double freq = 100;
+        c.addo(temps, new FormaLegibilis(new Referibile(new OscillatioPulse(false),
+            new Envelope<>(new Punctum(freq)),
+            duration),
+            new Formant(100, 
                 //800, 1200, 2500, 3500
-                //300, 2300, 2900, 3500
-                //300, 1200, 2500, 3500
-                500, 1900, 2500, 3500
+                300, 2300, 2900, 3500
+                // 300, 1200, 2500, 3500
+                //500, 1900, 2500, 3500
                 //500, 800, 2500, 3500
             )
+        ));
+        temps += duration;
+        c.addo(temps, new FormaLegibilis(new Referibile(new OscillatioPulse(false),
+            new Envelope<>(new Punctum(freq)),
+            duration),
+            new Formant(50, 
+                //800, 1200, 2500, 3500
+                300, 2300, 2900, 3500
+                //300, 1200, 2500, 3500
+                //500, 1900, 2500, 3500
+                //500, 800, 2500, 3500
+            )
+        ));
+        sw.scribo(c, false);
+        Functiones.ludoLimam(out_file);
         
-        ), false);
+    }
+    public static void _main(String[] args){
+        File out_file = new File(OmUtil.getDirectory("opus"), "formant.wav");
+        ScriptorWav sw = new ScriptorWav(out_file);
+        Consilium c = new Consilium();
+        double temps = 0;
+        double duration = 400;
+        double freq = 100;
+        for(int i = 0;i < 16;i++){
+            
+            c.addo(temps, new FormaLegibilis(new Referibile(new OscillatioPulse(false),
+                new Envelope<>(new Punctum(freq)),
+                duration),
+                new Formant(100, 
+                    800, 1200, 2500, 3500
+                    //300, 2300, 2900, 3500
+                    //300, 1200, 2500, 3500
+                    //500, 1900, 2500, 3500
+                    //500, 800, 2500, 3500
+                )
+            ));
+            temps += duration;
+            c.addo(temps, new FormaLegibilis(new Referibile(new OscillatioPulse(false),
+                new Envelope<>(new Punctum(freq)),
+                duration),
+                new Formant(100, 
+                    //800, 1200, 2500, 3500
+                    300, 2300, 2900, 3500
+                    //300, 1200, 2500, 3500
+                    //500, 1900, 2500, 3500
+                    //500, 800, 2500, 3500
+                )
+            ));
+            temps += duration;
+            c.addo(temps, new FormaLegibilis(new Referibile(new OscillatioPulse(false),
+                new Envelope<>(new Punctum(freq)),
+                duration),
+                new Formant(100, 
+                    //800, 1200, 2500, 3500
+                    //300, 2300, 2900, 3500
+                    //300, 1200, 2500, 3500
+                    //500, 1900, 2500, 3500
+                    500, 800, 2500, 3500
+                )
+            ));
+            temps += duration;
+            c.addo(temps, new FormaLegibilis(new Referibile(new OscillatioPulse(false),
+                new Envelope<>(new Punctum(freq)),
+                duration),
+                new Formant(100, 
+                    800, 1200, 2500, 3500
+                    //300, 2300, 2900, 3500
+                    //300, 1200, 2500, 3500
+                    //500, 1900, 2500, 3500
+                    //500, 800, 2500, 3500
+                )
+            ));
+            temps += duration;
+            duration *= 0.8;
+            freq *= 1.2;
+            
+        }
+        sw.scribo(c, false);
         Functiones.ludoLimam(out_file);
         
     }
 
 
-    
+                
 }

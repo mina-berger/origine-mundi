@@ -32,6 +32,9 @@ public class CadentesFormae extends ArrayList<Forma> {
         }
         return l;
     }
+    public static Legibilis capioLegibilis(Legibilis fons, Forma... formae){
+        return new CadentesFormae(formae).capioLegibilis(fons);
+    }
 
     public static void main(String[] args) {
         File out_file = new File(OmUtil.getDirectory("opus"), "cadentes.wav");

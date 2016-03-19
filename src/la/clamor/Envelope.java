@@ -5,8 +5,16 @@
  */
 package la.clamor;
 
+import java.io.File;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import la.clamor.forma.Amplitudo;
+import la.clamor.forma.FormaLegibilis;
+import la.clamor.io.ScriptorWav;
+import la.clamor.referibile.OscillatioSine;
+import la.clamor.referibile.Referibile;
+import org.apache.commons.math3.util.FastMath;
+import origine_mundi.OmUtil;
 
 /**
  *
@@ -14,22 +22,27 @@ import java.util.TreeMap;
  * @param <V>
  */
 public class Envelope<V extends Mergibilis<V>> extends TreeMap<Long, V> {
+    
+    private boolean exponent;
 
     public Envelope() {
+        exponent = false;
     }
 
     public Envelope(Positio<V>... positiones) {
         ponoPositiones(positiones);
+        exponent = false;
     }
 
-    /*public Envelope(boolean unusEst, Positio<Punctum>... positiones) {
-        put(0l, unusEst ? new Punctum(1) : new Punctum());
-        ponoPositiones(positiones);
-    }*/
-
     public Envelope(V initial, Positio<V>... positiones) {
+        this(false, initial, positiones);
+        //put(0l, initial);
+        //ponoPositiones(positiones);
+    }
+    public Envelope(boolean exponent, V initial, Positio<V>... positiones) {
         put(0l, initial);
         ponoPositiones(positiones);
+        this.exponent = exponent;
     }
 
     public final void ponoPositiones(Positio<V>... positiones) {
@@ -70,7 +83,16 @@ public class Envelope<V extends Mergibilis<V>> extends TreeMap<Long, V> {
                 value_tectum = tectum.getValue();
             }
         }
-        return (V) value_solum.mergo(index_tectum - index_solum, index - index_solum, value_tectum);
+        long part_length = index_tectum - index_solum;
+        long part_index = index - index_solum;
+        if(exponent){
+            //long old = part_index;
+            part_index = FastMath.round(
+                (1. - FastMath.exp(-5. * (double)part_index / (double)part_length)) * (double)part_length);
+            //System.out.println(((double)old / (double)part_length) + ":" + ((double)part_index / (double)part_length));
+            //System.out.println(index_tectum + ":" + index_solum);
+        }
+        return (V) value_solum.mergo(part_length, part_index, value_tectum);
 
         /*Punctum punctum = new Punctum();
         Aestimatio diff = new Aestimatio(index_tectum - index_solum);
@@ -81,4 +103,19 @@ public class Envelope<V extends Mergibilis<V>> extends TreeMap<Long, V> {
         }
         return punctum;*/
     }
-}
+    public static void main(String[] args) {
+        //Res.publica.ponoChannel(4);
+        File out_file = new File(OmUtil.getDirectory("opus"), "env.wav");
+        ScriptorWav sw = new ScriptorWav(out_file);
+        sw.scribo(new FormaLegibilis(new Referibile(new OscillatioSine(),
+            new Envelope<>(new Punctum(220)),4000),
+            new Amplitudo(new Envelope<>(true,
+                new Punctum(0),
+                new Positio<>(500, new Punctum(1)),
+                new Positio<>(1500, new Punctum(0.5)),
+                new Positio<>(2500, new Punctum(0.5)),
+                new Positio<>(4000, new Punctum(0.0))
+            ))), false);
+        Functiones.ludoLimam(out_file);
+
+    }}

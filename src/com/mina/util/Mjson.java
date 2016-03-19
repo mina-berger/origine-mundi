@@ -92,7 +92,7 @@ public class Mjson {
 "    }\n" +
 "}";
         Mjson json = new Mjson(str);
-        System.out.println(json.get(""));
+        //System.out.println(json.get(""));
 //Mjson json = new Mjson("[1, true, [2,3,4], {'a':23}]");
         //Mjson json = new Mjson(element);
         //json.print();

@@ -175,18 +175,6 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return filum;
     }
 
-    public static void main(String[] args) throws Exception {
-        /*File tmp_file = File.createTempFile("test", Long.toString(System.currentTimeMillis()));
-        try (ObjectOutputStream o_out = new ObjectOutputStream(new FileOutputStream(tmp_file))) {
-            o_out.writeObject(new Punctum(1.123));
-            o_out.flush();
-        }
-        try (ObjectInputStream o_in = new ObjectInputStream(new FileInputStream(tmp_file))) {
-            System.out.println(o_in.readObject());
-        }*/
-        System.out.println(new Aestimatio(-1).partior(new Aestimatio(2.3)));
-    }
-
     @Override
     public int compareTo(Punctum p) {
         int compare = Integer.compare(aestimationes.length, p.aestimationes.length);
