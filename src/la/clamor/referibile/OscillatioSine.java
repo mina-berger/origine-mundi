@@ -6,6 +6,7 @@ import la.clamor.Constantia;
 import static la.clamor.Constantia.REGULA_EXAMPLI_D;
 import la.clamor.Envelope;
 import la.clamor.Functiones;
+import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.Res;
 import la.clamor.io.ScriptorWav;
@@ -68,7 +69,11 @@ public class OscillatioSine implements Referibilis, Constantia {
         File out_file = new File(OmUtil.getDirectory("opus"), "osc_sine.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Referibile(new OscillatioSine(),
-            new Envelope<>(new Punctum(220)),4000), false);
+            new ModEnv(
+                new Envelope<>(true, new Punctum(420), new Positio<>(1000, new Punctum(440))),
+                new Envelope<>(new Punctum(1), new Positio<>(9000, new Punctum(15))),
+                new Envelope<>(new Punctum(0), new Positio<>(1000, new Punctum(0.08)))),
+            10000), false);
         Functiones.ludoLimam(out_file);
 
     }

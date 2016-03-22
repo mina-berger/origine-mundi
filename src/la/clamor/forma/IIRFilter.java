@@ -38,6 +38,10 @@ public class IIRFilter implements Forma {
         //coef = getCoefficientsLpfHpf(freq, 1.0 / FastMath.sqrt(2.0), is_lpf);
     }
 
+    public IIRFilter(double freq1, double freq2, boolean is_bpf) {
+        this(getCoefficientsBpfBef(freq1, freq2, 1.0 / FastMath.sqrt(2.0), is_bpf));
+    }
+
     private IIRFilter(IIRCoefficients coef) {
         this.coef = coef;
         oa_a = new OrbisPuncti(3);
@@ -48,8 +52,20 @@ public class IIRFilter implements Forma {
         return new IIRFilter(getCoefficientsResonator(freq, band));
     }
 
+    public static IIRFilter peaking(double freq, double q, double g) {
+        return new IIRFilter(getCoefficientsPeaking(freq, q, g));
+    }
+
     public void rescribo(double freq, boolean is_lpf) {
         coef = getCoefficientsLpfHpf(freq, 1.0 / FastMath.sqrt(2.0), is_lpf);
+    }
+
+    public void rescribo(double freq1, double freq2, boolean is_bpf) {
+        coef = getCoefficientsBpfBef(freq1, freq2, 1.0 / FastMath.sqrt(2.0), is_bpf);
+    }
+
+    public void rescriboResonator(double freq, double band) {
+        coef = getCoefficientsResonator(freq, band);
     }
 
     @Override
@@ -60,15 +76,12 @@ public class IIRFilter implements Forma {
     @Override
     public Punctum formo(Punctum lectum) {
         Punctum reditum = new Punctum();
-        //for (int i = 1; i < coef.b.length; i++) {
-        //    reditum = reditum.addo(oa_b.capio(i - 1).multiplico(coef.b[i]));
-        //}
         for (int i = 0; i < coef.b.length; i++) {
             reditum = reditum.addo((i == 0 ? lectum : oa_b.capio(i - 1)).multiplico(coef.b[i]));
         }
         for (int i = 1; i < coef.a.length; i++) {
             reditum = reditum.addo(oa_a.capio(i - 1).multiplico(coef.a[i] * -1.0));
-        }   
+        }
         oa_b.pono(lectum);
         oa_a.pono(reditum);
         //System.out.println(lectum + ":" + reditum);
@@ -101,6 +114,22 @@ public class IIRFilter implements Forma {
         //System.out.println(coef.b[0]);
         //System.out.println(coef.b[1]);
         //System.out.println(coef.b[2]);
+        return coef;
+    }
+
+    public static IIRCoefficients getCoefficientsPeaking(double freq, double q, double g) {
+        IIRCoefficients coef = new IIRCoefficients();
+        double fc = FastMath.tan(PI * freq / Constantia.REGULA_EXAMPLI_D) / (2.0 * PI);
+
+        coef.a = new double[3];
+        coef.b = new double[3];
+        double denom = 1.0 + 2.0 * PI * fc / q + 4.0 * PI * PI * fc * fc;
+        coef.a[0] = 1.0;
+        coef.a[1] = (8.0 * PI * PI * fc * fc - 2.0) / denom;
+        coef.a[2] = (1.0 - 2.0 * PI * fc / q + 4.0 * PI * PI * fc * fc) / denom;
+        coef.b[0] = (1.0 + 2.0 * PI * fc / q * (1.0 + g) + 4.0 * PI * PI * fc * fc) / denom;
+        coef.b[1] = (8.0 * PI * PI * fc * fc - 2.0) / denom;
+        coef.b[2] = (1.0 - 2.0 * PI * fc / q * (1.0 + g) + 4.0 * PI * PI * fc * fc) / denom;
         return coef;
     }
 
@@ -173,7 +202,7 @@ public class IIRFilter implements Forma {
     }
 
     public static void main(String[] args) throws IOException {
-        Referibile noise = new Referibile(new OscillatioFrag(), 
+        Referibile noise = new Referibile(new OscillatioFrag(false),
             new Envelope<>(new Punctum(200),
                 new Positio(2000., new Punctum(200))),
             5000
@@ -183,15 +212,16 @@ public class IIRFilter implements Forma {
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);
         sw.scribo(
-            new CadentesFormae( 
-            new IIRFilter(1000, true),
-            new Amplitudo(new Envelope<>(new Punctum(), 
-                new Positio(50, new Punctum(1)), 
-                new Positio(3000, new Punctum(1)), 
-                new Positio(4000, new Punctum(0))))).capioLegibilis(noise), false);
+            new CadentesFormae(
+                new IIRFilter(1000, true),
+                new Amplitudo(new Envelope<>(new Punctum(),
+                    new Positio(50, new Punctum(1)),
+                    new Positio(3000, new Punctum(1)),
+                    new Positio(4000, new Punctum(0))))).capioLegibilis(noise), false);
 
         Functiones.ludoLimam(out_file);
     }
+
     public static void __main(String[] args) throws IOException {
         File in_file = new File(OmUtil.getDirectory("opus"), "osc_quad.wav");
         //File in_file = new File(OmUtil.getDirectory("opus"), "filter2.wav");

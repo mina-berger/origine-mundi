@@ -5,6 +5,7 @@
  */
 package la.clamor.opus;
 
+import com.mina.util.Doubles;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import la.clamor.Cinctum;
 import la.clamor.Consilium;
 import la.clamor.Functiones;
 import la.clamor.Instrument;
+import la.clamor.Legibilis;
 import la.clamor.Ludum;
 import la.clamor.Mixtor;
 import la.clamor.Velocitas;
@@ -50,7 +52,7 @@ public abstract class Mensa implements ConstantiaOperis {
 
     String sub_path;
 
-    public Mensa() {
+    private Mensa() {
         this(null, true, false);
     }
 
@@ -98,11 +100,16 @@ public abstract class Mensa implements ConstantiaOperis {
     }
 
     public void ponoInstrument(int id, Punctum level, Cinctum pan, Instrument inst) {
-        Mensa.this.ponoInstrument(id, level, pan, inst, null);
+        ponoInstrument(id, level, pan, inst, null);
     }
 
+    public void ponoNoInstrument(int id, Punctum level, Cinctum pan, CadentesFormae cf) {
+        ponoInstrument(id, level, pan, null, cf);
+    }
     public void ponoInstrument(int id, Punctum level, Cinctum pan, Instrument inst, CadentesFormae cf) {
-        instruments.put(id, inst);
+        if(inst != null){
+            instruments.put(id, inst);
+        }
         consilia.putIfAbsent(id, new Consilium());
         mixtor.ponoLegibilem(id, cf == null ? consilia.get(id) : cf.capioLegibilis(consilia.get(id)));
         mixtor.ponoInitialLevel(id, level);
@@ -122,6 +129,13 @@ public abstract class Mensa implements ConstantiaOperis {
     public void ponoNomen(String nomen) {
         this.nomen = nomen;
     }
+    
+    public double tempus(int talea, double repenso){
+        return taleae.capioTempus(talea, repenso);
+    }
+    public double diu(int talea1, double repenso1, int talea2, double repenso2){
+        return taleae.capioTempus(talea2, repenso2) - taleae.capioTempus(talea1, repenso1);
+    }
 
     protected abstract void ponoComitis(ArrayList<Comes> comites);
 
@@ -129,6 +143,11 @@ public abstract class Mensa implements ConstantiaOperis {
 
     protected abstract void creo();
 
+    protected void ludo(int id, int talea, double repenso, double diutius, Doubles cleves, Velocitas velocitas) {
+        for(double clevis:cleves){
+            ludo(id, talea, repenso, diutius, clevis, velocitas);
+        }
+    }
     protected void ludo(int id, int talea, double repenso, double diutius, double clevis, Velocitas velocitas) {
         if (!inRange(id, talea, repenso)) {
             return;
@@ -148,12 +167,11 @@ public abstract class Mensa implements ConstantiaOperis {
             - taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso());
         consilia.get(id).addo(taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso()),
             instruments.get(id).capioNotum(ludum.capioNote(), temp, ludum.capioVelocitas()));
-        /*
-        consilia.get(id).addo(taleae.capioTempus(talea, repenso),
-            instruments.get(id).capioNotum(new Ludum(talea, repenso, clevis,
-            taleae.capioTempus(talea, repenso + diutius) - taleae.capioTempus(talea, repenso),
-            velocitas)));*/
     }
+    public void sono(int id, int talea, double repenso, Legibilis legibilis){
+        consilia.get(id).addo(taleae.capioTempus(talea, repenso), legibilis);
+    }
+    
 
     public void ponoMasterLevel(int talea, double repenso, Punctum level) {
         if (!inRange(null, talea, repenso)) {

@@ -17,11 +17,14 @@ import la.clamor.Punctum;
 public class Referibile implements Legibilis {
 
     private final Referibilis referibilis;
-    private final Envelope<Punctum> frequentiae;
+    private final ModEnv frequentiae;
     private long index;
     private final long length;
 
     public Referibile(Referibilis referibilis, Envelope<Punctum> frequentiae, double tempus) {
+        this(referibilis, new ModEnv(frequentiae), tempus);
+    }
+    public Referibile(Referibilis referibilis, ModEnv frequentiae, double tempus) {
         this.referibilis = referibilis;
         this.frequentiae = frequentiae;
         index = 0;
@@ -30,7 +33,7 @@ public class Referibile implements Legibilis {
 
     @Override
     public Punctum lego() {
-        Punctum lectum = referibilis.lego(frequentiae.capioValue(index));
+        Punctum lectum = referibilis.lego(frequentiae.capio(index));
         index++;
         return lectum;
     }

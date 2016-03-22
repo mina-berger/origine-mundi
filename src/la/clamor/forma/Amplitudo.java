@@ -7,6 +7,7 @@ package la.clamor.forma;
 
 import la.clamor.Envelope;
 import la.clamor.Punctum;
+import la.clamor.referibile.ModEnv;
 
 /**
  *
@@ -14,17 +15,20 @@ import la.clamor.Punctum;
  */
 public class Amplitudo implements Forma {
 
-    private final Envelope<Punctum> quantitates;
+    private final ModEnv quantitates;
     private long index;
 
     public Amplitudo(Envelope<Punctum> quantitates) {
+        this(new ModEnv(quantitates));
+    }
+    public Amplitudo(ModEnv quantitates) {
         this.quantitates = quantitates;
         index = 0;
     }
 
     @Override
     public Punctum formo(Punctum lectum) {
-        Punctum q = quantitates.capioValue(index);
+        Punctum q = quantitates.capio(index);
         index++;
         return lectum.multiplico(q);
     }

@@ -24,11 +24,11 @@ import origine_mundi.OmUtil;
  *
  * @author mina
  */
-public class IIROscillatio implements Forma {
+public class FormaIIR implements Forma {
     private final Envelope<Punctum> filters;
     private final IIRFilter[] iirs;
     private int index;
-    public IIROscillatio(Envelope<Punctum> filters){
+    public FormaIIR(Envelope<Punctum> filters){
         this.filters = filters;
         this.iirs = new IIRFilter[Res.publica.channel()];
         Punctum primo_filter = filters.capioValue(0);
@@ -59,9 +59,8 @@ public class IIROscillatio implements Forma {
         Res.publica.ponoChannel(4);
         File out_file = new File(OmUtil.getDirectory("opus"), "iir_osc.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
-        sw.scribo(CadentesFormae.capioLegibilis(
-            new Referibile(new OscillatioPulse(false), new Envelope<>(new Punctum(500)), 5000),
-            new IIROscillatio(new Envelope<>(new Punctum(500))),
+        sw.scribo(CadentesFormae.capioLegibilis(new Referibile(new OscillatioPulse(false), new Envelope<>(new Punctum(500)), 5000),
+            new FormaIIR(new Envelope<>(new Punctum(500))),
             new Amplitudo(new Envelope<>(new Punctum(), 
                 new Positio(50, new Punctum(1, 0, 0, 0)), 
                 new Positio(1000, new Punctum(0, 1, 0, 0)), 
@@ -82,9 +81,8 @@ public class IIROscillatio implements Forma {
         }
         File out_file = new File(OmUtil.getDirectory("opus"), "iir_osc1.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
-        sw.scribo(CadentesFormae.capioLegibilis(
-            new Referibile(new OscillatioFrag(), new Envelope<>(new Punctum(500)), 5000),
-            new IIROscillatio(new Envelope<>(true, new Punctum(50), 
+        sw.scribo(CadentesFormae.capioLegibilis(new Referibile(new OscillatioFrag(false), new Envelope<>(new Punctum(500)), 5000),
+            new FormaIIR(new Envelope<>(true, new Punctum(50), 
                 new Positio<>(1000, new Punctum(10000)),
                 new Positio<>(4000, new Punctum(50))
             )),
