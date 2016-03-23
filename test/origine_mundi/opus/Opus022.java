@@ -14,7 +14,7 @@ import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.Temperamentum;
 import la.clamor.Velocitas;
-import la.clamor.forma.Amplitudo;
+import la.clamor.forma.VCA;
 import la.clamor.forma.CadentesFormae;
 import la.clamor.forma.Chorus;
 import la.clamor.forma.Delay;
@@ -117,7 +117,7 @@ public class Opus022 extends Mensa {
                                 new Positio<>(diu(i, 0.5, i, 2.95), Vowel.O),
                                 new Positio<>(diu(i, 0.5, i, 3.0), Vowel.A))),
                         new IIRFilter(1000, 1800, true),
-                        new Amplitudo(new ModEnv(new Envelope<>(new Punctum(0),
+                        new VCA(new ModEnv(new Envelope<>(new Punctum(0),
                             new Positio(diu(i, 0.5, i, 0.55), new Punctum(1)),
                             new Positio(diu(i, 0.5, i, 3.7), new Punctum(1)),
                             new Positio(diu(i, 0.5, i, 3.75), new Punctum(0))
@@ -153,7 +153,7 @@ public class Opus022 extends Mensa {
                             new Positio<>(diu(i, 0.5, i, 2.95), Vowel.O),
                             new Positio<>(diu(i, 0.5, i, 3.0), Vowel.A))),
                     new IIRFilter(1000, 1800, true),
-                    new Amplitudo(new ModEnv(new Envelope<>(new Punctum(0),
+                    new VCA(new ModEnv(new Envelope<>(new Punctum(0),
                         new Positio(diu(i, 0.5, i, 0.55), new Punctum(1)),
                         new Positio(diu(i, 0.5, i, 3.7), new Punctum(1)),
                         new Positio(diu(i, 0.5, i, 3.75), new Punctum(0))

@@ -69,4 +69,9 @@ public class OscillatioPulse implements Referibilis, Constantia {
 
         Functiones.ludoLimam(out_file);
     }
+
+    @Override
+    public Referibilis duplicate() {
+        return new OscillatioPulse(con_negatif);
+    }
 }

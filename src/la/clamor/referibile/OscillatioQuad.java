@@ -36,4 +36,9 @@ public class OscillatioQuad extends OscillatioDelta {
         Functiones.ludoLimam(out_file);
 
     }
+
+    @Override
+    public Referibilis duplicate() {
+        return new OscillatioQuad();
+    }
 }

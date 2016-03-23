@@ -214,7 +214,7 @@ public class IIRFilter implements Forma {
         sw.scribo(
             new CadentesFormae(
                 new IIRFilter(1000, true),
-                new Amplitudo(new Envelope<>(new Punctum(),
+                new VCA(new Envelope<>(new Punctum(),
                     new Positio(50, new Punctum(1)),
                     new Positio(3000, new Punctum(1)),
                     new Positio(4000, new Punctum(0))))).capioLegibilis(noise), false);

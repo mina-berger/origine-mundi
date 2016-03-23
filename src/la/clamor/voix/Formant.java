@@ -13,7 +13,7 @@ import la.clamor.Functiones;
 import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.Temperamentum;
-import la.clamor.forma.Amplitudo;
+import la.clamor.forma.VCA;
 import la.clamor.forma.CadentesFormae;
 import la.clamor.forma.Forma;
 import la.clamor.forma.IIRFilter;
@@ -147,7 +147,7 @@ public class Formant implements Forma {
                             new Positio<>(28 * unit, Vowel.O),
                             new Positio<>(30 * unit, Vowel.A))),
                     new IIRFilter(1800, true),
-                    new Amplitudo(new ModEnv(new Envelope<>(new Punctum(0),
+                    new VCA(new ModEnv(new Envelope<>(new Punctum(0),
                         new Positio(unit, new Punctum(1)),
                         new Positio(38.5 * unit, new Punctum(1)),
                         new Positio(39.5 * unit, new Punctum(0))),
@@ -215,7 +215,7 @@ public class Formant implements Forma {
                             new Positio<>(28 * unit, Vowel.O),
                             new Positio<>(30 * unit, Vowel.A))),
                     new IIRFilter(1800, true),
-                    new Amplitudo(new Envelope<>(new Punctum(0),
+                    new VCA(new Envelope<>(new Punctum(0),
                         new Positio(unit, new Punctum(1)),
                         new Positio(38.5 * unit, new Punctum(1)),
                         new Positio(39.5 * unit, new Punctum(0))

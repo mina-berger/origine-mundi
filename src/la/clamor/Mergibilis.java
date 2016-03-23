@@ -8,7 +8,9 @@ package la.clamor;
 /**
  *
  * @author mina
+ * @param <V>
  */
 public interface Mergibilis<V> {
     public V mergo(long diff, long index, V tectum);
+    public V multiplico(V factor);
 }

@@ -60,4 +60,9 @@ public class Cinctum implements Mergibilis<Cinctum> {
         }
         return cinctum;
     }
+
+    @Override
+    public Cinctum multiplico(Cinctum factor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

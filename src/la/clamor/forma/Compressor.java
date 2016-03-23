@@ -67,7 +67,7 @@ public class Compressor implements Forma {
         sl.scribo(CadentesFormae.capioLegibilis(new Referibile(new OscillatioSine(),
             new Envelope<>(new Punctum(400)), 5000),
             new Compressor(new Punctum(0.2), new Punctum(0.1)),
-            new Amplitudo(new Envelope<>(new Punctum(1)))
+            new VCA(new Envelope<>(new Punctum(1)))
         ), false);
         Functiones.ludoLimam(out_file);
     }

@@ -36,4 +36,9 @@ public class OscillatioDent extends OscillatioDelta {
         Functiones.ludoLimam(out_file);
 
     }
+
+    @Override
+    public Referibilis duplicate() {
+        return new OscillatioDent();
+    }
 }

@@ -11,5 +11,7 @@ public interface Referibilis {
      * @return
      */
     public Punctum lego(Punctum frequentia);
+    
+    public Referibilis duplicate();
 
 }

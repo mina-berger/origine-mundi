@@ -13,15 +13,15 @@ import la.clamor.referibile.ModEnv;
  *
  * @author mina
  */
-public class Amplitudo implements Forma {
+public class VCA implements Forma {
 
     private final ModEnv quantitates;
     private long index;
 
-    public Amplitudo(Envelope<Punctum> quantitates) {
+    public VCA(Envelope<Punctum> quantitates) {
         this(new ModEnv(quantitates));
     }
-    public Amplitudo(ModEnv quantitates) {
+    public VCA(ModEnv quantitates) {
         this.quantitates = quantitates;
         index = 0;
     }

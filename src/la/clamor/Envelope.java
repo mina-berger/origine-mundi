@@ -7,8 +7,9 @@ package la.clamor;
 
 import java.io.File;
 import java.util.Map.Entry;
+import java.util.SortedMap;
 import java.util.TreeMap;
-import la.clamor.forma.Amplitudo;
+import la.clamor.forma.VCA;
 import la.clamor.forma.FormaLegibilis;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
@@ -22,7 +23,7 @@ import origine_mundi.OmUtil;
  * @param <V>
  */
 public class Envelope<V extends Mergibilis<V>> extends TreeMap<Long, V> {
-    
+
     private boolean exponent;
 
     public Envelope() {
@@ -39,6 +40,7 @@ public class Envelope<V extends Mergibilis<V>> extends TreeMap<Long, V> {
         //put(0l, initial);
         //ponoPositiones(positiones);
     }
+
     public Envelope(boolean exponent, V initial, Positio<V>... positiones) {
         put(0l, initial);
         ponoPositiones(positiones);
@@ -85,10 +87,10 @@ public class Envelope<V extends Mergibilis<V>> extends TreeMap<Long, V> {
         }
         long part_length = index_tectum - index_solum;
         long part_index = index - index_solum;
-        if(exponent){
+        if (exponent) {
             //long old = part_index;
             part_index = FastMath.round(
-                (1. - FastMath.exp(-5. * (double)part_index / (double)part_length)) * (double)part_length);
+                (1. - FastMath.exp(-5. * (double) part_index / (double) part_length)) * (double) part_length);
             //System.out.println(((double)old / (double)part_length) + ":" + ((double)part_index / (double)part_length));
             //System.out.println(index_tectum + ":" + index_solum);
         }
@@ -103,13 +105,39 @@ public class Envelope<V extends Mergibilis<V>> extends TreeMap<Long, V> {
         }
         return punctum;*/
     }
+
+    public Envelope<V> capioSub(double tempus) {
+        long index = Functiones.adPositio(tempus);
+        SortedMap<Long, V> map;
+        if (lastKey() > index) {
+            map = this;
+        } else {
+            map = headMap(index);
+        }
+        Envelope<V> env = new Envelope<>(exponent, (V) map.get(0l));
+        for (Long key : map.keySet()) {
+            env.put(key, (V) map.get(key));
+        }
+        env.put(index, capioValue(index));
+        return env;
+    }
+
+    public Envelope<V> multiplico(V factor) {
+        Envelope<V> env = new Envelope<>(exponent, (V) get(0l));
+        for (Long key : keySet()) {
+            env.put(key, ((V) get(key)).multiplico(factor));
+        }
+        return env;
+
+    }
+
     public static void main(String[] args) {
         //Res.publica.ponoChannel(4);
         File out_file = new File(OmUtil.getDirectory("opus"), "env.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new FormaLegibilis(new Referibile(new OscillatioSine(),
-            new Envelope<>(new Punctum(220)),4000),
-            new Amplitudo(new Envelope<>(true,
+            new Envelope<>(new Punctum(220)), 4000),
+            new VCA(new Envelope<>(true,
                 new Punctum(0),
                 new Positio<>(500, new Punctum(1)),
                 new Positio<>(1500, new Punctum(0.5)),
@@ -118,4 +146,5 @@ public class Envelope<V extends Mergibilis<V>> extends TreeMap<Long, V> {
             ))), false);
         Functiones.ludoLimam(out_file);
 
-    }}
+    }
+}

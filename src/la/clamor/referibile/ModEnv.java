@@ -18,7 +18,7 @@ public class ModEnv {
     private Envelope<Punctum> quan_mod;
     private OscillatioSine os;
     public ModEnv(Envelope<Punctum> primus){
-        this(primus, new Envelope(new Punctum(0)), new Envelope(new Punctum(0)));
+        this(primus, new Envelope<>(new Punctum(0)), new Envelope<>(new Punctum(0)));
     }
     
     public ModEnv(Envelope<Punctum> primus, Envelope<Punctum> freq_mod, Envelope<Punctum> quan_mod){
@@ -32,6 +32,26 @@ public class ModEnv {
         Punctum modulatio = os.lego(freq_mod.capioValue(index)).multiplico(quan_mod.capioValue(index));
         return lectum.multiplico(modulatio.addo(new Punctum(1)));
     }
-    
+    public Envelope<Punctum> capioPrimus(){
+        return primus;
+    }
+    public ModEnv duplicate(){
+        return new ModEnv(
+            primus.multiplico(new Punctum(1)), 
+            freq_mod.multiplico(new Punctum(1)), 
+            quan_mod.multiplico(new Punctum(1)));
+    }
+    public ModEnv capioSub(double tempus){
+        Envelope<Punctum> _primus = primus.capioSub(tempus);
+        Envelope<Punctum> _freq_mod = freq_mod.capioSub(tempus);
+        Envelope<Punctum> _quan_mod = quan_mod.capioSub(tempus);
+        return new ModEnv(_primus, _freq_mod, _quan_mod);
+    }
+    public ModEnv multiplico(double factor_primi, double factor_freq, double factor_quant){
+        return new ModEnv(
+            primus.multiplico(new Punctum(factor_primi)), 
+            freq_mod.multiplico(new Punctum(factor_freq)), 
+            quan_mod.multiplico(new Punctum(factor_quant)));
+    }
     
 }

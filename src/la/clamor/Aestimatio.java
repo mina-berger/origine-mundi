@@ -53,6 +53,7 @@ public class Aestimatio implements Cloneable, Comparable<Aestimatio>, Serializab
         return new Aestimatio(value % partitor.value);
     }
 
+    @Override
     public Aestimatio multiplico(Aestimatio multiplicator) {
         return new Aestimatio(value * multiplicator.value);
     }

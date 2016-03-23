@@ -36,4 +36,9 @@ public class OscillatioTria extends OscillatioDelta {
         Functiones.ludoLimam(out_file);
 
     }
+
+    @Override
+    public Referibilis duplicate() {
+        return new OscillatioTria();
+    }
 }

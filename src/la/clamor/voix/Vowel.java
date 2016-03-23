@@ -38,5 +38,10 @@ public class Vowel implements Mergibilis<Vowel>{
         return (solum * (diff - index) + tectum * index) / diff;
     }
 
+    @Override
+    public Vowel multiplico(Vowel factor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 }

@@ -49,4 +49,9 @@ public class OscillatioFrag implements Referibilis {
 
     }
 
+    @Override
+    public Referibilis duplicate() {
+        return new OscillatioFrag(multi);
+    }
+
 }

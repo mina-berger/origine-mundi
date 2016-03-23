@@ -77,4 +77,9 @@ public class OscillatioSine implements Referibilis, Constantia {
         Functiones.ludoLimam(out_file);
 
     }
+
+    @Override
+    public Referibilis duplicate() {
+        return new OscillatioSine();
+    }
 }

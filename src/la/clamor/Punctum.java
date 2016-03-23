@@ -62,6 +62,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return multiplico(new Punctum(factor));
     }
 
+    @Override
     public Punctum multiplico(Punctum factor) {
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {

@@ -14,7 +14,7 @@ import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.Temperamentum;
 import la.clamor.Velocitas;
-import la.clamor.forma.Amplitudo;
+import la.clamor.forma.VCA;
 import la.clamor.forma.CadentesFormae;
 import la.clamor.forma.Chorus;
 import la.clamor.forma.Compressor;
@@ -25,8 +25,10 @@ import la.clamor.opus.Humanizer;
 import la.clamor.opus.Mensa;
 import la.clamor.opus.Taleae;
 import la.clamor.referibile.ModEnv;
-import la.clamor.referibile.OscillatioFrag;
 import la.clamor.referibile.OscillatioPulse;
+import la.clamor.referibile.OscillatioQuad;
+import la.clamor.referibile.OscillatioTria;
+import la.clamor.referibile.Referens;
 import la.clamor.referibile.Referibile;
 import la.clamor.voix.Formant;
 import la.clamor.voix.Vowel;
@@ -48,97 +50,151 @@ public class Opus023 extends Mensa {
 
     @Override
     protected void ponoRapidi(ArrayList<Taleae.Rapidus> rapidi) {
-        rapidi.add(new Taleae.Rapidus(0, 0, 120, false));
+        rapidi.add(new Taleae.Rapidus(0, 0, 90, false));
     }
 
     @Override
     protected void creo() {
-        ponoInstrument(0, new Punctum(1), new Cinctum(), new ArchiveLudior("mu500r", "piano", 500), new CadentesFormae(
-            //new Compressor(new Punctum(0.2), new Punctum(0.1)),
-            new IIRFilter(3000, true)
+        ponoInstrument(0, new Punctum(1), new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
+            new Compressor(new Punctum(0.2), new Punctum(0.1)),
+            new Equalizer(1., 0., 0., 0., 0., 0., 0., -0.5, -1., -1.)
         ));
-        ponoInstrument(1, new Punctum(1), new Cinctum(), new ArchiveLudior("mu500r", "piano", 500), new CadentesFormae(
-            new Equalizer(0., 2., 2., 0., -0.5, -0.5, -1., -1., 8., 8.),
-            new IIRFilter(3000, true)
+        ponoInstrument(1, new Punctum(0.5, 0.5), new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
+            new IIRFilter(500, 7000, true)));
+        
+        ponoInstrument(2, new Punctum(0.5, 0.5), new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
+            new Compressor(new Punctum(0.2), new Punctum(0.1)),
+            new Equalizer(-1., -1., -1., 0., 0., 0., 0., -0.5, -1., -1.)
         ));
-        ponoInstrument(2, new Punctum(1), new Cinctum(), new ArchiveLudior("mu500r", "piano", 500), new CadentesFormae(
-            new Equalizer(-1., -1., -0.5, 0., 2., 2., 0., -0.5, -1., -1.),
-            new IIRFilter(3000, true)
+        ponoInstrument(3, new Punctum(0.7), new Cinctum(true, new Punctum(1), new Punctum(0.5)), new ArchiveLudior("mu500r", "bass006433", 10), new CadentesFormae(
+            new Equalizer(2., 1., 1., 0., 0, 0, 0., -0.5, -1., -1.)
         ));
+        ponoInstrument(4, new Punctum(2.0), new Cinctum(), new ArchiveLudior("mu500r", "piano", 500), new CadentesFormae(
+            new Equalizer(0., 1., 1., 0., -0.5, -0.5, -1., -1., 3., 3.)
+        ));
+        ponoInstrument(5, new Punctum(0.4), new Cinctum(), 
+            new Referens("test", new OscillatioQuad(), 
+                new ModEnv(
+                    new Envelope<>(new Punctum(1)),
+                    new Envelope<>(new Punctum(3)),
+                    new Envelope<>(new Punctum(0.008, -0.008))
+                ), 
+                new ModEnv(new Envelope<>(new Punctum(1500), new Positio<>(1000, new Punctum(400)))), 
+                new ModEnv(new Envelope<>(new Punctum(1))), 500), 
+            
+            new CadentesFormae(
+            new Equalizer(0., 1., 1., 0., -0.5, -0.5, -1., -1., 1., 1.),
+            new Delay(new Punctum(Delay.temps(90, 0.5)), new Punctum(3), new Punctum(0.5, -0.5)),
+            new IIRFilter(3000, true)
+            )
+        );
+        ponoInstrument(6, new Punctum(1), new Cinctum(), 
+            new Referens("test", new OscillatioQuad(), 
+                new ModEnv(
+                    new Envelope<>(new Punctum(1)),
+                    new Envelope<>(new Punctum(3)),
+                    new Envelope<>(new Punctum(0.008, -0.008))
+                ), 
+                new ModEnv(new Envelope<>(new Punctum(1500), new Positio<>(1000, new Punctum(400)))), 
+                new ModEnv(new Envelope<>(new Punctum(1))), 500), 
+            
+            new CadentesFormae(
+            new Equalizer(-1., -1., -0.5, 0., 2., 2., 0., -0.5, -1., -1.)
+            //new IIRFilter(3000, true)
+            )
+        );
+        
         /*ponoInstrument(1, new Punctum(0.5, 0.5), new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
             new IIRFilter(500, 7000, true)));
         
 ponoNoInstrument(2, new Punctum(0.4, 0.4), new Cinctum(), new CadentesFormae(
             new Chorus(new Punctum(0.1), new Punctum(4), new Punctum(0.8), new Punctum(0.3))));
 */
-        ponoNoInstrument(3, new Punctum(1.3, 1.3), new Cinctum(), new CadentesFormae(
-            new Chorus(new Punctum(0.1), new Punctum(4), new Punctum(0.8), new Punctum(0.3))));
+        //ponoNoInstrument(3, new Punctum(1.3, 1.3), new Cinctum(), new CadentesFormae(
+        //    new Chorus(new Punctum(0.1), new Punctum(4), new Punctum(0.8), new Punctum(0.3))));
         ponoInstrument(10, new Punctum(0.5), new Cinctum(), new ArchiveLudior("mu500r", "piano", 500), new CadentesFormae(
             new Chorus(new Punctum(0.1), new Punctum(10), new Punctum(1, 0), new Punctum(0, 1)),
             new Delay(new Punctum(Delay.temps(120, 0.75)), new Punctum(3), new Punctum(0.5, -0.5)),
             new IIRFilter(500, 7000, true)));
         ponoHumanizer(new Humanizer()
             .pono(0, 0, 1).pono(0.25, 0.02, 0.5).pono(0.5, 0, 0.8).pono(0.75, 0.02, 0.5)
-            .ponoRandomVelocitas(0, 0.5), 0, 1);
+            .ponoRandomVelocitas(0, 0.5), 0, 1, 2, 4, 5);
+        ponoHumanizer(new Humanizer()
+            .pono(0, 0, 1).pono(0.25, 0.02, 0.8).pono(0.5, 0, 0.9).pono(0.75, 0.02, 0.8)
+            .ponoRandomVelocitas(0, 0.5), 0, 1, 2, 3, 4, 5);
 
-        ludoC(0, 4, 0);
-        ludoC(4, 4, 1);
-        ludoC(8, 4, 2);
+        ludoC(0, 4, 3, 5);
+        ludoA(0, 4);
+        ludoD(0, 4);
+        ludoC(4, 4, 3, 5);
+        ludoA(4, 4);
+        ludoD(4, 4);
+        //ludoC(4, 4, 5);
+        //ludoA(4, 4);
+//ludoC(4, 4, 5);
+        //ludoC(8, 4, 6);
         
     }
-    public void ludoC(int talea, int length, int track) {
-        for (int i = talea; i < talea + length; i++) {
-            ludo(track, i, 0.0, 4, 48, new Velocitas(1));
-            ludo(track, i, 1.0, 3, 64, new Velocitas(1));
-            ludo(track, i, 2.0, 2, 67, new Velocitas(1));
-            ludo(track, i, 3.0, 1, 71, new Velocitas(1));
-        }
-
+    
+    public void ludoD(int talea, int track) {
+        int i = talea;
+        ludo(track, i, 0.0, 0.2, 69, new Velocitas(0.8));
+        ludo(track, i, 0.25, 0.2, 67, new Velocitas(0.8));
+        ludo(track, i, 0.75, 0.5, 69, new Velocitas(0.8));
+        ludo(track, i, 1.25, 0.2, 70, new Velocitas(0.8));
+        ludo(track, i, 1.75, 0.5, 72, new Velocitas(0.8));
+        ludo(track, i, 2.25, 0.2, 70, new Velocitas(0.8));
+        ludo(track, i, 2.75, 0.5, 69, new Velocitas(0.8));
+        ludo(track, i, 3.25, 1.2, 67, new Velocitas(0.8));
+        i++;
+        ludo(track, i, 0.0, 0.2, 65, new Velocitas(0.8));
+        ludo(track, i, 0.25, 0.2, 64, new Velocitas(0.8));
+        ludo(track, i, 0.75, 0.5, 65, new Velocitas(0.8));
+        ludo(track, i, 1.25, 0.2, 67, new Velocitas(0.8));
+        ludo(track, i, 1.75, 0.5, 69, new Velocitas(0.8));
+        ludo(track, i, 2.25, 0.2, 67, new Velocitas(0.8));
+        ludo(track, i, 2.75, 0.5, 65, new Velocitas(0.8));
+        ludo(track, i, 3.25, 1.2, 60, new Velocitas(0.8));
+        i++;
+        ludo(track, i, 0.0, 0.7, 62, new Velocitas(0.8));
+        ludo(track, i, 0.75, 0.7, 65, new Velocitas(0.8));
+        ludo(track, i, 1.5, 0.4, 62, new Velocitas(0.8));
+        ludo(track, i, 2.0, 0.7, 60, new Velocitas(0.8));
+        ludo(track, i, 2.75, 0.7, 65, new Velocitas(0.8));
+        ludo(track, i, 3.5, 0.4, 69, new Velocitas(0.8));
+        i++;
+        ludo(track, i, 0.0, 0.3, 70, new Velocitas(0.8));
+        ludo(track, i, 0.5, 0.3, 69, new Velocitas(0.8));
+        ludo(track, i, 1.0, 0.3, 65, new Velocitas(0.8));
+        ludo(track, i, 1.5, 2.7, 67, new Velocitas(0.8));
     }
-
-    public void ludoB(int talea, int length, boolean hat) {
+    public void ludoC(int talea, int length, int track1, int track2) {
         double[][] notess = new double[][]{
-            new double[]{48, 60, 64, 67, 71},
-            new double[]{48, 60, 64, 67, 71},
-            new double[]{55, 62, 65, 69, 72},
-            new double[]{55, 62, 65, 69, 72}
+            new double[]{41, 65, 69, 72, 40, 67, 70, 72},
+            new double[]{38, 65, 69, 72, 36, 65, 69, 75},
+            new double[]{34, 65, 69, 74, 33, 67, 72, 74},
+            new double[]{31, 65, 70, 74, 36, 64, 70, 73},
         };
-
-        
         for (int i = talea; i < talea + length; i++) {
             double[] notes = notess[i % notess.length];
-            if(hat){
-                for (int j = 0; j < 4; j++) {
-                    ludo(1, i, j, 0.25, 42, new Velocitas(1));
-                    ludo(1, i, j + 0.25, 0.25, 42, new Velocitas(0.5));
-                    ludo(1, i, j + 0.5, 0.5, 46, new Velocitas(1));
-                }
-            }
-            ludo(10, i, 0.5, 1., new Doubles(
-                notes[0], notes[1], notes[2],notes[3]), new Velocitas(0.8));
-            double[] a_notes = new double[]{notes[2], notes[3], notes[4]};
-            for(int j = 0;j < a_notes.length;j++){
-                sono(3, i, 0.5,
-                    CadentesFormae.capioLegibilis(new Referibile(new OscillatioPulse(false),
-                        new Envelope<>(new Punctum(Temperamentum.instance.capioHZ(a_notes[j]))), diu(i, 0.55, i, 3.75)),
-                        new Formant(new Envelope<>(new Aestimatio(100)),
-                            new Envelope<>(Vowel.A,
-                                new Positio<>(diu(i, 0.5, i, 1.2), Vowel.A),
-                                new Positio<>(diu(i, 0.5, i, 1.25), Vowel.I),
-                                new Positio<>(diu(i, 0.5, i, 1.95), Vowel.I),
-                                new Positio<>(diu(i, 0.5, i, 2.0), Vowel.O),
-                                new Positio<>(diu(i, 0.5, i, 2.95), Vowel.O),
-                                new Positio<>(diu(i, 0.5, i, 3.0), Vowel.A))),
-                        new IIRFilter(1000, 1800, true),
-                        new Amplitudo(new ModEnv(new Envelope<>(new Punctum(0),
-                            new Positio(diu(i, 0.5, i, 0.55), new Punctum(1)),
-                            new Positio(diu(i, 0.5, i, 3.7), new Punctum(1)),
-                            new Positio(diu(i, 0.5, i, 3.75), new Punctum(0))
-                            ),
-                            new Envelope<>(new Punctum(1000. / diu(i, 0.5, i, 0.75))),
-                            new Envelope<>(new Punctum(0.1))
-                        ))));
-            }
+            ludo(track1, i, 0.0, 0.3, notes[0], new Velocitas(0.8));
+            ludo(track1, i, 0.5, 0.48, notes[0], new Velocitas(1));
+            ludo(track1, i, 1.0, 0.3, notes[0], new Velocitas(0.8));
+            ludo(track1, i, 1.5, 0.48, notes[0], new Velocitas(1));
+            ludo(track2, i, 0.0, 0.5, notes[1], new Velocitas(1));
+            ludo(track2, i, 0.5, 0.5, notes[2], new Velocitas(1));
+            ludo(track2, i, 1.0, 0.5, notes[3], new Velocitas(1));
+            ludo(track2, i, 1.5, 0.5, notes[2], new Velocitas(1));
+           
+            ludo(track1, i, 2.0, 0.3, notes[4], new Velocitas(0.8));
+            ludo(track1, i, 2.5, 0.48, notes[4], new Velocitas(1));
+            ludo(track1, i, 3.0, 0.3, notes[4], new Velocitas(0.8));
+            ludo(track1, i, 3.5, 0.48, notes[4], new Velocitas(1));
+            
+            ludo(track2, i, 2.0, 0.5, notes[5], new Velocitas(1));
+            ludo(track2, i, 2.5, 0.5, notes[6], new Velocitas(1));
+            ludo(track2, i, 3.0, 0.5, notes[7], new Velocitas(1));
+            ludo(track2, i, 3.5, 0.5, notes[6], new Velocitas(1));
         }
 
     }
@@ -146,34 +202,14 @@ ponoNoInstrument(2, new Punctum(0.4, 0.4), new Cinctum(), new CadentesFormae(
     public void ludoA(int talea, int length) {
         for (int i = talea; i < talea + length; i++) {
             ludo(0, i, 0.0, 0.5, 36, new Velocitas(1));
-            ludo(0, i, 1.0, 0.5, 36, new Velocitas(1));
+            ludo(2, i, 1.0, 1, 40, new Velocitas(1));
+            ludo(0, i, 1.5, 0.5, 36, new Velocitas(0.5));
             ludo(0, i, 2.0, 0.5, 36, new Velocitas(1));
-            ludo(0, i, 3.0, 0.5, 36, new Velocitas(1));
-            for (int j = 0; j < 4; j++) {
-                ludo(1, i, j, 0.25, 42, new Velocitas(1));
-                ludo(1, i, j + 0.25, 0.25, 42, new Velocitas(0.5));
-                ludo(1, i, j + 0.5, 0.5, 46, new Velocitas(1));
+            ludo(2, i, 3.0, 1, 40, new Velocitas(1));
+            ludo(0, i, 3.5, 0.5, 36, new Velocitas(0.5));
+            for (int j = 0; j < 8; j++) {
+                ludo(1, i, j * 0.5, 0.5, j == 7?46:42, new Velocitas(1));
             }
-            sono(2, i, 0.55,
-                CadentesFormae.capioLegibilis(new Referibile(new OscillatioFrag(false),
-                    new Envelope<>(new Punctum(100)), diu(i, 0.55, i, 3.75)),
-                    new Formant(new Envelope<>(new Aestimatio(100)),
-                        new Envelope<>(Vowel.A,
-                            new Positio<>(diu(i, 0.5, i, 1.2), Vowel.A),
-                            new Positio<>(diu(i, 0.5, i, 1.25), Vowel.I),
-                            new Positio<>(diu(i, 0.5, i, 1.95), Vowel.I),
-                            new Positio<>(diu(i, 0.5, i, 2.0), Vowel.O),
-                            new Positio<>(diu(i, 0.5, i, 2.95), Vowel.O),
-                            new Positio<>(diu(i, 0.5, i, 3.0), Vowel.A))),
-                    new IIRFilter(1000, 1800, true),
-                    new Amplitudo(new ModEnv(new Envelope<>(new Punctum(0),
-                        new Positio(diu(i, 0.5, i, 0.55), new Punctum(1)),
-                        new Positio(diu(i, 0.5, i, 3.7), new Punctum(1)),
-                        new Positio(diu(i, 0.5, i, 3.75), new Punctum(0))
-                    ),
-                        new Envelope<>(new Punctum(1000. / diu(i, 0.5, i, 0.75))),
-                        new Envelope<>(new Punctum(0.1))
-                    ))));
         }
 
     }
