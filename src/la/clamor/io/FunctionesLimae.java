@@ -13,7 +13,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import la.clamor.io.Lima.FilumOctorum;
 import la.clamor.io.Lima.RiffData;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Constantia;
 import static la.clamor.Constantia.getAudioFormat;
 import la.clamor.ExceptioClamoris;
@@ -23,11 +23,17 @@ import la.clamor.Punctum;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
 
 
 public class FunctionesLimae implements Constantia {
     public static Log log = LogFactory.getLog(FunctionesLimae.class);
-    public static void trim(File lima, Aestimatio min){
+    public static void trim(File lima, Aestima min){
         if(min.doubleValue() < 0){
             throw new ExceptioClamoris("minimum must be 0 or positive:" + min);
         }
@@ -86,7 +92,7 @@ public class FunctionesLimae implements Constantia {
         
         log.info("count=" + count + ":" + ab_index + " - " + ad_index);
     }
-    public static AudioFormat facioLimam(File source, File target, Aestimatio volume, boolean teneo_pan, boolean teneo_sample){
+    public static AudioFormat facioLimam(File source, File target, Aestima volume, boolean teneo_pan, boolean teneo_sample){
         FileInputStream source_in;
         int longitudo;
         int channel = 0;
@@ -183,7 +189,7 @@ public class FunctionesLimae implements Constantia {
                 Punctum punctum;
                 if(channel == 1){
                     FilumOctorum read = legoFilumOctorum(source_in, bytes);
-                    Aestimatio monoral_data = new Aestimatio(read.getByteValueInteger(0, bytes));
+                    Aestima monoral_data = new Aestima(read.getByteValueInteger(0, bytes));
                     punctum = new Punctum(monoral_data);
                     //max = max.max(monoral_data);
                     max.ponoAestimatio(monoral_data);
@@ -191,7 +197,7 @@ public class FunctionesLimae implements Constantia {
                     punctum = new Punctum();
                     for(int j = 0;j < channel;j++){
                         FilumOctorum read = legoFilumOctorum(source_in, bytes);
-                        Aestimatio datum = new Aestimatio(read.getByteValueInteger(0, bytes));
+                        Aestima datum = new Aestima(read.getByteValueInteger(0, bytes));
                         punctum.ponoAestimatio(j, datum);
                         //max = max.max(datum);
                         max.ponoAestimatio(j, datum);
@@ -291,8 +297,7 @@ public class FunctionesLimae implements Constantia {
                     resampled = new Punctum();
                     for(int j = 0;j < channel;j++){
                         resampled.ponoAestimatio(j,
-                                values_f.capioAestimatio(j).multiplico(new Aestimatio((double)ceil - position)).addo( 
-                                values_c.capioAestimatio(j).multiplico(new Aestimatio(position - (double)floor))));
+                                values_f.capioAestimatio(j).multiplico(new Aestima((double)ceil - position)).addo(values_c.capioAestimatio(j).multiplico(new Aestima(position - (double)floor))));
                     }
                 }
                 //for(int k = 0;k < CHANNEL;k++){
@@ -322,12 +327,12 @@ public class FunctionesLimae implements Constantia {
             this.teneo_pan = teneo_pan;
             punctum = new Punctum();
         }
-        void ponoAestimatio(Aestimatio value){
+        void ponoAestimatio(Aestima value){
             for(int i = 0;i < punctum.longitudo();i++){
                 punctum.ponoAestimatio(i, punctum.capioAestimatio(i).max(value));
             }
         }
-        void ponoAestimatio(int index, Aestimatio value){
+        void ponoAestimatio(int index, Aestima value){
             if(teneo_pan){
                 ponoAestimatio(value);
             }else{

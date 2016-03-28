@@ -2,7 +2,7 @@ package la.clamor.referibile;
 
 import java.io.File;
 import java.util.Random;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Envelope;
 import la.clamor.Functiones;
 import la.clamor.Punctum;
@@ -34,8 +34,8 @@ public class OscillatioFrag implements Referibilis {
         }
         return punctum;
     }
-    protected Aestimatio capioUnda() {
-        return new Aestimatio(FastMath.sin(new Random().nextGaussian() * 2. * FastMath.PI));
+    protected Aestima capioUnda() {
+        return new Aestima(FastMath.sin(new Random().nextGaussian() * 2. * FastMath.PI));
     }
 
     public static void main(String[] args) {

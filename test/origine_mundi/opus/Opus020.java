@@ -9,7 +9,7 @@ package origine_mundi.opus;
 import java.util.ArrayList;
 import la.clamor.Cinctum;
 import la.clamor.Oscillator;
-import la.clamor.Velocitas;
+import la.clamor.Vel;
 import la.clamor.Punctum;
 import la.clamor.opus.Mensa;
 import la.clamor.opus.Taleae.Comes;
@@ -44,14 +44,14 @@ public class Opus020 extends Mensa {
         ponoInstrument(0, new Punctum(1, 1.0), new Cinctum(), new Oscillator("epiano"));
                 
         for(int i = 0;i < count;i++){
-            ludo(0, i, 0.0, 0.5, i + 65,  new Velocitas(1));
-            ludo(0, i, 0.5, 0.5, i + 69,  new Velocitas(1));
-            ludo(0, i, 1.0, 0.5, i + 72, new Velocitas(1));
-            ludo(0, i, 1.5, 0.5, i + 76, new Velocitas(1));
-            ludo(0, i, 2.0, 0.5, i + 79, new Velocitas(1));
-            ludo(0, i, 2.5, 0.5, i + 76, new Velocitas(1));
-            ludo(0, i, 3.0, 0.5, i + 72, new Velocitas(1));
-            ludo(0, i, 3.5, 0.5, i + 69,  new Velocitas(1));
+            ludo(0, i, 0.0, 0.5, i + 65,  new Vel(1));
+            ludo(0, i, 0.5, 0.5, i + 69,  new Vel(1));
+            ludo(0, i, 1.0, 0.5, i + 72, new Vel(1));
+            ludo(0, i, 1.5, 0.5, i + 76, new Vel(1));
+            ludo(0, i, 2.0, 0.5, i + 79, new Vel(1));
+            ludo(0, i, 2.5, 0.5, i + 76, new Vel(1));
+            ludo(0, i, 3.0, 0.5, i + 72, new Vel(1));
+            ludo(0, i, 3.5, 0.5, i + 69,  new Vel(1));
         }
     }
 

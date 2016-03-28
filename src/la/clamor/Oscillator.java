@@ -37,7 +37,7 @@ public class Oscillator implements Instrument {
         this.acies_iugorum = acies_iugorum;
     }
 
-    private static PositionesFixi capioPositionesFixi(OscillatorSettings iugi, Punctum frequentia, double diuturnitas, Velocitas velocitas) {
+    private static PositionesFixi capioPositionesFixi(OscillatorSettings iugi, Punctum frequentia, double diuturnitas, Vel velocitas) {
         PositionesFixi p = new PositionesFixi(iugi.unda, iugi.volume, iugi.feedback);
         ponoPositiones(p, FREQ, null,
             iugi.map_primo_fco, iugi.map_primo_fca,
@@ -82,7 +82,7 @@ public class Oscillator implements Instrument {
         PositionesFixi p, Rebus res, Integer channel,
         TreeMap<Double, Iugum> map_corporis,
         TreeMap<Double, Iugum> map_caudae,
-        Punctum factor, double diuturnitas, Velocitas velocitas) {
+        Punctum factor, double diuturnitas, Vel velocitas) {
         long ultimo = Functiones.adPositio(diuturnitas);
         //System.out.println("diuturnitas=" + diuturnitas);
         NavigableMap<Double, Iugum> submap1 = map_corporis.subMap(0d, true, diuturnitas, true);
@@ -106,9 +106,9 @@ public class Oscillator implements Instrument {
                 Punctum punctum = new Punctum();
                 for (int i = 0; i < Res.publica.channel(); i++) {
                     punctum.ponoAestimatio(i,
-                        punctum_solum.capioAestimatio(i).multiplico(new Aestimatio(index_tectum - ultimo)).addo(
-                        punctum_tectum.capioAestimatio(i).multiplico(new Aestimatio(ultimo - index_solum))).partior(
-                        new Aestimatio(index_tectum - index_solum)));
+                        punctum_solum.capioAestimatio(i).multiplico(new Aestima(index_tectum - ultimo)).addo(
+                        punctum_tectum.capioAestimatio(i).multiplico(new Aestima(ultimo - index_solum))).partior(
+                        new Aestima(index_tectum - index_solum)));
                 }
                 p.pono(res, channel, ultimo, punctum.multiplico(factor));
                 //if(res == FREQ) System.out.println("DEBUG4:" + punctum.multiplico(factor));
@@ -124,12 +124,12 @@ public class Oscillator implements Instrument {
     }
 
     @Override
-    public Legibilis capioNotum(double note, double temps, Velocitas velocitas) {
+    public Legibilis capioNotum(double note, double temps, Vel velocitas) {
         return capioOscillationes(
             new Punctum(Temperamentum.instance.capioHZ(note)), temps, velocitas);
     }
 
-    public Oscillationes capioOscillationes(Punctum frequentia, double temps, Velocitas velocitas) {
+    public Oscillationes capioOscillationes(Punctum frequentia, double temps, Vel velocitas) {
         Oscillationes oscillationes = new Oscillationes(acies_iugorum.length);
         for (OscillatorSettings acies_iugorum1 : acies_iugorum) {
             PositionesFixi p = capioPositionesFixi(acies_iugorum1, frequentia, temps, velocitas);
@@ -261,7 +261,7 @@ public class Oscillator implements Instrument {
         double g = Temperamentum.instance.capioHZ(79);
         double b = Temperamentum.instance.capioHZ(83);
         Consilium cns = new Consilium();
-        cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, new Velocitas(1)));
+        cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, new Vel(1)));
         /*cns.addo(   0, osc.capioOscillationes(new Punctum(f), 5000, new Velocitas(1)));
         cns.addo( 500, osc.capioOscillationes(new Punctum(a), 5500, new Velocitas(1)));
         cns.addo(1000, osc.capioOscillationes(new Punctum(c), 6000, new Velocitas(1)));

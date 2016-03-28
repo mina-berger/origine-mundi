@@ -5,7 +5,7 @@
 package la.clamor.forma;
 
 import java.io.File;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.Punctum;
@@ -24,6 +24,9 @@ public class Distortion implements Forma {
     Punctum compendium_ante;
     Punctum compendium_post;
 
+    public Distortion(Punctum terminus, Punctum compendium_ante) {
+        this(terminus, compendium_ante, new Punctum(1).partior(terminus));
+    }
     public Distortion(Punctum terminus, Punctum compendium_ante, Punctum compendium_post) {
         this.terminus = terminus;
         this.compendium_ante = compendium_ante;
@@ -37,10 +40,10 @@ public class Distortion implements Forma {
 
     @Override
     public Punctum formo(Punctum lectum) {
-        final Aestimatio zero = new Aestimatio();
+        final Aestima zero = new Aestima();
         Punctum multiplicatum = lectum.multiplico(compendium_ante);
         for (int i = 0; i < Res.publica.channel(); i++) {
-            Aestimatio aestimatio = multiplicatum.capioAestimatio(i);
+            Aestima aestimatio = multiplicatum.capioAestimatio(i);
             if (aestimatio.compareTo(zero) < 0) {
                 aestimatio = aestimatio.max(terminus.capioAestimatio(i).nego());
             } else {

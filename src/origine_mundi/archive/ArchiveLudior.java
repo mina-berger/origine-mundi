@@ -12,7 +12,7 @@ import la.clamor.Functiones;
 import la.clamor.Instrument;
 import la.clamor.Legibilis;
 import la.clamor.Punctum;
-import la.clamor.Velocitas;
+import la.clamor.Vel;
 import org.apache.commons.math3.util.FastMath;
 import static origine_mundi.archive.ArchiveUtil.getNote;
 import static origine_mundi.archive.ArchiveUtil.getVelocity;
@@ -38,7 +38,7 @@ public class ArchiveLudior extends TreeMap<Integer, TreeSet<Integer>> implements
     }
 
     @Override
-    public Legibilis capioNotum(double note, double temps, Velocitas velocitas) {
+    public Legibilis capioNotum(double note, double temps, Vel velocitas) {
         return capioNotum(note, temps, velocitas.capio(0));
     }
 

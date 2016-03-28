@@ -7,13 +7,13 @@ package origine_mundi.opus;
 
 import com.mina.util.Doubles;
 import java.util.ArrayList;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Cinctum;
 import la.clamor.Envelope;
 import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.Temperamentum;
-import la.clamor.Velocitas;
+import la.clamor.Vel;
 import la.clamor.forma.VCA;
 import la.clamor.forma.CadentesFormae;
 import la.clamor.forma.Chorus;
@@ -96,19 +96,19 @@ public class Opus022 extends Mensa {
             double[] notes = notess[i % notess.length];
             if(hat){
                 for (int j = 0; j < 4; j++) {
-                    ludo(1, i, j, 0.25, 42, new Velocitas(1));
-                    ludo(1, i, j + 0.25, 0.25, 42, new Velocitas(0.5));
-                    ludo(1, i, j + 0.5, 0.5, 46, new Velocitas(1));
+                    ludo(1, i, j, 0.25, 42, new Vel(1));
+                    ludo(1, i, j + 0.25, 0.25, 42, new Vel(0.5));
+                    ludo(1, i, j + 0.5, 0.5, 46, new Vel(1));
                 }
             }
             ludo(10, i, 0.5, 1., new Doubles(
-                notes[0], notes[1], notes[2],notes[3]), new Velocitas(0.8));
+                notes[0], notes[1], notes[2],notes[3]), new Vel(0.8));
             double[] a_notes = new double[]{notes[2], notes[3], notes[4]};
             for(int j = 0;j < a_notes.length;j++){
                 sono(3, i, 0.5,
                     CadentesFormae.capioLegibilis(new Referibile(new OscillatioPulse(false),
                         new Envelope<>(new Punctum(Temperamentum.instance.capioHZ(a_notes[j]))), diu(i, 0.55, i, 3.75)),
-                        new Formant(new Envelope<>(new Aestimatio(100)),
+                        new Formant(new Envelope<>(new Aestima(100)),
                             new Envelope<>(Vowel.A,
                                 new Positio<>(diu(i, 0.5, i, 1.2), Vowel.A),
                                 new Positio<>(diu(i, 0.5, i, 1.25), Vowel.I),
@@ -132,19 +132,19 @@ public class Opus022 extends Mensa {
 
     public void ludoA(int talea, int length) {
         for (int i = talea; i < talea + length; i++) {
-            ludo(0, i, 0.0, 0.5, 36, new Velocitas(1));
-            ludo(0, i, 1.0, 0.5, 36, new Velocitas(1));
-            ludo(0, i, 2.0, 0.5, 36, new Velocitas(1));
-            ludo(0, i, 3.0, 0.5, 36, new Velocitas(1));
+            ludo(0, i, 0.0, 0.5, 36, new Vel(1));
+            ludo(0, i, 1.0, 0.5, 36, new Vel(1));
+            ludo(0, i, 2.0, 0.5, 36, new Vel(1));
+            ludo(0, i, 3.0, 0.5, 36, new Vel(1));
             for (int j = 0; j < 4; j++) {
-                ludo(1, i, j, 0.25, 42, new Velocitas(1));
-                ludo(1, i, j + 0.25, 0.25, 42, new Velocitas(0.5));
-                ludo(1, i, j + 0.5, 0.5, 46, new Velocitas(1));
+                ludo(1, i, j, 0.25, 42, new Vel(1));
+                ludo(1, i, j + 0.25, 0.25, 42, new Vel(0.5));
+                ludo(1, i, j + 0.5, 0.5, 46, new Vel(1));
             }
             sono(2, i, 0.55,
                 CadentesFormae.capioLegibilis(new Referibile(new OscillatioFrag(false),
                     new Envelope<>(new Punctum(100)), diu(i, 0.55, i, 3.75)),
-                    new Formant(new Envelope<>(new Aestimatio(100)),
+                    new Formant(new Envelope<>(new Aestima(100)),
                         new Envelope<>(Vowel.A,
                             new Positio<>(diu(i, 0.5, i, 1.2), Vowel.A),
                             new Positio<>(diu(i, 0.5, i, 1.25), Vowel.I),
@@ -167,10 +167,10 @@ public class Opus022 extends Mensa {
 
     public void ludoC(int talea, int length) {
         for (int i = talea; i < talea + length; i++) {
-            ludo(0, i, 0.0, 0.5, 36, new Velocitas(1));
-            ludo(0, i, 1.0, 0.5, 36, new Velocitas(1));
-            ludo(0, i, 2.0, 0.5, 36, new Velocitas(1));
-            ludo(0, i, 3.0, 0.5, 36, new Velocitas(1));
+            ludo(0, i, 0.0, 0.5, 36, new Vel(1));
+            ludo(0, i, 1.0, 0.5, 36, new Vel(1));
+            ludo(0, i, 2.0, 0.5, 36, new Vel(1));
+            ludo(0, i, 3.0, 0.5, 36, new Vel(1));
         }
 
     }

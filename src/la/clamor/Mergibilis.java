@@ -13,4 +13,9 @@ package la.clamor;
 public interface Mergibilis<V> {
     public V mergo(long diff, long index, V tectum);
     public V multiplico(V factor);
+    public V partior(V partitor);
+    public V addo(V additor);
+    public V subtraho(V subtractor);
+    public V nego();
 }
+

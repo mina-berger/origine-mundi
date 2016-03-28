@@ -17,9 +17,9 @@ import la.clamor.Consilium;
 import la.clamor.Functiones;
 import la.clamor.Instrument;
 import la.clamor.Legibilis;
-import la.clamor.Ludum;
+import la.clamor.ludum.Ludum;
 import la.clamor.Mixtor;
-import la.clamor.Velocitas;
+import la.clamor.Vel;
 import la.clamor.Punctum;
 import la.clamor.io.ScriptorWav;
 import la.clamor.forma.CadentesFormae;
@@ -143,12 +143,12 @@ public abstract class Mensa implements ConstantiaOperis {
 
     protected abstract void creo();
 
-    protected void ludo(int id, int talea, double repenso, double diutius, Doubles cleves, Velocitas velocitas) {
-        for(double clevis:cleves){
-            ludo(id, talea, repenso, diutius, clevis, velocitas);
+    protected void ludo(int id, int talea, double repenso, double diutius, Doubles claves, Vel velocitas) {
+        for(double clavis:claves){
+            ludo(id, talea, repenso, diutius, clavis, velocitas);
         }
     }
-    protected void ludo(int id, int talea, double repenso, double diutius, double clevis, Velocitas velocitas) {
+    protected void ludo(int id, int talea, double repenso, double diutius, double clavis, Vel velocitas) {
         if (!inRange(id, talea, repenso)) {
             return;
         }
@@ -157,16 +157,17 @@ public abstract class Mensa implements ConstantiaOperis {
         }
         Ludum ludum;
         if (humanizers.containsKey(id)) {
-            ludum = humanizers.get(id).humanize(taleae, talea, repenso, diutius, clevis, velocitas);
+            ludum = humanizers.get(id).humanize(taleae, talea, repenso, diutius, clavis, velocitas);
         } else {
-            ludum = new Ludum(talea, repenso, clevis, diutius, velocitas);
+            ludum = new Ludum(talea, repenso, diutius, clavis, velocitas);
         }
+        
         //taleae.capioTempus(talea, repenso + diutius) - taleae.capioTempus(talea, repenso), 
         double temp
-            = taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso() + ludum.capioDiuturnitas())
-            - taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso());
-        consilia.get(id).addo(taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso()),
-            instruments.get(id).capioNotum(ludum.capioNote(), temp, ludum.capioVelocitas()));
+            = taleae.capioTempus(ludum.talea(), ludum.repenso() + ludum.diuturnitas())
+            - taleae.capioTempus(ludum.talea(), ludum.repenso());
+        consilia.get(id).addo(taleae.capioTempus(ludum.talea(), ludum.repenso()),
+            instruments.get(id).capioNotum(ludum.clavis(), temp, ludum.velocitas()));
     }
     public void sono(int id, int talea, double repenso, Legibilis legibilis){
         consilia.get(id).addo(taleae.capioTempus(talea, repenso), legibilis);
@@ -222,7 +223,7 @@ public abstract class Mensa implements ConstantiaOperis {
     @Test
     public void facio() {
         //File lima = null;
-        File out_file = new File(OmUtil.getDirectory("sample" + (sub_path != null ? sub_path + "/" : "")), capioNomen() + ".wav");
+        File out_file = new File(OmUtil.getDirectory("opus" + (sub_path != null ? sub_path + "/" : "")), capioNomen() + ".wav");
         LogFactory.getLog(getClass()).info("ante facio:initio");
         anteFacio();
         if (creaturus) {

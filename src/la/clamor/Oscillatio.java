@@ -86,14 +86,14 @@ public class Oscillatio implements Constantia, Legibilis {
         if (count_buffer == 1) {
             count_buffer--;
             for (int i = 0; i < Res.publica.channel(); i++) {
-                Aestimatio omega_t = frequentia.capioAestimatio(i).multiplico(new Aestimatio(2 * FastMath.PI * t));
-                Aestimatio delta_t = delta.capioAestimatio(i).addo(frequentia.capioAestimatio(i).multiplico(new Aestimatio(t)));
+                Aestima omega_t = frequentia.capioAestimatio(i).multiplico(new Aestima(2 * FastMath.PI * t));
+                Aestima delta_t = delta.capioAestimatio(i).addo(frequentia.capioAestimatio(i).multiplico(new Aestima(t)));
                 switch (unda) {
                     case SINE:
-                        Aestimatio _aestimatio = new Aestimatio(FastMath.sin(omega_t.doubleValue()));
-                        Aestimatio _modulatio = modulatio.capioAestimatio(i);//.addo(_aestimatio.multiplico(new Aestimatio(feedback)));
+                        Aestima _aestimatio = new Aestima(FastMath.sin(omega_t.doubleValue()));
+                        Aestima _modulatio = modulatio.capioAestimatio(i);//.addo(_aestimatio.multiplico(new Aestimatio(feedback)));
                         deinde.ponoAestimatio(i, _aestimatio);
-                        punctum.ponoAestimatio(i, new Aestimatio(FastMath.sin(omega_t.addo(_modulatio).doubleValue())));
+                        punctum.ponoAestimatio(i, new Aestima(FastMath.sin(omega_t.addo(_modulatio).doubleValue())));
                         break;
                     case QUAD:
                         deinde.ponoAestimatio(i, undaQuad(delta_t));
@@ -119,17 +119,17 @@ public class Oscillatio implements Constantia, Legibilis {
             }
         } else {
             for (int i = 0; i < Res.publica.channel(); i++) {
-                Aestimatio omega_t = frequentia.capioAestimatio(i).multiplico(new Aestimatio(2 * FastMath.PI * t));
-                Aestimatio delta_t = delta.capioAestimatio(i).addo(frequentia.capioAestimatio(i).multiplico(new Aestimatio(t)));
+                Aestima omega_t = frequentia.capioAestimatio(i).multiplico(new Aestima(2 * FastMath.PI * t));
+                Aestima delta_t = delta.capioAestimatio(i).addo(frequentia.capioAestimatio(i).multiplico(new Aestima(t)));
                 switch (unda) {
                     case SINE:
                         //Aestimatio _aestimatio = new Aestimatio(FastMath.sin(omega_t.doubleValue()));
                         //System.out.println(FastMath.sin(delta_t.doubleValue()) + ":" + feedback);
-                        Aestimatio _modulatio = modulatio.capioAestimatio(i);//.addo(_aestimatio.multiplico(new Aestimatio(feedback)));
-                        Aestimatio b1_d = new Aestimatio(2).multiplico(new Aestimatio(FastMath.cos(omega_t.doubleValue())));
+                        Aestima _modulatio = modulatio.capioAestimatio(i);//.addo(_aestimatio.multiplico(new Aestimatio(feedback)));
+                        Aestima b1_d = new Aestima(2).multiplico(new Aestima(FastMath.cos(omega_t.doubleValue())));
                         deinde.ponoAestimatio(i, b1_d.multiplico(y_1.capioAestimatio(i)).subtraho(y_2.capioAestimatio(i)));
 
-                        Aestimatio b1_m = new Aestimatio(2).multiplico(new Aestimatio(FastMath.cos(omega_t.addo(_modulatio).doubleValue())));
+                        Aestima b1_m = new Aestima(2).multiplico(new Aestima(FastMath.cos(omega_t.addo(_modulatio).doubleValue())));
                         punctum.ponoAestimatio(i, b1_m.multiplico(y_1.capioAestimatio(i)).subtraho(y_2.capioAestimatio(i)));
                         break;
                     case QUAD:
@@ -163,7 +163,7 @@ public class Oscillatio implements Constantia, Legibilis {
         //PAN
         Punctum panned = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) { //source
-            Aestimatio aestimatio = punctum.capioAestimatio(i);
+            Aestima aestimatio = punctum.capioAestimatio(i);
             Punctum pan = pans[i];
             for (int j = 0; j < Res.publica.channel(); j++) { //target
                 panned.ponoAestimatio(j, panned.capioAestimatio(j).addo(aestimatio.multiplico(pan.capioAestimatio(j))));
@@ -173,32 +173,32 @@ public class Oscillatio implements Constantia, Legibilis {
         return panned;
     }
 
-    private Aestimatio undaQuad(Aestimatio delta_t) {
+    private Aestima undaQuad(Aestima delta_t) {
         double pos = delta_t.doubleValue() - FastMath.floor(delta_t.doubleValue());
         if (pos < 0) {
             pos += 1;
         }
-        return new Aestimatio(pos < 0.5 ? 1. : -1.);
+        return new Aestima(pos < 0.5 ? 1. : -1.);
     }
 
-    private Aestimatio undaDent(Aestimatio delta_t) {
+    private Aestima undaDent(Aestima delta_t) {
         double pos = delta_t.doubleValue() - FastMath.floor(delta_t.doubleValue());
         if (pos < 0) {
             pos += 1;
         }
-        return new Aestimatio((1. - pos) * 2. - 1.);
+        return new Aestima((1. - pos) * 2. - 1.);
     }
 
-    private Aestimatio undaTria(Aestimatio delta_t) {
+    private Aestima undaTria(Aestima delta_t) {
         double pos = delta_t.doubleValue() - FastMath.floor(delta_t.doubleValue());
         if (pos < 0) {
             pos += 1;
         }
-        return new Aestimatio(pos < 0.25 ? pos * 4 : pos < 0.75 ? (0.5 - (pos - 0.25)) * 4. - 1. : (pos - 0.75) * 4. - 1.);
+        return new Aestima(pos < 0.25 ? pos * 4 : pos < 0.75 ? (0.5 - (pos - 0.25)) * 4. - 1. : (pos - 0.75) * 4. - 1.);
     }
 
-    private Aestimatio undaFrag() {
-        return new Aestimatio(new Random().nextGaussian() * 2. - 1);
+    private Aestima undaFrag() {
+        return new Aestima(new Random().nextGaussian() * 2. - 1);
     }
 
     @Override

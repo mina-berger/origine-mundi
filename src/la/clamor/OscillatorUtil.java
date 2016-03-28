@@ -167,7 +167,7 @@ public class OscillatorUtil {
         Oscillator osc = new Oscillator("epiano");
         double a = Temperamentum.instance.capioHZ(69);
         Consilium cns = new Consilium();
-        cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, new Velocitas(1)));
+        cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, new Vel(1)));
         File out_file = new File(OmUtil.getDirectory("opus"), "oscillatior.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
 
@@ -293,7 +293,7 @@ public class OscillatorUtil {
         Oscillator osc = new Oscillator("test", OscillatorSettings.toSettingsArray(json));
         double a = Temperamentum.instance.capioHZ(69);
         Consilium cns = new Consilium();
-        cns.addo(0, osc.capioOscillationes(new Punctum(a), 5000, new Velocitas(1)));
+        cns.addo(0, osc.capioOscillationes(new Punctum(a), 5000, new Vel(1)));
         File out_file = new File(OmUtil.getDirectory("opus"), "quad.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
 

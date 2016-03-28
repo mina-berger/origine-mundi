@@ -12,7 +12,7 @@ import la.clamor.Consilium;
 import la.clamor.Functiones;
 import la.clamor.Instrument;
 import la.clamor.io.ScriptorWav;
-import la.clamor.Velocitas;
+import la.clamor.Vel;
 import origine_mundi.OmUtil;
 import origine_mundi.archive.ArchiveLudior;
 
@@ -23,7 +23,7 @@ import origine_mundi.archive.ArchiveLudior;
 public class Demo {
     public static void main(String[] args) throws IOException {
         //demoOscillator("epiano");
-        demoArchiveLudior("mu500r","piano", false);
+        demoArchiveLudior("mu500r","clgt", false);
         //getPreset("epiano").print();
     }
     public static void play(String name){
@@ -48,36 +48,36 @@ public class Demo {
             double interval = 150;
             double current = 0;
             for(int note:notes){
-                cns.addo(current, inst.capioNotum(note, interval, new Velocitas(0.2)));
+                cns.addo(current, inst.capioNotum(note, interval, new Vel(0.2)));
                 current += interval;
             }
             for(int note:notes){
-                cns.addo(current, inst.capioNotum(note + 1, interval, new Velocitas(0.6)));
+                cns.addo(current, inst.capioNotum(note + 1, interval, new Vel(0.6)));
                 current += interval;
             }
             for(int note:notes){
-                cns.addo(current, inst.capioNotum(note + 2, interval, new Velocitas(1)));
+                cns.addo(current, inst.capioNotum(note + 2, interval, new Vel(1)));
                 current += interval;
             }
             interval *= 8;
-            cns.addo(current, inst.capioNotum(36 + 3, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(48 + 10, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(63, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(67, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(70, interval, new Velocitas(1)));
+            cns.addo(current, inst.capioNotum(36 + 3, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(48 + 10, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(63, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(67, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(70, interval, new Vel(1)));
             current += interval;
-            cns.addo(current, inst.capioNotum(36 + 10, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(48 + 10, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(62, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(68, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(70, interval, new Velocitas(1)));
+            cns.addo(current, inst.capioNotum(36 + 10, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(48 + 10, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(62, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(68, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(70, interval, new Vel(1)));
             current += interval;
             //interval *= 10;
-            cns.addo(current, inst.capioNotum(36 + 11, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(48 + 10, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(63, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(66, interval, new Velocitas(1)));
-            cns.addo(current, inst.capioNotum(70, interval, new Velocitas(1)));
+            cns.addo(current, inst.capioNotum(36 + 11, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(48 + 10, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(63, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(66, interval, new Vel(1)));
+            cns.addo(current, inst.capioNotum(70, interval, new Vel(1)));
 
             ScriptorWav sw = new ScriptorWav(out_file);
 

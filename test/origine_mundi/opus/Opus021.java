@@ -9,7 +9,7 @@ import com.mina.util.Integers;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import la.clamor.Cinctum;
-import la.clamor.Velocitas;
+import la.clamor.Vel;
 import la.clamor.Punctum;
 import la.clamor.forma.CadentesFormae;
 import la.clamor.forma.Chorus;
@@ -89,14 +89,14 @@ public class Opus021 extends Mensa {
                 ponoPan(11, i + 1, 0, new Cinctum(true, new Punctum(0), new Punctum(1)));
                 ponoPan(11, i + 1, 3.99, new Cinctum(true, new Punctum(1), new Punctum(0)));
             }
-            ludo(0, i, 0.0, 0.5, 36, new Velocitas(1));
-            ludo(0, i, 0.75, 0.25, 36, new Velocitas(1));
-            ludo(1, i, 1.0, 0.6, 40, new Velocitas(1));
-            ludo(0, i, 1.25, 0.25, 36, new Velocitas(0.5));
-            ludo(0, i, 1.5, 0.5, 36, new Velocitas(1));
-            ludo(0, i, 2.5, 0.5, 36, new Velocitas(1));
-            ludo(1, i, 3.0, 0.7, 40, new Velocitas(1));
-            ludo(0, i, 3.5, 0.5, 36, new Velocitas(0.8));
+            ludo(0, i, 0.0, 0.5, 36, new Vel(1));
+            ludo(0, i, 0.75, 0.25, 36, new Vel(1));
+            ludo(1, i, 1.0, 0.6, 40, new Vel(1));
+            ludo(0, i, 1.25, 0.25, 36, new Vel(0.5));
+            ludo(0, i, 1.5, 0.5, 36, new Vel(1));
+            ludo(0, i, 2.5, 0.5, 36, new Vel(1));
+            ludo(1, i, 3.0, 0.7, 40, new Vel(1));
+            ludo(0, i, 3.5, 0.5, 36, new Vel(0.8));
 
             /*ludo(2, i, 0, 0.5, 42, new Velocitas(1));
             ludo(2, i, 0.5, 0.5, 42, new Velocitas(1));
@@ -111,21 +111,21 @@ public class Opus021 extends Mensa {
             */
 
             for (int j = 0; j < 16; j++) {
-                ludo(2, i, j * 0.25, 0.25, j == 3 || j == 7?46:42, new Velocitas(1));
+                ludo(2, i, j * 0.25, 0.25, j == 3 || j == 7?46:42, new Vel(1));
             }
             Integers note = notes.floorEntry(i).getValue();
             int base10 = 60;
-            ludo(10, i, 0, 0.75, base10 + note.get(3), new Velocitas(0.8));
-            ludo(10, i, 0.75, 0.75, base10 + note.get(4), new Velocitas(0.8));
-            ludo(10, i, 1.5, 0.75, base10 + note.get(5), new Velocitas(0.8));
-            ludo(10, i, 2.25, 0.75, base10 + note.get(6), new Velocitas(0.8));
-            ludo(10, i, 3, 0.75, base10 + note.get(7), new Velocitas(0.8));
+            ludo(10, i, 0, 0.75, base10 + note.get(3), new Vel(0.8));
+            ludo(10, i, 0.75, 0.75, base10 + note.get(4), new Vel(0.8));
+            ludo(10, i, 1.5, 0.75, base10 + note.get(5), new Vel(0.8));
+            ludo(10, i, 2.25, 0.75, base10 + note.get(6), new Vel(0.8));
+            ludo(10, i, 3, 0.75, base10 + note.get(7), new Vel(0.8));
             
             int base11 = 36;
-            ludo(11, i, 0, 0.75, base11 + note.get(0), new Velocitas(0.8));
-            ludo(11, i, 0.75, 0.75, base11 + note.get(1), new Velocitas(0.8));
-            ludo(11, i, 1.5, 2, base11 + note.get(2), new Velocitas(0.8));
-            ludo(11, i, 3.5, 0.3, base11 + note.get(1), new Velocitas(0.8));
+            ludo(11, i, 0, 0.75, base11 + note.get(0), new Vel(0.8));
+            ludo(11, i, 0.75, 0.75, base11 + note.get(1), new Vel(0.8));
+            ludo(11, i, 1.5, 2, base11 + note.get(2), new Vel(0.8));
+            ludo(11, i, 3.5, 0.3, base11 + note.get(1), new Vel(0.8));
 
             /*ludo(0, i, 0.5, 0.5, 69,  Velocitas.una(1));
             ludo(0, i, 1.0, 0.5, 72, Velocitas.una(1));

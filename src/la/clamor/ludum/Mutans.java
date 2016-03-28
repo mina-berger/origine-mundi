@@ -1,0 +1,16 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package la.clamor.ludum;
+
+/**
+ *
+ * @author hiyamamina
+ * @param <T>
+ */
+public interface Mutans<T> {
+    T capio(int index);
+    
+}

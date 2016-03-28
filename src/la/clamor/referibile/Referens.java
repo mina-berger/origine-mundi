@@ -9,7 +9,7 @@ import la.clamor.Instrument;
 import la.clamor.Legibilis;
 import la.clamor.Punctum;
 import la.clamor.Temperamentum;
-import la.clamor.Velocitas;
+import la.clamor.Vel;
 import la.clamor.forma.CadentesFormae;
 import la.clamor.forma.VCA;
 import la.clamor.forma.VCF;
@@ -36,7 +36,7 @@ public class Referens implements Instrument {
         
 
     @Override
-    public Legibilis capioNotum(double note, double tempus, Velocitas velocitas) {
+    public Legibilis capioNotum(double note, double tempus, Vel velocitas) {
         ModEnv _amp = amp.duplicate();
         _amp.capioPrimus().ponoValue(tempus + decay, Punctum.ZERO);
         return CadentesFormae.capioLegibilis(

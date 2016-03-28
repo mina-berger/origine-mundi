@@ -1,7 +1,7 @@
 package la.clamor.referibile;
 
 import java.io.File;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Envelope;
 import la.clamor.Functiones;
 import la.clamor.Positio;
@@ -18,12 +18,12 @@ import origine_mundi.OmUtil;
 public class OscillatioTria extends OscillatioDelta {
 
     @Override
-    protected Aestimatio capioUnda(Aestimatio delta_t) {
+    protected Aestima capioUnda(Aestima delta_t) {
         double pos = delta_t.doubleValue() - FastMath.floor(delta_t.doubleValue());
         if (pos < 0) {
             pos += 1;
         }
-        return new Aestimatio(pos < 0.25 ? pos * 4 : pos < 0.75 ? (0.5 - (pos - 0.25)) * 4. - 1. : (pos - 0.75) * 4. - 1.);
+        return new Aestima(pos < 0.25 ? pos * 4 : pos < 0.75 ? (0.5 - (pos - 0.25)) * 4. - 1. : (pos - 0.75) * 4. - 1.);
     }
 
     public static void main(String[] args) {

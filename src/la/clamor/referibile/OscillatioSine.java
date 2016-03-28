@@ -1,7 +1,7 @@
 package la.clamor.referibile;
 
 import java.io.File;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Constantia;
 import static la.clamor.Constantia.REGULA_EXAMPLI_D;
 import la.clamor.Envelope;
@@ -49,13 +49,13 @@ public class OscillatioSine implements Referibilis, Constantia {
         if (count_buffer == 1) {
             count_buffer--;
             for (int i = 0; i < Res.publica.channel(); i++) {
-                Aestimatio omega_t = frequentia.capioAestimatio(i).multiplico(new Aestimatio(2 * FastMath.PI * t));
-                punctum.ponoAestimatio(i, new Aestimatio(FastMath.sin(omega_t.doubleValue())));
+                Aestima omega_t = frequentia.capioAestimatio(i).multiplico(new Aestima(2 * FastMath.PI * t));
+                punctum.ponoAestimatio(i, new Aestima(FastMath.sin(omega_t.doubleValue())));
             }
         } else {
             for (int i = 0; i < Res.publica.channel(); i++) {
-                Aestimatio omega_t = frequentia.capioAestimatio(i).multiplico(new Aestimatio(2 * FastMath.PI * t));
-                Aestimatio b1_m = new Aestimatio(2).multiplico(new Aestimatio(FastMath.cos(omega_t.doubleValue())));
+                Aestima omega_t = frequentia.capioAestimatio(i).multiplico(new Aestima(2 * FastMath.PI * t));
+                Aestima b1_m = new Aestima(2).multiplico(new Aestima(FastMath.cos(omega_t.doubleValue())));
                 punctum.ponoAestimatio(i, b1_m.multiplico(y_1.capioAestimatio(i)).subtraho(y_2.capioAestimatio(i)));
             }
             y_2 = y_1;

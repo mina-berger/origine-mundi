@@ -13,7 +13,7 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.sampled.AudioFormat;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.io.FunctionesLimae;
 import la.clamor.io.LectorLimam;
 import la.clamor.io.ScriptorWav;
@@ -25,6 +25,9 @@ import la.clamor.Functiones;
 import la.clamor.forma.FormaLegibilis;
 import la.clamor.forma.MonoOut;
 import static origine_mundi.archive.ArchiveUtil.toDodeciString;
+import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
 import static la.clamor.Constantia.getAudioFormat;
 
 /**
@@ -80,8 +83,8 @@ public class Archiver {
         String name = file.getName().substring(0, file.getName().indexOf(".raw"));
         File lima     = new File(file.getParentFile(), name + ".lima");
         File out_file = new File(file.getParentFile(), name + ".wav");
-        AudioFormat format = FunctionesLimae.facioLimam(file, lima, new Aestimatio(1), false, true);
-        FunctionesLimae.trim(lima, new Aestimatio(0.02));
+        AudioFormat format = FunctionesLimae.facioLimam(file, lima, new Aestima(1), false, true);
+        FunctionesLimae.trim(lima, new Aestima(0.02));
         LectorLimam ll = new LectorLimam(lima);
         ScriptorWav sw = new ScriptorWav(out_file, format);
         sw.scribo(drum?new FormaLegibilis(ll, new MonoOut()):ll, false);

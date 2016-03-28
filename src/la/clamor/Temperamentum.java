@@ -20,8 +20,8 @@ public class Temperamentum {
         this.numero_octavi = numero_octavi;
         this.hz_medii = hz_medii;
     }
-    public double capioHZ(double clevis){
-        return FastMath.pow(2d, (clevis - 60) * 1d / numero_octavi) * hz_medii;        
+    public double capioHZ(double clavis){
+        return FastMath.pow(2d, (clavis - 60) * 1d / numero_octavi) * hz_medii;        
     }
     
 }

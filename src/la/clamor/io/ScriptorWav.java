@@ -18,7 +18,7 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Constantia;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
@@ -29,6 +29,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import static la.clamor.Constantia.getAudioFormat;
 import la.clamor.Res;
+import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
 
 public class ScriptorWav implements Constantia {
 
@@ -67,11 +70,11 @@ public class ScriptorWav implements Constantia {
         scribo(legibilis, pono_locus, REGULA_MAGISTRI);
     }
 
-    public void scribo(Legibilis legibilis, boolean pono_locus, Aestimatio master_volume) {
+    public void scribo(Legibilis legibilis, boolean pono_locus, Aestima master_volume) {
         ObjectOutputStream o_out;
         //FileOutputStream   f_out;
         ObjectInputStream o_in;
-        Aestimatio ratio;
+        Aestima ratio;
         int longitudo = 0;
         File tmp_file;
 
@@ -83,11 +86,11 @@ public class ScriptorWav implements Constantia {
             o_out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(tmp_file)));
 
             long locus = pono_locus ? Functiones.adPositio(LOCUS_TERMINATO) : 0;
-            Aestimatio max = new Aestimatio();
-            Aestimatio min = new Aestimatio();
+            Aestima max = new Aestima();
+            Aestima min = new Aestima();
             log.info("mixdown start:" + file.getAbsolutePath());
             for (long i = 0; i < locus * channel; i++) {
-                o_out.writeObject(new Aestimatio(0));
+                o_out.writeObject(new Aestima(0));
                 longitudo++;
                 if (longitudo % (sample_rate * channel) == 0) {
                     log.info("lecti   : " + (longitudo / sample_rate / channel) + " sec.(locus)");
@@ -105,7 +108,7 @@ public class ScriptorWav implements Constantia {
                 }
                 index++;
                 for (int i = 0; i < channel; i++) {
-                    Aestimatio aestimatio = punctum.capioAestimatio(i);
+                    Aestima aestimatio = punctum.capioAestimatio(i);
                     o_out.writeObject(aestimatio);
                     max = max.max(aestimatio);
                     min = min.min(aestimatio);
@@ -121,7 +124,7 @@ public class ScriptorWav implements Constantia {
 
             }
             for (long i = 0; i < locus * channel; i++) {
-                o_out.writeObject(new Aestimatio(0));
+                o_out.writeObject(new Aestima(0));
                 longitudo++;
                 if (longitudo % (sample_rate * channel) == 0) {
                     log.info("lecti   : " + (longitudo / sample_rate / channel) + " sec.(locus)");
@@ -161,7 +164,7 @@ public class ScriptorWav implements Constantia {
         }
     }
 
-    private void scriboSub(ObjectInputStream o_in, File file, Aestimatio ratio, int longitudo) throws IOException {
+    private void scriboSub(ObjectInputStream o_in, File file, Aestima ratio, int longitudo) throws IOException {
         AudioFormat af = new AudioFormat(
             AudioFormat.Encoding.PCM_SIGNED,
             format.getSampleRate(),
@@ -295,11 +298,11 @@ public class ScriptorWav implements Constantia {
 
         ObjectInputStream o_in;
         ArrayList<Byte> list;
-        Aestimatio ratio;
+        Aestima ratio;
         Integer read;
         long count = 0;
 
-        public LegibilisInputStream(ObjectInputStream o_in, Aestimatio ratio) {
+        public LegibilisInputStream(ObjectInputStream o_in, Aestima ratio) {
             this.o_in = o_in;
             this.ratio = ratio;
             list = new ArrayList<>();
@@ -321,7 +324,7 @@ public class ScriptorWav implements Constantia {
         public int lego() throws IOException {
             if (list.isEmpty()) {
                 try {
-                    Aestimatio value = (Aestimatio) o_in.readObject();
+                    Aestima value = (Aestima) o_in.readObject();
 
                     ByteBuffer buffer = ByteBuffer.allocate(8);
                     buffer.putLong(value.multiplico(ratio).longValue());

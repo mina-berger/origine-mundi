@@ -5,7 +5,7 @@
 package la.clamor.forma;
 
 import java.io.File;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Envelope;
 import la.clamor.Functiones;
 import la.clamor.Punctum;
@@ -42,9 +42,9 @@ public class Compressor implements Forma {
     public Punctum formo(Punctum lectum) {
         Punctum reditum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            Aestimatio _threshold = threshold.capioAestimatio(i);
-            Aestimatio _lectum = lectum.capioAestimatio(i);
-            Aestimatio _ratio = ratio.capioAestimatio(i);
+            Aestima _threshold = threshold.capioAestimatio(i);
+            Aestima _lectum = lectum.capioAestimatio(i);
+            Aestima _ratio = ratio.capioAestimatio(i);
             if (_lectum.compareTo(_threshold) > 0) {
                 reditum.ponoAestimatio(i, _threshold.addo(_lectum.subtraho(_threshold).multiplico(_ratio)));
             } else if (_lectum.compareTo(_threshold.nego()) < 0) {

@@ -9,7 +9,7 @@ import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.OrbisPuncti;
 import la.clamor.Punctum;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Res;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
@@ -53,13 +53,13 @@ public class Chorus implements Forma {
         Punctum oscillatio = osc.lego(frequentia);
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            double index = oscillatio.capioAestimatio(i).addo(new Aestimatio(1)).multiplico(new Aestimatio(longitudo)).doubleValue();
+            double index = oscillatio.capioAestimatio(i).addo(new Aestima(1)).multiplico(new Aestima(longitudo)).doubleValue();
             //System.out.println(index);
-            Aestimatio floor = oa.capio((int) FastMath.floor(index)).capioAestimatio(i);
-            Aestimatio ceil = oa.capio((int) FastMath.ceil(index)).capioAestimatio(i);
-            Aestimatio aestimatio
-                = floor.multiplico(new Aestimatio(FastMath.ceil(index) - index))
-                .addo(ceil.multiplico(new Aestimatio(index - FastMath.floor(index))));
+            Aestima floor = oa.capio((int) FastMath.floor(index)).capioAestimatio(i);
+            Aestima ceil = oa.capio((int) FastMath.ceil(index)).capioAestimatio(i);
+            Aestima aestimatio
+                = floor.multiplico(new Aestima(FastMath.ceil(index) - index))
+                .addo(ceil.multiplico(new Aestima(index - FastMath.floor(index))));
             punctum.ponoAestimatio(i, aestimatio);
         }
         oa.pono(lectum);

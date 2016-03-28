@@ -6,7 +6,7 @@
 package la.clamor.voix;
 
 import java.io.File;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Consilium;
 import la.clamor.Envelope;
 import la.clamor.Functiones;
@@ -30,12 +30,12 @@ import origine_mundi.OmUtil;
 public class Formant implements Forma {
 
     private final IIRFilter[] filters;
-    private final Envelope<Aestimatio> band_env;
+    private final Envelope<Aestima> band_env;
     private final Envelope<Vowel> freqs;
     private Punctum deenphasis;
     private long index;
 
-    public Formant(Envelope<Aestimatio> band_env, Envelope<Vowel> freqs) {
+    public Formant(Envelope<Aestima> band_env, Envelope<Vowel> freqs) {
         double[] primo_freqs = freqs.capioValue(0).getFrequentia();
         double band = band_env.capioValue(0).doubleValue();
         filters = new IIRFilter[primo_freqs.length];
@@ -130,14 +130,14 @@ public class Formant implements Forma {
                 double unit = duration / 40;
                 c.addo(temps, CadentesFormae.capioLegibilis(new Referibile(new OscillatioPulse(false),
                     new Envelope<>(new Punctum(freqs[i][j])), duration),
-                    new Formant(new Envelope<>(new Aestimatio(100),
-                            new Positio<>(8 * unit, new Aestimatio(50)),
-                            new Positio<>(10 * unit, new Aestimatio(100)),
-                            new Positio<>(18 * unit, new Aestimatio(50)),
-                            new Positio<>(20 * unit, new Aestimatio(100)),
-                            new Positio<>(28 * unit, new Aestimatio(50)),
-                            new Positio<>(30 * unit, new Aestimatio(100)),
-                            new Positio<>(38 * unit, new Aestimatio(50))
+                    new Formant(new Envelope<>(new Aestima(100),
+                            new Positio<>(8 * unit, new Aestima(50)),
+                            new Positio<>(10 * unit, new Aestima(100)),
+                            new Positio<>(18 * unit, new Aestima(50)),
+                            new Positio<>(20 * unit, new Aestima(100)),
+                            new Positio<>(28 * unit, new Aestima(50)),
+                            new Positio<>(30 * unit, new Aestima(100)),
+                            new Positio<>(38 * unit, new Aestima(50))
                         ),
                         new Envelope<>(Vowel.A,
                             new Positio<>(8 * unit, Vowel.A),
@@ -206,7 +206,7 @@ public class Formant implements Forma {
                 c.addo(temps, CadentesFormae.capioLegibilis(new Referibile(new OscillatioPulse(false),
                     new Envelope<>(new Punctum(freqs[i][j])),
                     duration),
-                    new Formant(new Envelope<>(new Aestimatio(100)),
+                    new Formant(new Envelope<>(new Aestima(100)),
                         new Envelope<>(Vowel.A,
                             new Positio<>(8 * unit, Vowel.A),
                             new Positio<>(10 * unit, Vowel.I),

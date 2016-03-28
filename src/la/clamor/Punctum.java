@@ -8,7 +8,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
 
     public static final Punctum ZERO = new Punctum();
     private static final long serialVersionUID = 5303754051401035301L;
-    private Aestimatio[] aestimationes;
+    private Aestima[] aestimationes;
 
     //private boolean fixum;
     public Punctum() {
@@ -19,22 +19,22 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         aestimationes = ArrayUtils.clone(punctum.aestimationes);
     }
 
-    public Punctum(Aestimatio aestimatio) {
-        this.aestimationes = new Aestimatio[Res.publica.channel()];
+    public Punctum(Aestima aestimatio) {
+        this.aestimationes = new Aestima[Res.publica.channel()];
         for (int i = 0; i < Res.publica.channel(); i++) {
             this.aestimationes[i] = aestimatio;
         }
     }
 
     public Punctum(double aestimatio) {
-        aestimationes = new Aestimatio[Res.publica.channel()];
-        Arrays.fill(aestimationes, new Aestimatio(aestimatio));
+        aestimationes = new Aestima[Res.publica.channel()];
+        Arrays.fill(aestimationes, new Aestima(aestimatio));
     }
 
     public Punctum(double... aestimationes) {
-        this.aestimationes = new Aestimatio[Res.publica.channel()];
+        this.aestimationes = new Aestima[Res.publica.channel()];
         for (int i = 0; i < Res.publica.channel(); i++) {
-            this.aestimationes[i] = new Aestimatio(aestimationes[i]);
+            this.aestimationes[i] = new Aestima(aestimationes[i]);
         }
     }
 
@@ -42,10 +42,11 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return partior(new Punctum(partitor));
     }
 
-    public Punctum partior(Aestimatio partitor) {
+    public Punctum partior(Aestima partitor) {
         return partior(new Punctum(partitor));
     }
 
+    @Override
     public Punctum partior(Punctum partitor) {
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
@@ -58,7 +59,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return multiplico(new Punctum(factor));
     }
 
-    public Punctum multiplico(Aestimatio factor) {
+    public Punctum multiplico(Aestima factor) {
         return multiplico(new Punctum(factor));
     }
 
@@ -71,6 +72,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return punctum;
     }
 
+    @Override
     public Punctum addo(Punctum additum) {
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
@@ -79,6 +81,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return punctum;
     }
 
+    @Override
     public Punctum nego() {
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
@@ -87,6 +90,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return punctum;
     }
 
+    @Override
     public Punctum subtraho(Punctum additum) {
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
@@ -122,7 +126,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
     public static Punctum atan2(Punctum ordinate, Punctum abscissa) {
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            punctum.aestimationes[i] = Aestimatio.atan2(ordinate.aestimationes[i], abscissa.aestimationes[i]);
+            punctum.aestimationes[i] = Aestima.atan2(ordinate.aestimationes[i], abscissa.aestimationes[i]);
         }
         return punctum;
     }
@@ -140,34 +144,34 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return aestimationes.length;
     }
 
-    public Aestimatio capioAestimatio(int index) {
+    public Aestima capioAestimatio(int index) {
         return aestimationes[index];
     }
 
-    public void ponoAestimatio(int index, Aestimatio aestimatio) {
+    public void ponoAestimatio(int index, Aestima aestimatio) {
         aestimationes[index] = aestimatio;
     }
 
-    public Aestimatio maxAbs() {
-        Aestimatio aestimatio = new Aestimatio();
+    public Aestima maxAbs() {
+        Aestima aestimatio = new Aestima();
         for (int i = 0; i < Res.publica.channel(); i++) {
             aestimatio = aestimatio.max(capioAestimatio(i).abs());
         }
         return aestimatio;
     }
 
-    public Aestimatio average() {
-        Aestimatio aestimatio = new Aestimatio();
+    public Aestima average() {
+        Aestima aestimatio = new Aestima();
         for (int i = 0; i < Res.publica.channel(); i++) {
             aestimatio = aestimatio.addo(capioAestimatio(i));
         }
-        return aestimatio.partior(new Aestimatio(Res.publica.channel()));
+        return aestimatio.partior(new Aestima(Res.publica.channel()));
     }
 
     @Override
     public String toString() {
         String filum = "";
-        for (Aestimatio aestimatio : aestimationes) {
+        for (Aestima aestimatio : aestimationes) {
             if (!filum.isEmpty()) {
                 filum += ",";
             }
@@ -195,8 +199,8 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return compareTo(p) == 0;
     }
 
-    public boolean majorAbsTotiSunt(Aestimatio value) {
-        Aestimatio value_abs = value.abs();
+    public boolean majorAbsTotiSunt(Aestima value) {
+        Aestima value_abs = value.abs();
         boolean idEst = false;
         for (int i = 0; i < aestimationes.length; i++) {
             if (aestimationes[i].abs().compareTo(value_abs) <= 0) {
@@ -206,8 +210,8 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return true;
     }
 
-    public boolean minorAbsTotiSunt(Aestimatio value) {
-        Aestimatio value_abs = value.abs();
+    public boolean minorAbsTotiSunt(Aestima value) {
+        Aestima value_abs = value.abs();
         //boolean idEst = false;
         for (int i = 0; i < aestimationes.length; i++) {
             if (aestimationes[i].abs().compareTo(value_abs) >= 0) {
@@ -226,4 +230,5 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         }
         return punctum;
     }
+
 }

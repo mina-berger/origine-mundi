@@ -11,7 +11,7 @@ import java.io.ObjectOutputStream;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Constantia;
 import la.clamor.ExceptioClamoris;
 import la.clamor.Legibilis;
@@ -38,14 +38,14 @@ public class LectorWav implements Constantia, Legibilis {
     //RiffData format;
     //private Puncta puncta;
     public LectorWav(File file) {
-        this(file, new Aestimatio(1), null);
+        this(file, new Aestima(1), null);
     }
 
     public LectorWav(File file, long length) {
-        this(file, new Aestimatio(1), length);
+        this(file, new Aestima(1), length);
     }
 
-    public LectorWav(File file, Aestimatio volume, Long length) {
+    public LectorWav(File file, Aestima volume, Long length) {
         lima = null;
         FileInputStream in;
         try {
@@ -112,7 +112,7 @@ public class LectorWav implements Constantia, Legibilis {
         ObjectOutputStream o_out;
         ObjectInputStream o_in;
         FileOutputStream f_out;
-        Aestimatio max = new Aestimatio();
+        Aestima max = new Aestima();
         try {
             File tmp_file1 = File.createTempFile("l_lima1_", Long.toString(System.currentTimeMillis()));
             f_out = new FileOutputStream(tmp_file1);
@@ -121,14 +121,14 @@ public class LectorWav implements Constantia, Legibilis {
                 Punctum punctum;
                 if (channel == 1) {
                     FilumOctorum read = legoFilumOctorum(in, bytes);
-                    Aestimatio monoral_data = new Aestimatio(read.getByteValueInteger(0, bytes));
+                    Aestima monoral_data = new Aestima(read.getByteValueInteger(0, bytes));
                     punctum = new Punctum(monoral_data);
                     max = max.max(monoral_data);
                 } else {
                     punctum = new Punctum();
                     for (int j = 0; j < channel; j++) {
                         FilumOctorum read = legoFilumOctorum(in, bytes);
-                        Aestimatio datum = new Aestimatio(read.getByteValueInteger(0, bytes));
+                        Aestima datum = new Aestima(read.getByteValueInteger(0, bytes));
                         punctum.ponoAestimatio(j, datum);
                         max = max.max(datum);
                     }
@@ -147,7 +147,7 @@ public class LectorWav implements Constantia, Legibilis {
             f_out = new FileOutputStream(tmp_file2);
             o_out = new ObjectOutputStream(f_out);
             while (o_in.available() > 0) {
-                o_out.writeDouble(new Aestimatio(o_in.readDouble()).multiplico(volume).partior(max).doubleValue());
+                o_out.writeDouble(new Aestima(o_in.readDouble()).multiplico(volume).partior(max).doubleValue());
             }
             o_out.flush();
             o_out.close();
@@ -183,7 +183,7 @@ public class LectorWav implements Constantia, Legibilis {
                     Punctum punctum = new Punctum();
                     if (o_in.available() > 0) {
                         for (int k = 0; k < Res.publica.channel(); k++) {
-                            punctum.ponoAestimatio(k, new Aestimatio(o_in.readDouble()));
+                            punctum.ponoAestimatio(k, new Aestima(o_in.readDouble()));
                         }
                     }
                     map.put(count, punctum);
@@ -199,8 +199,7 @@ public class LectorWav implements Constantia, Legibilis {
                     resampled = new Punctum();
                     for (int j = 0; j < channel; j++) {
                         resampled.ponoAestimatio(j,
-                            values_f.capioAestimatio(j).multiplico(new Aestimatio((double) ceil - position)).addo(
-                            values_c.capioAestimatio(j).multiplico(new Aestimatio(position - (double) floor))));
+                            values_f.capioAestimatio(j).multiplico(new Aestima((double) ceil - position)).addo(values_c.capioAestimatio(j).multiplico(new Aestima(position - (double) floor))));
                     }
                 }
                 for (int k = 0; k < Res.publica.channel(); k++) {
@@ -246,7 +245,7 @@ public class LectorWav implements Constantia, Legibilis {
         try {
             Punctum punctum = new Punctum();
             for (int i = 0; i < Res.publica.channel(); i++) {
-                punctum.ponoAestimatio(i, new Aestimatio(puncta_stream.readDouble()));
+                punctum.ponoAestimatio(i, new Aestima(puncta_stream.readDouble()));
             }
             return punctum;
         } catch (IOException ex) {

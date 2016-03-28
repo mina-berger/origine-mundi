@@ -9,7 +9,7 @@ import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.OrbisPuncti;
 import la.clamor.Punctum;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Res;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
@@ -56,8 +56,8 @@ public class Delay implements Forma {
             //System.out.println(i_aetas + ":" + index + ":" + diutius.capioAestimatio(i).doubleValue() + ":"
             //+ Functiones.adPositio(diutius.capioAestimatio(i).doubleValue()));
             for (int j = 0; j < i_aetas; j++) {
-                Aestimatio aestimatio = oa.capio(index * (j + 1)).capioAestimatio(i);
-                Aestimatio a_feedback = new Aestimatio(FastMath.pow(
+                Aestima aestimatio = oa.capio(index * (j + 1)).capioAestimatio(i);
+                Aestima a_feedback = new Aestima(FastMath.pow(
                     feedback.capioAestimatio(i).doubleValue(),
                     //aetas   .capioAestimatio(i).doubleValue()
                     j + 1
