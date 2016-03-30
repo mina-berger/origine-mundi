@@ -81,7 +81,7 @@ public class ScriptorWav implements Constantia {
         int channel = format.getChannels();
         int sample_rate = (int) format.getSampleRate();
         try {
-            tmp_file = File.createTempFile("s_lima", Long.toString(System.currentTimeMillis()));
+            tmp_file = IOUtil.createTempFile("s_lima");
             //tmp_file.deleteOnExit();
             o_out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(tmp_file)));
 
@@ -289,8 +289,8 @@ public class ScriptorWav implements Constantia {
         return bytes;
     }*/
     public static void main(String[] args) {
-        LectorLimam ll = new LectorLimam(new File(OmUtil.getDirectory("sample"), "ba_1_h_40.lima"));
-        ScriptorWav sl = new ScriptorWav(new File(OmUtil.getDirectory("sample"), "sample011.wav"));
+        LectorLimam ll = new LectorLimam(new File(IOUtil.getDirectory("sample"), "ba_1_h_40.lima"));
+        ScriptorWav sl = new ScriptorWav(new File(IOUtil.getDirectory("sample"), "sample011.wav"));
         sl.scribo(ll, false);
     }
 

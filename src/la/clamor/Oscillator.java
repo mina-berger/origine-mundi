@@ -17,6 +17,7 @@ import la.clamor.Constantia.Unda;
 import la.clamor.Oscillatio.Oscillationes;
 import static la.clamor.OscillatorUtil.getPreset;
 import la.clamor.Positiones.PositionesFixi;
+import la.clamor.io.IOUtil;
 import origine_mundi.OmUtil;
 
 /**
@@ -269,7 +270,7 @@ public class Oscillator implements Instrument {
         cns.addo(2000, osc.capioOscillationes(new Punctum(g), 7000, new Velocitas(1)));
         cns.addo(2500, osc.capioOscillationes(new Punctum(b), 7500, new Velocitas(1)));
          */
-        File out_file = new File(OmUtil.getDirectory("opus"), "oscillatior.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "oscillatior.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
 
         sw.scribo(cns, false);

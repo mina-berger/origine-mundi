@@ -14,6 +14,7 @@ import la.clamor.Res;
 import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.ModEnv;
+import la.clamor.referibile.OscillatioQuad;
 import la.clamor.referibile.Referibile;
 import origine_mundi.OmUtil;
 
@@ -21,21 +22,30 @@ import origine_mundi.OmUtil;
  *
  * @author mina
  */
-public class VCF implements Forma {
+public class Wah implements Forma {
     private final ModEnv filters;
     private final IIRFilter[] iirs;
     private int index;
-    public VCF(Envelope<Punctum> filters){
-        this(new ModEnv(filters));
+    private final int band;
+    public Wah(Punctum primum){
+        this(new ModEnv(
+                        new Envelope<>(primum),
+                        new Envelope<>(new Punctum(0)),
+                        new Envelope<>(new Punctum(0))));
     }
-    public VCF(ModEnv filters){
+    public Wah(ModEnv filters){
         this.filters = filters;
         this.iirs = new IIRFilter[Res.publica.channel()];
+        band = 100;
         Punctum primo_filter = filters.capio(0);
         for(int i = 0;i < Res.publica.channel();i++){
-            iirs[i] = new IIRFilter(primo_filter.capioAestimatio(i).doubleValue(), true);
+            iirs[i] = IIRFilter.resonator(primo_filter.capioAestimatio(i).doubleValue(), band);
         }
         index = 0;
+    }
+    public void ponoPositio(double tempus, Punctum value){
+        filters.ponoPrimum(new Positio(tempus, value));
+        
     }
 
     @Override
@@ -43,7 +53,7 @@ public class VCF implements Forma {
         Punctum reditum = new Punctum();
         for(int i = 0;i < Res.publica.channel();i++){
             double freq = filters.capio(index).capioAestimatio(i).doubleValue();
-            iirs[i].rescribo(freq, true);
+            iirs[i].rescriboResonator(freq, band);
             reditum.ponoAestimatio(i, iirs[i].formo(new Punctum(lectum)).capioAestimatio(i));
         }
         index++;
@@ -60,7 +70,7 @@ public class VCF implements Forma {
         File out_file = new File(IOUtil.getDirectory("opus"), "iir_osc.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(CadentesFormae.capioLegibilis(new Referibile(new OscillatioPulse(false), new Envelope<>(new Punctum(500)), 5000),
-            new VCF(new Envelope<>(new Punctum(500))),
+            //new Wah(new Envelope<>(new Punctum(500))),
             new VCA(new Envelope<>(new Punctum(), 
                 new Positio(50, new Punctum(1, 0, 0, 0)), 
                 new Positio(1000, new Punctum(0, 1, 0, 0)), 
@@ -81,11 +91,12 @@ public class VCF implements Forma {
         }
         File out_file = new File(IOUtil.getDirectory("opus"), "iir_osc1.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
-        sw.scribo(CadentesFormae.capioLegibilis(new Referibile(new OscillatioPulse(false), new Envelope<>(new Punctum(500)), 5000),
-            new VCF(new Envelope<>(true, new Punctum(50), 
-                new Positio<>(1000, new Punctum(10000)),
-                new Positio<>(4000, new Punctum(50))
-            )),
+        sw.scribo(CadentesFormae.capioLegibilis(new Referibile(new OscillatioQuad(), new Envelope<>(new Punctum(500)), 5000),
+            new Wah(new ModEnv(
+                    new Envelope<>(new Punctum(1000)),
+                    new Envelope<>(new Punctum(2)),
+                    new Envelope<>(new Punctum(0.8))
+            )), 
             new VCA(new Envelope<>(true, new Punctum(), 
                 new Positio(50, new Punctum(1))/*, 
                 new Positio(3000, new Punctum(1)), 

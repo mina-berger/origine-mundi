@@ -11,6 +11,7 @@ import java.util.Arrays;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.Punctum;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
 import origine_mundi.OmUtil;
@@ -37,7 +38,7 @@ public class CadentesFormae extends ArrayList<Forma> {
     }
 
     public static void main(String[] args) {
-        File out_file = new File(OmUtil.getDirectory("opus"), "cadentes.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "cadentes.wav");
 
         ScriptorWav sl = new ScriptorWav(out_file);
         CadentesFormae cf = new CadentesFormae(

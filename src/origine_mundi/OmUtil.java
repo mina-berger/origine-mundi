@@ -24,7 +24,7 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Transmitter;
 import javax.sound.sampled.AudioFileFormat;
-import la.clamor.Functiones;
+import la.clamor.io.IOUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -32,9 +32,10 @@ import org.apache.commons.lang3.ArrayUtils;
  * @author Mina
  */
 public class OmUtil {
+
     public static final int RESOLUTION = 1000;//per second;
-    public static int SYSEX_STATUS_AB  = 0xf0;
-    public static int SYSEX_STATUS_AD  = 0xf7;
+    public static int SYSEX_STATUS_AB = 0xf0;
+    public static int SYSEX_STATUS_AD = 0xf7;
     public static final int OM_PRODUCT_ID = 0x7f;
     public static final int OM_MSG_TYPE_BREVIS = 0x00;
     public static final int OM_MSG_TYPE_SYSTEM = 0x01;
@@ -50,139 +51,161 @@ public class OmUtil {
     public static final String MICRO_LITE_9 = "3- micro lite: Port 4";
     public static final String MICRO_LITE_A = "3- micro lite: Port 5";
     public static final String US_122 = "TASCAM US-122 MKII MIDI";
-    
+
     /*public static List<Integer> toList(int[] data){
         return Arrays.asList(ArrayUtils.toObject(data));
     }*/
-    /*public static int[] toArray(List<Integer> data){
+ /*public static int[] toArray(List<Integer> data){
         return ArrayUtils.toPrimitive(data.toArray(new Integer[]{}));
     }*/
     public static AudioFileFormat.Type FILETYPE = AudioFileFormat.Type.WAVE;
-    public static File getDirectory(String subdir){
-        File dir = new File(Functiones.getHomePath() + "doc/origine_mundi/" + subdir);
-        dir.mkdirs();
-        return dir;
-    }
-   
+
     public static SysexMessage sysex(String str) throws InvalidMidiDataException {
         String[] strs = str.split(" ");
         byte[] bytes = new byte[strs.length];
-        for (int i = 0;i < strs.length;i++) {
-            if(strs[i].length() > 2){
+        for (int i = 0; i < strs.length; i++) {
+            if (strs[i].length() > 2) {
                 throw new IllegalArgumentException(str);
             }
             bytes[i] = (byte) Integer.parseInt(strs[i], 16);
         }
         return new SysexMessage(bytes, bytes.length);
     }
+
     public static SysexMessage sysex(ArrayList<Integer> data) throws InvalidMidiDataException {
         byte[] bytes = new byte[data.size()];
-        for (int i = 0;i < data.size();i++) {
-            bytes[i] = (byte)data.get(i).intValue();
+        for (int i = 0; i < data.size(); i++) {
+            bytes[i] = (byte) data.get(i).intValue();
         }
         return new SysexMessage(bytes, bytes.length);
     }
-    public static String sysex(SysexMessage sysex){
+
+    public static String sysex(SysexMessage sysex) {
         //byte[] bytes = sysex.getData();
         byte[] bytes = sysex.getMessage();
         String str = "";
-        for(int i = 0;i < bytes.length;i++){
+        for (int i = 0; i < bytes.length; i++) {
             int value = bytes[i];
-            if(value < 0){
+            if (value < 0) {
                 value += 0x100;
             }
             String hex = hex(value);
-            str += (str.isEmpty()?"":" ") + hex;
+            str += (str.isEmpty() ? "" : " ") + hex;
         }
         return str;
     }
-    public static String hex(int value){
+
+    public static String hex(int value) {
         return fill(Integer.toHexString(value), 2);
     }
-    public static String fill(String str, int length){
+
+    public static String fill(String str, int length) {
         return fill(str, '0', true, length);
     }
-    public static String fill(String str, char fill, boolean align_right, int length){
-            while(str.length() < length){
-                str = align_right?fill + str:str + fill;
-            }
-            return str;
+
+    public static String fill(String str, char fill, boolean align_right, int length) {
+        while (str.length() < length) {
+            str = align_right ? fill + str : str + fill;
+        }
+        return str;
     }
-    public static String toIndexString(int index, int max_index){
+
+    public static String toIndexString(int index, int max_index) {
         //int byte_width = 0;
         int byte_digit = 0;
         int buff = max_index;
-        while(buff > 0){
+        while (buff > 0) {
             buff = buff / 0x80;
             byte_digit++;
         }
         int decimal_width = Integer.toString(max_index, 10).length();
-        
-        String  byte_str = "";
+
+        String byte_str = "";
         buff = index;
-        for(int i = 0;i < byte_digit;i++){
-            if(!byte_str.isEmpty()){
+        for (int i = 0; i < byte_digit; i++) {
+            if (!byte_str.isEmpty()) {
                 byte_str += " ";
             }
-            int divider = (int)Math.pow(0x80, byte_digit - i - 1);
+            int divider = (int) Math.pow(0x80, byte_digit - i - 1);
             byte_str += hex(buff / divider);
             buff %= divider;
         }
         String decimal_str = fill(Integer.toString(index, 10), decimal_width);
         return "[" + byte_str + "] " + decimal_str;
-        
+
     }
+
     public static class ByteHolder extends ArrayList<Integer> {
-        public void addAll(int... data){
-            for(int datum:data){
+
+        public void addAll(int... data) {
+            for (int datum : data) {
                 add(datum);
             }
         }
-        public int[] getArray(){
+
+        public int[] getArray() {
             return ArrayUtils.toPrimitive(this.toArray(new Integer[0]));
         }
     }
+
     public static class Note extends ByteHolder {
-        public Note(int note){
+
+        public Note(int note) {
             add(note);
         }
+
         @Override
-        public String toString(){
+        public String toString() {
             int note = get(0);
             int octave = note / 12 - 1;
             int name = note % 12;
-            switch(name){
-                case 0: return "C_" + octave;
-                case 1: return "C#" + octave;
-                case 2: return "D_" + octave;
-                case 3: return "Eb" + octave;
-                case 4: return "E_" + octave;
-                case 5: return "F_" + octave;
-                case 6: return "F#" + octave;
-                case 7: return "G_" + octave;
-                case 8: return "Ab" + octave;
-                case 9: return "A_" + octave;
-                case 10: return "Bb" + octave;
-                case 11: return "B_" + octave;
+            switch (name) {
+                case 0:
+                    return "C_" + octave;
+                case 1:
+                    return "C#" + octave;
+                case 2:
+                    return "D_" + octave;
+                case 3:
+                    return "Eb" + octave;
+                case 4:
+                    return "E_" + octave;
+                case 5:
+                    return "F_" + octave;
+                case 6:
+                    return "F#" + octave;
+                case 7:
+                    return "G_" + octave;
+                case 8:
+                    return "Ab" + octave;
+                case 9:
+                    return "A_" + octave;
+                case 10:
+                    return "Bb" + octave;
+                case 11:
+                    return "B_" + octave;
             }
             return "N/A";
         }
     }
 
-    public static class LogReceiver implements Receiver{
+    public static class LogReceiver implements Receiver {
+
         PrintStream out;
         int id;
         String name;
-        LogReceiver(PrintStream out, int id, String name){
+
+        LogReceiver(PrintStream out, int id, String name) {
             this.out = out;
             this.id = id;
             this.name = name;
         }
+
         @Override
         public void send(MidiMessage message, long timeStamp) {
-            if(message instanceof SysexMessage){
-                out.println(sysex((SysexMessage)message));
-            }else{
+            if (message instanceof SysexMessage) {
+                out.println(sysex((SysexMessage) message));
+            } else {
                 out.println(message);
             }
             /*try {
@@ -195,18 +218,20 @@ public class OmUtil {
                 Logger.getLogger(OmUtil.class.getName()).log(Level.SEVERE, null, ex);
             }*/
         }
+
         @Override
-        public void close() {}
+        public void close() {
+        }
     }
 
     public static void _main(String[] args) {
         printEnv(System.out);
 
-            //MidiDevice out_dev = getMidiDevice(D_110, true);
-            //out_dev.open();
-            //Receiver out = out_dev.getReceiver();
-            //printMidiDeviceInfo(out_dev.getDeviceInfo(), System.out, 0);
-            /*MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
+        //MidiDevice out_dev = getMidiDevice(D_110, true);
+        //out_dev.open();
+        //Receiver out = out_dev.getReceiver();
+        //printMidiDeviceInfo(out_dev.getDeviceInfo(), System.out, 0);
+        /*MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
            int count = 0;
             for (int i = 0; i < infos.length; i++) {
                 try {
@@ -220,17 +245,16 @@ public class OmUtil {
                 }
             }            
             System.out.println("count:" + count);*/
-            //MidiDevice in_dev = getMidiDevice(MU500_1, false);
-            //in_dev.getTransmitter().setReceiver(new LogReceiver(System.out, 0, ""));
-            //out.send(sysex("f0 41 10 16 11 04 01 76 00 01 76 0e f7"), -1);
-            /*out.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 120), -1);
+        //MidiDevice in_dev = getMidiDevice(MU500_1, false);
+        //in_dev.getTransmitter().setReceiver(new LogReceiver(System.out, 0, ""));
+        //out.send(sysex("f0 41 10 16 11 04 01 76 00 01 76 0e f7"), -1);
+        /*out.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 120), -1);
             Thread.sleep(1000);
             out.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 0), -1);
-            */
-            //Thread.sleep(1000);
-            
-            //out_dev.close();
-            //in_dev.close();
+         */
+        //Thread.sleep(1000);
+        //out_dev.close();
+        //in_dev.close();
         /*MidiDevice.Info[] mdis = MidiSystem.getMidiDeviceInfo();
         for (int i = 0; i < mdis.length; i++) {
             //printMidiDeviceInfo(mdis[i], System.out, 1);
@@ -253,6 +277,7 @@ public class OmUtil {
             }
         }*/
     }
+
     public static void __main(String[] args) throws Exception {
         Receiver receiver1 = null;
         Receiver receiver2 = null;
@@ -267,7 +292,7 @@ public class OmUtil {
             int channel = 0;
             //int[] pan = new int[]{16, 32, 48, 64, 72, 96, 108, 127, 0};
             int[] pan = new int[128];
-            for(int i = 0;i < 128;i++){
+            for (int i = 0; i < 128; i++) {
                 pan[i] = i;
             }
             //reverb
@@ -283,10 +308,10 @@ public class OmUtil {
             receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 0, bank[0]), 1);
             receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 32, bank[1]), 1);
             receiver2.send(new ShortMessage(ShortMessage.PROGRAM_CHANGE, channel, bank[2], 0), 1);
-            receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 121,  0), 1);
-            receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 121,  0), 1);
-            receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10,  0), 1);
-            receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10,  127), 1);
+            receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 121, 0), 1);
+            receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 121, 0), 1);
+            receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10, 0), 1);
+            receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10, 127), 1);
             receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 91, 40), 1);
             receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 91, 40), 1);
             Thread.sleep(1000);
@@ -298,32 +323,32 @@ public class OmUtil {
                     //PAN
                     //int pan_value = (int)(pan[p] / 2) * (pan[p] % 2 == 0?1:-1) + 64;
                     int pan_value = pan[p];
-                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10,  pan_value), 1);
-                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10,  127 - pan_value), 1);
-                    
+                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10, pan_value), 1);
+                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10, 127 - pan_value), 1);
+
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 98, 32), 1);
-                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99,  1), 1);
-                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6,  pan[p]), 1);
+                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99, 1), 1);
+                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6, pan[p]), 1);
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 38, 0), 1);
                     receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 98, 32), 1);
-                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99,  1), 1);
-                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6,  127 - pan[p]), 1);
+                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99, 1), 1);
+                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6, 127 - pan[p]), 1);
                     receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 38, 0), 1);
                     /*
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 98, 33), 1);
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99,  1), 1);
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6,  64), 1);
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 38, 32), 1);
-                    */
+                     */
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 98, 36), 1);
-                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99,  1), 1);
-                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6,  pan[p]), 1);
+                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99, 1), 1);
+                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6, pan[p]), 1);
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 38, 0), 1);
                     receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 98, 36), 1);
-                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99,  1), 1);
-                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6,  127 - pan[p]), 1);
+                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99, 1), 1);
+                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6, 127 - pan[p]), 1);
                     receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 38, 0), 1);
-                    
+
                     Thread.sleep(10);
                     //playNote(receiver2, channel, notes, 1, 200);
                     //Thread.sleep(100);
@@ -332,32 +357,32 @@ public class OmUtil {
                     //PAN
                     //int pan_value = (int)(pan[p] / 2) * (pan[p] % 2 == 0?1:-1) + 64;
                     int pan_value = pan[p];
-                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10,  pan_value), 1);
-                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10,  127 - pan_value), 1);
-                    
+                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10, pan_value), 1);
+                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 10, 127 - pan_value), 1);
+
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 98, 32), 1);
-                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99,  1), 1);
-                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6,  pan[p]), 1);
+                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99, 1), 1);
+                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6, pan[p]), 1);
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 38, 0), 1);
                     receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 98, 32), 1);
-                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99,  1), 1);
-                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6,  127 - pan[p]), 1);
+                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99, 1), 1);
+                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6, 127 - pan[p]), 1);
                     receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 38, 0), 1);
                     /*
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 98, 33), 1);
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99,  1), 1);
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6,  64), 1);
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 38, 32), 1);
-                    */
+                     */
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 98, 36), 1);
-                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99,  1), 1);
-                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6,  pan[p]), 1);
+                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99, 1), 1);
+                    receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6, pan[p]), 1);
                     receiver1.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 38, 0), 1);
                     receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 98, 36), 1);
-                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99,  1), 1);
-                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6,  127 - pan[p]), 1);
+                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 99, 1), 1);
+                    receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 6, 127 - pan[p]), 1);
                     receiver2.send(new ShortMessage(ShortMessage.CONTROL_CHANGE, channel, 38, 0), 1);
-                    
+
                     Thread.sleep(10);
                     //playNote(receiver2, channel, notes, 1, 200);
                     //Thread.sleep(100);
@@ -382,6 +407,7 @@ public class OmUtil {
         receiver.send(sm2, 1);
 
     }
+
     public static void playNotes(Receiver receiver, int channel, int[] notes, int shift, int ms) throws InvalidMidiDataException, InterruptedException {
         for (int i = 0; i < notes.length; i++) {
             ShortMessage note = new ShortMessage();
@@ -397,10 +423,11 @@ public class OmUtil {
         }
 
     }
+
     public static void playNoteons(Receiver receiver, int channel, int[] notes, int shift, boolean on) throws InvalidMidiDataException, InterruptedException {
         for (int i = 0; i < notes.length; i++) {
             ShortMessage note = new ShortMessage();
-            note.setMessage(ShortMessage.NOTE_ON, channel, notes[i] + shift, on?90:0);
+            note.setMessage(ShortMessage.NOTE_ON, channel, notes[i] + shift, on ? 90 : 0);
             receiver.send(note, 1);
             Thread.sleep(50);
         }
@@ -421,8 +448,8 @@ public class OmUtil {
         //device.getReceiver();
     }
 
-    public static void noteoff(Receiver receiver){
-        for(int i = 0;i < 16;i++){
+    public static void noteoff(Receiver receiver) {
+        for (int i = 0; i < 16; i++) {
             try {
                 ShortMessage note;
                 note = new ShortMessage();
@@ -435,9 +462,10 @@ public class OmUtil {
             }
         }
     }
+
     public static void ghmain(String[] args) throws Exception {
 
-playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid"), new String[]{MU500[0]});
+        playMidi(new File(IOUtil.getHomePath() + "doc/origine_mundi/mid/bwv788.mid"), new String[]{MU500[0]});
 //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/rv297_2.mid"), new String[]{MLP_I_1});
 //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/MatineeIdol.mid"), new String[]{MLP_I_1});
         //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/MatineeIdol.mid"));//rv297_2.mid
@@ -445,8 +473,7 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
         //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid"));
         //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/weather_report-teentown.mid"));
         //playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/sledgehammer.mid"));
-        
-        
+
     }
 
     public static void playMidi(File midiFile, String[] ports) throws Exception {
@@ -461,7 +488,7 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
         playMidi(sequence, ports);
     }
 
-    public static Sequencer getSequencer() throws MidiUnavailableException{
+    public static Sequencer getSequencer() throws MidiUnavailableException {
         RealTimeSequencer sequencer = null;
         try {
             //sequencer = MidiSystem.getSequencer();
@@ -479,6 +506,7 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
         }
         return sequencer;
     }
+
     public static void playMidi(Sequence sequence, String[] ports) throws Exception {
         Sequencer sequencer = getSequencer();
         try {
@@ -490,7 +518,7 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
         //printMidiDeviceInfo(sequencer.getDeviceInfo(), System.out, 1);
         MidiDevice[] devices = new MidiDevice[ports.length];
         try {
-            for(int i = 0;i < ports.length;i++){
+            for (int i = 0; i < ports.length; i++) {
                 devices[i] = getMidiDevice(ports[i], true);
                 Transmitter seqTransmitter = sequencer.getTransmitter();
                 Receiver receiver = devices[i].getReceiver();
@@ -521,8 +549,8 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
             }
             try {
                 MidiDevice device = MidiSystem.getMidiDevice(infos[i]);
-                if((!output && device.getMaxTransmitters() != 0) ||
-                   ( output && device.getMaxReceivers   () != 0)){
+                if ((!output && device.getMaxTransmitters() != 0)
+                        || (output && device.getMaxReceivers() != 0)) {
                     device.open();
                     return device;
                 }
@@ -559,8 +587,9 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
         out.println(head + "Description : " + mdi.getDescription());
         //MidiDevice md = MidiSystem.getMidiDevice(mdi);
     }
-    public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException, InterruptedException{
-       Receiver receiver1 = null;
+
+    public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException, InterruptedException {
+        Receiver receiver1 = null;
         try {
             MidiDevice device1 = getMidiDevice(US_122, true);
             printMidiDeviceInfo(device1.getDeviceInfo(), System.out, 1);
@@ -570,12 +599,12 @@ playMidi(new File(Functiones.getHomePath() + "doc/origine_mundi/mid/bwv788.mid")
             playNoteons(receiver1, channel, notes, 0, true);
             Thread.sleep(1000);
             playNoteons(receiver1, channel, notes, 0, false);
-            
+
         } finally {
             if (receiver1 != null) {
                 receiver1.close();
             }
         }
     }
-    
+
 }

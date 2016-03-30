@@ -6,8 +6,8 @@
 package la.clamor.forma;
 
 import java.io.File;
-import la.clamor.Functiones;
 import la.clamor.Punctum;
+import la.clamor.io.IOUtil;
 import la.clamor.io.LectorWav;
 import la.clamor.io.ScriptorWav;
 import origine_mundi.OmUtil;
@@ -52,7 +52,7 @@ public class Equalizer implements Forma{
         File in_file = new File("/Users/mina/drive/doc/sound_material/book2/chapter07/ex7_2/sample04.wav");
         //File in_file = new File(OmUtil.getDirectory("opus"), "filter2.wav");
         LectorWav lw = new LectorWav(in_file);
-        File out_file = new File(OmUtil.getDirectory("opus"), "equalizer.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "equalizer.wav");
         //File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);

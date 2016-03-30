@@ -114,7 +114,7 @@ public class LectorWav implements Constantia, Legibilis {
         FileOutputStream f_out;
         Aestima max = new Aestima();
         try {
-            File tmp_file1 = File.createTempFile("l_lima1_", Long.toString(System.currentTimeMillis()));
+            File tmp_file1 = IOUtil.createTempFile("l_lima1");
             f_out = new FileOutputStream(tmp_file1);
             o_out = new ObjectOutputStream(f_out);
             for (int i = 0; i < octets_length; i++) {
@@ -143,7 +143,7 @@ public class LectorWav implements Constantia, Legibilis {
             log.info("max=" + max);
             log.info(tmp_file1.getAbsolutePath());
             o_in = new ObjectInputStream(new FileInputStream(tmp_file1));
-            File tmp_file2 = File.createTempFile("l_lima2_", Long.toString(System.currentTimeMillis()));
+            File tmp_file2 = IOUtil.createTempFile("l_lima2");
             f_out = new FileOutputStream(tmp_file2);
             o_out = new ObjectOutputStream(f_out);
             while (o_in.available() > 0) {
@@ -163,7 +163,7 @@ public class LectorWav implements Constantia, Legibilis {
             log.info("resample octets_length=" + octets_length);
             //Puncta resampled = new Puncta(octets_length);
             o_in = new ObjectInputStream(new FileInputStream(tmp_file2));
-            File tmp_file3 = File.createTempFile("l_lima3_", Long.toString(System.currentTimeMillis()));
+            File tmp_file3 = IOUtil.createTempFile("l_lima3");
             f_out = new FileOutputStream(tmp_file3);
             o_out = new ObjectOutputStream(f_out);
             TreeMap<Integer, Punctum> map = new TreeMap<>();

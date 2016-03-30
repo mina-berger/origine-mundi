@@ -12,6 +12,7 @@ import static la.clamor.Constantia.Unda.QUAD;
 import static la.clamor.Constantia.Unda.SINE;
 import static la.clamor.Constantia.Unda.TRIA;
 import la.clamor.Positiones.PositionesFixi;
+import la.clamor.io.IOUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
@@ -219,7 +220,7 @@ public class Oscillatio implements Constantia, Legibilis {
             new Envelope(),
             new Envelope());
         Oscillatio o = new Oscillatio(p2);
-        File out_file = new File(OmUtil.getDirectory("opus"), "oscillatio_primo.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "oscillatio_primo.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(o, false);
         Functiones.ludoLimam(out_file);

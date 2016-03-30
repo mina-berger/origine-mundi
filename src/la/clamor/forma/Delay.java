@@ -11,6 +11,7 @@ import la.clamor.OrbisPuncti;
 import la.clamor.Punctum;
 import la.clamor.Aestima;
 import la.clamor.Res;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
 import org.apache.commons.math3.util.FastMath;
@@ -74,7 +75,7 @@ public class Delay implements Forma {
     }
 
     public static void main(String[] args) {
-        File out_file = new File(OmUtil.getDirectory("sample"), "delay.wav");
+        File out_file = new File(IOUtil.getDirectory("sample"), "delay.wav");
         ScriptorWav sl = new ScriptorWav(out_file);
         sl.scribo(new FormaLegibilis(new Legibilis() {
             OscillatioSine o = new OscillatioSine();

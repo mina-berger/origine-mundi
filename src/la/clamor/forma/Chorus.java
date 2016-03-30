@@ -11,6 +11,7 @@ import la.clamor.OrbisPuncti;
 import la.clamor.Punctum;
 import la.clamor.Aestima;
 import la.clamor.Res;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
 import org.apache.commons.math3.util.FastMath;
@@ -67,7 +68,7 @@ public class Chorus implements Forma {
     }
 
     public static void main(String[] args) {
-        File out_file = new File(OmUtil.getDirectory("opus"), "chorus.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "chorus.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new FormaLegibilis(new Legibilis() {
             OscillatioSine o = new OscillatioSine();

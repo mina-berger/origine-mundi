@@ -21,14 +21,11 @@ import origine_mundi.OmException;
 import origine_mundi.OmUtil;
 import static origine_mundi.OmUtil.getMidiDevice;
 import static origine_mundi.OmUtil.printMidiDeviceInfo;
-import la.clamor.Functiones;
 import la.clamor.forma.FormaLegibilis;
 import la.clamor.forma.MonoOut;
 import static origine_mundi.archive.ArchiveUtil.toDodeciString;
 import static la.clamor.Constantia.getAudioFormat;
-import static la.clamor.Constantia.getAudioFormat;
-import static la.clamor.Constantia.getAudioFormat;
-import static la.clamor.Constantia.getAudioFormat;
+import la.clamor.io.IOUtil;
 
 /**
  *
@@ -94,7 +91,7 @@ public class Archiver {
     }
     public static void archive_all(String midi_out, String machine, String sound, boolean drum, Integers range, Integers velocity) throws Exception{
         //File dir = new File("/Users/mina/drive/doc/origine_mundi/archive/");
-        File dir = new File(Functiones.getArchivePath() + machine + "/" + sound);
+        File dir = new File(IOUtil.getArchivePath() + machine + "/" + sound);
         dir.mkdirs();
         Archiver a = new Archiver(midi_out, getAudioFormat(48000, 2, 2), dir);
         for(int i:range){ 

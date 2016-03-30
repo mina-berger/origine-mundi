@@ -40,7 +40,7 @@ public class Vowel implements Mergibilis<Vowel>{
 
     @Override
     public Vowel multiplico(Vowel factor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new Vowel(freqs[0] * factor.freqs[0], freqs[1] * factor.freqs[1], freqs[2] * factor.freqs[2], freqs[3] * factor.freqs[3]);
     }
 
     @Override

@@ -115,12 +115,6 @@ public interface Functiones extends Constantia {
     public static double capioHZ(double midi_note_number, double cents){
         return FastMath.pow(2d, (midi_note_number - 69d + cents * 0.01d) * 1d / NUMERO_OCTAVI) * HZ_A4;        
     }
-    public static String getArchivePath(){
-        return isMac()?"/Users/hiyamamina/drive/doc/origine_mundi/archive/":"D:/origine_mundi/archive/";
-    }
-    public static String getHomePath(){
-        return isMac()?"/Users/hiyamamina/drive/":"C://drive/";
-    }
     public static boolean isMac(){
         return System.getProperty("os.name").toLowerCase().startsWith("mac");        
     }    

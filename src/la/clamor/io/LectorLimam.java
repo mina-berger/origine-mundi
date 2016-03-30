@@ -56,7 +56,7 @@ public class LectorLimam implements Constantia, Legibilis {
     }
 
     public static void main(String[] args) {
-        File f = new File(OmUtil.getDirectory("sample"), "01d.lima");
+        File f = new File(IOUtil.getDirectory("sample"), "01d.lima");
         int length = 1000;
         ArrayList<LectorLimam> lls = new ArrayList<>();
         for (int i = 0; i < length; i++) {

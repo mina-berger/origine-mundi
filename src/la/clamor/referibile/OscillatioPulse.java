@@ -7,6 +7,7 @@ import la.clamor.Envelope;
 import la.clamor.Functiones;
 import la.clamor.Punctum;
 import la.clamor.Res;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
@@ -61,7 +62,7 @@ public class OscillatioPulse implements Referibilis, Constantia {
 
     public static void main(String[] args) {
 
-        File out_file = new File(OmUtil.getDirectory("opus"), "pulse_train1.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "pulse_train1.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Referibile(new OscillatioPulse(false),
             new Envelope<>(new Punctum(100)),

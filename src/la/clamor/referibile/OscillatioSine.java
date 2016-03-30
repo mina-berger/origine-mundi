@@ -9,6 +9,7 @@ import la.clamor.Functiones;
 import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.Res;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
@@ -66,7 +67,7 @@ public class OscillatioSine implements Referibilis, Constantia {
 
     public static void main(String[] args) {
         //Res.publica.ponoChannel(4);
-        File out_file = new File(OmUtil.getDirectory("opus"), "osc_sine.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "osc_sine.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Referibile(new OscillatioSine(),
             new ModEnv(

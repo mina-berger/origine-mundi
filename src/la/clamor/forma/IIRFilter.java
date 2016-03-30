@@ -13,6 +13,7 @@ import la.clamor.Functiones;
 import la.clamor.OrbisPuncti;
 import la.clamor.Positio;
 import la.clamor.Punctum;
+import la.clamor.io.IOUtil;
 import la.clamor.io.LectorWav;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioFrag;
@@ -207,7 +208,7 @@ public class IIRFilter implements Forma {
                 new Positio(2000., new Punctum(200))),
             5000
         );
-        File out_file = new File(OmUtil.getDirectory("opus"), "iir_noise.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "iir_noise.wav");
         //File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);
@@ -223,10 +224,10 @@ public class IIRFilter implements Forma {
     }
 
     public static void __main(String[] args) throws IOException {
-        File in_file = new File(OmUtil.getDirectory("opus"), "osc_quad.wav");
+        File in_file = new File(IOUtil.getDirectory("opus"), "osc_quad.wav");
         //File in_file = new File(OmUtil.getDirectory("opus"), "filter2.wav");
         LectorWav lw = new LectorWav(in_file);
-        File out_file = new File(OmUtil.getDirectory("opus"), "iir_quad.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "iir_quad.wav");
         //File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);

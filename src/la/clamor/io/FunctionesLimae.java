@@ -1,6 +1,5 @@
 package la.clamor.io;
 
-import origine_mundi.OmUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,19 +14,12 @@ import la.clamor.io.Lima.FilumOctorum;
 import la.clamor.io.Lima.RiffData;
 import la.clamor.Aestima;
 import la.clamor.Constantia;
-import static la.clamor.Constantia.getAudioFormat;
 import la.clamor.ExceptioClamoris;
 import la.clamor.Functiones;
 import la.clamor.Punctum;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import static la.clamor.Constantia.getAudioFormat;
-import static la.clamor.Constantia.getAudioFormat;
-import static la.clamor.Constantia.getAudioFormat;
-import static la.clamor.Constantia.getAudioFormat;
-import static la.clamor.Constantia.getAudioFormat;
-import static la.clamor.Constantia.getAudioFormat;
 import static la.clamor.Constantia.getAudioFormat;
 
 
@@ -63,32 +55,25 @@ public class FunctionesLimae implements Constantia {
         ll = new LectorLimam(lima);
         count = 0;
             
-        //System.out.println(ab_index + ":" + ad_index + ":" + length);
-        try {
-            File tmp_file1 = File.createTempFile("l_lima1", Long.toString(System.currentTimeMillis()));
-            ScriptorLimam sl = new ScriptorLimam(tmp_file1);
-            if(ab_index > 0){
-                sl.scribo(new Punctum());
-            }
-            while(ll.paratusSum()){
-                Punctum punctum = ll.lego();
-                if(count >= ab_index && count <= ad_index){
-                    sl.scribo(punctum);
-                }
-                count++;
-            }
-            if(ad_index < length){
-                sl.scribo(new Punctum());
-            }
-            ll.close();
-            sl.close();
-            //System.out.println("d1:" + lima.exists());
-            lima.delete();
-            //System.out.println("d2:" + lima.exists());
-            tmp_file1.renameTo(lima);
-        } catch (IOException ex) {
-            throw new IllegalStateException(ex);
+        File tmp_file1 = IOUtil.createTempFile("l_lima1");
+        ScriptorLimam sl = new ScriptorLimam(tmp_file1);
+        if(ab_index > 0){
+            sl.scribo(new Punctum());
         }
+        while(ll.paratusSum()){
+            Punctum punctum = ll.lego();
+            if(count >= ab_index && count <= ad_index){
+                sl.scribo(punctum);
+            }
+            count++;
+        }
+        if(ad_index < length){
+            sl.scribo(new Punctum());
+        }
+        ll.close();
+        sl.close();
+        lima.delete();
+        tmp_file1.renameTo(lima);
         
         log.info("count=" + count + ":" + ab_index + " - " + ad_index);
     }
@@ -180,7 +165,7 @@ public class FunctionesLimae implements Constantia {
         Maximum max = new Maximum(teneo_pan);
         //Aestimatio max = new Aestimatio();
         try {
-            File tmp_file1 = File.createTempFile("l_lima1", Long.toString(System.currentTimeMillis()));
+            File tmp_file1 = IOUtil.createTempFile("l_lima1");
             //f_out = new FileOutputStream(tmp_file1);
             //o_out = new ObjectOutputStream(f_out);
             sl = new ScriptorLimam(tmp_file1);
@@ -221,7 +206,7 @@ public class FunctionesLimae implements Constantia {
             log.info(tmp_file1.getAbsolutePath());
             //o_in = new ObjectInputStream(new FileInputStream(tmp_file1));
             ll = new LectorLimam(tmp_file1);
-            File tmp_file2 = File.createTempFile("l_lima2", Long.toString(System.currentTimeMillis()));
+            File tmp_file2 = IOUtil.createTempFile("l_lima2");
             //f_out = new FileOutputStream(tmp_file2);
             //o_out = new ObjectOutputStream(f_out);
             sl = new ScriptorLimam(tmp_file2);
@@ -259,7 +244,7 @@ public class FunctionesLimae implements Constantia {
             //Puncta resampled = new Puncta(octets_length);
             //o_in = new ObjectInputStream(new FileInputStream(tmp_file2));
             ll = new LectorLimam(tmp_file2);
-            File tmp_file3 = File.createTempFile("l_lima3", Long.toString(System.currentTimeMillis()));
+            File tmp_file3 = IOUtil.createTempFile("l_lima3");
             //f_out = new FileOutputStream(tmp_file3);
             //o_out = new ObjectOutputStream(f_out);
             sl = new ScriptorLimam(tmp_file3);
@@ -355,9 +340,9 @@ public class FunctionesLimae implements Constantia {
         return new FilumOctorum(buffer);
     }
     public static void main(String[] arg){
-        File src =new File(OmUtil.getDirectory("sample"), "01d.wav");
-        File lima = new File(OmUtil.getDirectory("sample"), "01u.lima");
-        File trg =new File(OmUtil.getDirectory("sample"), "01udteim.wav");
+        File src =new File(IOUtil.getDirectory("sample"), "01d.wav");
+        File lima = new File(IOUtil.getDirectory("sample"), "01u.lima");
+        File trg =new File(IOUtil.getDirectory("sample"), "01udteim.wav");
         
         //System.out.println("s:" + src.length() + ":" + src.lastModified());
         //FunctionesLimae.facioLimam(src, lima, new Aestimatio(1), false);

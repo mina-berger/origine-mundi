@@ -19,6 +19,7 @@ import static com.mina.util.Mjson.list;
 import static com.mina.util.Mjson.map;
 import la.clamor.forma.FIRFilter;
 import com.mina.util.CSVFile;
+import la.clamor.io.IOUtil;
 import origine_mundi.OmUtil;
 
 /**
@@ -168,7 +169,7 @@ public class OscillatorUtil {
         double a = Temperamentum.instance.capioHZ(69);
         Consilium cns = new Consilium();
         cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, new Vel(1)));
-        File out_file = new File(OmUtil.getDirectory("opus"), "oscillatior.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "oscillatior.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
 
         sw.scribo(cns, false);
@@ -294,7 +295,7 @@ public class OscillatorUtil {
         double a = Temperamentum.instance.capioHZ(69);
         Consilium cns = new Consilium();
         cns.addo(0, osc.capioOscillationes(new Punctum(a), 5000, new Vel(1)));
-        File out_file = new File(OmUtil.getDirectory("opus"), "quad.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "quad.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
 
         //sw.scribo(cns, false);

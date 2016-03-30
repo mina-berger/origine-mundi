@@ -13,6 +13,7 @@ import la.clamor.Functiones;
 import la.clamor.Instrument;
 import la.clamor.io.ScriptorWav;
 import la.clamor.Vel;
+import la.clamor.io.IOUtil;
 import origine_mundi.OmUtil;
 import origine_mundi.archive.ArchiveLudior;
 
@@ -27,7 +28,7 @@ public class Demo {
         //getPreset("epiano").print();
     }
     public static void play(String name){
-        File out_file = new File(OmUtil.getDirectory("opus"), "demo_" + name + ".wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "demo_" + name + ".wav");
         Functiones.ludoLimam(out_file);
         
     }
@@ -38,7 +39,7 @@ public class Demo {
         demo(new ArchiveLudior(machine, sound, 500), creo);
     }
     public static void demo(Instrument inst, boolean creo) throws IOException{
-        File out_file = new File(OmUtil.getDirectory("opus"), "demo_" + inst.getName() + ".wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "demo_" + inst.getName() + ".wav");
         if(creo){
             Consilium cns = new Consilium();
             int[] notes = new int[]{

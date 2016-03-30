@@ -6,6 +6,7 @@
 package la.clamor.referibile;
 
 import la.clamor.Envelope;
+import la.clamor.Positio;
 import la.clamor.Punctum;
 
 /**
@@ -26,6 +27,9 @@ public class ModEnv {
         this.freq_mod = freq_mod;
         this.quan_mod = quan_mod;
         os = new OscillatioSine();
+    }
+    public void ponoPrimum(Positio positio){
+        primus.ponoPositiones(positio);
     }
     public Punctum capio(long index){
         Punctum lectum = primus.capioValue(index);

@@ -5,14 +5,17 @@
 package la.clamor.forma;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import la.clamor.Aestima;
 import la.clamor.Envelope;
-import la.clamor.Functiones;
+import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.Res;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
 import la.clamor.referibile.Referibile;
+import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
 
 /**
@@ -29,7 +32,7 @@ public class Compressor implements Forma {
         this.threshold = threshold;
         this.ratio = ratio;
         gain = new Punctum(1.0).partior(threshold.addo((new Punctum(1.0).subtraho(threshold)).multiplico(ratio)));
-        System.out.println("gain=" + gain);
+        //System.out.println("gain=" + gain);
 
     }
 
@@ -45,31 +48,48 @@ public class Compressor implements Forma {
             Aestima _threshold = threshold.capioAestimatio(i);
             Aestima _lectum = lectum.capioAestimatio(i);
             Aestima _ratio = ratio.capioAestimatio(i);
-            if (_lectum.compareTo(_threshold) > 0) {
+            /*if (_lectum.compareTo(_threshold) > 0) {
                 reditum.ponoAestimatio(i, _threshold.addo(_lectum.subtraho(_threshold).multiplico(_ratio)));
             } else if (_lectum.compareTo(_threshold.nego()) < 0) {
                 reditum.ponoAestimatio(i, _threshold.nego().addo(_lectum.addo(_threshold).multiplico(_ratio)));
             } else {
                 reditum.ponoAestimatio(i, _lectum);
-            }
+            }*/
+            reditum.ponoAestimatio(i, compress(_lectum, _threshold, _ratio));
         }
         return reditum.multiplico(gain);
 
     }
+    private static Aestima compress(Aestima lectum, Aestima threshold, Aestima ratio) {
+        Aestima reditum;
+        if (lectum.compareTo(threshold) > 0) {
+            double position = 1. - FastMath.exp(-5. * lectum.subtraho(threshold).doubleValue());
+            reditum = mergo(position, threshold, new Aestima(1).subtraho(threshold).multiplico(ratio).addo(threshold));
+        } else if (lectum.compareTo(threshold.nego()) < 0) {
+            double position = 1. - FastMath.exp(-5. * lectum.nego().subtraho(threshold).doubleValue());
+            reditum = mergo(position, threshold.nego(), new Aestima(1).subtraho(threshold).multiplico(ratio).addo(threshold).nego());
+        } else {
+            reditum = lectum;
+        }
+        //System.out.println(df.format(lectum.doubleValue()) + "->" + df.format(reditum.doubleValue()));
+        return reditum;
+    }
+    private static DecimalFormat df = new DecimalFormat("###,##0.000000");
 
-    /*private Aestimatio calculoRatio(Aestimatio lectum, Aestimatio threshold, Aestimatio ratio, Aestimatio gain) {
-       
-    }*/
+    private static Aestima mergo(double position, Aestima solum, Aestima tectum) {
+        //System.out.println(solum.doubleValue() + ":" + tectum.doubleValue());
+        return solum.multiplico(new Aestima(1. - position)).addo(tectum.multiplico(new Aestima(position)));
+    }
     public static void main(String[] args) {
-        File out_file = new File(OmUtil.getDirectory("opus"), "compressor.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "compressor.wav");
 
         ScriptorWav sl = new ScriptorWav(out_file);
         sl.scribo(CadentesFormae.capioLegibilis(new Referibile(new OscillatioSine(),
             new Envelope<>(new Punctum(400)), 5000),
-            new Compressor(new Punctum(0.2), new Punctum(0.1)),
-            new VCA(new Envelope<>(new Punctum(1)))
+            new VCA(new Envelope<>(new Punctum(0), new Positio(5000, new Punctum(1)))),
+            new Compressor(new Punctum(0.2), new Punctum(0.1))
         ), false);
-        Functiones.ludoLimam(out_file);
+        //Functiones.ludoLimam(out_file);
     }
 
 }

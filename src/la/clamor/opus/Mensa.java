@@ -23,13 +23,14 @@ import la.clamor.Vel;
 import la.clamor.Punctum;
 import la.clamor.io.ScriptorWav;
 import la.clamor.forma.CadentesFormae;
+import la.clamor.io.IOUtil;
 import la.clamor.opus.Taleae.Comes;
 import la.clamor.opus.Taleae.Rapidus;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
-import origine_mundi.OmUtil;
+import static la.clamor.opus.ConstantiaOperis.CT;
 import static la.clamor.opus.ConstantiaOperis.CT;
 
 /**
@@ -173,6 +174,9 @@ public abstract class Mensa implements ConstantiaOperis {
         consilia.get(id).addo(taleae.capioTempus(talea, repenso), legibilis);
     }
     
+    public double capioTempus(int talea, double repenso){
+        return taleae.capioTempus(talea, repenso);
+    }
 
     public void ponoMasterLevel(int talea, double repenso, Punctum level) {
         if (!inRange(null, talea, repenso)) {
@@ -223,7 +227,8 @@ public abstract class Mensa implements ConstantiaOperis {
     @Test
     public void facio() {
         //File lima = null;
-        File out_file = new File(OmUtil.getDirectory("opus" + (sub_path != null ? sub_path + "/" : "")), capioNomen() + ".wav");
+        IOUtil.clearTempFiles();
+        File out_file = new File(IOUtil.getDirectory("opus" + (sub_path != null ? sub_path + "/" : "")), capioNomen() + ".wav");
         LogFactory.getLog(getClass()).info("ante facio:initio");
         anteFacio();
         if (creaturus) {
