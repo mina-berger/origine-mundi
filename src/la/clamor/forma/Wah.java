@@ -16,7 +16,6 @@ import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.ModEnv;
 import la.clamor.referibile.OscillatioQuad;
 import la.clamor.referibile.Referibile;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -39,13 +38,11 @@ public class Wah implements Forma {
         band = 100;
         Punctum primo_filter = filters.capio(0);
         for(int i = 0;i < Res.publica.channel();i++){
-            iirs[i] = IIRFilter.resonator(primo_filter.capioAestimatio(i).doubleValue(), band);
+            double freq = primo_filter.capioAestimatio(i).doubleValue();
+            iirs[i] = IIRFilter.bpfBef(freq - band / 2., freq + band / 2., freq / band, true);
+            //iirs[i] = IIRFilter.resonator(primo_filter.capioAestimatio(i).doubleValue(), band);
         }
         index = 0;
-    }
-    public void ponoPositio(double tempus, Punctum value){
-        filters.ponoPrimum(new Positio(tempus, value));
-        
     }
 
     @Override
@@ -53,7 +50,8 @@ public class Wah implements Forma {
         Punctum reditum = new Punctum();
         for(int i = 0;i < Res.publica.channel();i++){
             double freq = filters.capio(index).capioAestimatio(i).doubleValue();
-            iirs[i].rescriboResonator(freq, band);
+            iirs[i].rescriboBpfBef(freq - band / 2., freq + band / 2., freq / band, true);
+            //iirs[i].rescriboResonator(freq, band);
             reditum.ponoAestimatio(i, iirs[i].formo(new Punctum(lectum)).capioAestimatio(i));
         }
         index++;
@@ -101,6 +99,22 @@ public class Wah implements Forma {
                 new Positio(50, new Punctum(1))/*, 
                 new Positio(3000, new Punctum(1)), 
                 new Positio(4000, new Punctum(0))*/))), false);
+    }
+
+    /**
+     *
+     * @param index 0: for primum
+     * @param tempus
+     * @param punctum
+     */
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        if(index == 0){
+            filters.ponoPrimum(new Positio(tempus, punctum));
+        }else{
+            throw new IllegalArgumentException("unknown index:" + index);
+        }
+        
     }
     
 }

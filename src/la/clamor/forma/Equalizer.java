@@ -10,7 +10,6 @@ import la.clamor.Punctum;
 import la.clamor.io.IOUtil;
 import la.clamor.io.LectorWav;
 import la.clamor.io.ScriptorWav;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -65,6 +64,11 @@ public class Equalizer implements Forma{
         //Functiones.ludoLimam(out_file);
         
         
+    }
+
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

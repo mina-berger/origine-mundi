@@ -22,6 +22,11 @@ import org.apache.commons.math3.util.FastMath;
  */
 public class FIRFilter implements Forma {
 
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     enum FilterType{LPF, HPF, BPF, BEF};
     int size;
     double[] window;

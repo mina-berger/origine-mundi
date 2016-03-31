@@ -13,7 +13,6 @@ import la.clamor.Res;
 import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -79,6 +78,11 @@ public class Distortion implements Forma {
         }, new Distortion(new Punctum(0.1), new Punctum(1.5), new Punctum(1))), false);
         Functiones.ludoLimam(out_file);
 
+    }
+
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

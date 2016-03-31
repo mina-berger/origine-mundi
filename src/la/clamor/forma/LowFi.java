@@ -30,5 +30,10 @@ public class LowFi implements Forma {
         return 0;
     }
 
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 }

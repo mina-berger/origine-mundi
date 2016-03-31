@@ -20,7 +20,6 @@ import la.clamor.referibile.OscillatioFrag;
 import la.clamor.referibile.Referibile;
 import org.apache.commons.math3.util.FastMath;
 import static org.apache.commons.math3.util.FastMath.PI;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -49,6 +48,9 @@ public class IIRFilter implements Forma {
         oa_b = new OrbisPuncti(3);
     }
 
+    public static IIRFilter bpfBef(double freq1, double freq2, double q, boolean is_bpf) {
+        return new IIRFilter(getCoefficientsBpfBef(freq1, freq2, q, is_bpf));
+    }
     public static IIRFilter resonator(double freq, double band) {
         return new IIRFilter(getCoefficientsResonator(freq, band));
     }
@@ -61,8 +63,11 @@ public class IIRFilter implements Forma {
         coef = getCoefficientsLpfHpf(freq, 1.0 / FastMath.sqrt(2.0), is_lpf);
     }
 
-    public void rescribo(double freq1, double freq2, boolean is_bpf) {
-        coef = getCoefficientsBpfBef(freq1, freq2, 1.0 / FastMath.sqrt(2.0), is_bpf);
+    public void rescriboBpfBef(double freq1, double freq2, boolean is_bpf) {
+        rescriboBpfBef(freq1, freq2, 1.0 / FastMath.sqrt(2.0), is_bpf);
+    }
+    public void rescriboBpfBef(double freq1, double freq2, double q, boolean is_bpf) {
+        coef = getCoefficientsBpfBef(freq1, freq2, q, is_bpf);
     }
 
     public void rescriboResonator(double freq, double band) {
@@ -176,6 +181,11 @@ public class IIRFilter implements Forma {
         //System.out.println("b1:" + coef.b[1]);
         //System.out.println("b2:" + coef.b[2]);
         return coef;
+    }
+
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public static class IIRCoefficients {

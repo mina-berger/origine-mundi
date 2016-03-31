@@ -9,22 +9,35 @@ import la.clamor.Punctum;
 
 /**
  *
- * @author mina
+ * @author hiyamamina
  */
-public class MonoOut implements Forma {
+public class FormaNominata implements Forma{
+    Forma forma;
+    String name;
+    public FormaNominata(String name, Forma forma){
+        this.name = name;
+        this.forma = forma;
+    }
+    public String capioNomen(){
+        return name;
+    }
+    public Forma capioFormam(){
+        return forma;
+    }
+
     @Override
     public Punctum formo(Punctum lectum) {
-        return new Punctum(lectum.average());
+        return forma.formo(lectum);
     }
 
     @Override
     public int resto() {
-        return 0;
+        return forma.resto();
     }
 
     @Override
     public void ponoPunctum(int index, double tempus, Punctum punctum) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        forma.ponoPunctum(index, tempus, punctum);
     }
     
 }

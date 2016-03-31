@@ -15,7 +15,6 @@ import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.ModEnv;
 import la.clamor.referibile.Referibile;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -90,6 +89,11 @@ public class VCF implements Forma {
                 new Positio(50, new Punctum(1))/*, 
                 new Positio(3000, new Punctum(1)), 
                 new Positio(4000, new Punctum(0))*/))), false);
+    }
+
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

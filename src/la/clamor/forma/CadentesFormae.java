@@ -14,7 +14,6 @@ import la.clamor.Punctum;
 import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -35,6 +34,16 @@ public class CadentesFormae extends ArrayList<Forma> {
     }
     public static Legibilis capioLegibilis(Legibilis fons, Forma... formae){
         return new CadentesFormae(formae).capioLegibilis(fons);
+    }
+    public ArrayList<FormaNominata> capioNominatas(){
+        ArrayList<FormaNominata> nominatas = new ArrayList<>();
+        for (Forma forma : this) {
+            if(forma instanceof FormaNominata){
+                nominatas.add((FormaNominata)forma);
+            }
+        }
+        return nominatas;
+        
     }
 
     public static void main(String[] args) {

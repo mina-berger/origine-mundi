@@ -15,7 +15,6 @@ import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
 import org.apache.commons.math3.util.FastMath;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -106,6 +105,11 @@ public class Delay implements Forma {
     public static double temps(double tempo, double repenso) {
         return 60000. / tempo * repenso;
 
+    }
+
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

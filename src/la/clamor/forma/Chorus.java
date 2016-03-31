@@ -15,7 +15,6 @@ import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
 import org.apache.commons.math3.util.FastMath;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -90,6 +89,11 @@ public class Chorus implements Forma {
             }
         }, new Chorus(new Punctum(0.3), new Punctum(9, 10), new Punctum(1), new Punctum(1, -1))), false);
         Functiones.ludoLimam(out_file);
+    }
+
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
