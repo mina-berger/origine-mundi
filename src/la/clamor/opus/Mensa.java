@@ -120,11 +120,11 @@ public abstract class Mensa implements ConstantiaOperis {
         mixtor.ponoInitialLevel(id, level);
         mixtor.ponoInitialPan(id, pan);
         for (FormaNominata forma_nominata : cf.capioNominatas()) {
-            String nomen = forma_nominata.capioNomen();
-            if(formae_nominatae.containsKey(nomen)){
-                throw new IllegalArgumentException("forma iam nominata est:" + nomen);
+            String _nomen = forma_nominata.capioNomen();
+            if(formae_nominatae.containsKey(_nomen)){
+                throw new IllegalArgumentException("forma iam nominata est:" + _nomen);
             }
-            formae_nominatae.put(nomen, forma_nominata.capioFormam());
+            formae_nominatae.put(_nomen, forma_nominata.capioFormam());
         }
     }
     public void ponoFormae(String name, int talea, double repenso, int index, Punctum punctum){
@@ -220,9 +220,9 @@ public abstract class Mensa implements ConstantiaOperis {
         if (!inRange(id, talea, repenso)) {
             return;
         }
-        if (!instruments.containsKey(id)) {
-            throw new IllegalArgumentException(String.format("Instrument is unset for track(%s)", id));
-        }
+        //if (!instruments.containsKey(id)) {
+        //    throw new IllegalArgumentException(String.format("Instrument is unset for track(%s)", id));
+        //}
         mixtor.ponoPan(id, taleae.capioTempus(talea, repenso), pan);
     }
 
@@ -251,15 +251,15 @@ public abstract class Mensa implements ConstantiaOperis {
         //File lima = null;
         IOUtil.clearTempFiles();
         File out_file = new File(IOUtil.getDirectory("opus" + (sub_path != null ? sub_path + "/" : "")), capioNomen() + ".wav");
-        LogFactory.getLog(getClass()).info("ante facio:initio");
-        anteFacio();
         if (creaturus) {
-            LogFactory.getLog(getClass()).info("creo:initio");
             ArrayList<Comes> comites = new ArrayList<>();
             ArrayList<Rapidus> rapidi = new ArrayList<>();
             ponoComitis(comites);
             ponoRapidi(rapidi);
             taleae = new Taleae(comites, rapidi);
+            LogFactory.getLog(getClass()).info("ante facio:initio");
+            anteFacio();
+            LogFactory.getLog(getClass()).info("creo:initio");
             creo();
             //lima.getParentFile().mkdirs();
             ScriptorWav sl = new ScriptorWav(out_file);
@@ -269,8 +269,10 @@ public abstract class Mensa implements ConstantiaOperis {
             if (talea_ad != null) {
                 sl.ponoIndexAd(taleae.capioTempus(talea_ad.capioTaleam(), talea_ad.capioRepenso()));
             }
+            //master forma
             sl.scribo(mixtor, false);
             mixtor.close();
+            
             Logger.getLogger(getClass().getName()).log(Level.INFO, "SCRIPTUM EST:{0}", out_file.getAbsolutePath());
         }
         if (lusurus) {

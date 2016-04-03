@@ -51,6 +51,7 @@ public class IIRFilter implements Forma {
     public static IIRFilter bpfBef(double freq1, double freq2, double q, boolean is_bpf) {
         return new IIRFilter(getCoefficientsBpfBef(freq1, freq2, q, is_bpf));
     }
+
     public static IIRFilter resonator(double freq, double band) {
         return new IIRFilter(getCoefficientsResonator(freq, band));
     }
@@ -66,6 +67,7 @@ public class IIRFilter implements Forma {
     public void rescriboBpfBef(double freq1, double freq2, boolean is_bpf) {
         rescriboBpfBef(freq1, freq2, 1.0 / FastMath.sqrt(2.0), is_bpf);
     }
+
     public void rescriboBpfBef(double freq1, double freq2, double q, boolean is_bpf) {
         coef = getCoefficientsBpfBef(freq1, freq2, q, is_bpf);
     }
@@ -188,6 +190,10 @@ public class IIRFilter implements Forma {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public void close() {
+    }
+
     public static class IIRCoefficients {
 
         double[] a;
@@ -214,21 +220,21 @@ public class IIRFilter implements Forma {
 
     public static void main(String[] args) throws IOException {
         Referibile noise = new Referibile(new OscillatioFrag(false),
-            new Envelope<>(new Punctum(200),
-                new Positio(2000., new Punctum(200))),
-            5000
+                new Envelope<>(new Punctum(200),
+                        new Positio(2000., new Punctum(200))),
+                5000
         );
         File out_file = new File(IOUtil.getDirectory("opus"), "iir_noise.wav");
         //File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);
         sw.scribo(
-            new CadentesFormae(
-                new IIRFilter(1000, true),
-                new VCA(new Envelope<>(new Punctum(),
-                    new Positio(50, new Punctum(1)),
-                    new Positio(3000, new Punctum(1)),
-                    new Positio(4000, new Punctum(0))))).capioLegibilis(noise), false);
+                new CadentesFormae(
+                        new IIRFilter(1000, true),
+                        new VCA(new Envelope<>(new Punctum(),
+                                new Positio(50, new Punctum(1)),
+                                new Positio(3000, new Punctum(1)),
+                                new Positio(4000, new Punctum(0))))).capioLegibilis(noise), false);
 
         Functiones.ludoLimam(out_file);
     }

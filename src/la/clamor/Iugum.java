@@ -48,10 +48,10 @@ public class Iugum {
         Punctum punctum = new Punctum();
         Punctum p_velocitas = velocitas.capio(index);
         for (int i = 0; i < Res.publica.channel(); i++) {
-            Aestima a_velocitas = p_velocitas.capioAestimatio(i);
+            Aestima a_velocitas = p_velocitas.capioAestima(i);
             punctum.ponoAestimatio(i,
-                altum.capioAestimatio(i).multiplico(a_velocitas).addo(
-                humile.capioAestimatio(i).multiplico(new Aestima(1).subtraho(a_velocitas))));
+                altum.capioAestima(i).multiplico(a_velocitas).addo(
+                humile.capioAestima(i).multiplico(new Aestima(1).subtraho(a_velocitas))));
         }
         return punctum;
     }

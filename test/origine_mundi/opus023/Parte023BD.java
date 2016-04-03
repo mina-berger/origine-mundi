@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package origine_mundi.opus23;
+package origine_mundi.opus023;
 
 import com.mina.util.Integers;
 import la.clamor.Vel;
-import la.clamor.ludum.Mutans;
 import la.clamor.opus.Mensa;
 import la.clamor.opus.ParteTaleae;
 
@@ -15,9 +14,9 @@ import la.clamor.opus.ParteTaleae;
  *
  * @author hiyamamina
  */
-public class ParteBD extends ParteTaleae {
+public class Parte023BD extends ParteTaleae {
 
-    public ParteBD(Mensa mensa, Integers ids, int talea_primo, int length) {
+    public Parte023BD(Mensa mensa, Integers ids, int talea_primo, int length) {
         super(mensa, ids, talea_primo, length);
     }
 

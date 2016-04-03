@@ -50,14 +50,14 @@ public class OscillatioSine implements Referibilis, Constantia {
         if (count_buffer == 1) {
             count_buffer--;
             for (int i = 0; i < Res.publica.channel(); i++) {
-                Aestima omega_t = frequentia.capioAestimatio(i).multiplico(new Aestima(2 * FastMath.PI * t));
+                Aestima omega_t = frequentia.capioAestima(i).multiplico(new Aestima(2 * FastMath.PI * t));
                 punctum.ponoAestimatio(i, new Aestima(FastMath.sin(omega_t.doubleValue())));
             }
         } else {
             for (int i = 0; i < Res.publica.channel(); i++) {
-                Aestima omega_t = frequentia.capioAestimatio(i).multiplico(new Aestima(2 * FastMath.PI * t));
+                Aestima omega_t = frequentia.capioAestima(i).multiplico(new Aestima(2 * FastMath.PI * t));
                 Aestima b1_m = new Aestima(2).multiplico(new Aestima(FastMath.cos(omega_t.doubleValue())));
-                punctum.ponoAestimatio(i, b1_m.multiplico(y_1.capioAestimatio(i)).subtraho(y_2.capioAestimatio(i)));
+                punctum.ponoAestimatio(i, b1_m.multiplico(y_1.capioAestima(i)).subtraho(y_2.capioAestima(i)));
             }
             y_2 = y_1;
         }

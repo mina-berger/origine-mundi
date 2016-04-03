@@ -35,7 +35,7 @@ public class Delay implements Forma {
         long l_longitudo = Functiones.adPositio(diutius.maxAbs().doubleValue() * aetas.maxAbs().doubleValue());
         if (l_longitudo > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("diutius and aetas illegal.(smaller than "
-                + Functiones.adTempus(Integer.MAX_VALUE) + ")");
+                    + Functiones.adTempus(Integer.MAX_VALUE) + ")");
         }
         int longitudo = new Long(l_longitudo).intValue();
         oa = new OrbisPuncti(longitudo + 1);
@@ -51,19 +51,19 @@ public class Delay implements Forma {
     public Punctum formo(Punctum lectum) {
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            int i_aetas = (int) FastMath.ceil(aetas.capioAestimatio(i).doubleValue());
-            int index = (int) FastMath.round(Functiones.adPositio(diutius.capioAestimatio(i).doubleValue()));
+            int i_aetas = (int) FastMath.ceil(aetas.capioAestima(i).doubleValue());
+            int index = (int) FastMath.round(Functiones.adPositio(diutius.capioAestima(i).doubleValue()));
             //System.out.println(i_aetas + ":" + index + ":" + diutius.capioAestimatio(i).doubleValue() + ":"
             //+ Functiones.adPositio(diutius.capioAestimatio(i).doubleValue()));
             for (int j = 0; j < i_aetas; j++) {
-                Aestima aestimatio = oa.capio(index * (j + 1)).capioAestimatio(i);
+                Aestima aestimatio = oa.capio(index * (j + 1)).capioAestima(i);
                 Aestima a_feedback = new Aestima(FastMath.pow(
-                    feedback.capioAestimatio(i).doubleValue(),
-                    //aetas   .capioAestimatio(i).doubleValue()
-                    j + 1
+                        feedback.capioAestima(i).doubleValue(),
+                        //aetas   .capioAestimatio(i).doubleValue()
+                        j + 1
                 ));
                 punctum.ponoAestimatio(i,
-                    punctum.capioAestimatio(i).addo(aestimatio.multiplico(a_feedback)));
+                        punctum.capioAestima(i).addo(aestimatio.multiplico(a_feedback)));
 
             }
 
@@ -110,6 +110,10 @@ public class Delay implements Forma {
     @Override
     public void ponoPunctum(int index, double tempus, Punctum punctum) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void close() {
     }
 
 }

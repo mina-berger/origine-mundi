@@ -107,8 +107,8 @@ public class Oscillator implements Instrument {
                 Punctum punctum = new Punctum();
                 for (int i = 0; i < Res.publica.channel(); i++) {
                     punctum.ponoAestimatio(i,
-                        punctum_solum.capioAestimatio(i).multiplico(new Aestima(index_tectum - ultimo)).addo(
-                        punctum_tectum.capioAestimatio(i).multiplico(new Aestima(ultimo - index_solum))).partior(
+                        punctum_solum.capioAestima(i).multiplico(new Aestima(index_tectum - ultimo)).addo(
+                        punctum_tectum.capioAestima(i).multiplico(new Aestima(ultimo - index_solum))).partior(
                         new Aestima(index_tectum - index_solum)));
                 }
                 p.pono(res, channel, ultimo, punctum.multiplico(factor));

@@ -14,7 +14,7 @@ import la.clamor.Mergibilis;
 public class Vowel implements Mergibilis<Vowel>{
     public static final Vowel A = new Vowel(800, 1200, 2500, 3500);
     public static final Vowel I = new Vowel(300, 2300, 2900, 3500);
-    public static final Vowel U = new Vowel(800, 1200, 2500, 3500);
+    public static final Vowel U = new Vowel(300, 1200, 2500, 3500);
     public static final Vowel E = new Vowel(500, 1900, 2500, 3500);
     public static final Vowel O = new Vowel(500, 800, 2500, 3500);
     double[] freqs;

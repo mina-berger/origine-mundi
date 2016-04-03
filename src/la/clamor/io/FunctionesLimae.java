@@ -21,6 +21,7 @@ import la.clamor.Punctum;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import static la.clamor.Constantia.getAudioFormat;
+import static la.clamor.Constantia.getAudioFormat;
 
 
 public class FunctionesLimae implements Constantia {
@@ -282,7 +283,7 @@ public class FunctionesLimae implements Constantia {
                     resampled = new Punctum();
                     for(int j = 0;j < channel;j++){
                         resampled.ponoAestimatio(j,
-                                values_f.capioAestimatio(j).multiplico(new Aestima((double)ceil - position)).addo(values_c.capioAestimatio(j).multiplico(new Aestima(position - (double)floor))));
+                                values_f.capioAestima(j).multiplico(new Aestima((double)ceil - position)).addo(values_c.capioAestima(j).multiplico(new Aestima(position - (double)floor))));
                     }
                 }
                 //for(int k = 0;k < CHANNEL;k++){
@@ -314,14 +315,14 @@ public class FunctionesLimae implements Constantia {
         }
         void ponoAestimatio(Aestima value){
             for(int i = 0;i < punctum.longitudo();i++){
-                punctum.ponoAestimatio(i, punctum.capioAestimatio(i).max(value));
+                punctum.ponoAestimatio(i, punctum.capioAestima(i).max(value));
             }
         }
         void ponoAestimatio(int index, Aestima value){
             if(teneo_pan){
                 ponoAestimatio(value);
             }else{
-                punctum.ponoAestimatio(index, punctum.capioAestimatio(index).max(value));
+                punctum.ponoAestimatio(index, punctum.capioAestima(index).max(value));
             }
         }
     }

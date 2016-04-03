@@ -316,7 +316,7 @@ public class OscillatorUtil {
                 return new Punctum(
                     f1.formo(lectum,
                         //200  + (double)index /  (48000. * 5.) * 1000, 
-                        2000 + ((double) index / (48000. * 5.) * 2000) % 2000, true).capioAestimatio(0).doubleValue()
+                        2000 + ((double) index / (48000. * 5.) * 2000) % 2000, true).capioAestima(0).doubleValue()
                 //,
                 //f2.filter(lectum, 
                 //200  + (1000. - (double)index /  (48000. * 5.) * 1000), 

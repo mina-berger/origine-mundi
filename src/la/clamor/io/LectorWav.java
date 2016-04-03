@@ -46,6 +46,7 @@ public class LectorWav implements Constantia, Legibilis {
     }
 
     public LectorWav(File file, Aestima volume, Long length) {
+        log.info("file=" + file.getAbsolutePath());
         lima = null;
         FileInputStream in;
         try {
@@ -85,14 +86,14 @@ public class LectorWav implements Constantia, Legibilis {
                 if (channel != 1 && channel != 2) {
                     throw new ExceptioClamoris("so far monaural and stereo only(channel=" + channel + ").");
                 }
-                log.info("channel=" + channel);
+                //log.info("channel=" + channel);
                 regula_exampli_fontis = fmt.filum_octorum.capioInt(4, 4);
                 int bits = fmt.filum_octorum.capioInt(14, 2);
                 if (bits % 8 != 0) {
                     throw new ExceptioClamoris("bit(" + bits + ") must be multiplr of 8.");
                 }
                 bytes = bits / 8;
-                log.info("bytes=" + bytes);
+                //log.info("bytes=" + bytes);
                 if (fmt.filum_octorum.capioInt(12, 2) != bytes * channel) {
                     throw new ExceptioClamoris("block size(" + fmt.filum_octorum.capioInt(12, 2) + ") must be byte(" + bytes + ") * channel(" + channel + ").");
                 }
@@ -107,7 +108,7 @@ public class LectorWav implements Constantia, Legibilis {
         if (length != null && octets_length > length) {
             octets_length = length;
         }
-        log.info("octets_length=" + octets_length);
+        //log.info("octets_length=" + octets_length);
         //puncta = new Puncta(octets_length);
         ObjectOutputStream o_out;
         ObjectInputStream o_in;
@@ -134,13 +135,13 @@ public class LectorWav implements Constantia, Legibilis {
                     }
                 }
                 for (int k = 0; k < Res.publica.channel(); k++) {
-                    o_out.writeDouble(punctum.capioAestimatio(k).doubleValue());
+                    o_out.writeDouble(punctum.capioAestima(k).doubleValue());
                 }
             }
             o_out.flush();
             o_out.close();
             f_out.close();
-            log.info("max=" + max);
+            //log.info("max=" + max);
             log.info(tmp_file1.getAbsolutePath());
             o_in = new ObjectInputStream(new FileInputStream(tmp_file1));
             File tmp_file2 = IOUtil.createTempFile("l_lima2");
@@ -199,11 +200,11 @@ public class LectorWav implements Constantia, Legibilis {
                     resampled = new Punctum();
                     for (int j = 0; j < channel; j++) {
                         resampled.ponoAestimatio(j,
-                            values_f.capioAestimatio(j).multiplico(new Aestima((double) ceil - position)).addo(values_c.capioAestimatio(j).multiplico(new Aestima(position - (double) floor))));
+                                values_f.capioAestima(j).multiplico(new Aestima((double) ceil - position)).addo(values_c.capioAestima(j).multiplico(new Aestima(position - (double) floor))));
                     }
                 }
                 for (int k = 0; k < Res.publica.channel(); k++) {
-                    o_out.writeDouble(resampled.capioAestimatio(k).doubleValue());
+                    o_out.writeDouble(resampled.capioAestima(k).doubleValue());
                 }
             }
             o_out.flush();

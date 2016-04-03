@@ -16,15 +16,16 @@ import la.clamor.referibile.ModEnv;
 public class DeindeTest {
 
     public static void main(String[] args) {
-        ModEnv me = new ModEnv(
+        /*ModEnv me = new ModEnv(
                     new Envelope<>(new Punctum(1000)),
                     new Envelope<>(new Punctum(2)),
                     new Envelope<>(new Punctum(0.8))
             );
         for(int i = 0;i < 48000;i++){
             System.out.println(i + ":" + me.capio(i));
-        }
-        
+        }*/
+        System.out.println(Math.pow(10, -2));
+
     }
 
 }

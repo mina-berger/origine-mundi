@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package origine_mundi.opus23;
+package origine_mundi.opus023;
 
 import com.mina.util.Integers;
 import java.util.ArrayList;
@@ -16,7 +16,9 @@ import la.clamor.forma.Chorus;
 import la.clamor.forma.Compressor;
 import la.clamor.forma.Delay;
 import la.clamor.forma.Equalizer;
+import la.clamor.forma.FormaNominata;
 import la.clamor.forma.IIRFilter;
+import la.clamor.forma.Wah;
 import la.clamor.opus.Humanizer;
 import la.clamor.opus.Mensa;
 import la.clamor.opus.Taleae;
@@ -32,7 +34,7 @@ import origine_mundi.archive.ArchiveLudior;
 public class Opus023 extends Mensa {
 
     public Opus023() {
-        super(false, true);
+        super(true, false);
     }
 
     @Override
@@ -105,25 +107,48 @@ public class Opus023 extends Mensa {
                 new Chorus(new Punctum(0.1), new Punctum(10), new Punctum(1, 0), new Punctum(0, 1)),
                 new Delay(new Punctum(Delay.temps(120, 0.75)), new Punctum(3), new Punctum(0.5, -0.5)),
                 new IIRFilter(500, 7000, true)));
+        ponoInstrument(20, new Punctum(1), new Cinctum(true, new Punctum(0.5), new Punctum(1)), new ArchiveLudior("mu500r", "mtgt", 50), new CadentesFormae(
+                new Compressor(new Punctum(0.7), new Punctum(0.05)),
+                new FormaNominata("wah0", new Wah(new Punctum(1200))),
+                new Compressor(new Punctum(0.5), new Punctum(0.1)),
+                new Equalizer(-1., 0., 0., 0., 0, 1, 1., 0., 0., -1.),
+                new Chorus(new Punctum(0.3), new Punctum(tempo / 60. * 2.), new Punctum(0.5), new Punctum(0.5))
+        ));
+        ponoInstrument(21, new Punctum(1), new Cinctum(true, new Punctum(1), new Punctum(0.5)), new ArchiveLudior("mu500r", "mtgt", 50), new CadentesFormae(
+                new Compressor(new Punctum(0.7), new Punctum(0.05)),
+                new FormaNominata("wah1", new Wah(new Punctum(1200))),
+                new Compressor(new Punctum(0.5), new Punctum(0.1)),
+                new Equalizer(-1., 0., 0., 0., 0, 1, 1., 0., 0., -1.),
+                new Chorus(new Punctum(0.3), new Punctum(tempo / 60. * 2.), new Punctum(0.5), new Punctum(0.5))
+        ));
+
         ponoHumanizer(new Humanizer()
                 .pono(0, 0, 1).pono(0.25, 0.02, 0.5).pono(0.5, 0, 0.8).pono(0.75, 0.02, 0.5)
                 .ponoRandomVelocitas(0, 0.5), 0, 1, 2, 3, 5);
         ponoHumanizer(new Humanizer()
                 .pono(0, 0, 1).pono(0.25, 0.01, 0.85).pono(0.5, 0, 0.9).pono(0.75, 0.01, 0.85)
                 .ponoRandomVelocitas(0, 0.5), 4);
-        new ParteID(this, new Integers(0, 1, 2), 1, 8, false).creo();
-        new ParteIB(this, new Integers(3, 5), 1, 8, false).creo();
-        new ParteAD(this, new Integers(0, 1, 2), 9, 16).creo();
-        new ParteAB(this, new Integers(3, 5), 9, 16, false).creo();
-        new ParteAM(this, new Integers(4), 9, 16, false).creo();
-        new ParteBD(this, new Integers(0, 1, 2), 25, 10).creo();
-        new ParteBB(this, new Integers(3, 5), 25, 10).creo();
-        new ParteBM(this, new Integers(4), 25, 10).creo();
-        new ParteAD(this, new Integers(0, 1, 2), 35, 8).creo();
-        new ParteAB(this, new Integers(3, 5), 35, 8, true).creo();
-        new ParteAM(this, new Integers(4), 35, 8, true).creo();
-        new ParteID(this, new Integers(0, 1, 2), 43, 16, true).creo();
-        new ParteIB(this, new Integers(3, 5), 43, 16, true).creo();
+        ponoHumanizer(new Humanizer()
+                .pono(0, 0, 1).pono(0.25, 0.015, 0.5).pono(0.5, -0.05, 0.8).pono(0.75, 0.015, 0.5)
+                .ponoRandomVelocitas(0, 0.5), 20);
+        ponoHumanizer(new Humanizer()
+                .pono(0, 0, 1).pono(0.25, 0.02, 0.5).pono(0.5, 0, 0.8).pono(0.75, 0.02, 0.5)
+                .ponoRandomVelocitas(0, 0.5), 21);
+        new Parte023ID(this, new Integers(0, 1, 2), 1, 8, false).creo();
+        new Parte023IB(this, new Integers(3, 5), 1, 8, false).creo();
+        new Parte023IG(this, new Integers(20, 21), 1, 8, false).creo();
+        new Parte023AD(this, new Integers(0, 1, 2), 9, 16).creo();
+        new Parte023AB(this, new Integers(3, 5), 9, 16, false).creo();
+        new Parte023AM(this, new Integers(4), 9, 16, false).creo();
+        new Parte023BD(this, new Integers(0, 1, 2), 25, 10).creo();
+        new Parte023BB(this, new Integers(3, 5), 25, 10).creo();
+        new Parte023BM(this, new Integers(4), 25, 10).creo();
+        new Parte023AD(this, new Integers(0, 1, 2), 35, 8).creo();
+        new Parte023AB(this, new Integers(3, 5), 35, 8, true).creo();
+        new Parte023AM(this, new Integers(4), 35, 8, true).creo();
+        new Parte023ID(this, new Integers(0, 1, 2), 43, 16, true).creo();
+        new Parte023IB(this, new Integers(3, 5), 43, 16, true).creo();
+        new Parte023IG(this, new Integers(20, 21), 43, 16, true).creo();
         ponoMasterLevel(51, 0, new Punctum(1));
         ponoMasterLevel(59, 0, new Punctum(0));
 

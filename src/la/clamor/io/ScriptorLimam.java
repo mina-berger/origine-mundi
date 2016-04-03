@@ -37,7 +37,7 @@ public class ScriptorLimam {
     public void scribo(Punctum punctum) {
         for (int k = 0; k < Res.publica.channel(); k++) {
             try {
-                o_out.writeDouble(punctum.capioAestimatio(k).doubleValue());
+                o_out.writeDouble(punctum.capioAestima(k).doubleValue());
             } catch (IOException ex) {
                 throw new ExceptioClamoris(ex);
             }

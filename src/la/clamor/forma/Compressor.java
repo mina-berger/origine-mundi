@@ -44,9 +44,9 @@ public class Compressor implements Forma {
     public Punctum formo(Punctum lectum) {
         Punctum reditum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            Aestima _threshold = threshold.capioAestimatio(i);
-            Aestima _lectum = lectum.capioAestimatio(i);
-            Aestima _ratio = ratio.capioAestimatio(i);
+            Aestima _threshold = threshold.capioAestima(i);
+            Aestima _lectum = lectum.capioAestima(i);
+            Aestima _ratio = ratio.capioAestima(i);
             /*if (_lectum.compareTo(_threshold) > 0) {
                 reditum.ponoAestimatio(i, _threshold.addo(_lectum.subtraho(_threshold).multiplico(_ratio)));
             } else if (_lectum.compareTo(_threshold.nego()) < 0) {
@@ -59,6 +59,7 @@ public class Compressor implements Forma {
         return reditum.multiplico(gain);
 
     }
+
     private static Aestima compress(Aestima lectum, Aestima threshold, Aestima ratio) {
         Aestima reditum;
         if (lectum.compareTo(threshold) > 0) {
@@ -79,14 +80,15 @@ public class Compressor implements Forma {
         //System.out.println(solum.doubleValue() + ":" + tectum.doubleValue());
         return solum.multiplico(new Aestima(1. - position)).addo(tectum.multiplico(new Aestima(position)));
     }
+
     public static void main(String[] args) {
         File out_file = new File(IOUtil.getDirectory("opus"), "compressor.wav");
 
         ScriptorWav sl = new ScriptorWav(out_file);
         sl.scribo(CadentesFormae.capioLegibilis(new Referibile(new OscillatioSine(),
-            new Envelope<>(new Punctum(400)), 5000),
-            new VCA(new Envelope<>(new Punctum(0), new Positio(5000, new Punctum(1)))),
-            new Compressor(new Punctum(0.2), new Punctum(0.1))
+                new Envelope<>(new Punctum(400)), 5000),
+                new VCA(new Envelope<>(new Punctum(0), new Positio(5000, new Punctum(1)))),
+                new Compressor(new Punctum(0.2), new Punctum(0.1))
         ), false);
         //Functiones.ludoLimam(out_file);
     }
@@ -94,6 +96,10 @@ public class Compressor implements Forma {
     @Override
     public void ponoPunctum(int index, double tempus, Punctum punctum) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void close() {
     }
 
 }

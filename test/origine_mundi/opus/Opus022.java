@@ -18,7 +18,7 @@ import la.clamor.forma.VCA;
 import la.clamor.forma.CadentesFormae;
 import la.clamor.forma.Chorus;
 import la.clamor.forma.Delay;
-import la.clamor.forma.Distortion;
+import la.clamor.forma.Limitter;
 import la.clamor.forma.IIRFilter;
 import la.clamor.opus.Humanizer;
 import la.clamor.opus.Mensa;
@@ -53,7 +53,7 @@ public class Opus022 extends Mensa {
     @Override
     protected void creo() {
         ponoInstrument(0, new Punctum(1), new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
-            new Distortion(new Punctum(0.8), new Punctum(2), new Punctum(1.2)),
+            new Limitter(new Punctum(0.8), new Punctum(2), new Punctum(1.2)),
             new IIRFilter(3000, true)
         ));
         ponoInstrument(1, new Punctum(0.5, 0.5), new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(

@@ -22,25 +22,28 @@ import la.clamor.referibile.Referibile;
  * @author mina
  */
 public class Wah implements Forma {
+
     private final ModEnv filters;
     private final IIRFilter[] iirs;
     private int index;
     private final int band;
-    public Wah(Punctum primum){
+
+    public Wah(Punctum primum) {
         this(new ModEnv(
-                        new Envelope<>(primum),
-                        new Envelope<>(new Punctum(0)),
-                        new Envelope<>(new Punctum(0))));
+                new Envelope<>(primum),
+                new Envelope<>(new Punctum(0)),
+                new Envelope<>(new Punctum(0))));
     }
-    public Wah(ModEnv filters){
+
+    public Wah(ModEnv filters) {
         this.filters = filters;
         this.iirs = new IIRFilter[Res.publica.channel()];
         band = 100;
         Punctum primo_filter = filters.capio(0);
-        for(int i = 0;i < Res.publica.channel();i++){
-            double freq = primo_filter.capioAestimatio(i).doubleValue();
-            iirs[i] = IIRFilter.bpfBef(freq - band / 2., freq + band / 2., freq / band, true);
-            //iirs[i] = IIRFilter.resonator(primo_filter.capioAestimatio(i).doubleValue(), band);
+        for (int i = 0; i < Res.publica.channel(); i++) {
+            double freq = primo_filter.capioAestima(i).doubleValue();
+            //iirs[i] = IIRFilter.bpfBef(freq - band / 2., freq + band / 2., freq / band, true);
+            iirs[i] = IIRFilter.resonator(primo_filter.capioAestima(i).doubleValue(), band);
         }
         index = 0;
     }
@@ -48,11 +51,11 @@ public class Wah implements Forma {
     @Override
     public Punctum formo(Punctum lectum) {
         Punctum reditum = new Punctum();
-        for(int i = 0;i < Res.publica.channel();i++){
-            double freq = filters.capio(index).capioAestimatio(i).doubleValue();
-            iirs[i].rescriboBpfBef(freq - band / 2., freq + band / 2., freq / band, true);
-            //iirs[i].rescriboResonator(freq, band);
-            reditum.ponoAestimatio(i, iirs[i].formo(new Punctum(lectum)).capioAestimatio(i));
+        for (int i = 0; i < Res.publica.channel(); i++) {
+            double freq = filters.capio(index).capioAestima(i).doubleValue();
+            //iirs[i].rescriboBpfBef(freq - band / 2., freq + band / 2., freq / band, true);
+            iirs[i].rescriboResonator(freq, band);
+            reditum.ponoAestimatio(i, iirs[i].formo(new Punctum(lectum)).capioAestima(i));
         }
         index++;
         return reditum;
@@ -63,40 +66,40 @@ public class Wah implements Forma {
         return 0;
     }
 
-    public static void _main(String[] args){
+    public static void _main(String[] args) {
         Res.publica.ponoChannel(4);
         File out_file = new File(IOUtil.getDirectory("opus"), "iir_osc.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(CadentesFormae.capioLegibilis(new Referibile(new OscillatioPulse(false), new Envelope<>(new Punctum(500)), 5000),
-            //new Wah(new Envelope<>(new Punctum(500))),
-            new VCA(new Envelope<>(new Punctum(), 
-                new Positio(50, new Punctum(1, 0, 0, 0)), 
-                new Positio(1000, new Punctum(0, 1, 0, 0)), 
-                new Positio(2000, new Punctum(0, 0, 0, 1)), 
-                new Positio(3000, new Punctum(0, 0, 1, 0)), 
-                new Positio(4000, new Punctum(1, 0, 0, 0)), 
-                new Positio(5000, new Punctum(0))))
-            ), false);
-            
-        
+                //new Wah(new Envelope<>(new Punctum(500))),
+                new VCA(new Envelope<>(new Punctum(),
+                        new Positio(50, new Punctum(1, 0, 0, 0)),
+                        new Positio(1000, new Punctum(0, 1, 0, 0)),
+                        new Positio(2000, new Punctum(0, 0, 0, 1)),
+                        new Positio(3000, new Punctum(0, 0, 1, 0)),
+                        new Positio(4000, new Punctum(1, 0, 0, 0)),
+                        new Positio(5000, new Punctum(0))))
+        ), false);
+
     }
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         double value = 10000;
         Envelope<Punctum> env = new Envelope<>(new Punctum(value));
-        for(int i = 0;i < 40;i++){
+        for (int i = 0; i < 40; i++) {
             value *= 0.9;
             env.ponoPositiones(new Positio<>(i * 100, new Punctum(value)));
         }
         File out_file = new File(IOUtil.getDirectory("opus"), "iir_osc1.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(CadentesFormae.capioLegibilis(new Referibile(new OscillatioQuad(), new Envelope<>(new Punctum(500)), 5000),
-            new Wah(new ModEnv(
-                    new Envelope<>(new Punctum(1000)),
-                    new Envelope<>(new Punctum(2)),
-                    new Envelope<>(new Punctum(0.8))
-            )), 
-            new VCA(new Envelope<>(true, new Punctum(), 
-                new Positio(50, new Punctum(1))/*, 
+                new Wah(new ModEnv(
+                        new Envelope<>(new Punctum(1000)),
+                        new Envelope<>(new Punctum(2)),
+                        new Envelope<>(new Punctum(0.8))
+                )),
+                new VCA(new Envelope<>(true, new Punctum(),
+                        new Positio(50, new Punctum(1))/*, 
                 new Positio(3000, new Punctum(1)), 
                 new Positio(4000, new Punctum(0))*/))), false);
     }
@@ -109,12 +112,16 @@ public class Wah implements Forma {
      */
     @Override
     public void ponoPunctum(int index, double tempus, Punctum punctum) {
-        if(index == 0){
+        if (index == 0) {
             filters.ponoPrimum(new Positio(tempus, punctum));
-        }else{
+        } else {
             throw new IllegalArgumentException("unknown index:" + index);
         }
-        
+
     }
-    
+
+    @Override
+    public void close() {
+    }
+
 }

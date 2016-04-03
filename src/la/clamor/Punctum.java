@@ -144,7 +144,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         return aestimationes.length;
     }
 
-    public Aestima capioAestimatio(int index) {
+    public Aestima capioAestima(int index) {
         return aestimationes[index];
     }
 
@@ -155,7 +155,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
     public Aestima maxAbs() {
         Aestima aestimatio = new Aestima();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            aestimatio = aestimatio.max(capioAestimatio(i).abs());
+            aestimatio = aestimatio.max(capioAestima(i).abs());
         }
         return aestimatio;
     }
@@ -163,7 +163,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
     public Aestima average() {
         Aestima aestimatio = new Aestima();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            aestimatio = aestimatio.addo(capioAestimatio(i));
+            aestimatio = aestimatio.addo(capioAestima(i));
         }
         return aestimatio.partior(new Aestima(Res.publica.channel()));
     }
@@ -226,7 +226,7 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
             punctum.ponoAestimatio(i,
-                capioAestimatio(i).mergo(diff, index, tectum.capioAestimatio(i)));
+                capioAestima(i).mergo(diff, index, tectum.capioAestima(i)));
         }
         return punctum;
     }

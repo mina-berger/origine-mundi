@@ -36,7 +36,7 @@ public class Chorus implements Forma {
         long l_longitudo = Functiones.adPositio(profundum.maxAbs().doubleValue());
         if (l_longitudo * 2 > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("profundum is illegal.(smaller than "
-                + Functiones.adTempus(Integer.MAX_VALUE) + ")");
+                    + Functiones.adTempus(Integer.MAX_VALUE) + ")");
         }
         longitudo = new Long(l_longitudo).intValue();
         oa = new OrbisPuncti(longitudo * 2 + 1);
@@ -53,13 +53,13 @@ public class Chorus implements Forma {
         Punctum oscillatio = osc.lego(frequentia);
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            double index = oscillatio.capioAestimatio(i).addo(new Aestima(1)).multiplico(new Aestima(longitudo)).doubleValue();
+            double index = oscillatio.capioAestima(i).addo(new Aestima(1)).multiplico(new Aestima(longitudo)).doubleValue();
             //System.out.println(index);
-            Aestima floor = oa.capio((int) FastMath.floor(index)).capioAestimatio(i);
-            Aestima ceil = oa.capio((int) FastMath.ceil(index)).capioAestimatio(i);
+            Aestima floor = oa.capio((int) FastMath.floor(index)).capioAestima(i);
+            Aestima ceil = oa.capio((int) FastMath.ceil(index)).capioAestima(i);
             Aestima aestimatio
-                = floor.multiplico(new Aestima(FastMath.ceil(index) - index))
-                .addo(ceil.multiplico(new Aestima(index - FastMath.floor(index))));
+                    = floor.multiplico(new Aestima(FastMath.ceil(index) - index))
+                    .addo(ceil.multiplico(new Aestima(index - FastMath.floor(index))));
             punctum.ponoAestimatio(i, aestimatio);
         }
         oa.pono(lectum);
@@ -94,6 +94,10 @@ public class Chorus implements Forma {
     @Override
     public void ponoPunctum(int index, double tempus, Punctum punctum) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void close() {
     }
 
 }

@@ -1,6 +1,5 @@
 package la.clamor.io;
 
-import origine_mundi.OmUtil;
 import java.io.BufferedOutputStream;
 import java.io.EOFException;
 import java.io.File;
@@ -27,9 +26,7 @@ import static la.clamor.Constantia.BYTE_PER_EXAMPLUM;
 import static la.clamor.Constantia.REGULA_EXAMPLI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import static la.clamor.Constantia.getAudioFormat;
 import la.clamor.Res;
-import static la.clamor.Constantia.getAudioFormat;
 import static la.clamor.Constantia.getAudioFormat;
 import static la.clamor.Constantia.getAudioFormat;
 
@@ -108,7 +105,7 @@ public class ScriptorWav implements Constantia {
                 }
                 index++;
                 for (int i = 0; i < channel; i++) {
-                    Aestima aestimatio = punctum.capioAestimatio(i);
+                    Aestima aestimatio = punctum.capioAestima(i);
                     o_out.writeObject(aestimatio);
                     max = max.max(aestimatio);
                     min = min.min(aestimatio);
@@ -136,8 +133,8 @@ public class ScriptorWav implements Constantia {
             log.info("maximum  =" + max);
             log.info("minimum  =" + min);
             ratio
-                = master_volume.multiplico(MAX_AMPLITUDO).partior(max).abs().min(
-                master_volume.multiplico(MIN_AMPLITUDO).partior(min).abs());
+                    = master_volume.multiplico(MAX_AMPLITUDO).partior(max).abs().min(
+                    master_volume.multiplico(MIN_AMPLITUDO).partior(min).abs());
             longitudo += locus * 2;
             log.info("ratio   =" + ratio);
             log.info("tmp_file=" + tmp_file.getAbsolutePath());
@@ -166,13 +163,13 @@ public class ScriptorWav implements Constantia {
 
     private void scriboSub(ObjectInputStream o_in, File file, Aestima ratio, int longitudo) throws IOException {
         AudioFormat af = new AudioFormat(
-            AudioFormat.Encoding.PCM_SIGNED,
-            format.getSampleRate(),
-            format.getSampleSizeInBits(),
-            format.getChannels(),
-            format.getFrameSize(),
-            format.getFrameRate(),
-            true);
+                AudioFormat.Encoding.PCM_SIGNED,
+                format.getSampleRate(),
+                format.getSampleSizeInBits(),
+                format.getChannels(),
+                format.getFrameSize(),
+                format.getFrameRate(),
+                true);
         /*AudioFormat af = new AudioFormat(
                 AudioFormat.Encoding.PCM_SIGNED, 
                 (float)REGULA_EXAMPLI, 
@@ -183,8 +180,8 @@ public class ScriptorWav implements Constantia {
                 true);*/
         file.getParentFile().mkdirs();
         AudioSystem.write(
-            new AudioInputStream(new LegibilisInputStream(o_in, ratio), af, (longitudo) / format.getChannels()),
-            AudioFileFormat.Type.WAVE, file);
+                new AudioInputStream(new LegibilisInputStream(o_in, ratio), af, (longitudo) / format.getChannels()),
+                AudioFileFormat.Type.WAVE, file);
     }
 
     /*private void scriboSub(ObjectInputStream o_in, File file, Aestimatio ratio, int longitudo, int locus) throws FileNotFoundException, IOException{

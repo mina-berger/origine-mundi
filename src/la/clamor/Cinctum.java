@@ -40,7 +40,7 @@ public class Cinctum implements Mergibilis<Cinctum> {
         for (int i_ex = 0; i_ex < Res.publica.channel(); i_ex++) {
             Aestima aestimatio = new Aestima();
             for (int i_in = 0; i_in < Res.publica.channel(); i_in++) {
-                aestimatio = aestimatio.addo(in.capioAestimatio(i_in).multiplico(capioOutput(i_in, i_ex)));
+                aestimatio = aestimatio.addo(in.capioAestima(i_in).multiplico(capioOutput(i_in, i_ex)));
             }
             ex.ponoAestimatio(i_ex, aestimatio);
         }
@@ -48,7 +48,7 @@ public class Cinctum implements Mergibilis<Cinctum> {
     }
 
     public Aestima capioOutput(int index_in, int index_ex) {
-        return puncta.capioPunctum(index_ex).capioAestimatio(index_in);
+        return puncta.capioPunctum(index_ex).capioAestima(index_in);
     }
 
     @Override

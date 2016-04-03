@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package la.clamor;
 
 import java.util.ArrayList;
@@ -15,33 +14,37 @@ import org.apache.commons.lang3.ArrayUtils;
  * @author minae.hiyamae
  */
 public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Legibilis {
+
     Legibilis[] pueros;
     long index;
     Envelope<Punctum> volumes;
-    public Consilium(){
+
+    public Consilium() {
         pueros = new Legibilis[0];
         volumes = new Envelope<>(new Punctum(1));
         index = 0;
     }
-    public void setPositiones(Envelope<Punctum> volumes){
+
+    public void setPositiones(Envelope<Punctum> volumes) {
         this.volumes = volumes;
     }
-    
-    public void addo(double tempus, Legibilis legibilis){
+
+    public void addo(double tempus, Legibilis legibilis) {
         long positio = Functiones.adPositio(tempus);
         ArrayList<Legibilis> list;
-        if(containsKey(positio)){
+        if (containsKey(positio)) {
             list = get(positio);
-        }else{
+        } else {
             list = new ArrayList<>();
             put(positio, list);
         }
         list.add(legibilis);
     }
+
     @Override
     public Punctum lego() {
         Punctum punctum = new Punctum();
-        for(Legibilis legibilis:pueros){
+        for (Legibilis legibilis : pueros) {
             punctum = punctum.addo(legibilis.lego());
         }
         Punctum volume = volumes.capioValue(index);
@@ -51,15 +54,15 @@ public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Le
 
     @Override
     public boolean paratusSum() {
-        if(containsKey(index)){
+        if (containsKey(index)) {
             get(index).stream().forEach((legibilis) -> {
                 pueros = ArrayUtils.add(pueros, legibilis);
             });
             remove(index);
             //System.out.println("this.removed:" + size() + "/" + pueros.length);
         }
-        for(Legibilis legibilis:pueros){
-            if(!legibilis.paratusSum()){
+        for (Legibilis legibilis : pueros) {
+            if (!legibilis.paratusSum()) {
                 pueros = ArrayUtils.removeElement(pueros, legibilis);
                 //System.out.println("puer.removed:" + size() + "/" + pueros.length);
             }
@@ -70,7 +73,7 @@ public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Le
 
     @Override
     public void close() {
-        for(Legibilis puer:pueros){
+        for (Legibilis puer : pueros) {
             puer.close();
         }
     }

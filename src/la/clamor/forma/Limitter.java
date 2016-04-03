@@ -18,16 +18,17 @@ import la.clamor.referibile.OscillatioSine;
  *
  * @author minae.hiyamae
  */
-public class Distortion implements Forma {
+public class Limitter implements Forma {
 
     Punctum terminus;
     Punctum compendium_ante;
     Punctum compendium_post;
 
-    public Distortion(Punctum terminus, Punctum compendium_ante) {
-        this(terminus, compendium_ante, new Punctum(1).partior(terminus));
+    public Limitter(Punctum terminus) {
+        this(terminus, new Punctum(1), new Punctum(1).partior(terminus));
     }
-    public Distortion(Punctum terminus, Punctum compendium_ante, Punctum compendium_post) {
+
+    public Limitter(Punctum terminus, Punctum compendium_ante, Punctum compendium_post) {
         this.terminus = terminus;
         this.compendium_ante = compendium_ante;
         this.compendium_post = compendium_post;
@@ -43,11 +44,11 @@ public class Distortion implements Forma {
         final Aestima zero = new Aestima();
         Punctum multiplicatum = lectum.multiplico(compendium_ante);
         for (int i = 0; i < Res.publica.channel(); i++) {
-            Aestima aestimatio = multiplicatum.capioAestimatio(i);
+            Aestima aestimatio = multiplicatum.capioAestima(i);
             if (aestimatio.compareTo(zero) < 0) {
-                aestimatio = aestimatio.max(terminus.capioAestimatio(i).nego());
+                aestimatio = aestimatio.max(terminus.capioAestima(i).nego());
             } else {
-                aestimatio = aestimatio.min(terminus.capioAestimatio(i));
+                aestimatio = aestimatio.min(terminus.capioAestima(i));
             }
             lectum.ponoAestimatio(i, aestimatio);
         }
@@ -75,7 +76,7 @@ public class Distortion implements Forma {
             @Override
             public void close() {
             }
-        }, new Distortion(new Punctum(0.1), new Punctum(1.5), new Punctum(1))), false);
+        }, new Limitter(new Punctum(0.1), new Punctum(1.5), new Punctum(1))), false);
         Functiones.ludoLimam(out_file);
 
     }
@@ -83,6 +84,10 @@ public class Distortion implements Forma {
     @Override
     public void ponoPunctum(int index, double tempus, Punctum punctum) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void close() {
     }
 
 }

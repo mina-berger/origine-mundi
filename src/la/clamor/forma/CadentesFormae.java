@@ -51,7 +51,7 @@ public class CadentesFormae extends ArrayList<Forma> {
 
         ScriptorWav sl = new ScriptorWav(out_file);
         CadentesFormae cf = new CadentesFormae(
-            new Distortion(new Punctum(1), new Punctum(1.1), new Punctum(1)),
+            new Limitter(new Punctum(1), new Punctum(1.1), new Punctum(1)),
             new Chorus(new Punctum(1), new Punctum(3), new Punctum(1), new Punctum(1, -1)));
         sl.scribo(cf.capioLegibilis(new Legibilis() {
             OscillatioSine o = new OscillatioSine();

@@ -45,12 +45,12 @@ public class OscillatioPulse implements Referibilis, Constantia {
         //quantitas = (quantitas == null) ? new Punctum() : quantitas;
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            Aestima omega_t = frequentia.capioAestimatio(i).multiplico(ratio);
-            Aestima current_x = x.capioAestimatio(i).addo(omega_t);
+            Aestima omega_t = frequentia.capioAestima(i).multiplico(ratio);
+            Aestima current_x = x.capioAestima(i).addo(omega_t);
             //System.out.println(omega_t + ":" + current_x + ":" + current_x.resto(threshold));
             if (current_x.compareTo(threshold) >= 0) {
                 punctum.ponoAestimatio(i, new Aestima(1));
-            } else if (con_negatif && last.capioAestimatio(i).equals(new Aestima(1))) {
+            } else if (con_negatif && last.capioAestima(i).equals(new Aestima(1))) {
                 punctum.ponoAestimatio(i, new Aestima(-1));
                 //punctum.ponoAestimatio(i, new Aestimatio(0));
             }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package origine_mundi.opus23;
+package origine_mundi.opus023;
 
 import com.mina.util.Integers;
 import la.clamor.Vel;
@@ -14,7 +14,7 @@ import la.clamor.opus.ParteTaleae;
  *
  * @author hiyamamina
  */
-public class ParteAB extends ParteTaleae {
+public class Parte023AB extends ParteTaleae {
 
     double[][] notess = new double[][]{
         new double[]{41, 65, 69, 72, 40, 67, 70, 72},
@@ -27,7 +27,7 @@ public class ParteAB extends ParteTaleae {
         new double[]{36, 65, 69, 72, 35, 65, 67, 74},
         new double[]{31, 65, 70, 74, 36, 64, 70, 73}};
     private boolean end;
-    public ParteAB(Mensa mensa, Integers ids, int talea_primo, int length, boolean end) {
+    public Parte023AB(Mensa mensa, Integers ids, int talea_primo, int length, boolean end) {
         super(mensa, ids, talea_primo, length);
         this.end = end;
     }

@@ -14,7 +14,7 @@ import la.clamor.Punctum;
 import la.clamor.forma.CadentesFormae;
 import la.clamor.forma.Chorus;
 import la.clamor.forma.Delay;
-import la.clamor.forma.Distortion;
+import la.clamor.forma.Limitter;
 import la.clamor.forma.FIRFilter;
 import la.clamor.opus.Humanizer;
 import la.clamor.opus.Mensa;
@@ -52,9 +52,9 @@ public class Opus021 extends Mensa {
     @Override
     protected void creo() {
         ponoInstrument(0, new Punctum(1), new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
-            new Distortion(new Punctum(0.8), new Punctum(2), new Punctum(1.2))));
+            new Limitter(new Punctum(0.8), new Punctum(2), new Punctum(1.2))));
         ponoInstrument(1, new Punctum(1), new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
-            new Distortion(new Punctum(0.8), new Punctum(2), new Punctum(1.2))));
+            new Limitter(new Punctum(0.8), new Punctum(2), new Punctum(1.2))));
         ponoInstrument(2, new Punctum(0.5, 0.5), new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
             new FIRFilter(500, 7000, true)));
         ponoInstrument(10, new Punctum(0.6), new Cinctum(), new ArchiveLudior("mu500r", "piano", 500), new CadentesFormae(
@@ -62,7 +62,7 @@ public class Opus021 extends Mensa {
             new Delay(new Punctum(Delay.temps(100, 0.5)), new Punctum(3), new Punctum(0.5, -0.5)),
             new FIRFilter(500, 7000, true)));
         ponoInstrument(11, new Punctum(1), new Cinctum(), new ArchiveLudior("mu500r", "bass006433", 50), new CadentesFormae(
-            new Distortion(new Punctum(0.8), new Punctum(2), new Punctum(1.2)),
+            new Limitter(new Punctum(0.8), new Punctum(2), new Punctum(1.2)),
             new Chorus(new Punctum(0.08), new Punctum(5.5), new Punctum(0.5), new Punctum(0.5)),
             new FIRFilter(500, 6000, true)));
         ponoHumanizer(new Humanizer()

@@ -31,7 +31,7 @@ public class Puncta {
     public double[] capioDoubleArray(int index){
         double[] values = new double[puncta.length];
         for(int i = 0;i < puncta.length;i++){
-            values[i] = puncta[i].capioAestimatio(index).doubleValue();
+            values[i] = puncta[i].capioAestima(index).doubleValue();
         }
         return values;
     }

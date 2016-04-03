@@ -11,17 +11,21 @@ import la.clamor.Punctum;
  *
  * @author hiyamamina
  */
-public class FormaNominata implements Forma{
+public class FormaNominata implements Forma {
+
     Forma forma;
     String name;
-    public FormaNominata(String name, Forma forma){
+
+    public FormaNominata(String name, Forma forma) {
         this.name = name;
         this.forma = forma;
     }
-    public String capioNomen(){
+
+    public String capioNomen() {
         return name;
     }
-    public Forma capioFormam(){
+
+    public Forma capioFormam() {
         return forma;
     }
 
@@ -39,5 +43,9 @@ public class FormaNominata implements Forma{
     public void ponoPunctum(int index, double tempus, Punctum punctum) {
         forma.ponoPunctum(index, tempus, punctum);
     }
-    
+
+    @Override
+    public void close() {
+    }
+
 }

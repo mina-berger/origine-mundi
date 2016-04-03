@@ -29,7 +29,7 @@ public abstract class OscillatioDelta implements Referibilis, Constantia {
     public Punctum lego(Punctum frequentia) {
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            Aestima delta_t = delta.capioAestimatio(i).addo(frequentia.capioAestimatio(i).multiplico(new Aestima(t)));
+            Aestima delta_t = delta.capioAestima(i).addo(frequentia.capioAestima(i).multiplico(new Aestima(t)));
             punctum.ponoAestimatio(i, capioUnda(delta_t));
             delta.ponoAestimatio(i, delta_t);
         }

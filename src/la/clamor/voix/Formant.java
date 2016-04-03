@@ -191,4 +191,8 @@ public class Formant implements Forma {
     public void ponoPunctum(int index, double tempus, Punctum punctum) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void close() {
+    }
 }
