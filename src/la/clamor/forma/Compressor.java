@@ -28,9 +28,13 @@ public class Compressor implements Forma {
     Punctum gain;
 
     public Compressor(Punctum threshold, Punctum ratio) {
+        this(threshold, ratio, new Punctum(1.0).partior(threshold.addo((new Punctum(1.0).subtraho(threshold)).multiplico(ratio))));
+
+    }
+    public Compressor(Punctum threshold, Punctum ratio, Punctum gain) {
         this.threshold = threshold;
         this.ratio = ratio;
-        gain = new Punctum(1.0).partior(threshold.addo((new Punctum(1.0).subtraho(threshold)).multiplico(ratio)));
+        this.gain = gain;
         //System.out.println("gain=" + gain);
 
     }

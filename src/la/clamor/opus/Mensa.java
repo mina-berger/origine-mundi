@@ -52,6 +52,7 @@ public abstract class Mensa implements ConstantiaOperis {
     Causa talea_ad;
     ArrayList<Integer> track_list;
     HashMap<String, Forma> formae_nominatae;
+    CadentesFormae master_cf;
 
     String sub_path;
 
@@ -76,6 +77,7 @@ public abstract class Mensa implements ConstantiaOperis {
         track_list = new ArrayList<>();
         formae_nominatae = new HashMap<>();
         sub_path = null;
+        master_cf = null;
         //Editor.ponoPrint(false);
     }
 
@@ -205,6 +207,9 @@ public abstract class Mensa implements ConstantiaOperis {
         }
         mixtor.ponoMasterLevel(taleae.capioTempus(talea, repenso), level);
     }
+    public void ponoMasterFormas(Forma... formas){
+        this.master_cf = new CadentesFormae(formas);
+    }
 
     public void ponoLevel(int id, int talea, double repenso, Punctum level) {
         if (!inRange(id, talea, repenso)) {
@@ -270,8 +275,9 @@ public abstract class Mensa implements ConstantiaOperis {
                 sl.ponoIndexAd(taleae.capioTempus(talea_ad.capioTaleam(), talea_ad.capioRepenso()));
             }
             //master forma
-            sl.scribo(mixtor, false);
-            mixtor.close();
+            Legibilis master_out = master_cf.capioLegibilis(mixtor);
+            sl.scribo(master_out, false);
+            master_out.close();
             
             Logger.getLogger(getClass().getName()).log(Level.INFO, "SCRIPTUM EST:{0}", out_file.getAbsolutePath());
         }

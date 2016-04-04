@@ -24,7 +24,7 @@ public class DeindeTest {
         for(int i = 0;i < 48000;i++){
             System.out.println(i + ":" + me.capio(i));
         }*/
-        System.out.println(Math.pow(10, -2));
+        System.out.println(Math.pow(10, -1));
 
     }
 
