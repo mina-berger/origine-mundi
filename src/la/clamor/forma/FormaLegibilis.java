@@ -13,18 +13,27 @@ import la.clamor.Punctum;
  */
 public class FormaLegibilis implements Legibilis {
 
-    private final Legibilis fons;
+    private Legibilis fons;
     private final Forma forma;
     private Integer terminens;
+    private boolean captus_primo;
 
     public FormaLegibilis(Legibilis fons, Forma forma) {
+        captus_primo = (forma instanceof FormaCapta);
         this.fons = fons;
         this.forma = forma;
         terminens = null;
     }
+    private void capio(){
+        if(captus_primo){
+            fons = ((FormaCapta)forma).capio(fons);
+            captus_primo = false;
+        }
+    }
 
     @Override
     public boolean paratusSum() {
+        capio();
         if (fons.paratusSum()) {
             return true;
         }
@@ -36,6 +45,7 @@ public class FormaLegibilis implements Legibilis {
 
     @Override
     public Punctum lego() {
+        capio();
         Punctum lectum = terminens == null ? fons.lego() : new Punctum();
         Punctum punctum = forma.formo(lectum);
         if (terminens != null) {

@@ -23,19 +23,21 @@ public class PressureMeter implements Forma {
 
     public PressureMeter(String name) {
         this.name = name;
-        totus = new TreeMap<>();
+        totus = name == null ? null : new TreeMap<>();
     }
 
     @Override
     public Punctum formo(Punctum lectum) {
-        for (int i = 0; i < Res.publica.channel(); i++) {
-            count(totus, lectum.capioAestima(i));
+        if (name != null) {
+            for (int i = 0; i < Res.publica.channel(); i++) {
+                count(totus, lectum.capioAestima(i));
+            }
         }
         return lectum;
     }
 
     private void count(TreeMap<Integer, Long> counter, Aestima aestima) {
-        if(aestima.equals(new Aestima(0))){
+        if (aestima.equals(new Aestima(0))) {
             return;
         }
         int value = (int) FastMath.round(aestima.abs().doubleValue() * 100);
@@ -58,21 +60,23 @@ public class PressureMeter implements Forma {
 
     @Override
     public void close() {
-        DecimalFormat df1 = new DecimalFormat("0.00");
-        DecimalFormat df2 = new DecimalFormat("0.0000");
-        long all = 0;
-        for (int key : totus.keySet()) {
-            all += totus.get(key);
+        if (name != null) {
+            DecimalFormat df1 = new DecimalFormat("0.00");
+            DecimalFormat df2 = new DecimalFormat("0.0000");
+            long all = 0;
+            for (int key : totus.keySet()) {
+                all += totus.get(key);
+            }
+            System.err.println("[pressure meter:" + name + "]");
+            long value = 0;
+            for (int key : totus.keySet()) {
+                value += totus.get(key);
+                double ratio = (double) value / (double) all;
+                double level = (double) key / 100d;
+                System.err.println("  " + df1.format(level) + ":" + df2.format(ratio) + "%(" + value + ")");
+            }
+            System.err.println("  total:" + all);
         }
-        System.err.println("[pressure meter:" + name + "]");
-        long value = 0;
-        for (int key : totus.keySet()) {
-            value += totus.get(key);
-            double ratio = (double)value / (double)all;
-            double level = (double)key / 100d;
-            System.err.println("  " + df1.format(level) + ":" + df2.format(ratio) + "%(" + value + ")");
-        }
-        System.err.println("  total:" + all);
 
     }
 

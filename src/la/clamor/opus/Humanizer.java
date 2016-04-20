@@ -92,7 +92,7 @@ public class Humanizer {
         double mut_clavis = r_clavis == null ? 0 : r_clavis.next();
         double mut_repenso = r_repenso == null ? 0 : r_repenso.next();
         double mut_velocitas = (r_velocitas == null ? 0 : r_velocitas.next()) + 1.;
-
+        //System.out.println("r_repenso:" + mut_repenso);
         double _clavis = clavis + mut_clavis;
         double _repenso = repenso + _mutatum + mut_repenso;
         if (talea == 0 && _repenso < 0) {

@@ -1,6 +1,5 @@
 package la.clamor.io;
 
-import origine_mundi.OmUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

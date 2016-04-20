@@ -86,10 +86,10 @@ public class Parte023BM extends ParteTaleae {
                 ludo(t, 3.75, 0.2, 67, new Vel(0.8));
                 break;
             case 7:
-                ludo(t, 0.0, 0.2, 69, new Vel(0.8));
-                ludo(t, 1.0, 0.2, 65, new Vel(0.8));
-                ludo(t, 2.0, 0.2, 62, new Vel(0.8));
-                ludo(t, 3.0, 0.2, 74, new Vel(0.8));
+                ludo(t, 0.0, 0.9, 69, new Vel(0.8));
+                ludo(t, 1.0, 0.9, 65, new Vel(0.8));
+                ludo(t, 2.0, 0.9, 62, new Vel(0.8));
+                ludo(t, 3.0, 0.9, 74, new Vel(0.8));
                 break;
             case 8:
                 ludo(t, 0.0, 4, 72, new Vel(0.8));

@@ -28,7 +28,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import la.clamor.Res;
 import static la.clamor.Constantia.getAudioFormat;
-import static la.clamor.Constantia.getAudioFormat;
 
 public class ScriptorWav implements Constantia {
 
@@ -89,7 +88,7 @@ public class ScriptorWav implements Constantia {
             for (long i = 0; i < locus * channel; i++) {
                 o_out.writeObject(new Aestima(0));
                 longitudo++;
-                if (longitudo % (sample_rate * channel) == 0) {
+                if (longitudo % (sample_rate * channel * 5) == 0) {
                     log.info("lecti   : " + (longitudo / sample_rate / channel) + " sec.(locus)");
                 }
             }
@@ -110,7 +109,7 @@ public class ScriptorWav implements Constantia {
                     max = max.max(aestimatio);
                     min = min.min(aestimatio);
                     longitudo++;
-                    if (longitudo % (sample_rate * channel) == 0) {
+                    if (longitudo % (sample_rate * channel * 5) == 0) {
                         log.info("lecti   : " + (longitudo / sample_rate / channel) + " sec.");
                         //log.info("index_ab=" + index_ab + ":index_ad=" + index_ad + ":index" + index);
                     }
@@ -120,6 +119,7 @@ public class ScriptorWav implements Constantia {
                 }
 
             }
+            legibilis.close();
             for (long i = 0; i < locus * channel; i++) {
                 o_out.writeObject(new Aestima(0));
                 longitudo++;
@@ -336,7 +336,7 @@ public class ScriptorWav implements Constantia {
                         list.add(buffer.array()[i]);
                     }*/
                     count++;
-                    if (count % (REGULA_EXAMPLI * Res.publica.channel()) == 0) {
+                    if (count % (REGULA_EXAMPLI * Res.publica.channel() * 5) == 0) {
                         log.info("scripti : " + (count / REGULA_EXAMPLI / Res.publica.channel()) + " sec.");
                     }
                 } catch (EOFException ex) {

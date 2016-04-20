@@ -6,7 +6,6 @@
 package la.clamor.io;
 
 import java.io.File;
-import la.clamor.Functiones;
 import static la.clamor.Functiones.isMac;
 
 /**

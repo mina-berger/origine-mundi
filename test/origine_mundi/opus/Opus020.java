@@ -59,5 +59,9 @@ public class Opus020 extends Mensa {
     protected void anteFacio() {
     }
 
+    @Override
+    protected void dominor() {
+    }
+
     
 }

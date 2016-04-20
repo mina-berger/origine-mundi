@@ -21,7 +21,8 @@ import la.clamor.Punctum;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import static la.clamor.Constantia.getAudioFormat;
-import static la.clamor.Constantia.getAudioFormat;
+import la.clamor.Legibilis;
+import la.clamor.forma.CadentesFormae;
 
 
 public class FunctionesLimae implements Constantia {
@@ -78,6 +79,54 @@ public class FunctionesLimae implements Constantia {
         
         log.info("count=" + count + ":" + ab_index + " - " + ad_index);
     }
+    public static void formoWav(File wav, CadentesFormae cf, boolean teneo_source){
+        LectorWav lw = new LectorWav(wav);
+        File forma_wav = IOUtil.createTempFile("forma_wav");
+        ScriptorWav sw = new ScriptorWav(forma_wav);
+        Legibilis l = cf.capioLegibilis(lw);
+        sw.scribo(l, false);
+        l.close();
+        if(teneo_source){
+            renameBackup(wav, "wav");
+        }else{
+            wav.delete();
+        }
+        forma_wav.renameTo(wav);
+        
+    }
+    public static void renameBackup(File file, String suffix){
+        String search = "." + suffix;
+        String name = file.getName();
+        if(name.endsWith(search)){
+            name = name.substring(0, name.length() - search.length());
+            int index = name.lastIndexOf(".");
+            if(index > 0){
+                try{
+                    int number = Integer.parseInt(name.substring(index + 1));
+                    number++;
+                    name = name.substring(0, index) + "." + number;
+                }catch(Exception e){
+                    name += ".0";
+                }
+            }else{
+                name += ".0";
+            }
+        }else{
+            name += ".0";
+        }
+        File rename  = new File(file.getParentFile(), name + search);
+        System.out.println("rename:" + rename.getAbsolutePath());
+        file.renameTo(rename);
+    }
+    /**
+     * 
+     * @param source .wav
+     * @param target .lima
+     * @param volume
+     * @param teneo_pan true:maximize with pan, false:without
+     * @param teneo_sample
+     * @return 
+     */
     public static AudioFormat facioLimam(File source, File target, Aestima volume, boolean teneo_pan, boolean teneo_sample){
         FileInputStream source_in;
         int longitudo;
@@ -107,10 +156,8 @@ public class FunctionesLimae implements Constantia {
         if(!legoFilumOctorum(source_in, 4).toString().equals(Lima.WAVE)){
             throw new ExceptioClamoris("this is not a WAVE file(" + source.getAbsolutePath() + ")");
         }
-        //System.out.println(type);
         while(true){
             filum_octorum = legoFilumOctorum(source_in, 4);
-            //if(octets == null) break;
             String tag = filum_octorum.toString();
             long longitudo1 = legoFilumOctorum(source_in, 4).capioLong();
             if(longitudo1 > Integer.MAX_VALUE){
@@ -145,39 +192,23 @@ public class FunctionesLimae implements Constantia {
                 }
             }
         }
-        //try {
-        //    in.close();
-        //} catch (IOException ex) {
-        //    throw new ExceptioClamoris(ex);
-       // }
-
-        //index = 0;
         if(!read_fmt){
             throw new ExceptioClamoris("fmt tag unread.");
         }
         int octets_length = (int)(longitudo / bytes / channel);
         log.info("octets_length=" + octets_length);
-        //puncta = new Puncta(octets_length);
-        //ObjectOutputStream o_out;
-        //ObjectInputStream  o_in;
-        //FileOutputStream f_out;
         ScriptorLimam sl;
         LectorLimam ll;
         Maximum max = new Maximum(teneo_pan);
-        //Aestimatio max = new Aestimatio();
         try {
             File tmp_file1 = IOUtil.createTempFile("l_lima1");
-            //f_out = new FileOutputStream(tmp_file1);
-            //o_out = new ObjectOutputStream(f_out);
             sl = new ScriptorLimam(tmp_file1);
-            //int init = 0;
             for(int i = 0;i < octets_length;i++){
                 Punctum punctum;
                 if(channel == 1){
                     FilumOctorum read = legoFilumOctorum(source_in, bytes);
                     Aestima monoral_data = new Aestima(read.getByteValueInteger(0, bytes));
                     punctum = new Punctum(monoral_data);
-                    //max = max.max(monoral_data);
                     max.ponoAestimatio(monoral_data);
                 }else{
                     punctum = new Punctum();
@@ -185,69 +216,37 @@ public class FunctionesLimae implements Constantia {
                         FilumOctorum read = legoFilumOctorum(source_in, bytes);
                         Aestima datum = new Aestima(read.getByteValueInteger(0, bytes));
                         punctum.ponoAestimatio(j, datum);
-                        //max = max.max(datum);
                         max.ponoAestimatio(j, datum);
-                        //if(init < 1000){
-                        //    System.out.println(i + ":" + datum.doubleValue());
-                        //    init++;
-                        //}
                     }
                 }
                 sl.scribo(punctum);
-                //for(int k = 0;k < CHANNEL;k++){
-                //    o_out.writeDouble(punctum.capioAestimatio(k).rawValue());
-                //}
             }
-            //o_out.flush();
-            //o_out.close();
-            //f_out.close();
             sl.close();
             source_in.close();
             log.info("max=" + max.punctum);
             log.info(tmp_file1.getAbsolutePath());
-            //o_in = new ObjectInputStream(new FileInputStream(tmp_file1));
             ll = new LectorLimam(tmp_file1);
             File tmp_file2 = IOUtil.createTempFile("l_lima2");
-            //f_out = new FileOutputStream(tmp_file2);
-            //o_out = new ObjectOutputStream(f_out);
             sl = new ScriptorLimam(tmp_file2);
-            //while(o_in.available() > 0){
-                //o_out.writeDouble(new Aestimatio(o_in.readDouble(), true).multiplico(volume).partior(max).rawValue());
-            //}
             int scribo = 0;
             while(ll.paratusSum()){
                 Punctum p = ll.lego().multiplico(volume).partior(max.punctum);
                 sl.scribo(p);
-                //if(scribo < 100){
-                //    System.out.println(scribo + ":" + p);
-               // }
                 scribo++;
             }
             log.info("scribo=" + scribo);
             ll.close();
             sl.close();
-            //o_in.close();
-            //o_out.flush();
-            //o_out.close();
-            //f_out.close();
             tmp_file1.delete();
             if(teneo_sample || regula_exampli_fontis == REGULA_EXAMPLI){
-                //puncta_stream = new ObjectInputStream(new FileInputStream(tmp_file2));
-                //tmp_file1.delete();
-                //if(target.exists()){
                 target.delete();
-                //}
                 tmp_file2.renameTo(target);
                 return format;
             }
             octets_length = (int)((double)octets_length * (double)REGULA_EXAMPLI / (double)regula_exampli_fontis);
             log.info("resample octets_length=" + octets_length);
-            //Puncta resampled = new Puncta(octets_length);
-            //o_in = new ObjectInputStream(new FileInputStream(tmp_file2));
             ll = new LectorLimam(tmp_file2);
             File tmp_file3 = IOUtil.createTempFile("l_lima3");
-            //f_out = new FileOutputStream(tmp_file3);
-            //o_out = new ObjectOutputStream(f_out);
             sl = new ScriptorLimam(tmp_file3);
             TreeMap<Integer, Punctum> map = new TreeMap<>();
             int count = 0;
@@ -263,17 +262,10 @@ public class FunctionesLimae implements Constantia {
                 }
                 map = map2;
                 while(count <= ceil){
-                    //Punctum punctum = new Punctum();
-                    //if(o_in.available() > 0){
-                    //    for(int k = 0;k < CHANNEL;k++){
-                    //        punctum.ponoAestimatio(k, new Aestimatio(o_in.readDouble(), true));
-                    //    }
-                    //}
                     Punctum punctum = ll.paratusSum()?ll.lego():new Punctum();
                     map.put(count, punctum);
                     count++;
                 }
-                //log.info("map_size=" + map.size());
                 Punctum resampled;
                 if(floor == ceil){
                     resampled = map.get(floor);
@@ -286,20 +278,12 @@ public class FunctionesLimae implements Constantia {
                                 values_f.capioAestima(j).multiplico(new Aestima((double)ceil - position)).addo(values_c.capioAestima(j).multiplico(new Aestima(position - (double)floor))));
                     }
                 }
-                //for(int k = 0;k < CHANNEL;k++){
-                //    o_out.writeDouble(resampled.capioAestimatio(k).rawValue());
-                //}
                 sl.scribo(resampled);
             }
-            //o_in.close();
-            //o_out.flush();
-            //o_out.close();
             ll.close();
             sl.close();
             tmp_file2.delete();
-            //if(target.exists()){
-                target.delete();
-            //}
+            target.delete();
             tmp_file3.renameTo(target);
         } catch (IOException ex) {
             throw new IllegalStateException(ex);

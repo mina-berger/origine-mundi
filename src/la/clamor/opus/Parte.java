@@ -39,20 +39,32 @@ public abstract class Parte {
     protected void cambio(int index) {
         this.id = ids.get(index);
     }
+    protected boolean mute(){
+        return id < 0;
+    }
 
     protected void ludoClaves(int talea, Mutans<Double> repenso, Mutans<Double> diutirnitas, Mutans<Doubles> claves, Mutans<Vel> vel, int length) {
+        if(mute()){
+            return;
+        }
         for (int i = 0; i < length; i++) {
             ludo(talea, repenso.capio(i), diutirnitas.capio(i), claves.capio(i), vel.capio(i));
         }
     }
 
     protected void ludo(int talea, Mutans<Double> repenso, Mutans<Double> diutirnitas, Mutans<Double> clavis, Mutans<Vel> vel, int length) {
+        if(mute()){
+            return;
+        }
         for (int i = 0; i < length; i++) {
             ludo(talea, repenso.capio(i), diutirnitas.capio(i), clavis.capio(i), vel.capio(i));
         }
     }
 
     protected void ludo(Ludibilis ludibilis) {
+        if(mute()){
+            return;
+        }
         for (int i = 0; i < ludibilis.numerus(); i++) {
             Ludum ludum = ludibilis.capitLudum(id);
             ludo(ludum.talea(), ludum.repenso(), ludum.diuturnitas(), ludum.clavis(), ludum.velocitas());
@@ -60,25 +72,40 @@ public abstract class Parte {
     }
 
     protected void ludo(int talea, double repenso, double diutius, double clavis, Vel velocitas) {
+        if(mute()){
+            return;
+        }
         mensa.ludo(id, talea_primo + talea, repenso, diutius, clavis, velocitas);
     }
 
     protected void ludo(int talea, double repenso, double diutius, Doubles claves, Vel velocitas) {
+        if(mute()){
+            return;
+        }
         mensa.ludo(id, talea_primo + talea, repenso, diutius, claves, velocitas);
     }
 
     public void ponoLevel(int talea, double repenso, Punctum level) {
+        if(mute()){
+            return;
+        }
         mensa.ponoLevel(id, talea_primo + talea, repenso, level);
     }
     public void ponoPan(int talea, double repenso, Cinctum pan) {
+        if(mute()){
+            return;
+        }
         mensa.ponoPan(id, talea_primo + talea, repenso, pan);
     }
 
     public void ponoFormae(String name, int talea, double repenso, int index, Punctum punctum) {
-        mensa.ponoFormae(name, talea_primo + talea, repenso, index, punctum);
+        mensa.ponoFormae(name, talea_primo + talea, repenso, index, punctum);   
     }
 
     public void sono(int talea, double repenso, Legibilis legibilis) {
+        if(mute()){
+            return;
+        }
         mensa.sono(id, talea_primo + talea, repenso, legibilis);
     }
 

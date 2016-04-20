@@ -27,7 +27,7 @@ import origine_mundi.archive.ArchiveLudior;
 public class Opus025 extends Mensa {
 
     public Opus025() {
-        super(true, false);
+        super(true, true, false);
     }
 
     @Override
@@ -103,6 +103,10 @@ public class Opus025 extends Mensa {
         ponoHumanizer(new Humanizer()
                 .pono(0, 0, 1).pono(0.25, 0.015, 0.5).pono(0.5, 0.02, 0.8).pono(0.75, 0.025, 0.5)
                 .ponoRandomVelocitas(0, 0.).ponoRandomRepenso(-0.03, 0.03), 4, 5);
+    }
+
+    @Override
+    protected void dominor() {
         ponoMasterFormas(
                 new Limitter(new Punctum(2.3)),
                 new Chorus(new Punctum(0.3), new Punctum(tempo / 60. * 2.), new Punctum(0.8), new Punctum(0.2)),

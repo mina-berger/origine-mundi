@@ -12,7 +12,6 @@ import la.clamor.Res;
 import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import org.apache.commons.math3.util.FastMath;
-import origine_mundi.OmUtil;
 
 /**
  * Oscillation with duration specified, but frequency nor volume unspecified
@@ -67,14 +66,16 @@ public class OscillatioSine implements Referibilis, Constantia {
 
     public static void main(String[] args) {
         //Res.publica.ponoChannel(4);
-        File out_file = new File(IOUtil.getDirectory("opus"), "osc_sine.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "sine_499.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Referibile(new OscillatioSine(),
             new ModEnv(
-                new Envelope<>(true, new Punctum(420), new Positio<>(1000, new Punctum(440))),
-                new Envelope<>(new Punctum(1), new Positio<>(9000, new Punctum(15))),
-                new Envelope<>(new Punctum(0), new Positio<>(1000, new Punctum(0.08)))),
-            10000), false);
+                //new Envelope<>(true, new Punctum(420), new Positio<>(1000, new Punctum(440))),
+                new Envelope<>(true, new Punctum(499))
+                //new Envelope<>(new Punctum(1), new Positio<>(9000, new Punctum(15))),
+                //new Envelope<>(new Punctum(0), new Positio<>(1000, new Punctum(0.08)))
+            ),
+            3000), false);
         Functiones.ludoLimam(out_file);
 
     }

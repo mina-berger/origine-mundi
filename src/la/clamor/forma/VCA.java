@@ -6,6 +6,7 @@
 package la.clamor.forma;
 
 import la.clamor.Envelope;
+import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.referibile.ModEnv;
 
@@ -41,7 +42,13 @@ public class VCA implements Forma {
 
     @Override
     public void ponoPunctum(int index, double tempus, Punctum punctum) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        switch(index){
+            case 0:
+                quantitates.ponoPrimum(new Positio<>(tempus, punctum));
+                break;
+            default:
+                throw new IllegalArgumentException("index not supported.");
+        }
     }
 
     @Override

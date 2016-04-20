@@ -153,4 +153,8 @@ public class Opus021 extends Mensa {
     protected void anteFacio() {
     }
 
+    @Override
+    protected void dominor() {
+    }
+
 }

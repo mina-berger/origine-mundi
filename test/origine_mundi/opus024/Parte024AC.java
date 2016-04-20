@@ -71,7 +71,7 @@ public class Parte024AC extends ParteTaleae {
                                     new Envelope<>(new Punctum(0.1))
                             ))));
             ponoPan(t, 0, pan[i]);
-            ponoPan(t, 3, pan[i]);
+            ponoPan(t, 3., pan[i]);
             ponoPan(t + 1, 0, pan[(i + 1) % 2]);
             ponoPan(t + 1, 3.9, pan[(i + 1) % 2]);
         }

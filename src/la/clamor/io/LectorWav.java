@@ -46,7 +46,7 @@ public class LectorWav implements Constantia, Legibilis {
     }
 
     public LectorWav(File file, Aestima volume, Long length) {
-        log.info("file=" + file.getAbsolutePath());
+        //log.info("file=" + file.getAbsolutePath());
         lima = null;
         FileInputStream in;
         try {
@@ -142,7 +142,7 @@ public class LectorWav implements Constantia, Legibilis {
             o_out.close();
             f_out.close();
             //log.info("max=" + max);
-            log.info(tmp_file1.getAbsolutePath());
+            //log.info(tmp_file1.getAbsolutePath());
             o_in = new ObjectInputStream(new FileInputStream(tmp_file1));
             File tmp_file2 = IOUtil.createTempFile("l_lima2");
             f_out = new FileOutputStream(tmp_file2);

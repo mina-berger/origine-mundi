@@ -38,8 +38,8 @@ public class Parte024AD extends ParteTaleae {
             (int index) -> new Vel(1), _break?8:16);
         cambio(2);
         ludo(t, 
-            (int index) -> new double[]{1.75, 3.0}[index], 
-            (int index) -> new double[]{0.25, 1.}[index], 
+            (int index) -> new double[]{1.75, 3.5}[index], 
+            (int index) -> new double[]{0.25, 0.5}[index], 
             (int index) -> 37d, 
             (int index) -> new Vel(1), _break?1:2);
     }

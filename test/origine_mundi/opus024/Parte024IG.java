@@ -60,9 +60,13 @@ public class Parte024IG extends ParteTaleae {
             ponoPan(t + 0, 0, new Cinctum(true, new Punctum(0.5), new Punctum(1)));
             ponoPan(t + 2, 0, new Cinctum(true, new Punctum(1), new Punctum(0.5)));
             ponoPan(t + 4, 0, new Cinctum(true, new Punctum(0.5), new Punctum(1)));
-            ponoLevel(t + 0, 0, new Punctum(0.2));
-            ponoLevel(t + 2, 0, new Punctum(1));
-            ponoLevel(t + 4, 0, new Punctum(0.2));
+            ponoFormae("vca1", t + 0, 0, 0, new Punctum(1));
+            ponoFormae("vca1", t + 0, 3, 0, new Punctum(10));
+            ponoFormae("vca1", t + 1, 2, 0, new Punctum(10));
+            ponoFormae("vca1", t + 2, 0, 0, new Punctum(20));
+            ponoFormae("vca1", t + 2, 2, 0, new Punctum(10));
+            ponoFormae("vca1", t + 3, 1, 0, new Punctum(10));
+            ponoFormae("vca1", t + 4, 0, 0, new Punctum(1));
             ponoFormae("wah1", t + 0, 0, 0, new Punctum(300));
             ponoFormae("wah1", t + 2, 0, 0, new Punctum(2000));
             ponoFormae("wah1", t + 4, 0, 0, new Punctum(300));

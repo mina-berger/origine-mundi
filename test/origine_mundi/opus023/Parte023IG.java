@@ -44,7 +44,7 @@ public class Parte023IG extends ParteTaleae {
             ludo(t, j + 0.75, 0.1, bass, new Vel(1));
         }
         if (t % 4 == 0) {
-            cambio(0);
+            /*cambio(0);
             ponoPan(t + 0, 0, new Cinctum(true, new Punctum(1), new Punctum(0.5)));
             ponoPan(t + 2, 0, new Cinctum(true, new Punctum(0.5), new Punctum(1)));
             ponoPan(t + 4, 0, new Cinctum(true, new Punctum(1), new Punctum(0.5)));
@@ -58,12 +58,24 @@ public class Parte023IG extends ParteTaleae {
             ponoLevel(t + 0, 0, new Punctum(0.2));
             ponoLevel(t + 2, 0, new Punctum(1));
             ponoLevel(t + 4, 0, new Punctum(0.2));
+             */
             ponoFormae("wah0", t + 0, 0, 0, new Punctum(2000));
             ponoFormae("wah0", t + 2, 0, 0, new Punctum(300));
             ponoFormae("wah0", t + 4, 0, 0, new Punctum(2000));
+            ponoFormae("vca0", t + 0, 0, 0, new Punctum(1));
+            ponoFormae("vca0", t + 1, 0, 0, new Punctum(0.8));
+            ponoFormae("vca0", t + 2, 0, 0, new Punctum(0.1));
+            ponoFormae("vca0", t + 3, 0, 0, new Punctum(0.8));
+            ponoFormae("vca0", t + 4, 0, 0, new Punctum(1));
+            
             ponoFormae("wah1", t + 0, 0, 0, new Punctum(300));
             ponoFormae("wah1", t + 2, 0, 0, new Punctum(2000));
             ponoFormae("wah1", t + 4, 0, 0, new Punctum(300));
+            ponoFormae("vca1", t + 0, 0, 0, new Punctum(0.1));
+            ponoFormae("vca1", t + 1, 0, 0, new Punctum(0.8));
+            ponoFormae("vca1", t + 2, 0, 0, new Punctum(1));
+            ponoFormae("vca1", t + 3, 0, 0, new Punctum(0.8));
+            ponoFormae("vca1", t + 4, 0, 0, new Punctum(0.1));
         }
 
     }
