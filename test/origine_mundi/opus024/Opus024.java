@@ -18,7 +18,6 @@ import la.clamor.forma.Compressor;
 import la.clamor.forma.Equalizer;
 import la.clamor.forma.FormaNominata;
 import la.clamor.forma.IIRFilter;
-import la.clamor.forma.Limitter;
 import la.clamor.forma.PressureMeter;
 import la.clamor.forma.VCA;
 import la.clamor.forma.Wah;

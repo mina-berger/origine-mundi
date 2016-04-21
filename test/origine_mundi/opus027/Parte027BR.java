@@ -41,7 +41,7 @@ public class Parte027BR extends ParteTaleae {
             case 2:
                 chords = new Chord[]{
                     new Chord(new Doubles(30, 37), new Doubles(57, 61, 66)),
-                    new Chord(new Doubles(35, 30), new Doubles(57, 63, 67))
+                    new Chord(new Doubles(35, 30), new Doubles(57, 63, 66))
                 };
                 break;
             case 3:
@@ -94,6 +94,34 @@ public class Parte027BR extends ParteTaleae {
 
     private void ludo(int t, Chord[] chords) {
         switch (t) {
+            case 7:
+                cambio(0);
+                ludoClaves(t,
+                        (int i) -> new Doubles(0, 0.5, 1.25, 1.75, 2.25, 3, 3.5).get(i),
+                        (int i) -> new Doubles(0.2, 0.6, 0.2, 0.2, 0.65, 0.2, 0.3).get(i),
+                        (int i) -> (i < 3 ? chords[0] : chords[1]).capioChord(),
+                        (int i) -> new Vel(0.8), 7);
+                cambio(1);
+                ludo(t,
+                        (int i) -> new Doubles(0, 0.75, 1, 1.75, 2, 2.75, 3, 3.5).get(i),
+                        (int i) -> new Doubles(0.2, 0.2, 0.65, 0.2, 0.2, 0.2, 0.3, 0.4).get(i),
+                        (int i) -> (i < 4 ? chords[0] : chords[1]).capioBass(new Integers(0, 3, 4, 7, 8).contains(i) ? 0 : 1),
+                        (int i) -> new Vel(0.8), 8);
+                break;
+            case 8:
+                cambio(0);
+                ludoClaves(t,
+                        (int i) -> new Doubles(0, 0.5, 1.25, 1.75, 2.5).get(i),
+                        (int i) -> new Doubles(0.2, 0.6, 0.2, 0.2, 1.4).get(i),
+                        (int i) -> (i < 2 ? chords[0] : i < 3 ? chords[1] : i < 4 ? chords[2] : chords[3]).capioChord(),
+                        (int i) -> new Vel(0.8), 5);
+                cambio(1);
+                ludo(t,
+                        (int i) -> new Doubles(0, 0.75, 1, 1.75, 2, 2.5, 3.75).get(i),
+                        (int i) -> new Doubles(0.2, 0.2, 0.65, 0.2, 0.2, 1.1, 0.25).get(i),
+                        (int i) -> (i < 2 ? chords[0] : i < 4 ? chords[1] : i < 5 ? chords[2] : chords[3]).capioBass(new Integers(0, 3, 4, 7).contains(i) ? 0 : 1),
+                        (int i) -> new Vel(0.8), 7);
+                break;
             default:
                 cambio(0);
                 ludoClaves(t,

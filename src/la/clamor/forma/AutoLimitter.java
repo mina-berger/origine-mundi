@@ -7,20 +7,28 @@ package la.clamor.forma;
 
 import java.io.File;
 import la.clamor.Aestima;
+import la.clamor.Constantia;
 import la.clamor.Legibilis;
 import la.clamor.Punctum;
 import la.clamor.Res;
 import la.clamor.io.IOUtil;
 import la.clamor.io.LectorLimam;
 import la.clamor.io.ScriptorLimam;
+import la.clamor.io.ScriptorWav;
+import static la.clamor.io.ScriptorWav.log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
  * @author hiyamamina
  */
-public class AutoLimitter implements FormaCapta{
+public class AutoLimitter implements FormaCapta {
+
+    public static Log log = LogFactory.getLog(AutoLimitter.class);
     Aestima ratio;
-    public AutoLimitter(){
+
+    public AutoLimitter() {
         ratio = new Aestima(1);
     }
 
@@ -41,7 +49,7 @@ public class AutoLimitter implements FormaCapta{
 
     @Override
     public void close() {
-        
+
     }
 
     @Override
@@ -49,31 +57,24 @@ public class AutoLimitter implements FormaCapta{
         File file = IOUtil.createTempFile("auto_limitter");
         ScriptorLimam sl = new ScriptorLimam(file);
         Aestima max = new Aestima(0);
-        while(fons.paratusSum()){
+        long longitudo = 0;
+        while (fons.paratusSum()) {
             Punctum lectum = fons.lego();
-            for(int i = 0;i < Res.publica.channel();i++){
+            for (int i = 0; i < Res.publica.channel(); i++) {
                 max = lectum.capioAestima(i).abs().max(max);
             }
             sl.scribo(lectum);
+            longitudo++;
+            if (longitudo % (Constantia.REGULA_EXAMPLI* 5) == 0) {
+                log.info("lecti   : " + (longitudo / Constantia.REGULA_EXAMPLI) + " sec.(locus)");
+            }
         }
         sl.close();
-        if(!max.equals(new Aestima(0))){
-            System.out.println("DEBUG:AutoLimitter:" + max.toString());
+        if (!max.equals(new Aestima(0))) {
+            log.info("max=" + max.toString());
             ratio = new Aestima(1).partior(max);
         }
         return new LectorLimam(file);
-        /*
-        if (aestima.equals(new Aestima(0))) {
-            return;
-        }
-        int value = (int) FastMath.round(aestima.abs().doubleValue() * 100);
-        if (counter.containsKey(value)) {
-            counter.put(value, counter.get(value) + 1);
-        } else {
-            counter.put(value, 1l);
-        }
-        
-        */
     }
-    
+
 }

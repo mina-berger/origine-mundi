@@ -18,14 +18,17 @@ import la.clamor.opus.ParteTaleae;
  */
 public class Parte027AR extends ParteTaleae {
 
-    public Parte027AR(Mensa mensa, Integers ids, int talea_primo, int length) {
+    boolean end;
+
+    public Parte027AR(Mensa mensa, Integers ids, int talea_primo, int length, boolean end) {
         super(mensa, ids, talea_primo, length);
+        this.end = end;
     }
 
     @Override
     protected void creo(int t) {
         Chord[] chords;
-        switch (t % 16) {
+        switch (end ? t % 9 + 8 : t % 16) {
             case 0:
             case 8:
                 chords = new Chord[]{
@@ -92,9 +95,20 @@ public class Parte027AR extends ParteTaleae {
                 };
                 break;
             case 15:
+                chords = end
+                        ? new Chord[]{
+                            new Chord(new Doubles(32, 39), new Doubles(59, 66, 70)),
+                            new Chord(new Doubles(37, 32), new Doubles(59, 65, 70))
+                        }
+                        : new Chord[]{
+                            new Chord(new Doubles(39, 34), new Doubles(55, 62, 65)),
+                            new Chord(new Doubles(39, 34), new Doubles(60, 62, 67))
+                        };
+                break;
+            case 16:
                 chords = new Chord[]{
-                    new Chord(new Doubles(39, 34), new Doubles(55, 62, 65)),
-                    new Chord(new Doubles(39, 34), new Doubles(60, 62, 67))
+                    new Chord(new Doubles(29, 36), new Doubles(56, 63, 67)),
+                    new Chord(new Doubles(34, 41), new Doubles(56, 62, 67))
                 };
                 break;
             default:
@@ -108,7 +122,7 @@ public class Parte027AR extends ParteTaleae {
     }
 
     private void ludo(int t, Chord[] chords) {
-        switch (t % 16) {
+        switch (end ? t % 8 + 8 : t % 16) {
             case 2:
             case 10:
                 cambio(0);

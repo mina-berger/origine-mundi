@@ -293,6 +293,14 @@ public abstract class Mensa implements ConstantiaOperis {
             }
             //master forma
             //Legibilis master_out = master_cf == null ? mixtor : master_cf.capioLegibilis(mixtor);
+            //consilia
+            for(Integer id:consilia.keySet()){
+                if(consilia.get(id).isEmpty()){
+                    mixtor.removeoTrack(id);
+                    System.out.println("removeTrack:" + id);
+                }
+            }
+            
             Legibilis raw_out = new FormaLegibilis(mixtor, new BackupLima(lima));
             sl.scribo(raw_out, false);
             raw_out.close();
