@@ -105,16 +105,18 @@ public class Archiver {
     public static void main(String[] args) throws Exception{
         Integers r_piano = Integers.getSequence(21, 108, true);
         Integers r_bass = Integers.getSequence(21, 72, true);
+        Integers r_guitar = Integers.getSequence(33, 100, true);
         Integers r_drum = Integers.getSequence(13, 84, true);
         Integers r_test = new Integers(51);
         
         Integers v_full = new Integers(39, 47, 55, 63, 71, 79, 87, 95, 103, 111, 119, 127);
         Integers v_drum = new Integers(63, 79, 95, 111, 127);
         Integers v_test = new Integers(63);
-        //OmUtil.playNote(receiver, channel, note, velocity, ms);
         //archive_all(US_122,  "m3r", "sparkles", false);
-        archive_all("Yamaha MU500-1",  "mu500r", "bass006433", false, r_bass, v_full);
-        //archive_all("Yamaha MU500-1",  "mu500r", "bass006433", false, r_test, v_test);
-        //new Archiver(getAudioFormat(48000, 2, 2),  new File("D:/origine_mundi/archive/")).play(60, 127);
+        String midi_out = "Yamaha MU500-1";
+        String directory = "mu500r";
+        String name = "accord";
+        //archive_all(midi_out,  directory, name, false, r_test, v_test);
+        archive_all(midi_out,  directory, name, false, r_guitar, v_full);
     }
 }
