@@ -113,7 +113,7 @@ public class PositionesOscillationis extends AbstractPositionesOscillationis {
                 map.add(positiones[i]);
             } else {
                 Punctum pc = new Punctum();
-                pc.ponoAestimatio(i, new Aestimatio(1));
+                pc.ponoAestimatio(i, new Aestima(1));
                 map.add(new Envelope<>(new Punctum(), new Positio(0, pc)));
             }
         }

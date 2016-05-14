@@ -13,13 +13,13 @@ import la.clamor.Functiones;
 import la.clamor.OrbisPuncti;
 import la.clamor.Positio;
 import la.clamor.Punctum;
+import la.clamor.io.IOUtil;
 import la.clamor.io.LectorWav;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioFrag;
 import la.clamor.referibile.Referibile;
 import org.apache.commons.math3.util.FastMath;
 import static org.apache.commons.math3.util.FastMath.PI;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -48,6 +48,10 @@ public class IIRFilter implements Forma {
         oa_b = new OrbisPuncti(3);
     }
 
+    public static IIRFilter bpfBef(double freq1, double freq2, double q, boolean is_bpf) {
+        return new IIRFilter(getCoefficientsBpfBef(freq1, freq2, q, is_bpf));
+    }
+
     public static IIRFilter resonator(double freq, double band) {
         return new IIRFilter(getCoefficientsResonator(freq, band));
     }
@@ -60,8 +64,12 @@ public class IIRFilter implements Forma {
         coef = getCoefficientsLpfHpf(freq, 1.0 / FastMath.sqrt(2.0), is_lpf);
     }
 
-    public void rescribo(double freq1, double freq2, boolean is_bpf) {
-        coef = getCoefficientsBpfBef(freq1, freq2, 1.0 / FastMath.sqrt(2.0), is_bpf);
+    public void rescriboBpfBef(double freq1, double freq2, boolean is_bpf) {
+        rescriboBpfBef(freq1, freq2, 1.0 / FastMath.sqrt(2.0), is_bpf);
+    }
+
+    public void rescriboBpfBef(double freq1, double freq2, double q, boolean is_bpf) {
+        coef = getCoefficientsBpfBef(freq1, freq2, q, is_bpf);
     }
 
     public void rescriboResonator(double freq, double band) {
@@ -177,6 +185,15 @@ public class IIRFilter implements Forma {
         return coef;
     }
 
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void close() {
+    }
+
     public static class IIRCoefficients {
 
         double[] a;
@@ -203,30 +220,30 @@ public class IIRFilter implements Forma {
 
     public static void main(String[] args) throws IOException {
         Referibile noise = new Referibile(new OscillatioFrag(false),
-            new Envelope<>(new Punctum(200),
-                new Positio(2000., new Punctum(200))),
-            5000
+                new Envelope<>(new Punctum(200),
+                        new Positio(2000., new Punctum(200))),
+                5000
         );
-        File out_file = new File(OmUtil.getDirectory("opus"), "iir_noise.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "iir_noise.wav");
         //File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);
         sw.scribo(
-            new CadentesFormae(
-                new IIRFilter(1000, true),
-                new VCA(new Envelope<>(new Punctum(),
-                    new Positio(50, new Punctum(1)),
-                    new Positio(3000, new Punctum(1)),
-                    new Positio(4000, new Punctum(0))))).capioLegibilis(noise), false);
+                new CadentesFormae(
+                        new IIRFilter(1000, true),
+                        new VCA(new Envelope<>(new Punctum(),
+                                new Positio(50, new Punctum(1)),
+                                new Positio(3000, new Punctum(1)),
+                                new Positio(4000, new Punctum(0))))).capioLegibilis(noise), false);
 
         Functiones.ludoLimam(out_file);
     }
 
     public static void __main(String[] args) throws IOException {
-        File in_file = new File(OmUtil.getDirectory("opus"), "osc_quad.wav");
+        File in_file = new File(IOUtil.getDirectory("opus"), "osc_quad.wav");
         //File in_file = new File(OmUtil.getDirectory("opus"), "filter2.wav");
         LectorWav lw = new LectorWav(in_file);
-        File out_file = new File(OmUtil.getDirectory("opus"), "iir_quad.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "iir_quad.wav");
         //File out_file = new File(OmUtil.getDirectory("opus"), "iir_456.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         //sw.scribo(cns, false);

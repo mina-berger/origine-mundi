@@ -12,6 +12,12 @@ import la.clamor.Punctum;
  * @author mina
  */
 public interface Forma {
+
     public Punctum formo(Punctum lectum);
+
     public int resto();
+
+    public void ponoPunctum(int index, double tempus, Punctum punctum);
+
+    public void close();
 }

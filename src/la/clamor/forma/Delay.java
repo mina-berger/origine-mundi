@@ -9,12 +9,12 @@ import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.OrbisPuncti;
 import la.clamor.Punctum;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Res;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
 import org.apache.commons.math3.util.FastMath;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -35,7 +35,7 @@ public class Delay implements Forma {
         long l_longitudo = Functiones.adPositio(diutius.maxAbs().doubleValue() * aetas.maxAbs().doubleValue());
         if (l_longitudo > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("diutius and aetas illegal.(smaller than "
-                + Functiones.adTempus(Integer.MAX_VALUE) + ")");
+                    + Functiones.adTempus(Integer.MAX_VALUE) + ")");
         }
         int longitudo = new Long(l_longitudo).intValue();
         oa = new OrbisPuncti(longitudo + 1);
@@ -51,19 +51,19 @@ public class Delay implements Forma {
     public Punctum formo(Punctum lectum) {
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            int i_aetas = (int) FastMath.ceil(aetas.capioAestimatio(i).doubleValue());
-            int index = (int) FastMath.round(Functiones.adPositio(diutius.capioAestimatio(i).doubleValue()));
+            int i_aetas = (int) FastMath.ceil(aetas.capioAestima(i).doubleValue());
+            int index = (int) FastMath.round(Functiones.adPositio(diutius.capioAestima(i).doubleValue()));
             //System.out.println(i_aetas + ":" + index + ":" + diutius.capioAestimatio(i).doubleValue() + ":"
             //+ Functiones.adPositio(diutius.capioAestimatio(i).doubleValue()));
             for (int j = 0; j < i_aetas; j++) {
-                Aestimatio aestimatio = oa.capio(index * (j + 1)).capioAestimatio(i);
-                Aestimatio a_feedback = new Aestimatio(FastMath.pow(
-                    feedback.capioAestimatio(i).doubleValue(),
-                    //aetas   .capioAestimatio(i).doubleValue()
-                    j + 1
+                Aestima aestimatio = oa.capio(index * (j + 1)).capioAestima(i);
+                Aestima a_feedback = new Aestima(FastMath.pow(
+                        feedback.capioAestima(i).doubleValue(),
+                        //aetas   .capioAestimatio(i).doubleValue()
+                        j + 1
                 ));
                 punctum.ponoAestimatio(i,
-                    punctum.capioAestimatio(i).addo(aestimatio.multiplico(a_feedback)));
+                        punctum.capioAestima(i).addo(aestimatio.multiplico(a_feedback)));
 
             }
 
@@ -74,7 +74,7 @@ public class Delay implements Forma {
     }
 
     public static void main(String[] args) {
-        File out_file = new File(OmUtil.getDirectory("sample"), "delay.wav");
+        File out_file = new File(IOUtil.getDirectory("sample"), "delay.wav");
         ScriptorWav sl = new ScriptorWav(out_file);
         sl.scribo(new FormaLegibilis(new Legibilis() {
             OscillatioSine o = new OscillatioSine();
@@ -105,6 +105,15 @@ public class Delay implements Forma {
     public static double temps(double tempo, double repenso) {
         return 60000. / tempo * repenso;
 
+    }
+
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void close() {
     }
 
 }

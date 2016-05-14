@@ -6,7 +6,7 @@
 package la.clamor.voix;
 
 import java.io.File;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Consilium;
 import la.clamor.Envelope;
 import la.clamor.Functiones;
@@ -17,11 +17,10 @@ import la.clamor.forma.VCA;
 import la.clamor.forma.CadentesFormae;
 import la.clamor.forma.Forma;
 import la.clamor.forma.IIRFilter;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
-import la.clamor.referibile.ModEnv;
 import la.clamor.referibile.OscillatioPulse;
 import la.clamor.referibile.Referibile;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -30,12 +29,12 @@ import origine_mundi.OmUtil;
 public class Formant implements Forma {
 
     private final IIRFilter[] filters;
-    private final Envelope<Aestimatio> band_env;
+    private final Envelope<Aestima> band_env;
     private final Envelope<Vowel> freqs;
     private Punctum deenphasis;
     private long index;
 
-    public Formant(Envelope<Aestimatio> band_env, Envelope<Vowel> freqs) {
+    public Formant(Envelope<Aestima> band_env, Envelope<Vowel> freqs) {
         double[] primo_freqs = freqs.capioValue(0).getFrequentia();
         double band = band_env.capioValue(0).doubleValue();
         filters = new IIRFilter[primo_freqs.length];
@@ -70,90 +69,47 @@ public class Formant implements Forma {
     }
 
     public static void main(String[] args) {
-        File out_file = new File(OmUtil.getDirectory("opus"), "formant3_2.wav");
+        File out_file = new File(IOUtil.getDirectory("sample"), "formant3_2.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         Consilium c = new Consilium();
         double temps = 0;
         double duration = 3000;
         double[][] freqs = new double[][]{
             new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
-            },
-            new double[]{
-                100
+                400
             }
         };
+        //Vowel factor = new Vowel(2.3, 2.2, 2.1, 2);
+        Vowel factor = new Vowel(1.2, 1.2, 1.2, 1.2);
         for (int i = 0; i < freqs.length; i++) {
             for (int j = 0; j < freqs[i].length; j++) {
                 double unit = duration / 40;
                 c.addo(temps, CadentesFormae.capioLegibilis(new Referibile(new OscillatioPulse(false),
                     new Envelope<>(new Punctum(freqs[i][j])), duration),
-                    new Formant(new Envelope<>(new Aestimatio(100),
-                            new Positio<>(8 * unit, new Aestimatio(50)),
-                            new Positio<>(10 * unit, new Aestimatio(100)),
-                            new Positio<>(18 * unit, new Aestimatio(50)),
-                            new Positio<>(20 * unit, new Aestimatio(100)),
-                            new Positio<>(28 * unit, new Aestimatio(50)),
-                            new Positio<>(30 * unit, new Aestimatio(100)),
-                            new Positio<>(38 * unit, new Aestimatio(50))
+                    new Formant(new Envelope<>(new Aestima(100)/*,
+                            new Positio<>(8 * unit, new Aestima(50)),
+                            new Positio<>(10 * unit, new Aestima(100)),
+                            new Positio<>(18 * unit, new Aestima(50)),
+                            new Positio<>(20 * unit, new Aestima(100)),
+                            new Positio<>(28 * unit, new Aestima(50)),
+                            new Positio<>(30 * unit, new Aestima(100)),
+                            new Positio<>(38 * unit, new Aestima(50))*/
                         ),
-                        new Envelope<>(Vowel.A,
-                            new Positio<>(8 * unit, Vowel.A),
-                            new Positio<>(10 * unit, Vowel.I),
-                            new Positio<>(18 * unit, Vowel.I),
-                            new Positio<>(20 * unit, Vowel.O),
-                            new Positio<>(28 * unit, Vowel.O),
-                            new Positio<>(30 * unit, Vowel.A))),
-                    new IIRFilter(1800, true),
-                    new VCA(new ModEnv(new Envelope<>(new Punctum(0),
+                        new Envelope<>(Vowel.A.multiplico(factor),
+                            new Positio<>(8 * unit, Vowel.A.multiplico(factor)),
+                            new Positio<>(10 * unit, Vowel.I.multiplico(factor)),
+                            new Positio<>(18 * unit, Vowel.I.multiplico(factor)),
+                            new Positio<>(20 * unit, Vowel.O.multiplico(factor)),
+                            new Positio<>(28 * unit, Vowel.O.multiplico(factor)),
+                            new Positio<>(30 * unit, Vowel.A.multiplico(factor)))),
+                    new IIRFilter(3000, true)
+                    /*new VCA(new ModEnv(new Envelope<>(new Punctum(0),
                         new Positio(unit, new Punctum(1)),
                         new Positio(38.5 * unit, new Punctum(1)),
                         new Positio(39.5 * unit, new Punctum(0))),
                         new Envelope<>(new Punctum(unit * 10. / 4.)),
-                        new Envelope<>(new Punctum(0.5))
-                    ))));
+                        new Envelope<>(new Punctum(0.5))*/
+                    ));
             }
             temps += duration;
             duration *= 0.8;
@@ -165,7 +121,7 @@ public class Formant implements Forma {
     }
 
     public static void _main(String[] args) {
-        File out_file = new File(OmUtil.getDirectory("opus"), "formant3_1.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "formant3_1.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         Consilium c = new Consilium();
         double temps = 0;
@@ -206,7 +162,7 @@ public class Formant implements Forma {
                 c.addo(temps, CadentesFormae.capioLegibilis(new Referibile(new OscillatioPulse(false),
                     new Envelope<>(new Punctum(freqs[i][j])),
                     duration),
-                    new Formant(new Envelope<>(new Aestimatio(100)),
+                    new Formant(new Envelope<>(new Aestima(100)),
                         new Envelope<>(Vowel.A,
                             new Positio<>(8 * unit, Vowel.A),
                             new Positio<>(10 * unit, Vowel.I),
@@ -229,5 +185,14 @@ public class Formant implements Forma {
         sw.scribo(c, false);
         Functiones.ludoLimam(out_file);
 
+    }
+
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void close() {
     }
 }

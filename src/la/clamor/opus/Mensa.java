@@ -9,6 +9,7 @@ import com.mina.util.Doubles;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,20 +18,24 @@ import la.clamor.Consilium;
 import la.clamor.Functiones;
 import la.clamor.Instrument;
 import la.clamor.Legibilis;
-import la.clamor.Ludum;
+import la.clamor.ludum.Ludum;
 import la.clamor.Mixtor;
-import la.clamor.Velocitas;
+import la.clamor.Vel;
 import la.clamor.Punctum;
+import la.clamor.forma.BackupLima;
 import la.clamor.io.ScriptorWav;
 import la.clamor.forma.CadentesFormae;
+import la.clamor.forma.Forma;
+import la.clamor.forma.FormaLegibilis;
+import la.clamor.forma.FormaNominata;
+import la.clamor.io.IOUtil;
+import la.clamor.io.LectorLimam;
 import la.clamor.opus.Taleae.Comes;
 import la.clamor.opus.Taleae.Rapidus;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
-import origine_mundi.OmUtil;
-import static la.clamor.opus.ConstantiaOperis.CT;
 
 /**
  *
@@ -45,24 +50,31 @@ public abstract class Mensa implements ConstantiaOperis {
     Taleae taleae;
     String nomen;
     boolean creaturus;
+    boolean dominaturus;
     boolean lusurus;
     Causa talea_ab;
     Causa talea_ad;
     ArrayList<Integer> track_list;
+    HashMap<String, Forma> formae_nominatae;
+    CadentesFormae master_cf;
 
     String sub_path;
 
-    private Mensa() {
+    /*private Mensa() {
         this(null, true, false);
+    }*/
+    public Mensa(boolean creaturus_dominaturus, boolean lusurus) {
+        this(null, creaturus_dominaturus, creaturus_dominaturus, lusurus);
     }
 
-    public Mensa(boolean creaturus, boolean lusurus) {
-        this(null, creaturus, lusurus);
+    public Mensa(boolean creaturus, boolean dominaturus, boolean lusurus) {
+        this(null, creaturus, dominaturus, lusurus);
     }
 
-    public Mensa(String nomen, boolean creaturus, boolean lusurus) {
+    public Mensa(String nomen, boolean creaturus, boolean master, boolean lusurus) {
         this.nomen = nomen;
         this.creaturus = creaturus;
+        this.dominaturus = master;
         this.lusurus = lusurus;
         instruments = new TreeMap<>();
         consilia = new TreeMap<>();
@@ -71,7 +83,9 @@ public abstract class Mensa implements ConstantiaOperis {
         talea_ab = null;
         talea_ad = null;
         track_list = new ArrayList<>();
+        formae_nominatae = new HashMap<>();
         sub_path = null;
+        master_cf = null;
         //Editor.ponoPrint(false);
     }
 
@@ -92,11 +106,11 @@ public abstract class Mensa implements ConstantiaOperis {
     }
 
     public void ponoTaleamAb(int talea, double repenso) {
-        talea_ab = CT(talea, repenso);
+        talea_ab = ConstantiaOperis.CT(talea, repenso);
     }
 
     public void ponoTaleamAd(int talea, double repenso) {
-        talea_ad = CT(talea, repenso);
+        talea_ad = ConstantiaOperis.CT(talea, repenso);
     }
 
     public void ponoInstrument(int id, Punctum level, Cinctum pan, Instrument inst) {
@@ -106,14 +120,30 @@ public abstract class Mensa implements ConstantiaOperis {
     public void ponoNoInstrument(int id, Punctum level, Cinctum pan, CadentesFormae cf) {
         ponoInstrument(id, level, pan, null, cf);
     }
+
     public void ponoInstrument(int id, Punctum level, Cinctum pan, Instrument inst, CadentesFormae cf) {
-        if(inst != null){
+        if (inst != null) {
             instruments.put(id, inst);
         }
         consilia.putIfAbsent(id, new Consilium());
         mixtor.ponoLegibilem(id, cf == null ? consilia.get(id) : cf.capioLegibilis(consilia.get(id)));
         mixtor.ponoInitialLevel(id, level);
         mixtor.ponoInitialPan(id, pan);
+        for (FormaNominata forma_nominata : cf.capioNominatas()) {
+            String _nomen = forma_nominata.capioNomen();
+            if (formae_nominatae.containsKey(_nomen)) {
+                throw new IllegalArgumentException("forma iam nominata est:" + _nomen);
+            }
+            formae_nominatae.put(_nomen, forma_nominata.capioFormam());
+        }
+    }
+
+    public void ponoFormae(String name, int talea, double repenso, int index, Punctum punctum) {
+        if (!formae_nominatae.containsKey(name)) {
+            throw new IllegalArgumentException("forma abest:" + name);
+        }
+        formae_nominatae.get(name).ponoPunctum(index, capioTempus(talea, repenso), punctum);
+
     }
 
     public void ponoHumanizer(Humanizer humanizer, int... ids) {
@@ -129,11 +159,12 @@ public abstract class Mensa implements ConstantiaOperis {
     public void ponoNomen(String nomen) {
         this.nomen = nomen;
     }
-    
-    public double tempus(int talea, double repenso){
+
+    public double tempus(int talea, double repenso) {
         return taleae.capioTempus(talea, repenso);
     }
-    public double diu(int talea1, double repenso1, int talea2, double repenso2){
+
+    public double diu(int talea1, double repenso1, int talea2, double repenso2) {
         return taleae.capioTempus(talea2, repenso2) - taleae.capioTempus(talea1, repenso1);
     }
 
@@ -142,13 +173,15 @@ public abstract class Mensa implements ConstantiaOperis {
     protected abstract void ponoRapidi(ArrayList<Rapidus> rapidi);
 
     protected abstract void creo();
+    protected abstract void dominor();
 
-    protected void ludo(int id, int talea, double repenso, double diutius, Doubles cleves, Velocitas velocitas) {
-        for(double clevis:cleves){
-            ludo(id, talea, repenso, diutius, clevis, velocitas);
+    protected void ludo(int id, int talea, double repenso, double diutius, Doubles claves, Vel velocitas) {
+        for (double clavis : claves) {
+            ludo(id, talea, repenso, diutius, clavis, velocitas);
         }
     }
-    protected void ludo(int id, int talea, double repenso, double diutius, double clevis, Velocitas velocitas) {
+
+    protected void ludo(int id, int talea, double repenso, double diutius, double clavis, Vel velocitas) {
         if (!inRange(id, talea, repenso)) {
             return;
         }
@@ -157,21 +190,27 @@ public abstract class Mensa implements ConstantiaOperis {
         }
         Ludum ludum;
         if (humanizers.containsKey(id)) {
-            ludum = humanizers.get(id).humanize(taleae, talea, repenso, diutius, clevis, velocitas);
+            ludum = humanizers.get(id).humanize(taleae, talea, repenso, diutius, clavis, velocitas);
         } else {
-            ludum = new Ludum(talea, repenso, clevis, diutius, velocitas);
+            ludum = new Ludum(talea, repenso, diutius, clavis, velocitas);
         }
+        //System.out.println(id + ":" + humanizers.containsKey(id));
+
         //taleae.capioTempus(talea, repenso + diutius) - taleae.capioTempus(talea, repenso), 
         double temp
-            = taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso() + ludum.capioDiuturnitas())
-            - taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso());
-        consilia.get(id).addo(taleae.capioTempus(ludum.capioTalea(), ludum.capioRepenso()),
-            instruments.get(id).capioNotum(ludum.capioNote(), temp, ludum.capioVelocitas()));
+                = taleae.capioTempus(ludum.talea(), ludum.repenso() + ludum.diuturnitas())
+                - taleae.capioTempus(ludum.talea(), ludum.repenso());
+        consilia.get(id).addo(taleae.capioTempus(ludum.talea(), ludum.repenso()),
+                instruments.get(id).capioNotum(ludum.clavis(), temp, ludum.velocitas()));
     }
-    public void sono(int id, int talea, double repenso, Legibilis legibilis){
+
+    public void sono(int id, int talea, double repenso, Legibilis legibilis) {
         consilia.get(id).addo(taleae.capioTempus(talea, repenso), legibilis);
     }
-    
+
+    public double capioTempus(int talea, double repenso) {
+        return taleae.capioTempus(talea, repenso);
+    }
 
     public void ponoMasterLevel(int talea, double repenso, Punctum level) {
         if (!inRange(null, talea, repenso)) {
@@ -179,6 +218,11 @@ public abstract class Mensa implements ConstantiaOperis {
         }
         mixtor.ponoMasterLevel(taleae.capioTempus(talea, repenso), level);
     }
+
+    public void ponoMasterFormas(Forma... formas) {
+        this.master_cf = new CadentesFormae(formas);
+    }
+
     public void ponoLevel(int id, int talea, double repenso, Punctum level) {
         if (!inRange(id, talea, repenso)) {
             return;
@@ -193,19 +237,19 @@ public abstract class Mensa implements ConstantiaOperis {
         if (!inRange(id, talea, repenso)) {
             return;
         }
-        if (!instruments.containsKey(id)) {
-            throw new IllegalArgumentException(String.format("Instrument is unset for track(%s)", id));
-        }
+        //if (!instruments.containsKey(id)) {
+        //    throw new IllegalArgumentException(String.format("Instrument is unset for track(%s)", id));
+        //}
         mixtor.ponoPan(id, taleae.capioTempus(talea, repenso), pan);
     }
 
     private boolean inRange(Integer id, int talea, double repenso) {
-        Causa c = CT(talea, repenso);
+        Causa c = ConstantiaOperis.CT(talea, repenso);
         if (talea_ab != null && ConstantiaOperis.compare(c, talea_ab) < 0) {
             return false;
         } else if (talea_ad != null && ConstantiaOperis.compare(talea_ad, c) < 0) {
             return false;
-        } else if (id != null &&!track_list.isEmpty() && !track_list.contains(id)) {
+        } else if (id != null && !track_list.isEmpty() && !track_list.contains(id)) {
             return false;
         }
         return true;
@@ -222,32 +266,58 @@ public abstract class Mensa implements ConstantiaOperis {
     @Test
     public void facio() {
         //File lima = null;
-        File out_file = new File(OmUtil.getDirectory("sample" + (sub_path != null ? sub_path + "/" : "")), capioNomen() + ".wav");
-        LogFactory.getLog(getClass()).info("ante facio:initio");
-        anteFacio();
+        IOUtil.clearTempFiles();
+        File out_dir = IOUtil.getDirectory("opus" + (sub_path != null ? sub_path + "/" : ""));
+        File temp_dir = new File(out_dir, capioNomen());
+        temp_dir.mkdirs();
+        File out_file = new File(out_dir, capioNomen() + ".wav");
+        File raw_file = new File(temp_dir, capioNomen() + ".raw.wav");
+        File lima     = new File(temp_dir, capioNomen() + ".raw.lima");
         if (creaturus) {
-            LogFactory.getLog(getClass()).info("creo:initio");
             ArrayList<Comes> comites = new ArrayList<>();
             ArrayList<Rapidus> rapidi = new ArrayList<>();
             ponoComitis(comites);
             ponoRapidi(rapidi);
             taleae = new Taleae(comites, rapidi);
+            LogFactory.getLog(getClass()).info("ante facio:initio");
+            anteFacio();
+            LogFactory.getLog(getClass()).info("creo:initio");
             creo();
             //lima.getParentFile().mkdirs();
-            ScriptorWav sl = new ScriptorWav(out_file);
+            ScriptorWav sl = new ScriptorWav(raw_file);
             if (talea_ab != null) {
                 sl.ponoIndexAb(taleae.capioTempus(talea_ab.capioTaleam(), talea_ab.capioRepenso()));
             }
             if (talea_ad != null) {
                 sl.ponoIndexAd(taleae.capioTempus(talea_ad.capioTaleam(), talea_ad.capioRepenso()));
             }
-            sl.scribo(mixtor, false);
-            mixtor.close();
-            Logger.getLogger(getClass().getName()).log(Level.INFO, "SCRIPTUM EST:{0}", out_file.getAbsolutePath());
+            //master forma
+            //Legibilis master_out = master_cf == null ? mixtor : master_cf.capioLegibilis(mixtor);
+            //consilia
+            for(Integer id:consilia.keySet()){
+                if(consilia.get(id).isEmpty()){
+                    mixtor.removeoTrack(id);
+                    System.out.println("removeTrack:" + id);
+                }
+            }
+            
+            Legibilis raw_out = new FormaLegibilis(mixtor, new BackupLima(lima));
+            sl.scribo(raw_out, false);
+            raw_out.close();
+
+            Logger.getLogger(getClass().getName()).log(Level.INFO, "C:SCRIPTUM EST:{0}", raw_file.getAbsolutePath());
+        }
+        if(dominaturus){
+            dominor();
+            Legibilis master_out = master_cf == null ? new LectorLimam(lima) : master_cf.capioLegibilis(new LectorLimam(lima));
+            ScriptorWav sl = new ScriptorWav(out_file);
+            sl.scribo(master_out, false);
+            master_out.close();
+            Logger.getLogger(getClass().getName()).log(Level.INFO, "M:SCRIPTUM EST:{0}", raw_file.getAbsolutePath());
         }
         if (lusurus) {
             LogFactory.getLog(getClass()).info("luso:initio");
-            Functiones.ludoLimam(out_file);
+            Functiones.ludoLimam(raw_file);
         }
     }
 

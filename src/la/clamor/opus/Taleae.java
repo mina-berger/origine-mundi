@@ -89,6 +89,9 @@ public class Taleae {
         return tempus;
     }
     private double capioPulsum(int talea, double repenso){
+        if(map_comitis.floorEntry(talea) == null){
+            throw new IllegalArgumentException("talea is small:" + talea);
+        }
         double comes = map_comitis.floorEntry(talea).getValue();
         if(repenso > comes){
             return capioPulsum(talea + 1, repenso - comes);

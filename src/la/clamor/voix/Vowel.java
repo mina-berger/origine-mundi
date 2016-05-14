@@ -14,7 +14,7 @@ import la.clamor.Mergibilis;
 public class Vowel implements Mergibilis<Vowel>{
     public static final Vowel A = new Vowel(800, 1200, 2500, 3500);
     public static final Vowel I = new Vowel(300, 2300, 2900, 3500);
-    public static final Vowel U = new Vowel(800, 1200, 2500, 3500);
+    public static final Vowel U = new Vowel(300, 1200, 2500, 3500);
     public static final Vowel E = new Vowel(500, 1900, 2500, 3500);
     public static final Vowel O = new Vowel(500, 800, 2500, 3500);
     double[] freqs;
@@ -40,6 +40,26 @@ public class Vowel implements Mergibilis<Vowel>{
 
     @Override
     public Vowel multiplico(Vowel factor) {
+        return new Vowel(freqs[0] * factor.freqs[0], freqs[1] * factor.freqs[1], freqs[2] * factor.freqs[2], freqs[3] * factor.freqs[3]);
+    }
+
+    @Override
+    public Vowel partior(Vowel partitor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Vowel addo(Vowel multiplicator) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Vowel subtraho(Vowel multiplicator) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Vowel nego() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

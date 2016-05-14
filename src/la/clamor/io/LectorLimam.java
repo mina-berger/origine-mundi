@@ -1,12 +1,11 @@
 package la.clamor.io;
 
-import origine_mundi.OmUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Constantia;
 import la.clamor.ExceptioClamoris;
 import la.clamor.Legibilis;
@@ -30,7 +29,7 @@ public class LectorLimam implements Constantia, Legibilis {
         try {
             Punctum punctum = new Punctum();
             for (int i = 0; i < Res.publica.channel(); i++) {
-                punctum.ponoAestimatio(i, new Aestimatio(puncta_stream.readDouble()));
+                punctum.ponoAestimatio(i, new Aestima(puncta_stream.readDouble()));
             }
             return punctum;
         } catch (IOException ex) {
@@ -56,7 +55,7 @@ public class LectorLimam implements Constantia, Legibilis {
     }
 
     public static void main(String[] args) {
-        File f = new File(OmUtil.getDirectory("sample"), "01d.lima");
+        File f = new File(IOUtil.getDirectory("sample"), "01d.lima");
         int length = 1000;
         ArrayList<LectorLimam> lls = new ArrayList<>();
         for (int i = 0; i < length; i++) {

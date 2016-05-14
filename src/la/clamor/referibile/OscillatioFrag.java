@@ -2,11 +2,12 @@ package la.clamor.referibile;
 
 import java.io.File;
 import java.util.Random;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Envelope;
 import la.clamor.Functiones;
 import la.clamor.Punctum;
 import la.clamor.Res;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import org.apache.commons.math3.util.FastMath;
 import origine_mundi.OmUtil;
@@ -34,13 +35,13 @@ public class OscillatioFrag implements Referibilis {
         }
         return punctum;
     }
-    protected Aestimatio capioUnda() {
-        return new Aestimatio(FastMath.sin(new Random().nextGaussian() * 2. * FastMath.PI));
+    protected Aestima capioUnda() {
+        return new Aestima(FastMath.sin(new Random().nextGaussian() * 2. * FastMath.PI));
     }
 
     public static void main(String[] args) {
         //Res.publica.ponoChannel(4);
-        File out_file = new File(OmUtil.getDirectory("opus"), "osc_frag.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "osc_frag.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Referibile(new OscillatioFrag(false),
             new Envelope<>(new Punctum(240)),

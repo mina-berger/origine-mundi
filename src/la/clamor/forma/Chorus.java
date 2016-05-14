@@ -9,12 +9,12 @@ import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.OrbisPuncti;
 import la.clamor.Punctum;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Res;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
 import org.apache.commons.math3.util.FastMath;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -36,7 +36,7 @@ public class Chorus implements Forma {
         long l_longitudo = Functiones.adPositio(profundum.maxAbs().doubleValue());
         if (l_longitudo * 2 > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("profundum is illegal.(smaller than "
-                + Functiones.adTempus(Integer.MAX_VALUE) + ")");
+                    + Functiones.adTempus(Integer.MAX_VALUE) + ")");
         }
         longitudo = new Long(l_longitudo).intValue();
         oa = new OrbisPuncti(longitudo * 2 + 1);
@@ -53,13 +53,13 @@ public class Chorus implements Forma {
         Punctum oscillatio = osc.lego(frequentia);
         Punctum punctum = new Punctum();
         for (int i = 0; i < Res.publica.channel(); i++) {
-            double index = oscillatio.capioAestimatio(i).addo(new Aestimatio(1)).multiplico(new Aestimatio(longitudo)).doubleValue();
+            double index = oscillatio.capioAestima(i).addo(new Aestima(1)).multiplico(new Aestima(longitudo)).doubleValue();
             //System.out.println(index);
-            Aestimatio floor = oa.capio((int) FastMath.floor(index)).capioAestimatio(i);
-            Aestimatio ceil = oa.capio((int) FastMath.ceil(index)).capioAestimatio(i);
-            Aestimatio aestimatio
-                = floor.multiplico(new Aestimatio(FastMath.ceil(index) - index))
-                .addo(ceil.multiplico(new Aestimatio(index - FastMath.floor(index))));
+            Aestima floor = oa.capio((int) FastMath.floor(index)).capioAestima(i);
+            Aestima ceil = oa.capio((int) FastMath.ceil(index)).capioAestima(i);
+            Aestima aestimatio
+                    = floor.multiplico(new Aestima(FastMath.ceil(index) - index))
+                    .addo(ceil.multiplico(new Aestima(index - FastMath.floor(index))));
             punctum.ponoAestimatio(i, aestimatio);
         }
         oa.pono(lectum);
@@ -67,7 +67,7 @@ public class Chorus implements Forma {
     }
 
     public static void main(String[] args) {
-        File out_file = new File(OmUtil.getDirectory("opus"), "chorus.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "chorus.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new FormaLegibilis(new Legibilis() {
             OscillatioSine o = new OscillatioSine();
@@ -89,6 +89,15 @@ public class Chorus implements Forma {
             }
         }, new Chorus(new Punctum(0.3), new Punctum(9, 10), new Punctum(1), new Punctum(1, -1))), false);
         Functiones.ludoLimam(out_file);
+    }
+
+    @Override
+    public void ponoPunctum(int index, double tempus, Punctum punctum) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void close() {
     }
 
 }

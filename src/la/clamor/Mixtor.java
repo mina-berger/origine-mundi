@@ -26,6 +26,9 @@ public class Mixtor implements Legibilis {
         }
         return tracks.get(id);
     }
+    public void removeoTrack(int id){
+        tracks.remove(id);
+    }
 
     public void ponoLegibilem(int id, Legibilis legibilem) {
         capioTrack(id, true).fons = legibilem;

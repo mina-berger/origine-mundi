@@ -19,6 +19,7 @@ import static com.mina.util.Mjson.list;
 import static com.mina.util.Mjson.map;
 import la.clamor.forma.FIRFilter;
 import com.mina.util.CSVFile;
+import la.clamor.io.IOUtil;
 import origine_mundi.OmUtil;
 
 /**
@@ -167,8 +168,8 @@ public class OscillatorUtil {
         Oscillator osc = new Oscillator("epiano");
         double a = Temperamentum.instance.capioHZ(69);
         Consilium cns = new Consilium();
-        cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, new Velocitas(1)));
-        File out_file = new File(OmUtil.getDirectory("opus"), "oscillatior.wav");
+        cns.addo(0, osc.capioOscillationes(new Punctum(a), 3000, new Vel(1)));
+        File out_file = new File(IOUtil.getDirectory("opus"), "oscillatior.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
 
         sw.scribo(cns, false);
@@ -293,8 +294,8 @@ public class OscillatorUtil {
         Oscillator osc = new Oscillator("test", OscillatorSettings.toSettingsArray(json));
         double a = Temperamentum.instance.capioHZ(69);
         Consilium cns = new Consilium();
-        cns.addo(0, osc.capioOscillationes(new Punctum(a), 5000, new Velocitas(1)));
-        File out_file = new File(OmUtil.getDirectory("opus"), "quad.wav");
+        cns.addo(0, osc.capioOscillationes(new Punctum(a), 5000, new Vel(1)));
+        File out_file = new File(IOUtil.getDirectory("opus"), "quad.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
 
         //sw.scribo(cns, false);
@@ -315,7 +316,7 @@ public class OscillatorUtil {
                 return new Punctum(
                     f1.formo(lectum,
                         //200  + (double)index /  (48000. * 5.) * 1000, 
-                        2000 + ((double) index / (48000. * 5.) * 2000) % 2000, true).capioAestimatio(0).doubleValue()
+                        2000 + ((double) index / (48000. * 5.) * 2000) % 2000, true).capioAestima(0).doubleValue()
                 //,
                 //f2.filter(lectum, 
                 //200  + (1000. - (double)index /  (48000. * 5.) * 1000), 

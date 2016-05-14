@@ -17,7 +17,7 @@ public class Cinctum implements Mergibilis<Cinctum> {
         puncta = new Puncta(Res.publica.channel());
         for (int i = 0; i < Res.publica.channel(); i++) {
             Punctum punctum = new Punctum();
-            punctum.ponoAestimatio(i, new Aestimatio(1));
+            punctum.ponoAestimatio(i, new Aestima(1));
             puncta.ponoPunctum(i, punctum);
         }
 
@@ -38,17 +38,17 @@ public class Cinctum implements Mergibilis<Cinctum> {
     public Punctum cingo(Punctum in) {
         Punctum ex = new Punctum();
         for (int i_ex = 0; i_ex < Res.publica.channel(); i_ex++) {
-            Aestimatio aestimatio = new Aestimatio();
+            Aestima aestimatio = new Aestima();
             for (int i_in = 0; i_in < Res.publica.channel(); i_in++) {
-                aestimatio = aestimatio.addo(in.capioAestimatio(i_in).multiplico(capioOutput(i_in, i_ex)));
+                aestimatio = aestimatio.addo(in.capioAestima(i_in).multiplico(capioOutput(i_in, i_ex)));
             }
             ex.ponoAestimatio(i_ex, aestimatio);
         }
         return ex;
     }
 
-    public Aestimatio capioOutput(int index_in, int index_ex) {
-        return puncta.capioPunctum(index_ex).capioAestimatio(index_in);
+    public Aestima capioOutput(int index_in, int index_ex) {
+        return puncta.capioPunctum(index_ex).capioAestima(index_in);
     }
 
     @Override
@@ -63,6 +63,26 @@ public class Cinctum implements Mergibilis<Cinctum> {
 
     @Override
     public Cinctum multiplico(Cinctum factor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Cinctum partior(Cinctum partitor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Cinctum addo(Cinctum multiplicator) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Cinctum subtraho(Cinctum multiplicator) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Cinctum nego() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -1,6 +1,5 @@
 package la.clamor.io;
 
-import origine_mundi.OmUtil;
 import java.io.BufferedOutputStream;
 import java.io.EOFException;
 import java.io.File;
@@ -18,7 +17,7 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Constantia;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
@@ -27,8 +26,8 @@ import static la.clamor.Constantia.BYTE_PER_EXAMPLUM;
 import static la.clamor.Constantia.REGULA_EXAMPLI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import static la.clamor.Constantia.getAudioFormat;
 import la.clamor.Res;
+import static la.clamor.Constantia.getAudioFormat;
 
 public class ScriptorWav implements Constantia {
 
@@ -67,29 +66,29 @@ public class ScriptorWav implements Constantia {
         scribo(legibilis, pono_locus, REGULA_MAGISTRI);
     }
 
-    public void scribo(Legibilis legibilis, boolean pono_locus, Aestimatio master_volume) {
+    public void scribo(Legibilis legibilis, boolean pono_locus, Aestima master_volume) {
         ObjectOutputStream o_out;
         //FileOutputStream   f_out;
         ObjectInputStream o_in;
-        Aestimatio ratio;
+        Aestima ratio;
         int longitudo = 0;
         File tmp_file;
 
         int channel = format.getChannels();
         int sample_rate = (int) format.getSampleRate();
         try {
-            tmp_file = File.createTempFile("s_lima", Long.toString(System.currentTimeMillis()));
+            tmp_file = IOUtil.createTempFile("s_lima");
             //tmp_file.deleteOnExit();
             o_out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(tmp_file)));
 
             long locus = pono_locus ? Functiones.adPositio(LOCUS_TERMINATO) : 0;
-            Aestimatio max = new Aestimatio();
-            Aestimatio min = new Aestimatio();
+            Aestima max = new Aestima();
+            Aestima min = new Aestima();
             log.info("mixdown start:" + file.getAbsolutePath());
             for (long i = 0; i < locus * channel; i++) {
-                o_out.writeObject(new Aestimatio(0));
+                o_out.writeObject(new Aestima(0));
                 longitudo++;
-                if (longitudo % (sample_rate * channel) == 0) {
+                if (longitudo % (sample_rate * channel * 5) == 0) {
                     log.info("lecti   : " + (longitudo / sample_rate / channel) + " sec.(locus)");
                 }
             }
@@ -105,12 +104,12 @@ public class ScriptorWav implements Constantia {
                 }
                 index++;
                 for (int i = 0; i < channel; i++) {
-                    Aestimatio aestimatio = punctum.capioAestimatio(i);
+                    Aestima aestimatio = punctum.capioAestima(i);
                     o_out.writeObject(aestimatio);
                     max = max.max(aestimatio);
                     min = min.min(aestimatio);
                     longitudo++;
-                    if (longitudo % (sample_rate * channel) == 0) {
+                    if (longitudo % (sample_rate * channel * 5) == 0) {
                         log.info("lecti   : " + (longitudo / sample_rate / channel) + " sec.");
                         //log.info("index_ab=" + index_ab + ":index_ad=" + index_ad + ":index" + index);
                     }
@@ -120,8 +119,9 @@ public class ScriptorWav implements Constantia {
                 }
 
             }
+            legibilis.close();
             for (long i = 0; i < locus * channel; i++) {
-                o_out.writeObject(new Aestimatio(0));
+                o_out.writeObject(new Aestima(0));
                 longitudo++;
                 if (longitudo % (sample_rate * channel) == 0) {
                     log.info("lecti   : " + (longitudo / sample_rate / channel) + " sec.(locus)");
@@ -133,8 +133,8 @@ public class ScriptorWav implements Constantia {
             log.info("maximum  =" + max);
             log.info("minimum  =" + min);
             ratio
-                = master_volume.multiplico(MAX_AMPLITUDO).partior(max).abs().min(
-                master_volume.multiplico(MIN_AMPLITUDO).partior(min).abs());
+                    = master_volume.multiplico(MAX_AMPLITUDO).partior(max).abs().min(
+                    master_volume.multiplico(MIN_AMPLITUDO).partior(min).abs());
             longitudo += locus * 2;
             log.info("ratio   =" + ratio);
             log.info("tmp_file=" + tmp_file.getAbsolutePath());
@@ -161,15 +161,15 @@ public class ScriptorWav implements Constantia {
         }
     }
 
-    private void scriboSub(ObjectInputStream o_in, File file, Aestimatio ratio, int longitudo) throws IOException {
+    private void scriboSub(ObjectInputStream o_in, File file, Aestima ratio, int longitudo) throws IOException {
         AudioFormat af = new AudioFormat(
-            AudioFormat.Encoding.PCM_SIGNED,
-            format.getSampleRate(),
-            format.getSampleSizeInBits(),
-            format.getChannels(),
-            format.getFrameSize(),
-            format.getFrameRate(),
-            true);
+                AudioFormat.Encoding.PCM_SIGNED,
+                format.getSampleRate(),
+                format.getSampleSizeInBits(),
+                format.getChannels(),
+                format.getFrameSize(),
+                format.getFrameRate(),
+                true);
         /*AudioFormat af = new AudioFormat(
                 AudioFormat.Encoding.PCM_SIGNED, 
                 (float)REGULA_EXAMPLI, 
@@ -180,8 +180,8 @@ public class ScriptorWav implements Constantia {
                 true);*/
         file.getParentFile().mkdirs();
         AudioSystem.write(
-            new AudioInputStream(new LegibilisInputStream(o_in, ratio), af, (longitudo) / format.getChannels()),
-            AudioFileFormat.Type.WAVE, file);
+                new AudioInputStream(new LegibilisInputStream(o_in, ratio), af, (longitudo) / format.getChannels()),
+                AudioFileFormat.Type.WAVE, file);
     }
 
     /*private void scriboSub(ObjectInputStream o_in, File file, Aestimatio ratio, int longitudo, int locus) throws FileNotFoundException, IOException{
@@ -286,8 +286,8 @@ public class ScriptorWav implements Constantia {
         return bytes;
     }*/
     public static void main(String[] args) {
-        LectorLimam ll = new LectorLimam(new File(OmUtil.getDirectory("sample"), "ba_1_h_40.lima"));
-        ScriptorWav sl = new ScriptorWav(new File(OmUtil.getDirectory("sample"), "sample011.wav"));
+        LectorLimam ll = new LectorLimam(new File(IOUtil.getDirectory("sample"), "ba_1_h_40.lima"));
+        ScriptorWav sl = new ScriptorWav(new File(IOUtil.getDirectory("sample"), "sample011.wav"));
         sl.scribo(ll, false);
     }
 
@@ -295,11 +295,11 @@ public class ScriptorWav implements Constantia {
 
         ObjectInputStream o_in;
         ArrayList<Byte> list;
-        Aestimatio ratio;
+        Aestima ratio;
         Integer read;
         long count = 0;
 
-        public LegibilisInputStream(ObjectInputStream o_in, Aestimatio ratio) {
+        public LegibilisInputStream(ObjectInputStream o_in, Aestima ratio) {
             this.o_in = o_in;
             this.ratio = ratio;
             list = new ArrayList<>();
@@ -321,7 +321,7 @@ public class ScriptorWav implements Constantia {
         public int lego() throws IOException {
             if (list.isEmpty()) {
                 try {
-                    Aestimatio value = (Aestimatio) o_in.readObject();
+                    Aestima value = (Aestima) o_in.readObject();
 
                     ByteBuffer buffer = ByteBuffer.allocate(8);
                     buffer.putLong(value.multiplico(ratio).longValue());
@@ -336,7 +336,7 @@ public class ScriptorWav implements Constantia {
                         list.add(buffer.array()[i]);
                     }*/
                     count++;
-                    if (count % (REGULA_EXAMPLI * Res.publica.channel()) == 0) {
+                    if (count % (REGULA_EXAMPLI * Res.publica.channel() * 5) == 0) {
                         log.info("scripti : " + (count / REGULA_EXAMPLI / Res.publica.channel()) + " sec.");
                     }
                 } catch (EOFException ex) {

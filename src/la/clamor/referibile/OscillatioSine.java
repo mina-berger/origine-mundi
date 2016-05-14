@@ -1,7 +1,7 @@
 package la.clamor.referibile;
 
 import java.io.File;
-import la.clamor.Aestimatio;
+import la.clamor.Aestima;
 import la.clamor.Constantia;
 import static la.clamor.Constantia.REGULA_EXAMPLI_D;
 import la.clamor.Envelope;
@@ -9,9 +9,9 @@ import la.clamor.Functiones;
 import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.Res;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import org.apache.commons.math3.util.FastMath;
-import origine_mundi.OmUtil;
 
 /**
  * Oscillation with duration specified, but frequency nor volume unspecified
@@ -49,14 +49,14 @@ public class OscillatioSine implements Referibilis, Constantia {
         if (count_buffer == 1) {
             count_buffer--;
             for (int i = 0; i < Res.publica.channel(); i++) {
-                Aestimatio omega_t = frequentia.capioAestimatio(i).multiplico(new Aestimatio(2 * FastMath.PI * t));
-                punctum.ponoAestimatio(i, new Aestimatio(FastMath.sin(omega_t.doubleValue())));
+                Aestima omega_t = frequentia.capioAestima(i).multiplico(new Aestima(2 * FastMath.PI * t));
+                punctum.ponoAestimatio(i, new Aestima(FastMath.sin(omega_t.doubleValue())));
             }
         } else {
             for (int i = 0; i < Res.publica.channel(); i++) {
-                Aestimatio omega_t = frequentia.capioAestimatio(i).multiplico(new Aestimatio(2 * FastMath.PI * t));
-                Aestimatio b1_m = new Aestimatio(2).multiplico(new Aestimatio(FastMath.cos(omega_t.doubleValue())));
-                punctum.ponoAestimatio(i, b1_m.multiplico(y_1.capioAestimatio(i)).subtraho(y_2.capioAestimatio(i)));
+                Aestima omega_t = frequentia.capioAestima(i).multiplico(new Aestima(2 * FastMath.PI * t));
+                Aestima b1_m = new Aestima(2).multiplico(new Aestima(FastMath.cos(omega_t.doubleValue())));
+                punctum.ponoAestimatio(i, b1_m.multiplico(y_1.capioAestima(i)).subtraho(y_2.capioAestima(i)));
             }
             y_2 = y_1;
         }
@@ -66,14 +66,16 @@ public class OscillatioSine implements Referibilis, Constantia {
 
     public static void main(String[] args) {
         //Res.publica.ponoChannel(4);
-        File out_file = new File(OmUtil.getDirectory("opus"), "osc_sine.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "sine_499.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new Referibile(new OscillatioSine(),
             new ModEnv(
-                new Envelope<>(true, new Punctum(420), new Positio<>(1000, new Punctum(440))),
-                new Envelope<>(new Punctum(1), new Positio<>(9000, new Punctum(15))),
-                new Envelope<>(new Punctum(0), new Positio<>(1000, new Punctum(0.08)))),
-            10000), false);
+                //new Envelope<>(true, new Punctum(420), new Positio<>(1000, new Punctum(440))),
+                new Envelope<>(true, new Punctum(499))
+                //new Envelope<>(new Punctum(1), new Positio<>(9000, new Punctum(15))),
+                //new Envelope<>(new Punctum(0), new Positio<>(1000, new Punctum(0.08)))
+            ),
+            3000), false);
         Functiones.ludoLimam(out_file);
 
     }

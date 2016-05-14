@@ -6,12 +6,14 @@
 package la.clamor.deinde;
 
 import java.io.File;
-import la.clamor.Functiones;
+import la.clamor.Constantia;
 import la.clamor.Legibilis;
-import la.clamor.Punctum;
-import la.clamor.Res;
-import la.clamor.referibile.OscillatioSine;
-import origine_mundi.OmUtil;
+import la.clamor.Puncta;
+import la.clamor.io.IOUtil;
+import la.clamor.io.LectorLimam;
+import la.clamor.io.LectorWav;
+import la.clamor.io.ScriptorLimam;
+import la.clamor.io.ScriptorWav;
 
 /**
  *
@@ -19,93 +21,115 @@ import origine_mundi.OmUtil;
  */
 public class DeindeTest {
 
-    static Legibilis legibilis = new Legibilis() {
-        OscillatioSine o1 = new OscillatioSine();
-        OscillatioSine o2 = new OscillatioSine();
-        int count = 0;
-        double pitch1 = 440;
-        double pitch2 = 1760;
-
-        @Override
-        public Punctum lego() {
-            count++;
-            //pitch1 += 0.02;
-            //return o1.lego(new Punctum(pitch1), new Punctum(1));
-            return o1.lego(new Punctum(pitch1)).addo(
-                o2.lego(new Punctum(pitch2)));
-        }
-
-        @Override
-        public boolean paratusSum() {
-            return count < 144000;
-        }
-
-        @Override
-        public void close() {
-        }
-    };
-
-
     public static void main(String[] args) {
-        Res.publica.ponoChannel(4);
-        Punctum punctum = new Punctum();
-        System.out.println(punctum);
-        //String mixer_name = "TASCAM US-4x4 Audio Device";
-        //Port TASCAM US-4x4 Audio Device
-        //Mixer.Info mixerInfo = capioMixerInfo(mixer_name);
-        //System.out.println(mixerInfo);
-        //Mixer mixer = AudioSystem.getMixer(mixerInfo);
-
-        //AudioFormat format = Constantia.getAudioFormat(48000, 2, 4);
-        //SourceDataLine line = capioSourceDataLine(null, format, AudioSystem.NOT_SPECIFIED);
-        //System.out.println(line.);
-        //audio format:PCM_SIGNED 48000.0 Hz, 16 bit, stereo, 4 bytes/frame, little-endian
-        /*Mixer.Info[] aInfos = AudioSystem.getMixerInfo();
-        for (Mixer.Info aInfo : aInfos) {
-            System.out.println(aInfo.getName());
-        }*/
+        rate(2.0);
     }
 
-    public static void main2(String[] args) {
-        //ScriptorWav sw = new ScriptorWav(out_file);
-        //sw.scribo(new LowFi(legibilis, 20), false);
-        //sw.scribo(new Resampler(legibilis, Constantia.REGULA_EXAMPLI_D, Constantia.REGULA_EXAMPLI_D / 2), false);
-        //sw.scribo(legibilis, false);
-        //Functiones.ludoLimam(out_file);
-        File out_file;
-        //out_file = new File(OmUtil.getDirectory("sample/"), "Opus021_0.wav");
-        //Functiones.ludoLimam(out_file);
-        //out_file = new File(OmUtil.getDirectory("sample/"), "Opus021_1.wav");
-        //Functiones.ludoLimam(out_file);
-        out_file = new File(OmUtil.getDirectory("sample/"), "Opus021_2.wav");
-        Functiones.ludoLimam(out_file);
-
-    }
-
-    public static void __main(String[] args) {
-        double[] freqs = new double[]{
-            421.875, 433.59375, 445.3125, 468.75};
-
-        double[] amps = new double[]{
-            0.207763944, 0.580138255, 0.690567064, 0.212670797};
-        //double[] freqs = new double[]{
-        //    433.59375, 445.3125};
-
-        //double[] amps = new double[]{
-        //    0.580138255, 0.690567064};
-        double moment = 0;
-        double base = 0;
-        for (int i = 0; i < freqs.length; i++) {
-            moment += (freqs[i] - freqs[0]) * amps[i];
-            base += amps[i];
+    public static void rate(double rate) {
+        boolean shrink;
+        if (rate > 1.0) {
+            shrink = true;
+        } else if (rate >= 0.5 && rate < 1.0) {
+            shrink = false;
+        } else {
+            throw new IllegalArgumentException("rate must be in range (rate > 1.0) or (rate >= 0.5 && rate < 1.0)");
         }
 
-        double freq = moment / base + freqs[0];
-        System.out.println(freq);
-        freq = (freqs[2] - freqs[1]) * amps[2] / (amps[1] + amps[2]) + freqs[1];
-        //freq = (freqs[1] - freqs[0]) * amps[1] / (amps[0] + amps[1]) + freqs[0];
-        System.out.println(freq);
+        File in_file = new File(IOUtil.getDirectory("opus"), "sine_500.wav");
+        File lima = IOUtil.createTempFile("strech");
+        File out_file = new File(IOUtil.getDirectory("opus"), "sine_500_" + rate + ".wav");
+        LectorWav lw = new LectorWav(in_file);
+        Puncta pcm0 = new Puncta();
+        while (lw.paratusSum()) {
+            pcm0.addoPunctum(lw.lego());
+        }
+        lw.close();
 
+        //double rate = 2.0;
+        double fs = Constantia.REGULA_EXAMPLI_D;
+        //double bit = Constantia.BYTE_PER_EXAMPLUM;
+        int length = (int) (pcm0.longitudo() / rate + 1);
+        Puncta pcm1 = new Puncta(length);
+
+        int template_size = (int) (fs * 0.01);
+        int pmin = (int) (fs * 0.005);
+        int pmax = (int) (fs * 0.02);
+        Puncta x = new Puncta(template_size);
+        Puncta y = new Puncta(template_size);
+        double[] r = new double[pmax + 1];
+        int offset0 = 0;
+        int offset1 = 0;
+
+        while (offset0 + pmax * 2 < pcm0.longitudo()) {
+            for (int n = 0; n < template_size; n++) {
+                x.ponoPunctum(n, pcm0.capioPunctum(offset0 + n));
+            }
+            double rmax = 0.0;
+            int p = pmin;
+            for (int m = pmin; m <= pmax; m++) {
+                for (int n = 0; n < template_size; n++) {
+                    y.ponoPunctum(n, pcm0.capioPunctum(offset0 + m + n));
+                }
+                r[m] = 0.0;
+                for (int n = 0; n < template_size; n++) {
+                    r[m] += x.capioPunctum(n).average().doubleValue() * y.capioPunctum(n).average().doubleValue();
+                }
+                if (r[m] > rmax) {
+                    rmax = r[m];
+                    p = m;
+                }
+            }
+            int q;
+            if (shrink) {
+                for (int n = 0; n < p; n++) {
+                    pcm1.ponoPunctum(offset1 + n,
+                            pcm0.capioPunctum(offset0 + n).multiplico((double) (p - n) / (double) p).addo(
+                            pcm0.capioPunctum(offset0 + p + n).multiplico((double) n / (double) p)));
+                }
+                q = (int) ((double) p / (rate - 1.0) + 0.5);
+                for (int n = p; n < q; n++) {
+                    if (offset0 + p + n >= pcm0.longitudo()) {
+                        break;
+                    }
+                    pcm1.ponoPunctum(offset1 + n, pcm0.capioPunctum(offset0 + p + n));
+                }
+                offset0 += p + q;
+                offset1 += q;
+            } else {
+                for (int n = 0; n < p; n++) {
+                    pcm1.ponoPunctum(offset1 + n, pcm0.capioPunctum(offset0 + n));
+                }
+                for (int n = 0; n < p; n++) {
+                    pcm1.ponoPunctum(offset1 + p + n,
+                            pcm0.capioPunctum(offset0 + p + n).multiplico((double)(p - n) / (double)p).addo(
+                            pcm0.capioPunctum(offset0 + n).multiplico((double)n / (double)p)));
+                }
+
+                q = (int) ((double) p * rate / (1.0 - rate) + 0.5);
+                for (int n = p; n < q; n++) {
+                    if (offset0 + n >= pcm0.longitudo()) {
+                        break;
+                    }
+                    pcm1.ponoPunctum(offset1 + p + n, pcm0.capioPunctum(offset0 + n));
+                }
+                offset0 += q;
+                offset1 += p + q;
+            }
+            System.out.println("p=" + p + ";q=" + q);
+            System.out.println("o0=" + offset0 + ";o1=" + offset1);
+        }
+        System.out.println("p0=" + pcm0.longitudo() + ";p1=" + pcm1.longitudo() + ";pmax=" + pmax);
+        ScriptorLimam sl = new ScriptorLimam(lima);
+        Legibilis legi = pcm1.capioLegibilem();
+        while(legi.paratusSum()){
+            sl.scribo(legi.lego());
+        }
+        legi.close();
+        sl.close();
+
+        LectorLimam ll = new LectorLimam(lima);
+        ScriptorWav sw = new ScriptorWav(out_file);
+        sw.scribo(ll, false);
     }
 
 }

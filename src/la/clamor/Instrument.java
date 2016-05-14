@@ -14,7 +14,7 @@ public interface Instrument {
     //public Legibilis capioNotum(double note, double diuturnitas, Velocitas velocitas);
 
     //public Legibilis capioNotum(int octave, double note, double diuturnitas, Velocitas velocitas);
-    public Legibilis capioNotum(double note, double temps, Velocitas velocitas);
+    public Legibilis capioNotum(double note, double temps, Vel velocitas);
 
     public String getName();
 

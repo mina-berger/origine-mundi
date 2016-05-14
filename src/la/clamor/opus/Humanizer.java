@@ -6,9 +6,9 @@
 package la.clamor.opus;
 
 import java.util.TreeMap;
-import la.clamor.Ludum;
+import la.clamor.ludum.Ludum;
 import la.clamor.Punctum;
-import la.clamor.Velocitas;
+import la.clamor.Vel;
 import org.apache.commons.math3.util.FastMath;
 
 /**
@@ -17,7 +17,7 @@ import org.apache.commons.math3.util.FastMath;
  */
 public class Humanizer {
 
-    private Randomizer r_clevis;
+    private Randomizer r_clavis;
     private Randomizer r_repenso;
     private Randomizer r_velocitas;
     private TreeMap<Integer, Randomizer> r_velocitatis;
@@ -25,7 +25,7 @@ public class Humanizer {
 
     public Humanizer() {
         converti = new TreeMap<>();
-        r_clevis = null;
+        r_clavis = null;
         r_repenso = null;
         r_velocitas = null;
         r_velocitatis = new TreeMap<>();
@@ -33,8 +33,8 @@ public class Humanizer {
         pono(1, 0, 1);
     }
 
-    public Humanizer ponoRandomClevis(double solum, double tectum) {
-        r_clevis = new Randomizer(solum, tectum);
+    public Humanizer ponoRandomClavis(double solum, double tectum) {
+        r_clavis = new Randomizer(solum, tectum);
         return this;
     }
 
@@ -61,16 +61,7 @@ public class Humanizer {
         return this;
     }
 
-    public Ludum humanize(Taleae taleae, int talea, double repenso, double diutius, double clevis, Velocitas velocitas) {
-    /*    return new Ludum(
-            talea, repenso,
-            clevis,
-            taleae.capioTempus(talea, repenso + diutius) - taleae.capioTempus(talea, repenso),
-            velocitas);
-    }
-
-    private void creoSub(Taleae taleae, int talea, double repenso, double diutius, double clevis, Velocitas velocitas) {
-    */
+    public Ludum humanize(Taleae taleae, int talea, double repenso, double diutius, double clavis, Vel velocitas) {
         double m_repenso = repenso - FastMath.floor(repenso);
         Convertum solum = converti.floorEntry(m_repenso).getValue();
         double _mutatum;
@@ -98,11 +89,11 @@ public class Humanizer {
             double t_ratio = (m_terminum - t_solum.repenso) / (t_tectum.repenso - t_solum.repenso);
             t_mutatum = t_solum.mutatum + (t_tectum.mutatum - t_solum.mutatum) * t_ratio;
         }
-        double mut_clevis = r_clevis == null ? 0 : r_clevis.next();
+        double mut_clavis = r_clavis == null ? 0 : r_clavis.next();
         double mut_repenso = r_repenso == null ? 0 : r_repenso.next();
         double mut_velocitas = (r_velocitas == null ? 0 : r_velocitas.next()) + 1.;
-
-        double _clevis = clevis + mut_clevis;
+        //System.out.println("r_repenso:" + mut_repenso);
+        double _clavis = clavis + mut_clavis;
         double _repenso = repenso + _mutatum + mut_repenso;
         if (talea == 0 && _repenso < 0) {
             _repenso = 0d;
@@ -111,24 +102,9 @@ public class Humanizer {
         return new Ludum(
             talea,
             _repenso,
-            _clevis,
             diutius - _mutatum + t_mutatum,
+            _clavis,
             velocitas.multiplico(_velocitas * mut_velocitas));
-/*
-        new Ludum(
-            ludum.capioTrack(),
-            ludum.capioTaleam(),
-            _repenso,
-            ludum.capioDiutium() - _mutatum + t_mutatum,
-            _clevis,
-            _velocitas + mut_velocitas).creo();
-        //System.out.println("CREO LUDUM!!");
-        r_velocitatis.keySet().stream().forEach((key) -> {
-            double _velocitas_ordi = r_velocitatis.get(key).next();
-            creoVelocitas(key, new Punctum(_velocitas_ordi));
-            //System.out.println("CREO VELOCITAS:" + key + ":" + _velocitas_ordi);
-        });
-*/
     }
 
     private static class Randomizer {

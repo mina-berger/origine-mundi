@@ -23,9 +23,6 @@ public class ScriptorLimam {
     private FileOutputStream f_out;
 
     public ScriptorLimam(File lima) {
-        //if(lima.exists()){
-        //    lima.delete();
-        //}
         try {
             f_out = new FileOutputStream(lima);
             o_out = new ObjectOutputStream(f_out);
@@ -37,7 +34,7 @@ public class ScriptorLimam {
     public void scribo(Punctum punctum) {
         for (int k = 0; k < Res.publica.channel(); k++) {
             try {
-                o_out.writeDouble(punctum.capioAestimatio(k).doubleValue());
+                o_out.writeDouble(punctum.capioAestima(k).doubleValue());
             } catch (IOException ex) {
                 throw new ExceptioClamoris(ex);
             }

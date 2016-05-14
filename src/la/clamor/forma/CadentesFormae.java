@@ -11,9 +11,9 @@ import java.util.Arrays;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.Punctum;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
-import origine_mundi.OmUtil;
 
 /**
  *
@@ -35,13 +35,23 @@ public class CadentesFormae extends ArrayList<Forma> {
     public static Legibilis capioLegibilis(Legibilis fons, Forma... formae){
         return new CadentesFormae(formae).capioLegibilis(fons);
     }
+    public ArrayList<FormaNominata> capioNominatas(){
+        ArrayList<FormaNominata> nominatas = new ArrayList<>();
+        for (Forma forma : this) {
+            if(forma instanceof FormaNominata){
+                nominatas.add((FormaNominata)forma);
+            }
+        }
+        return nominatas;
+        
+    }
 
     public static void main(String[] args) {
-        File out_file = new File(OmUtil.getDirectory("opus"), "cadentes.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "cadentes.wav");
 
         ScriptorWav sl = new ScriptorWav(out_file);
         CadentesFormae cf = new CadentesFormae(
-            new Distortion(new Punctum(1), new Punctum(1.1), new Punctum(1)),
+            new Limitter(new Punctum(1), new Punctum(1.1), new Punctum(1)),
             new Chorus(new Punctum(1), new Punctum(3), new Punctum(1), new Punctum(1, -1)));
         sl.scribo(cf.capioLegibilis(new Legibilis() {
             OscillatioSine o = new OscillatioSine();

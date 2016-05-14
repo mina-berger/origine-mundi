@@ -11,6 +11,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import la.clamor.forma.VCA;
 import la.clamor.forma.FormaLegibilis;
+import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import la.clamor.referibile.OscillatioSine;
 import la.clamor.referibile.Referibile;
@@ -133,7 +134,7 @@ public class Envelope<V extends Mergibilis<V>> extends TreeMap<Long, V> {
 
     public static void main(String[] args) {
         //Res.publica.ponoChannel(4);
-        File out_file = new File(OmUtil.getDirectory("opus"), "env.wav");
+        File out_file = new File(IOUtil.getDirectory("opus"), "env.wav");
         ScriptorWav sw = new ScriptorWav(out_file);
         sw.scribo(new FormaLegibilis(new Referibile(new OscillatioSine(),
             new Envelope<>(new Punctum(220)), 4000),
