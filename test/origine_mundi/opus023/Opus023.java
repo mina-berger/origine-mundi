@@ -45,7 +45,8 @@ public class Opus023 extends Mensa {
         //super.ponoTaleamAb(25, 0);
         //super.ponoTaleamAd(35, 0);
         Punctum volume0 = new Punctum(3);//1
-        Punctum volume1 = new Punctum(0.8);
+        Punctum volume1 = new Punctum(0.15);
+        Punctum volume31 = new Punctum(0.3);
         Punctum volume2 = new Punctum(1.7);
         ponoInstrument(0, volume0, new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
                 //new PressureMeter("point1"),
@@ -64,6 +65,13 @@ public class Opus023 extends Mensa {
                 new Compressor(new Punctum(0.2), new Punctum(0.1)),
                 new Compressor(new Punctum(0.5), new Punctum(0.3))
         ));
+        ponoInstrument(31, volume31, new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
+                new IIRFilter(500, 7000, true),
+                //new Limitter(new Punctum(0.55)),
+                new AutoLimitter(),
+                new Compressor(new Punctum(0.2), new Punctum(0.1)),
+                new Compressor(new Punctum(0.5), new Punctum(0.3))
+        ));
 
         ponoInstrument(2, volume2, new Cinctum(), new ArchiveLudior("mu500r", "drum_basic", 10), new CadentesFormae(
                 new Equalizer(-1., -1., -1., 0., 0., 0., 0., -0.5, -1., -1.),
@@ -73,8 +81,8 @@ public class Opus023 extends Mensa {
                 new Compressor(new Punctum(0.5), new Punctum(0.3))//,
         //new PressureMeter("point1")
         ));
-        Punctum volume3 = new Punctum(1.3);
-        Punctum volume5 = new Punctum(0.3, -0.3);
+        Punctum volume3 = new Punctum(1.1);
+        Punctum volume5 = new Punctum(0.35, -0.35);
         ponoInstrument(3, volume3, new Cinctum(true, new Punctum(1), new Punctum(1)), new ArchiveLudior("mu500r", "bass006433", 10), new CadentesFormae(
                 new Equalizer(-1., -0.5, 1., 0., 0, 0, 0., -0.5, -1., -1.),
                 //new PressureMeter("bass0"),
@@ -194,9 +202,11 @@ public class Opus023 extends Mensa {
         new Parte023AD(this, new Integers(0, 1, 2), 9, 16).creo();
         new Parte023AB(this, new Integers(3, 5), 9, 16, false).creo();
         new Parte023AM(this, new Integers(4), 9, 16, false).creo();
-        new Parte023BD(this, new Integers(0, 1, 2), 25, 10).creo();
+        
+        new Parte023BD(this, new Integers(0, 31, 2), 25, 10).creo();
         new Parte023BB(this, new Integers(3, 5), 25, 10).creo();
         new Parte023BM(this, new Integers(4), 25, 10).creo();
+        
         new Parte023AD(this, new Integers(0, 1, 2), 35, 8).creo();
         new Parte023AB(this, new Integers(3, 5), 35, 8, true).creo();
         new Parte023AM(this, new Integers(4), 35, 8, true).creo();

@@ -28,13 +28,13 @@ import static origine_mundi.archive.ArchiveUtil.toDodeciString;
 public class RecordEditor {
     public static void main(String[] args) throws IOException{
         //FunctionesLimae(new File(IOUtil.getDirectory("edit"), "sd.wav"));
-        //trimWav(new File(IOUtil.getDirectory("edit"), "hic.wav"), new Aestima(0.02));
+        trimWav(new File(IOUtil.getDirectory("edit"), "k.wav"), new Aestima(0.02));
         //trimWav(new File(IOUtil.getDirectory("edit"), "tomm.wav"), new Aestima(0.01));
         //trimWav(new File(IOUtil.getDirectory("edit"), "toml.wav"), new Aestima(0.01));
         //archive(new File(IOUtil.getDirectory("edit"), "bd.wav"), "voixdrum", 36, 127);
         //archive(new File(IOUtil.getDirectory("edit"), "sd.wav"), "voixdrum", 40, 127);
-        File file = new File(IOUtil.getDirectory("edit"), "rin2.wav");
-        archive(file, "voixdrum", 62, 127);
+        //File file = new File(IOUtil.getDirectory("edit"), "rin2.wav");
+        //archive(file, "voixdrum", 62, 127);
         //archive(new File(IOUtil.getDirectory("edit"), "hic.wav"), "voixdrum", 42, 127);
         //archive(new File(IOUtil.getDirectory("edit"), "hio.wav"), "voixdrum", 46, 127);
         //archive(new File(IOUtil.getDirectory("edit"), "tomh.wav"), "voixdrum", 48, 127);
