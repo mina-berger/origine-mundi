@@ -74,12 +74,12 @@ public class ArchiverTest {
         ArchiverTest test = new ArchiverTest("Yamaha MU500-1", 0);
         test.allNoteoff();
         test.reset();
-        test.program(0, 64, 33);
+        test.program(0, 0, 21);
         test.pan(64);
         test.effect(0, 0, 0, 0, 0);
-        test.playNotes(24);
-        test.playNotes(28);
-        test.playNotes(31);
+        test.playNotes(40);
+        test.playNotes(40, 47, 52, 56, 59, 64);
+        test.playNotes(45, 52, 57, 60, 64);
         //test.playNotes(24, 60, 64, 67, 70);
     }
 }

@@ -591,7 +591,7 @@ public class OmUtil {
     public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException, InterruptedException {
         Receiver receiver1 = null;
         try {
-            MidiDevice device1 = getMidiDevice(US_122, true);
+            MidiDevice device1 = getMidiDevice(MU500[0], true);
             printMidiDeviceInfo(device1.getDeviceInfo(), System.out, 1);
             receiver1 = device1.getReceiver();
             int channel = 0;
