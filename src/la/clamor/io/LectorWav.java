@@ -155,12 +155,12 @@ public class LectorWav implements Constantia, Legibilis {
             f_out.close();
             o_in.close();
             tmp_file1.delete();
-            if (regula_exampli_fontis == REGULA_EXAMPLI) {
+            if (regula_exampli_fontis == Res.publica.sampleRate()) {
                 lima = tmp_file2;
                 puncta_stream = new ObjectInputStream(new FileInputStream(tmp_file2));
                 return;
             }
-            octets_length = (int) ((double) octets_length * (double) REGULA_EXAMPLI / (double) regula_exampli_fontis);
+            octets_length = (int) ((double) octets_length * Res.publica.sampleRateDouble() / (double) regula_exampli_fontis);
             log.info("resample octets_length=" + octets_length);
             //Puncta resampled = new Puncta(octets_length);
             o_in = new ObjectInputStream(new FileInputStream(tmp_file2));
@@ -170,7 +170,7 @@ public class LectorWav implements Constantia, Legibilis {
             TreeMap<Integer, Punctum> map = new TreeMap<>();
             int count = 0;
             for (int i = 0; i < octets_length; i++) {
-                double position = (double) regula_exampli_fontis * (double) i / (double) REGULA_EXAMPLI;
+                double position = (double) regula_exampli_fontis * (double) i / Res.publica.sampleRateDouble();
                 int floor = (int) Math.floor(position);
                 int ceil = (int) Math.ceil(position);
                 TreeMap<Integer, Punctum> map2 = new TreeMap<>();

@@ -5,11 +5,13 @@
  */
 package la.clamor;
 
+import java.io.Serializable;
+
 /**
  *
  * @author mina
  */
-public class Cinctum implements Mergibilis<Cinctum> {
+public class Cinctum implements Serializable, Mergibilis<Cinctum> {
 
     private final Puncta puncta;
 

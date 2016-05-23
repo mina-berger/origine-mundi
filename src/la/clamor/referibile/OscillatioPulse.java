@@ -10,7 +10,6 @@ import la.clamor.Res;
 import la.clamor.io.IOUtil;
 import la.clamor.io.ScriptorWav;
 import org.apache.commons.math3.util.FastMath;
-import origine_mundi.OmUtil;
 
 /**
  * Oscillation with duration specified, but frequency nor volume unspecified
@@ -32,7 +31,7 @@ public class OscillatioPulse implements Referibilis, Constantia {
      */
     public OscillatioPulse(boolean con_negatif) {
         this.con_negatif = con_negatif;
-        ratio = new Aestima(2d * FastMath.PI / REGULA_EXAMPLI_D);
+        ratio = new Aestima(2d * FastMath.PI / Res.publica.sampleRateDouble());
         threshold = new Aestima(2d * FastMath.PI);
         x = new Punctum();
         last = new Punctum();

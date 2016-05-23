@@ -13,6 +13,7 @@ import la.clamor.Functiones;
 import la.clamor.OrbisPuncti;
 import la.clamor.Positio;
 import la.clamor.Punctum;
+import la.clamor.Res;
 import la.clamor.io.IOUtil;
 import la.clamor.io.LectorWav;
 import la.clamor.io.ScriptorWav;
@@ -98,8 +99,8 @@ public class IIRFilter implements Forma {
 
     public static IIRCoefficients getCoefficientsBpfBef(double freq1, double freq2, double q, boolean is_bpf) {
         IIRCoefficients coef = new IIRCoefficients();
-        double fc1 = FastMath.tan(PI * freq1 / Constantia.REGULA_EXAMPLI_D) / (2.0 * PI);
-        double fc2 = FastMath.tan(PI * freq2 / Constantia.REGULA_EXAMPLI_D) / (2.0 * PI);
+        double fc1 = FastMath.tan(PI * freq1 / Res.publica.sampleRateDouble()) / (2.0 * PI);
+        double fc2 = FastMath.tan(PI * freq2 / Res.publica.sampleRateDouble()) / (2.0 * PI);
         coef.a = new double[3];
         coef.b = new double[3];
         double denom = 1.0 + 2.0 * PI * (fc2 - fc1) / q + 4.0 * PI * PI * fc1 * fc2;
@@ -127,7 +128,7 @@ public class IIRFilter implements Forma {
 
     public static IIRCoefficients getCoefficientsPeaking(double freq, double q, double g) {
         IIRCoefficients coef = new IIRCoefficients();
-        double fc = FastMath.tan(PI * freq / Constantia.REGULA_EXAMPLI_D) / (2.0 * PI);
+        double fc = FastMath.tan(PI * freq / Res.publica.sampleRateDouble()) / (2.0 * PI);
 
         coef.a = new double[3];
         coef.b = new double[3];
@@ -143,7 +144,7 @@ public class IIRFilter implements Forma {
 
     public static IIRCoefficients getCoefficientsLpfHpf(double freq, double q, boolean is_lpf) {
         IIRCoefficients coef = new IIRCoefficients();
-        double fc = FastMath.tan(PI * freq / Constantia.REGULA_EXAMPLI_D) / (2.0 * PI);
+        double fc = FastMath.tan(PI * freq / Res.publica.sampleRateDouble()) / (2.0 * PI);
         coef.a = new double[3];
         coef.b = new double[3];
         double denom = 1.0 + 2.0 * PI * fc / q + 4.0 * PI * PI * fc * fc;
@@ -165,7 +166,7 @@ public class IIRFilter implements Forma {
 
     public static IIRCoefficients getCoefficientsResonator(double freq, double band) {
         IIRCoefficients coef = new IIRCoefficients();
-        double fc = FastMath.tan(PI * freq / Constantia.REGULA_EXAMPLI_D) / (2.0 * PI);
+        double fc = FastMath.tan(PI * freq / Res.publica.sampleRateDouble()) / (2.0 * PI);
         double q = freq / band;
         coef.a = new double[3];
         coef.b = new double[3];

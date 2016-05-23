@@ -15,7 +15,6 @@ import la.clamor.io.IOUtil;
 import la.clamor.io.LectorLimam;
 import la.clamor.io.ScriptorLimam;
 import la.clamor.io.ScriptorWav;
-import static la.clamor.io.ScriptorWav.log;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -65,8 +64,8 @@ public class AutoLimitter implements FormaCapta {
             }
             sl.scribo(lectum);
             longitudo++;
-            if (longitudo % (Constantia.REGULA_EXAMPLI* 5) == 0) {
-                log.info("lecti   : " + (longitudo / Constantia.REGULA_EXAMPLI) + " sec.(locus)");
+            if (longitudo % (Res.publica.sampleRate() * 5) == 0) {
+                log.info("lecti   : " + (longitudo / Res.publica.sampleRate()) + " sec.(locus)");
             }
         }
         sl.close();
@@ -76,5 +75,6 @@ public class AutoLimitter implements FormaCapta {
         }
         return new LectorLimam(file);
     }
+
 
 }

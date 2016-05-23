@@ -23,10 +23,10 @@ import org.apache.commons.math3.util.FastMath;
 public interface Functiones extends Constantia {
     public static Log log = LogFactory.getLog(Functiones.class);
     public static long adPositio(double tempus){
-        return (long)(tempus * REGULA_EXAMPLI_D / 1000d);
+        return (long)(tempus * Res.publica.sampleRateDouble() / 1000d);
     }
     public static double adTempus(long positio){
-        return (double)positio * 1000d / REGULA_EXAMPLI_D;
+        return (double)positio * 1000d / Res.publica.sampleRateDouble();
     }
     /**
      * say length is 4, solve the equation below

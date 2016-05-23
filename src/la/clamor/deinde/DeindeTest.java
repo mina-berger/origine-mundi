@@ -6,9 +6,10 @@
 package la.clamor.deinde;
 
 import java.io.File;
-import la.clamor.Constantia;
+import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.Puncta;
+import la.clamor.Res;
 import la.clamor.io.IOUtil;
 import la.clamor.io.LectorLimam;
 import la.clamor.io.LectorWav;
@@ -22,7 +23,8 @@ import la.clamor.io.ScriptorWav;
 public class DeindeTest {
 
     public static void main(String[] args) {
-        rate(2.0);
+        //rate(2.0);
+        Functiones.ludoLimam(new File("/Users/hiyamamina/Music/disques/central-park-west_john-coltrane.mp3"));
     }
 
     public static void rate(double rate) {
@@ -46,7 +48,7 @@ public class DeindeTest {
         lw.close();
 
         //double rate = 2.0;
-        double fs = Constantia.REGULA_EXAMPLI_D;
+        double fs = Res.publica.sampleRateDouble();
         //double bit = Constantia.BYTE_PER_EXAMPLUM;
         int length = (int) (pcm0.longitudo() / rate + 1);
         Puncta pcm1 = new Puncta(length);

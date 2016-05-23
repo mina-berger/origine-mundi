@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import static la.clamor.Constantia.getAudioFormat;
 import la.clamor.Legibilis;
+import la.clamor.Res;
 import la.clamor.forma.CadentesFormae;
 
 
@@ -238,12 +239,12 @@ public class FunctionesLimae implements Constantia {
             ll.close();
             sl.close();
             tmp_file1.delete();
-            if(teneo_sample || regula_exampli_fontis == REGULA_EXAMPLI){
+            if(teneo_sample || regula_exampli_fontis == Res.publica.sampleRate()){
                 target.delete();
                 tmp_file2.renameTo(target);
                 return format;
             }
-            octets_length = (int)((double)octets_length * (double)REGULA_EXAMPLI / (double)regula_exampli_fontis);
+            octets_length = (int)((double)octets_length * Res.publica.sampleRateDouble() / (double)regula_exampli_fontis);
             log.info("resample octets_length=" + octets_length);
             ll = new LectorLimam(tmp_file2);
             File tmp_file3 = IOUtil.createTempFile("l_lima3");
@@ -251,7 +252,7 @@ public class FunctionesLimae implements Constantia {
             TreeMap<Integer, Punctum> map = new TreeMap<>();
             int count = 0;
             for(int i = 0;i < octets_length;i++){
-                double position = (double)regula_exampli_fontis * (double)i / (double)REGULA_EXAMPLI;
+                double position = (double)regula_exampli_fontis * (double)i / Res.publica.sampleRateDouble();
                 int floor = (int)Math.floor(position);
                 int ceil  = (int)Math.ceil (position);
                 TreeMap<Integer, Punctum> map2 = new TreeMap<>();

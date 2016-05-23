@@ -4,7 +4,6 @@ import la.clamor.io.ScriptorWav;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
-import static la.clamor.Constantia.REGULA_EXAMPLI_D;
 import la.clamor.Constantia.Unda;
 import static la.clamor.Constantia.Unda.DENT;
 import static la.clamor.Constantia.Unda.FRAG;
@@ -15,7 +14,6 @@ import la.clamor.Positiones.PositionesFixi;
 import la.clamor.io.IOUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
-import origine_mundi.OmUtil;
 
 /**
  * Oscillation with duration specified, but frequency nor volume unspecified
@@ -41,7 +39,7 @@ public class Oscillatio implements Constantia, Legibilis {
         this.positiones = positiones;
         //System.out.println(positiones);
 
-        t = 1d / REGULA_EXAMPLI_D;
+        t = 1d / Res.publica.sampleRateDouble();
         y_1 = new Punctum();
         y_2 = new Punctum();
         count_buffer = 2;
