@@ -10,6 +10,7 @@ import la.clamor.BufferedLegibili;
 import la.clamor.Constantia;
 import la.clamor.Legibilis;
 import la.clamor.Puncta;
+import la.clamor.Res;
 import la.clamor.io.IOUtil;
 import la.clamor.io.LectorLimam;
 import la.clamor.io.LectorWav;
@@ -53,7 +54,7 @@ public class RateSample {
         ScriptorLimam sl = new ScriptorLimam(lima);
 
         //double rate = 2.0;
-        double fs = Constantia.REGULA_EXAMPLI_D;
+        double fs = Res.publica.sampleRateDouble();
         //double bit = Constantia.BYTE_PER_EXAMPLUM;
         //int length = (int) (pcm0.longitudo() / rate + 1);
         //Puncta pcm1;// = new Puncta(length);

@@ -2,7 +2,6 @@ package la.clamor.referibile;
 
 import la.clamor.Aestima;
 import la.clamor.Constantia;
-import static la.clamor.Constantia.REGULA_EXAMPLI_D;
 import la.clamor.Punctum;
 import la.clamor.Res;
 
@@ -21,7 +20,7 @@ public abstract class OscillatioDelta implements Referibilis, Constantia {
      */
     public OscillatioDelta() {
         delta = new Punctum();
-        t = 1d / REGULA_EXAMPLI_D;
+        t = 1d / Res.publica.sampleRateDouble();
 
     }
 

@@ -9,15 +9,15 @@ public interface Constantia {
     };
     //public static int CHANNEL = 2;
 
-    public static final int REGULA_EXAMPLI = 48000;
-    public static final double REGULA_EXAMPLI_D = REGULA_EXAMPLI;
+    //public static final int REGULA_EXAMPLI = 48000;
+    //public static final double REGULA_EXAMPLI_D = REGULA_EXAMPLI;
     public static final Aestima REGULA_MAGISTRI = new Aestima(1.0);
     /**
      * 1=8bit, 2=16bit, 3=24bit
      */
-    public static final int BYTE_PER_EXAMPLUM = 2;
-    public static final Aestima MAX_AMPLITUDO = new Aestima(Math.pow(2, BYTE_PER_EXAMPLUM * 8 - 1) - 1);
-    public static final Aestima MIN_AMPLITUDO = new Aestima(Math.pow(2, BYTE_PER_EXAMPLUM * 8 - 1) * -1);
+    //public static final int BYTE_PER_EXAMPLUM = 2;
+    //public static final Aestima MAX_AMPLITUDO = new Aestima(Math.pow(2, BYTE_PER_EXAMPLUM * 8 - 1) - 1);
+    //public static final Aestima MIN_AMPLITUDO = new Aestima(Math.pow(2, BYTE_PER_EXAMPLUM * 8 - 1) * -1);
     /**
      * locus terminato (ms)
      */
@@ -45,7 +45,7 @@ public interface Constantia {
     };
 
     public static AudioFormat getAudioFormat() {
-        return getAudioFormat((float) REGULA_EXAMPLI, BYTE_PER_EXAMPLUM, Res.publica.channel());
+        return getAudioFormat((float) Res.publica.sampleRate(), Res.publica.sampleSize(), Res.publica.channel());
     }
 
     public static AudioFormat getAudioFormat(float sample_rate, int sample_size_byte, int channels) {

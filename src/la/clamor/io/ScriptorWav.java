@@ -22,8 +22,6 @@ import la.clamor.Constantia;
 import la.clamor.Functiones;
 import la.clamor.Legibilis;
 import la.clamor.Punctum;
-import static la.clamor.Constantia.BYTE_PER_EXAMPLUM;
-import static la.clamor.Constantia.REGULA_EXAMPLI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import la.clamor.Res;
@@ -132,9 +130,8 @@ public class ScriptorWav implements Constantia {
             log.info("longitudo=" + longitudo);
             log.info("maximum  =" + max);
             log.info("minimum  =" + min);
-            ratio
-                    = master_volume.multiplico(MAX_AMPLITUDO).partior(max).abs().min(
-                    master_volume.multiplico(MIN_AMPLITUDO).partior(min).abs());
+            ratio = master_volume.multiplico(Res.publica.maxAmplitudo()).partior(max).abs().min(
+                    master_volume.multiplico(Res.publica.minAmplitudo()).partior(min).abs());
             longitudo += locus * 2;
             log.info("ratio   =" + ratio);
             log.info("tmp_file=" + tmp_file.getAbsolutePath());
@@ -326,7 +323,7 @@ public class ScriptorWav implements Constantia {
                     ByteBuffer buffer = ByteBuffer.allocate(8);
                     buffer.putLong(value.multiplico(ratio).longValue());
                     byte[] array = buffer.array();
-                    for (int i = 8 - BYTE_PER_EXAMPLUM; i < 8; i++) {
+                    for (int i = 8 - Res.publica.sampleSize(); i < 8; i++) {
                         list.add(array[i]);
                     }
 
@@ -336,8 +333,8 @@ public class ScriptorWav implements Constantia {
                         list.add(buffer.array()[i]);
                     }*/
                     count++;
-                    if (count % (REGULA_EXAMPLI * Res.publica.channel() * 5) == 0) {
-                        log.info("scripti : " + (count / REGULA_EXAMPLI / Res.publica.channel()) + " sec.");
+                    if (count % (Res.publica.sampleRate() * Res.publica.channel() * 5) == 0) {
+                        log.info("scripti : " + (count / Res.publica.sampleRate() / Res.publica.channel()) + " sec.");
                     }
                 } catch (EOFException ex) {
                     return -1;

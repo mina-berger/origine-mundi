@@ -5,10 +5,10 @@
  */
 package la.clamor.forma;
 
-import static la.clamor.Constantia.REGULA_EXAMPLI_D;
 import la.clamor.Functiones;
 import la.clamor.OrbisPuncti;
 import la.clamor.Punctum;
+import la.clamor.Res;
 import static la.clamor.forma.FIRFilter.FilterType.BEF;
 import static la.clamor.forma.FIRFilter.FilterType.BPF;
 import static la.clamor.forma.FIRFilter.FilterType.HPF;
@@ -42,7 +42,7 @@ public class FIRFilter implements Forma {
     }
 
     private FIRFilter(double range, FilterType type, double freq1, double freq2) {
-        double delta = range / REGULA_EXAMPLI_D;
+        double delta = range / Res.publica.sampleRateDouble();
         size = (int) (3.1 / delta + 0.5) - 1;
         if (size % 2 == 1) {
             size++;
@@ -53,8 +53,8 @@ public class FIRFilter implements Forma {
     }
 
     private double[] initFilter(FilterType type, double freq1, double freq2) {
-        double fe1 = freq1 / REGULA_EXAMPLI_D;
-        double fe2 = freq2 / REGULA_EXAMPLI_D;
+        double fe1 = freq1 / Res.publica.sampleRateDouble();
+        double fe2 = freq2 / Res.publica.sampleRateDouble();
         switch (type) {
             case LPF:
                 return getLpfHpf(fe1, size, window, true);

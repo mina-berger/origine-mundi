@@ -101,6 +101,12 @@ public class Aestima implements Cloneable, Comparable<Aestima>, Serializable, Me
         return Functiones.toString(value);
         //return Double.toString(value);
     }
+    public static String serialize(Aestima aestima) {
+        return Double.toString(aestima.value);
+    }
+    public static Aestima deserialize(String str){
+        return new Aestima(Double.parseDouble(str));
+    }
 
     @Override
     public int compareTo(Aestima a) {

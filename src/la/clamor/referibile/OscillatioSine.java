@@ -3,10 +3,8 @@ package la.clamor.referibile;
 import java.io.File;
 import la.clamor.Aestima;
 import la.clamor.Constantia;
-import static la.clamor.Constantia.REGULA_EXAMPLI_D;
 import la.clamor.Envelope;
 import la.clamor.Functiones;
-import la.clamor.Positio;
 import la.clamor.Punctum;
 import la.clamor.Res;
 import la.clamor.io.IOUtil;
@@ -30,7 +28,7 @@ public class OscillatioSine implements Referibilis, Constantia {
      */
     public OscillatioSine() {
 
-        t = 1d / REGULA_EXAMPLI_D;
+        t = 1d / Res.publica.sampleRateDouble();
         y_1 = new Punctum();
         y_2 = new Punctum();
         count_buffer = 2;

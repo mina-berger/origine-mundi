@@ -179,7 +179,25 @@ public class Punctum implements Constantia, Serializable, Comparable<Punctum>, M
         }
         return filum;
     }
-
+    public static String serialize(Punctum punctum) {
+        String filum = "";
+        for (Aestima aestimatio : punctum.aestimationes) {
+            if (!filum.isEmpty()) {
+                filum += ",";
+            }
+            filum += Aestima.serialize(aestimatio);
+        }
+        return filum;
+    }
+    public static Punctum deserialize(String str){
+        String[] split = str.split(",");
+        Punctum punctum = new Punctum();
+        Aestima[] as = new Aestima[split.length];
+        for(int i = 0;i < split.length;i++){
+            punctum.ponoAestimatio(i, Aestima.deserialize(split[i]));
+        }
+        return punctum;
+    }
     @Override
     public int compareTo(Punctum p) {
         int compare = Integer.compare(aestimationes.length, p.aestimationes.length);
