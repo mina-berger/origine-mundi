@@ -6,14 +6,14 @@
 
 package origine_mundi.machine;
 
-import static origine_mundi.OmUtil.MICRO_LITE_6;
+import static origine_mundi.OmUtil.MICRO_LITE_3;
 
 /**
  *
  * @author Mina
  */
 public class M3R extends Korg {
-    private static final String MIDI_PORT = MICRO_LITE_6;
+    private static final String MIDI_PORT = MICRO_LITE_3;
 
     private static M3R instance = null;
     public static M3R instance(){

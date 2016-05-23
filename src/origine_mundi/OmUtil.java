@@ -40,16 +40,11 @@ public class OmUtil {
     public static final int OM_MSG_TYPE_BREVIS = 0x00;
     public static final int OM_MSG_TYPE_SYSTEM = 0x01;
     public static final String[] MU500 = new String[]{"Yamaha MU500-1", "Yamaha MU500-2", "Yamaha MU500-3", "Yamaha MU500-4"};
-    public static final String MICRO_LITE_1 = "2- micro lite: Port 1";
-    public static final String MICRO_LITE_2 = "2- micro lite: Port 2";
-    public static final String MICRO_LITE_3 = "2- micro lite: Port 3";
-    public static final String MICRO_LITE_4 = "2- micro lite: Port 4";
-    public static final String MICRO_LITE_5 = "2- micro lite: Port 5";
-    public static final String MICRO_LITE_6 = "3- micro lite: Port 1";
-    public static final String MICRO_LITE_7 = "3- micro lite: Port 2";
-    public static final String MICRO_LITE_8 = "3- micro lite: Port 3";
-    public static final String MICRO_LITE_9 = "3- micro lite: Port 4";
-    public static final String MICRO_LITE_A = "3- micro lite: Port 5";
+    public static final String MICRO_LITE_1 = "micro lite: Port 1";
+    public static final String MICRO_LITE_2 = "micro lite: Port 2";
+    public static final String MICRO_LITE_3 = "micro lite: Port 3";
+    public static final String MICRO_LITE_4 = "micro lite: Port 4";
+    public static final String MICRO_LITE_5 = "micro lite: Port 5";
     public static final String US_122 = "TASCAM US-122 MKII MIDI";
 
     /*public static List<Integer> toList(int[] data){
@@ -549,6 +544,12 @@ public class OmUtil {
             }
             try {
                 MidiDevice device = MidiSystem.getMidiDevice(infos[i]);
+                System.out.println(device.getDeviceInfo().getName() + ":" + 
+                        (output?"out:" + device.getMaxReceivers():"in:" + device.getMaxTransmitters()));
+                if(!output && device.getDeviceInfo().getName().contains("PC-50 MIDI OUT")){
+                    device.open();
+                    return device;
+                }
                 if ((!output && device.getMaxTransmitters() != 0)
                         || (output && device.getMaxReceivers() != 0)) {
                     device.open();

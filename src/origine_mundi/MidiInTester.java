@@ -71,27 +71,46 @@ public class MidiInTester {
     }
     public static void main(String[] a) {
         OmUtil.printEnv(System.out);
-        MidiDevice ex_dev = null;
-        MidiDevice in_dev = null;
+        MidiDevice ex_dev1 = null;
+        MidiDevice in_dev1 = null;
+        MidiDevice ex_dev2 = null;
+        MidiDevice in_dev2 = null;
+        MidiDevice ex_dev3 = null;
+        MidiDevice in_dev3 = null;
+        MidiDevice ex_dev4 = null;
+        MidiDevice in_dev4 = null;
         try {
             
             //ex_dev = getMidiDevice("2- micro lite: Port 4", true);
             //ex_dev = getMidiDevice("2- micro lite: Port 2", true);
             
-            //ex_dev = getMidiDevice(MICRO_LITE_1, true); //TG77
+            //
             //ex_dev = getMidiDevice(MICRO_LITE_2, true); //U110
             //ex_dev = getMidiDevice(MICRO_LITE_3, true); //D110
             //ex_dev = getMidiDevice(MICRO_LITE_6, true); //01R/W
             //ex_dev = getMidiDevice(MICRO_LITE_7, true); //M3R
-            ex_dev = getMidiDevice(MU500[0], true);//MU500
+            //ex_dev = getMidiDevice(MU500[0], //true);//MU500
+            ex_dev1 = getMidiDevice(MICRO_LITE_1, true); //TG77
+            ex_dev2 = getMidiDevice(MICRO_LITE_2, true); //TG77
+            ex_dev3 = getMidiDevice(MICRO_LITE_3, true); //TG77
+            ex_dev4 = getMidiDevice(MICRO_LITE_4, true); //TG77
             
             //ex_dev = getMidiDevice(MU500[0], true);
             //ex_dev = getMidiDevice(MICRO_LITE_2, true);
-            //ex_dev = getMidiDevice("Port 4 on MXPXT", true);
-            //in_dev = getMidiDevice(MICRO_LITE_5, false);
-            in_dev = getMidiDevice(US_122, false);
-            MidiReceiver sr = new MidiReceiver(ex_dev.getReceiver());
-            in_dev.getTransmitter().setReceiver(sr);
+            //in_dev = getMidiDevice("2- PC-50 MIDI OUT", false);
+            in_dev1 = getMidiDevice(MICRO_LITE_5, false);
+            in_dev2 = getMidiDevice(MICRO_LITE_5, false);
+            in_dev3 = getMidiDevice(MICRO_LITE_5, false);
+            in_dev4 = getMidiDevice(MICRO_LITE_5, false);
+            //in_dev = getMidiDevice(US_122, false);
+            MidiReceiver sr1 = new MidiReceiver(ex_dev1.getReceiver());
+            in_dev1.getTransmitter().setReceiver(sr1);
+            MidiReceiver sr2 = new MidiReceiver(ex_dev2.getReceiver());
+            in_dev2.getTransmitter().setReceiver(sr2);
+            MidiReceiver sr3 = new MidiReceiver(ex_dev3.getReceiver());
+            in_dev3.getTransmitter().setReceiver(sr3);
+            MidiReceiver sr4 = new MidiReceiver(ex_dev4.getReceiver());
+            in_dev4.getTransmitter().setReceiver(sr4);
             while(true){
                 Thread.sleep(100000);
             }
@@ -103,8 +122,9 @@ public class MidiInTester {
             }
             return ret;*/
         } catch (Exception ex) {
-            ex_dev.close();
-            in_dev.close();
+            ex.printStackTrace();
+            ex_dev1.close();
+            in_dev1.close();
         }
     }
     
