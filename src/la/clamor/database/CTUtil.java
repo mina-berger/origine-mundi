@@ -57,7 +57,7 @@ public class CTUtil {
     }
 
     public static Connection getConnection() {
-        System.setProperty("derby.system.home", "/Users/hiyamamina/drive/javadb/");
+        System.setProperty("derby.system.home", "/Users/minaberger/drive/javadb/");
         DerbyManager.callConnection("origine_mundi", "MINA", "3737", false);
         return DerbyManager.getConnection("origine_mundi");
     }
@@ -312,7 +312,7 @@ public class CTUtil {
         }
     }*/
     public static void main(String[] args) throws IOException, UnsupportedAudioFileException {
-        String path = "/Users/hiyamamina/drive/doc/origine_mundi/song/0/sample/1.wav";
+        String path = "/Users/minaberger/drive/doc/origine_mundi/song/0/sample/1.wav";
         File file = new File(path);
         File temp = new File(path + ".tmp");
         File max = new File(path + ".max.wav");

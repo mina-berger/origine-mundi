@@ -19,6 +19,7 @@ public class Res{
         map.put("CHANNEL", 2);
         map.put("SAMPLE_RATE", 48000);
         map.put("SAMPLE_SIZE", 2);
+        ponoSampleSize(2);
     }
     public int channel(){
         return (Integer)map.get("CHANNEL");

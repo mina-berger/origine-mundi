@@ -219,13 +219,13 @@ public class OmUtil {
         }
     }
 
-    public static void _main(String[] args) {
+    public static void _main(String[] args) throws MidiUnavailableException, InvalidMidiDataException, InterruptedException {
         printEnv(System.out);
 
-        //MidiDevice out_dev = getMidiDevice(D_110, true);
-        //out_dev.open();
-        //Receiver out = out_dev.getReceiver();
-        //printMidiDeviceInfo(out_dev.getDeviceInfo(), System.out, 0);
+        MidiDevice out_dev = getMidiDevice("Game Controller 1", true);
+        out_dev.open();
+        Receiver out = out_dev.getReceiver();
+        printMidiDeviceInfo(out_dev.getDeviceInfo(), System.out, 0);
         /*MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
            int count = 0;
             for (int i = 0; i < infos.length; i++) {
@@ -243,10 +243,10 @@ public class OmUtil {
         //MidiDevice in_dev = getMidiDevice(MU500_1, false);
         //in_dev.getTransmitter().setReceiver(new LogReceiver(System.out, 0, ""));
         //out.send(sysex("f0 41 10 16 11 04 01 76 00 01 76 0e f7"), -1);
-        /*out.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 120), -1);
-            Thread.sleep(1000);
-            out.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 0), -1);
-         */
+        out.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 120), -1);
+        Thread.sleep(1000);
+        out.send(new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 0), -1);
+         
         //Thread.sleep(1000);
         //out_dev.close();
         //in_dev.close();
@@ -545,16 +545,16 @@ public class OmUtil {
             try {
                 MidiDevice device = MidiSystem.getMidiDevice(infos[i]);
                 System.out.println(device.getDeviceInfo().getName() + ":" + 
-                        (output?"out:" + device.getMaxReceivers():"in:" + device.getMaxTransmitters()));
+                        "out:" + device.getMaxReceivers() + "in:" + device.getMaxTransmitters());
                 if(!output && device.getDeviceInfo().getName().contains("PC-50 MIDI OUT")){
                     device.open();
                     return device;
                 }
-                if ((!output && device.getMaxTransmitters() != 0)
-                        || (output && device.getMaxReceivers() != 0)) {
+                //if ((!output && device.getMaxTransmitters() != 0)
+                //        || (output && device.getMaxReceivers() != 0)) {
                     device.open();
                     return device;
-                }
+                //}
             } catch (MidiUnavailableException mue) {
             }
         }
@@ -590,9 +590,11 @@ public class OmUtil {
     }
 
     public static void main(String[] args) throws MidiUnavailableException, InvalidMidiDataException, InterruptedException {
+        printEnv(System.out);
         Receiver receiver1 = null;
         try {
-            MidiDevice device1 = getMidiDevice(MU500[0], true);
+            MidiDevice device1 = getMidiDevice("ARIA Player", true);
+            //MidiDevice device1 = MidiSystem.getMidiDevice("Game Controller 1");
             printMidiDeviceInfo(device1.getDeviceInfo(), System.out, 1);
             receiver1 = device1.getReceiver();
             int channel = 0;

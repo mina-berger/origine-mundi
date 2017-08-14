@@ -181,11 +181,10 @@ public abstract class Positiones {
                 list = new ArrayList<>();
             }
             for (int i = 0; i < Res.publica.channel(); i++) {
-                if (list.size() > i) {
-                    initioEnvelope(list.get(i), unusEst);
-                } else {
+                if (list.size() <= i) {
                     list.add(new Envelope());
                 }
+                initioEnvelope(list.get(i), unusEst);
             }
             return list;
         }

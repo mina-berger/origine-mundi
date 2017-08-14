@@ -25,10 +25,10 @@ public class IOUtil {
     }
 
     public static String getArchivePath(){
-        return isMac()?"/Users/hiyamamina/drive/doc/origine_mundi/archive/":"D:/origine_mundi/archive/";
+        return isMac()?"/Users/minaberger/drive/doc/origine_mundi/archive/":"D:/origine_mundi/archive/";
     }
     public static String getHomePath(){
-        return isMac()?"/Users/hiyamamina/drive/":"C://drive/";
+        return isMac()?"/Users/minaberger/drive/":"C://drive/";
     }
     public static File getTempPath(){
         return getDirectory("temp/");

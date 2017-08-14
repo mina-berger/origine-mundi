@@ -77,4 +77,40 @@ public class Consilium extends TreeMap<Long, ArrayList<Legibilis>> implements Le
             puer.close();
         }
     }
+  public static void main(String[] args) {
+double half_tone = Math.pow(2.0, 1.0 / 12.0);
+double fifth = Math.pow(half_tone, 7);
+System.out.println(fifth);
+    /*double note1 = 440;
+    double note2 = note1 * Math.pow(Math.pow(2., 1. / 12.), 7);
+    Positiones.PositionesFixi p1 = new Positiones.PositionesFixi(
+      Constantia.Unda.SINE, 1, 0,
+      new Envelope(new Punctum(note1), new Positio(3000, new Punctum(note1)), new Positio(3500, new Punctum(note1))),
+      new Envelope(new Punctum(0), new Positio(15, new Punctum(1)), new Positio(3000, new Punctum(1)), new Positio(3500, new Punctum(0))),
+      new ArrayList<>(),//new Positio[]{new Positio(0, new Punctum(1, 0)), new Positio(3500, new Punctum(0, 1))},
+      new Envelope(),
+      new Envelope(),
+      new Envelope(),
+      new Envelope(),
+      new Envelope());
+    Oscillatio o1 = new Oscillatio(p1);
+    Positiones.PositionesFixi p2 = new Positiones.PositionesFixi(
+      Constantia.Unda.SINE, 1, 0,
+      new Envelope(new Punctum(note2), new Positio(3000, new Punctum(note2)), new Positio(3500, new Punctum(note2))),
+      new Envelope(new Punctum(0), new Positio(15, new Punctum(1)), new Positio(3000, new Punctum(1)), new Positio(3500, new Punctum(0))),
+      new ArrayList<>(),//new Positio[]{new Positio(0, new Punctum(1, 0)), new Positio(3500, new Punctum(0, 1))},
+      new Envelope(),
+      new Envelope(),
+      new Envelope(),
+      new Envelope(),
+      new Envelope());
+    Oscillatio o2 = new Oscillatio(p2);
+    Consilium c = new Consilium();
+    c.addo(0, o1);
+    c.addo(1000, o2);
+    File out_file = new File(IOUtil.getDirectory("opus"), "sine_440_660_equal.wav");
+    ScriptorWav sw = new ScriptorWav(out_file);
+    sw.scribo(c, false);
+    Functiones.ludoLimam(out_file);*/
+  }
 }

@@ -24,7 +24,7 @@ public class DeindeTest {
 
     public static void main(String[] args) {
         //rate(2.0);
-        Functiones.ludoLimam(new File("/Users/hiyamamina/Music/disques/central-park-west_john-coltrane.mp3"));
+        Functiones.ludoLimam(new File("/Users/minaberger/Music/disques/central-park-west_john-coltrane.mp3"));
     }
 
     public static void rate(double rate) {
